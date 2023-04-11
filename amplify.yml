@@ -1,0 +1,16 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm install -g clean-css-cli terser
+    build:
+      commands:
+        - 'find ./js -name "*.js" -exec terser --compress --mangle --output {} -- {} \;'
+        - 'find ./css -name "*.css" -exec cleancss -o {} {} \;'
+  artifacts:
+    baseDirectory: /
+    files:
+      - '**/*'
+  cache:
+    paths: []
