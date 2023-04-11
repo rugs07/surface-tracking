@@ -1,0 +1,299 @@
+@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+body {
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+  font-family: "Mulish", sans-serif;
+  margin: 3px;
+}
+
+#updatenote {
+  color: #000;
+  text-shadow: 1px 1px 0 #e3b60f, /* top-left shadow */ 1px 1px 0 #e3b60f,
+    /* top-right shadow */ 1px 1px 0 #e3b60f,
+    /* bottom-left shadow */ 1px 1px 0 #e3b60f; /* bottom-right shadow */
+  font-size: 25px;
+  margin: 3px;
+}
+
+.ar-toggle-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  z-index: 10;
+}
+
+button {
+  color: #e3b60f;
+  background-color: black;
+  border: none;
+  outline: none;
+  width: 150px;
+  border-radius: 30px;
+  padding: 8px 15px;
+  margin: 0;
+  margin-right: 10px;
+  white-space: nowrap;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: "Mulish", sans-serif;
+}
+
+.modebutton {
+  display: none;
+}
+
+.primarybtn {
+  display: block;
+  color: #000;
+  background-color: #e3b60f;
+  width: 200px;
+  height: 50px;
+  margin-left: 40px;
+  border-radius: 30px;
+  font-size: 20px;
+}
+
+#controlType {
+  font-weight: bold;
+}
+
+#error {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background: #fff;
+  padding: 8px;
+  white-space: pre;
+  color: #fff;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+#info {
+  font-size: 12px;
+  bottom: 4px;
+  left: 8px;
+  position: absolute;
+}
+
+#fpsdisplay {
+  display: inline-block;
+}
+
+#Loading {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  color: #000;
+  width: 100%;
+  text-align: center;
+}
+
+#Loading h4 {
+  margin: 0px;
+}
+
+#texturergbprogress,
+#texturefeaturesprogress {
+  margin: 0;
+  margin-top: 5px;
+}
+
+#loading-container {
+  width: 150px;
+  height: 150px;
+  padding: 0px;
+  margin: -40px 0 0 -40px;
+  position: absolute;
+  top: 50%;
+  left: 48%;
+}
+
+@media (max-width: 768px) {
+  #loading-container {
+    top: 45%;
+    left: 40%;
+  }
+}
+
+.loading-bgbox {
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  background-color: #ddd;
+  width: 65px;
+  height: 65px;
+}
+
+#topleft {
+  top: 5px;
+  left: 5px;
+}
+
+#bottomleft {
+  bottom: 5px;
+  left: 5px;
+}
+
+#topright {
+  top: 5px;
+  right: 5px;
+}
+
+#bottomright {
+  bottom: 5px;
+  right: 5px;
+}
+
+#loading-indicator {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 65px;
+  height: 65px;
+  background-color: #999;
+  animation-name: indicator;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes indicator {
+  0% {
+    top: 5px;
+    left: 5px;
+  }
+  25% {
+    top: 5px;
+    left: 80px;
+  }
+  50% {
+    top: 80px;
+    left: 80px;
+  }
+  75% {
+    top: 80px;
+    left: 5px;
+  }
+}
+
+#viewspacecontainer {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  text-align: left;
+  z-index: 10;
+  display: none;
+}
+
+#showhandscreen {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  text-align: center;
+  z-index: 20;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 30px 0;
+  gap: 10px;
+  background-color: rgba(0, 0, 0, 0.25);
+  color: white;
+  display: none;
+}
+
+.handimg {
+  height: 70vh;
+}
+
+/* The main RIV view */
+.view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  transform-origin: top left;
+  background: transparent;
+  border-radius: 5px;
+  border: 3px solid #e3b60f;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+/***************************************************************************
+***************************************************************************/
+
+.output_canvas {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  border-radius: 5px;
+  margin: 0 auto;
+  /* border: 3px solid #e3b60f; */
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 #00000030;
+  display: none;
+  z-index: 1;
+}
+
+.input_video {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #updatenote {
+    font-size: 20px;
+    margin: 0;
+    margin-top: 3px;
+  }
+  #showhandscreen {
+    top: 70px;
+    padding: 10px 0;
+    gap: 5px;
+  }
+
+  #showhandscreen h2 {
+    font-size: 16px;
+  }
+
+  .handimg {
+    height: 45vh;
+  }
+
+  button {
+    margin-right: 5px;
+    margin-top: 3px;
+  }
+
+  .primarybtn {
+    width: 150px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  input {
+    width: 50px;
+  }
+
+  .output_canvas {
+    top: 70px;
+  }
+
+  #viewspacecontainer {
+    top: 70px;
+  }
+}
