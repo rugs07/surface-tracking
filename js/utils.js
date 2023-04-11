@@ -135,18 +135,65 @@ function hideLoading() {
 /**
  * Updates the loading progress HTML elements.
  */
-function updateLoadingProgress() {
-  let texturergbprogress = document.getElementById("texturergbprogress");
-  let texturefeaturesprogress = document.getElementById(
-    "texturefeaturesprogress"
-  );
 
-  const textureString = gNumTextures > 0 ? gNumTextures : "?";
-  texturergbprogress.innerHTML =
-    "RGBA images loaded: " + gLoadedRGBATextures + "/" + textureString;
-  texturefeaturesprogress.innerHTML =
-    "feature images loaded: " + gLoadedFeatureTextures + "/" + textureString;
+let currentMessage = null;
+let currentFunFact = null;
+let lastUpdate = Date.now();
+
+function getRandomItem(array) {
+  return array[Math.floor(Math.random() * array.length)];
 }
+
+function updateMessageAndFunFact() {
+  const loadingMessages = [
+    "Polishing your gems: ",
+    "Stringing your pearls: ",
+    "Forging your treasures: ",
+    "Creating your sparkle: ",
+    "Designing your masterpiece: ",
+    "Unearthing precious stones: ",
+    "Weaving a golden thread: ",
+    "Crafting your royal jewels: ",
+    "Assembling a necklace of stars: ",
+    "Unlocking the jewelry box: "
+  ];
+
+  const funFactsAndTips = [
+    "Did you know? The Hope Diamond is one of the most famous gemstones, weighing 45.52 carats!",
+    "Tip: To get the best AR experience, make sure you're in a well-lit room.",
+    "Fact: Pearls are the only gemstones created by living creatures, like oysters and mussels.",
+    "Tip: Make sure your device's camera lens is clean for the best AR jewelry viewing experience.",
+    "Fact: The word 'jewelry' is derived from the Latin word 'jocale,' meaning 'plaything.'",
+    "Tip: For a more accurate jewelry fit in the AR experience, hold your device steady and parallel to the surface.",
+    "Fact: The largest diamond ever discovered, the Cullinan Diamond, weighed 3,106 carats!",
+    "Tip: You can take screenshots of your favorite AR jewelry pieces to share with friends or for future reference.",
+    "Fact: Rubies, sapphires, and emeralds are considered 'precious' gemstones, while all others are categorized as 'semi-precious.'",
+    "Tip: For best AR experience, make sure that no major light source is behind you."
+  ];
+
+  currentMessage = getRandomItem(loadingMessages);
+  currentFunFact = getRandomItem(funFactsAndTips);
+
+  lastUpdate = Date.now();
+}
+
+function updateLoadingProgress() {
+  let progress = document.getElementById("loadingprogress");
+  let funOrFact = document.getElementById("funorfact");
+
+  const loadPercentage = gNumTextures > 0 ? 100 * gLoadedRGBATextures / gNumTextures : "0";
+
+  const timeSinceLastUpdate = Date.now() - lastUpdate;
+  const updateInterval = 5000; // 5 seconds
+
+  if (!currentMessage || !currentFunFact || timeSinceLastUpdate > updateInterval) {
+    updateMessageAndFunFact();
+  }
+
+  progress.innerHTML = currentMessage + loadPercentage + "%";
+  funOrFact.innerHTML = currentFunFact;
+}
+
 
 /**
  * Checks whether the WebGL context is valid and the underlying hardware is
