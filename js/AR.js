@@ -469,7 +469,7 @@ function getZAngleAndRotate(
 
     // Calculate the angle difference between the current and the new angle
     const angleDifference = Math.abs(ZRAngle - normZAngle);
-    console.log("z rot:", ZRAngle, zAngle, normZAngle, angleDifference);
+    // console.log("z rot:", ZRAngle, zAngle, normZAngle, angleDifference);
     // Only apply the rotation if the angle difference is within the allowed limit
     if ((angleDifference < maxRotationAngle) && (normZAngle<90)){
       if (XYRotation) rotateZ(normZAngle+90, canX, canY);
