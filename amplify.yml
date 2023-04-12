@@ -3,10 +3,11 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm install -g clean-css-cli terser
+        - npm install -g clean-css-cli terser javascript-obfuscator
     build:
       commands:
         - 'find ./js -name "*.js" -exec terser --compress --mangle --output {} -- {} \;'
+        - 'find ./js -name "*.js" -exec javascript-obfuscator {} --output {} --compact true --self-defending true \;'
         - 'find ./css -name "*.css" -exec cleancss -o {} {} \;'
   artifacts:
     baseDirectory: /
