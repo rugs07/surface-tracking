@@ -226,17 +226,7 @@ function disableXYRotation() {
   if (isArcball) {
     arcballControls.setTarget(0.0, 0.0, 0.0);
   } else {
-    cameraControls.moveTo(0, 0, 0);
-    // cameraControls.zoomTo(2, true);
-
-    let degZ = THREE.MathUtils.radToDeg(ZRAngle);
-    degZ = -degZ;
-    ZRAngle = 0;
-    var transform = "rotateZ(" + degZ + "deg)";
-    glamCanvas.style.transform = transform;
-
-    cameraControls.azimuthAngle = baseThetha;
-    cameraControls.polarAngle = basePhi;
+    resetMesh();
   }
 }
 
@@ -352,7 +342,6 @@ function normalizeAngle(angle) {
   return angle;
 }
 
-
 function rotateZ(angle, canX, canY) {
   // var quaternion = new THREE.Quaternion().setFromAxisAngle(
   //   new THREE.Vector3(0, 0, 1),
@@ -371,6 +360,7 @@ function rotateZ(angle, canX, canY) {
   if (Math.abs(ZRAngle - angle) >= 175) {
     angle = Math.abs(ZRAngle - angle);
   }
+  if (angle == 0) angle = ZRAngle;
 
   let transform = null;
   if (!translation) transform = "rotateZ(" + angle + "deg)";
@@ -457,18 +447,25 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef) {
 //   return limitedAngle;
 // }
 
-function getZAngleAndRotate(wrist, newMidRef,  fthumbTip, fpinkyTip, canX, canY) {
+function getZAngleAndRotate(
+  wrist,
+  newMidRef,
+  fthumbTip,
+  fpinkyTip,
+  canX,
+  canY
+) {
   if (lastMidRef) {
     const mz2 = (newMidRef.y - wrist.y) / (newMidRef.x - wrist.x);
 
     let zAngle = Math.atan(mz2);
     zAngle = THREE.MathUtils.radToDeg(zAngle) - 90;
 
-    // Detect whether the palm is facing the camera or not
-    const palmFacingCamera = fthumbTip.z < fpinkyTip.z;
-    if (palmFacingCamera) {
-      zAngle += 180;
-    }
+    // // Detect whether the palm is facing the camera or not
+    // const palmFacingCamera = fthumbTip.z < fpinkyTip.z;
+    // if (palmFacingCamera) {
+    //   zAngle += 180;
+    // }
     const normZAngle = normalizeAngle(zAngle);
 
     // Set the maximum allowed rotation angle
@@ -476,10 +473,12 @@ function getZAngleAndRotate(wrist, newMidRef,  fthumbTip, fpinkyTip, canX, canY)
 
     // Calculate the angle difference between the current and the new angle
     const angleDifference = Math.abs(ZRAngle - normZAngle);
-    console.log("z Rotation angle:", ZRAngle, normZAngle, angleDifference)
+    // console.log("z Rotation angle:", ZRAngle, normZAngle, angleDifference);
     // Only apply the rotation if the angle difference is within the allowed limit
     if (angleDifference < maxRotationAngle) {
       if (XYRotation) rotateZ(normZAngle, canX, canY);
+    } else {
+      if (XYRotation) rotateZ(0, canX, canY);
     }
   }
 
@@ -577,8 +576,8 @@ function translateRotateMesh(points) {
   // const YTMul = getYTMul(wrist.y);
   // console.log(newY);
 
-  const XTMul = isMobile ? 400 : 1400;
-  const YTMul = isMobile ? 600 : 850;
+  const XTMul = isMobile ? 450 : 1400;
+  const YTMul = isMobile ? 550 : 850;
 
   const canX = newX * XTMul;
   const canY = newY * YTMul;
@@ -618,7 +617,7 @@ function translateRotateMesh(points) {
     }
   }
 
-  const resizeMul = isMobile ? 2.5 : 4.5;
+  const resizeMul = isMobile ? 3.5 : 4.5;
   if (resize && !isArcball) cameraControls.zoomTo(dist * resizeMul, false);
   if (resize && isArcball)
     gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);

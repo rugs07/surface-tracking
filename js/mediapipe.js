@@ -14,6 +14,9 @@ let showhandscreen = document.getElementById("showhandscreen");
 let modeButtons = Array.from(document.getElementsByClassName("modebutton"));
 
 isMobile = mobileAndTabletCheck();
+if (isMobile) {
+  trackButton = document.getElementById("trackbutton-mobile");
+}
 // console.log("isMobile", isMobile);
 // let cameraWidth = isMobile ? 360 : 1280;
 // let cameraHeight = isMobile ? 640 : 720;
@@ -22,8 +25,8 @@ let width = 1280,
   height = 720;
 
 if (isMobile) {
-  width = 360;
-  height = 480;
+  width = 400;
+  height = 400;
 }
 // const aspect = 720 / 1280;
 // if (window.innerWidth > window.innerHeight) {
@@ -39,11 +42,14 @@ outputCanvasElement.height = height;
 let isVideo = false;
 let timer = 0;
 let isResults = false;
+// let lastHand = null;
+// let lastDetectedTime = null;
+let handPresent = false;
 
 function setMeshVisibility() {
   setTimeout(() => {
     if (isResults) {
-      if (timer === 8) {
+      if (timer === 4) {
         viewSpaceContainer.style.display = "none";
         showhandscreen.style.display = "flex";
         resetMesh();
@@ -70,30 +76,47 @@ function onResults(results) {
     outputCanvasElement.height
   );
 
+  // const currentTime = window.performance.now();
   if (isVideo) {
-    if (
-      results.multiHandLandmarks.length && // checking if any hand is tracked
-      results.multiHandLandmarks[0].length // checking if any point in first hand is tracked
-    ) {
-      viewSpaceContainer.style.display = "inline-block";
-      translateRotateMesh(results.multiHandLandmarks[0]);
-      // for (const landmarks of results.multiHandLandmarks) {
-      // drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
-      //   color: "#00FF00",
-      //   lineWidth: 2,
-      // });
-      // drawLandmarks(canvasCtx, landmarks, { color: "#FF0000", lineWidth: 1 });
-      // }
+    const handDetected = results.multiHandLandmarks && results.multiHandLandmarks.length > 0;
+    const handLabel = results.multiHandedness.length ? results.multiHandedness[0].label : null;
+
+    if (handDetected) {
+      const indexFingerKnuckle = results.multiHandLandmarks[0][5];
+      const littleFingerKnuckle = results.multiHandLandmarks[0][17];
+      const isPalmFacing = indexFingerKnuckle.x < littleFingerKnuckle.x;
+      
+      if (!handPresent) {
+        handPresent = true;
+        if (handLabel === "Right") {
+          baseThetha = isPalmFacing ? THREE.MathUtils.degToRad(-60) : THREE.MathUtils.degToRad(120);
+        } else {
+          baseThetha = isPalmFacing ? THREE.MathUtils.degToRad(-60) : THREE.MathUtils.degToRad(120);
+        }
+        cameraControls.azimuthAngle = baseThetha;
+      }
+
       isResults = true;
       timer = 0;
       showhandscreen.style.display = "none";
+      viewSpaceContainer.style.display = "inline-block";
+      translateRotateMesh(results.multiHandLandmarks[0]);
     } else {
+      handPresent = false;
       if (timer === 0) setMeshVisibility();
     }
   }
 
   canvasCtx.restore();
 }
+
+      // if (isPalmFacing && !wasPalmFacing) {
+      //   baseThetha += THREE.MathUtils.degToRad(180);
+      //   cameraControls.azimuthAngle = baseThetha;
+      // } else if (!isPalmFacing && wasPalmFacing) {
+      //   baseThetha -= THREE.MathUtils.degToRad(180);
+      //   cameraControls.azimuthAngle = baseThetha;
+      // }
 
 const hands = new Hands({
   locateFile: (file) => {

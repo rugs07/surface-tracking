@@ -128,8 +128,6 @@ function hideLoading() {
   let updateNote = document.getElementById("updatenote");
   updateNote.innerText = "Welcome to jAR4U";
 
-  let trackbutton = document.getElementById("trackbutton");
-  trackbutton.style.display = "block";
 }
 
 /**

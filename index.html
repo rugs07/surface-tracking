@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>JAR4U</title>
+    <link rel="icon" type="image/x-icon" href="/assets/logo.png">
     <link rel="stylesheet" href="css/style.css" />
 
     <script
@@ -26,13 +27,16 @@
     <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js></script>
   </head>
   <body>
+    <div className="main-container">
     <!-- Video for handtracker -->
     <div class="ar-toggle-container">
-      <button id="trackbutton" onclick="toggleVideo()">View AR</button>
+      <button id="trackbutton" onclick="toggleVideo()" class="desktop-viewar">View AR</button>
       <!-- <p id="controlType">CameraCon</p> -->
       <!-- <button class="primarybtn loadbtns" onclick="start()">Start</button>
       <button class="primarybtn loadbtns" onclick="toggleControls()">Toggle</button> -->
       <h2 id="updatenote">Setting up</h2>
+    </div>
+    <div class="testing-container">
       <!-- X
       <input
         type="any"
@@ -114,44 +118,46 @@
       >
         -rZ5
       </button> -->
-      <p id="modes"></p>
     </div>
 
-    <div class="container">
+    <div class="viewer-container">
       <video class="input_video"></video>
       <!-- <canvas class="output_canvas" width="1280" height="720"></canvas> -->
       <canvas class="output_canvas"></canvas>
-    </div>
 
-    <div id="error"></div>
+      <div id="error"></div>
 
-    <div id="viewspacecontainer">
-      <div id="info" class="info">
-        Frames per second:
-        <div id="fpsdisplay"></div>
+      <div id="viewspacecontainer">
+        <div id="info" class="info">
+          Frames per second:
+          <div id="fpsdisplay"></div>
+        </div>
+        <div id="Loading">
+          <h4>
+            <!-- [ Loading your experience ] -->
+            <p id="loadingprogress">Polishing your gems: 0%</p>
+            <p id="funorfact">Tip: For best AR experience, make sure that no major light source is behind you.</p>
+          </h4>
+        </div>
+        <div id="loading-container">
+          <div id="topleft" class="loading-bgbox"></div>
+          <div id="bottomleft" class="loading-bgbox"></div>
+          <div id="topright" class="loading-bgbox"></div>
+          <div id="bottomright" class="loading-bgbox"></div>
+          <div id="loading-indicator"></div>
+        </div>
+        <div class="viewspace" id="viewspace"></div>
       </div>
-      <div id="Loading">
-        <h4>
-          <!-- [ Loading your experience ] -->
-          <p id="loadingprogress">Polishing your gems: 0%</p>
-          <p id="funorfact">Tip: For best AR experience, make sure that no major light source is behind you.</p>
-        </h4>
+      <div id="showhandscreen">
+        <h2>Place your hand vertically as shown below</h2>
+        <img src="assets/hand.png" class="handimg"><img>
+        <button class="primarybtn" type="button" onclick="hideHandScreen()">OK</button>
       </div>
-      <div id="loading-container">
-        <div id="topleft" class="loading-bgbox"></div>
-        <div id="bottomleft" class="loading-bgbox"></div>
-        <div id="topright" class="loading-bgbox"></div>
-        <div id="bottomright" class="loading-bgbox"></div>
-        <div id="loading-indicator"></div>
-      </div>
-      <div class="viewspace" id="viewspace"></div>
     </div>
-
-    <div id="showhandscreen">
-      <h2>Place your hand vertically as shown below</h2>
-      <img src="assets/hand.png" class="handimg"><img>
-      <button class="primarybtn" type="button" onclick="hideHandScreen()">OK</button>
+    <div class="ar-toggle-container">
+      <button id="trackbutton-mobile" class="mobile-viewar" onclick="toggleVideo()">View AR</button>
     </div>
+  </div>
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"></script> -->
     <script src="https://unpkg.com/three@0.135.0/build/three.js"></script>

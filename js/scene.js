@@ -273,8 +273,8 @@ function initFromParameters() {
     height = 720;
 
   if (isMobile) {
-    width = 360;
-    height = 480;
+    width = 400;
+    height = 400;
   }
   // const aspect = 720 / 1280;
   // if (window.innerWidth > window.innerHeight) {
@@ -374,6 +374,7 @@ function initFromParameters() {
     cameraControls = new CameraControls(gCamera, gRenderer.domElement);
     cameraControls.azimuthAngle = baseThetha;
     cameraControls.polarAngle = basePhi;
+    cameraControls.enabled = false;
     // handleEvents();
     clock = new THREE.Clock();
     // controlType.innerText = "CameraCon";
