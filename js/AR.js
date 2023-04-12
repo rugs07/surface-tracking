@@ -456,16 +456,12 @@ function getZAngleAndRotate(
   canY
 ) {
   if (lastMidRef) {
-    const mz2 = (newMidRef.y - wrist.y) / (newMidRef.x - wrist.x);
+    const dy = newMidRef.y - wrist.y;
+    const dx = newMidRef.x - wrist.x;
 
-    let zAngle = Math.atan(mz2);
-    zAngle = THREE.MathUtils.radToDeg(zAngle) - 90;
+    let zAngle = Math.atan2(dy, dx);
+    zAngle = THREE.MathUtils.radToDeg(zAngle);
 
-    // // Detect whether the palm is facing the camera or not
-    // const palmFacingCamera = fthumbTip.z < fpinkyTip.z;
-    // if (palmFacingCamera) {
-    //   zAngle += 180;
-    // }
     const normZAngle = normalizeAngle(zAngle);
 
     // Set the maximum allowed rotation angle
@@ -473,17 +469,18 @@ function getZAngleAndRotate(
 
     // Calculate the angle difference between the current and the new angle
     const angleDifference = Math.abs(ZRAngle - normZAngle);
-    // console.log("z Rotation angle:", ZRAngle, normZAngle, angleDifference);
+    console.log("z rot:", ZRAngle, zAngle, normZAngle, angleDifference);
     // Only apply the rotation if the angle difference is within the allowed limit
-    if (angleDifference < maxRotationAngle) {
-      if (XYRotation) rotateZ(normZAngle, canX, canY);
+    if ((angleDifference < maxRotationAngle) && (normZAngle<90)){
+      if (XYRotation) rotateZ(normZAngle+90, canX, canY);
     } else {
-      if (XYRotation) rotateZ(0, canX, canY);
+      if (XYRotation) rotateZ(ZRAngle, canX, canY);
     }
   }
 
   lastMidRef = newMidRef;
 }
+
 
 function getNormalizedXTSub(value) {
   // define the old and new ranges
