@@ -21,6 +21,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 #updatenote {
@@ -29,17 +30,17 @@ body {
   margin: 3px;
 }
 
-.mobile-viewar {
-  display: none;
-}
-
 .ar-toggle-container {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  z-index: 10;
-  margin: 5px auto;
+  z-index: 20;
+  gap: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 15px auto;
 }
 
 .testing-container {
@@ -79,6 +80,10 @@ button {
 
 #controlType {
   font-weight: bold;
+}
+
+.control-panel {
+  display: none;
 }
 
 .viewer-container {
@@ -124,6 +129,8 @@ button {
   color: #000;
   width: 100%;
   text-align: center;
+  padding: 2rem;
+  padding-top: 60px;
 }
 
 #Loading h4 {
@@ -148,7 +155,7 @@ button {
 
 @media (max-width: 768px) {
   #loading-container {
-    top: 45%;
+    top: 40%;
     left: 40%;
   }
 }
@@ -259,53 +266,61 @@ button {
 ***************************************************************************/
 
 .output_canvas {
-  position: absolute;
+  position: absolute !important;
   top: 0;
   left: 0;
   margin: 0 auto;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 #00000030;
+  z-index: 10;
   display: none;
-  z-index: 1;
 }
 
 .input_video {
   display: none;
 }
 
+.ar-bottom-container {
+  display: none;
+}
+
+.mobile-viewar {
+  display: none;
+}
+
 @media (max-width: 768px) {
+  button {
+    margin: 0px;
+  }
+
+  .primarybtn {
+    margin-top: 5px;
+    margin-left: 10px;
+  }
+
   #updatenote {
     font-size: 20px;
     margin: 0;
     margin-top: 3px;
   }
 
-  #Loading {
-    padding-right: 30px;
-  }
-
   .viewer-container {
-    width: 400px;
-    height: 400px;
-    max-width: 98vw;
+    width: 99vw;
+    height: 92vh;
+    max-width: 99vw;
     overflow: hidden;
   }
 
-  .ar-toggle-container {
-    margin: 30px auto;
-  }
-
   #showhandscreen {
-    padding: 10px 0;
-    gap: 3px;
+    padding: 15px 0;
   }
 
   #showhandscreen h2 {
-    padding-right: 5px;
+    text-align: center;
     font-size: 18px;
   }
 
   .handimg {
-    height: 35vh;
+    height: 65vh;
     margin-right: 15px;
   }
 
@@ -313,17 +328,16 @@ button {
     display: none;
   }
 
-  .mobile-viewar {
-    display: block;
-  }
-
-  button {
-    margin: 0px;
-  }
-
-  .primarybtn {
-    margin-top: 3px;
-    margin-left: -10px;
+  .ar-bottom-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    z-index: 20;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 50px auto;
   }
 
   input {

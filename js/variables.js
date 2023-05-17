@@ -17,6 +17,7 @@ let XRAngle = 0.0; // in radians
 let YRAngle = 0.0; // in radians
 let ZRAngle = 0.0; // in degrees
 let isMobile = true;
+let isIOS = false;
 
 let glamCanvas = null;
 
@@ -111,6 +112,9 @@ let gCamera = null;
  * @type {?THREE.OrthographicCamera}
  */
 let gBlitCamera = null;
+
+let isVideo = false;
+let camera = null;
 
 let isArcball = false;
 let loadFeatures = false;

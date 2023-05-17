@@ -6,37 +6,29 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>JAR4U</title>
     <link rel="icon" type="image/x-icon" href="/assets/logo.png">
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css" crossorigin="anonymous">
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="css/style.css" />
     <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js></script>
   </head>
   <body>
     <div className="main-container">
     <!-- Video for handtracker -->
-    <div class="ar-toggle-container">
-      <button id="trackbutton" onclick="toggleVideo()" class="desktop-viewar">View AR</button>
+    <div class="ar-toggle-container" id="ar-toggle-container">
+      <button onclick="toggleVideo()" class="desktop-viewar">View AR</button>
       <!-- <p id="controlType">CameraCon</p> -->
       <!-- <button class="primarybtn loadbtns" onclick="start()">Start</button>
       <button class="primarybtn loadbtns" onclick="toggleControls()">Toggle</button> -->
       <h2 id="updatenote">Setting up</h2>
     </div>
-    <div class="testing-container">
+    <!-- <div class="testing-container"> -->
       <!-- X
       <input
         type="any"
@@ -118,12 +110,14 @@
       >
         -rZ5
       </button> -->
-    </div>
+    <!-- </div> -->
 
-    <div class="viewer-container">
+    <div class="viewer-container" id="viewer-container">
       <video class="input_video"></video>
       <!-- <canvas class="output_canvas" width="1280" height="720"></canvas> -->
       <canvas class="output_canvas"></canvas>
+      <div class="control-panel">
+      </div>
 
       <div id="error"></div>
 
@@ -152,10 +146,11 @@
         <h2>Place your hand vertically as shown below</h2>
         <img src="assets/hand.png" class="handimg"><img>
         <button class="primarybtn" type="button" onclick="hideHandScreen()">OK</button>
+        <button class="primarybtn" type="button" onclick="toggleVideo()">Stop AR</button>
       </div>
     </div>
-    <div class="ar-toggle-container">
-      <button id="trackbutton-mobile" class="mobile-viewar" onclick="toggleVideo()">View AR</button>
+    <div class="ar-bottom-container mobile-viewer" id="ar-bottom-container">
+      <button onclick="toggleVideo()">View AR</button>
     </div>
   </div>
 
@@ -178,7 +173,7 @@
     <script src="js/loadTexturePNG.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/scene.js"></script>
-    <script src="js/mediapipe.js"></script>
+    <script type="module" src="js/mediapipe.js"></script>
     <script src="js/AR.js"></script>
   </body>
 </html>

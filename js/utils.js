@@ -33,7 +33,7 @@ function hideHandScreen() {
 function resetMesh() {
   cameraControls.moveTo(0.0, 0.0, 0.0, true);
   cameraControls.zoomTo(1, true);
-  cameraControls.azimuthAngle = baseThetha;
+  cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-40);
   cameraControls.polarAngle = basePhi;
   cameraControls.setFocalOffset(0.0, 0.0, 0.0);
   ZRAngle = 0;
@@ -127,7 +127,6 @@ function hideLoading() {
 
   let updateNote = document.getElementById("updatenote");
   updateNote.innerText = "Welcome to jAR4U";
-
 }
 
 /**
@@ -153,7 +152,7 @@ function updateMessageAndFunFact() {
     "Weaving a golden thread: ",
     "Crafting your royal jewels: ",
     "Assembling a necklace of stars: ",
-    "Unlocking the jewelry box: "
+    "Unlocking the jewelry box: ",
   ];
 
   const funFactsAndTips = [
@@ -166,7 +165,7 @@ function updateMessageAndFunFact() {
     "Fact: The largest diamond ever discovered, the Cullinan Diamond, weighed 3,106 carats!",
     "Tip: You can take screenshots of your favorite AR jewelry pieces to share with friends or for future reference.",
     "Fact: Rubies, sapphires, and emeralds are considered 'precious' gemstones, while all others are categorized as 'semi-precious.'",
-    "Tip: For best AR experience, make sure that no major light source is behind you."
+    "Tip: For best AR experience, make sure that no major light source is behind you.",
   ];
 
   currentMessage = getRandomItem(loadingMessages);
@@ -179,19 +178,23 @@ function updateLoadingProgress() {
   let progress = document.getElementById("loadingprogress");
   let funOrFact = document.getElementById("funorfact");
 
-  const loadPercentage = gNumTextures > 0 ? 100 * gLoadedRGBATextures / gNumTextures : "0";
+  const loadPercentage =
+    gNumTextures > 0 ? (100 * gLoadedRGBATextures) / gNumTextures : "0";
 
   const timeSinceLastUpdate = Date.now() - lastUpdate;
   const updateInterval = 5000; // 5 seconds
 
-  if (!currentMessage || !currentFunFact || timeSinceLastUpdate > updateInterval) {
+  if (
+    !currentMessage ||
+    !currentFunFact ||
+    timeSinceLastUpdate > updateInterval
+  ) {
     updateMessageAndFunFact();
   }
 
   progress.innerHTML = currentMessage + loadPercentage + "%";
   funOrFact.innerHTML = currentFunFact;
 }
-
 
 /**
  * Checks whether the WebGL context is valid and the underlying hardware is

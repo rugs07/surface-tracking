@@ -1,46 +1,3 @@
-// Method to toggle a video
-async function toggleVideo() {
-  if (!isVideo) {
-    updateNote.innerText = "Starting video...";
-
-    outputCanvasElement.style.display = "block";
-    // await startVideo();
-    camera.start();
-    isVideo = true;
-    showhandscreen.style.display = "flex";
-    updateNote.innerText = "Show your hand 👋";
-    trackButton.innerText = "Stop AR";
-    updateTransVar(1.08);
-    modeButtons.forEach((btn) => {
-      btn.style.display = "block";
-    });
-  } else {
-    updateNote.innerText = "Stopping video...";
-
-    camera.stop();
-    // await handTrack.stopVideo(inputVideoElement);
-    isVideo = false;
-    updateTransVar(1);
-    viewSpaceContainer.style.display = "inline-block";
-    outputCanvasElement.style.display = "none";
-    showhandscreen.style.display = "none";
-
-    updateNote.innerText = "Welcome to jAR4U";
-
-    trackButton.innerText = "View AR";
-
-    modeButtons.forEach((btn) => {
-      btn.style.display = "none";
-    });
-  }
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    resetMesh();
-  }
-}
-
 // function toggleControls() {
 //   isArcball = !isArcball;
 //   const controlType = document.getElementById("controlType");
@@ -471,8 +428,8 @@ function getZAngleAndRotate(
     const angleDifference = Math.abs(ZRAngle - normZAngle);
     // console.log("z rot:", ZRAngle, zAngle, normZAngle, angleDifference);
     // Only apply the rotation if the angle difference is within the allowed limit
-    if ((angleDifference < maxRotationAngle) && (normZAngle<90)){
-      if (XYRotation) rotateZ(normZAngle+90, canX, canY);
+    if (angleDifference < maxRotationAngle && normZAngle < 90) {
+      if (XYRotation) rotateZ(normZAngle + 90, canX, canY);
     } else {
       if (XYRotation) rotateZ(ZRAngle, canX, canY);
     }
@@ -481,13 +438,14 @@ function getZAngleAndRotate(
   lastMidRef = newMidRef;
 }
 
-
 function getNormalizedXTSub(value) {
   // define the old and new ranges
   const oldMin = 0;
   const oldMax = 1;
-  const newMin = 0.45;
-  const newMax = 0.55;
+  let newMin = isMobile ? 0.15 : 0.45;
+  if (isIOS) newMin = 0.15;
+  let newMax = 0.55;
+  if (isIOS) newMax = 0.7;
 
   // apply the formula to normalize the value
   const normalizedValue =
@@ -500,8 +458,10 @@ function getNormalizedYTSub(value) {
   // define the old and new ranges
   const oldMin = 0;
   const oldMax = 1;
-  const newMin = 0.4;
-  const newMax = 0.55;
+  let newMin = isMobile ? 0.45 : 0.4;
+  if (isIOS) newMin = 0.44;
+  let newMax = isMobile ? 0.5 : 0.55;
+  if (isIOS) newMax = 0.5;
 
   // apply the formula to normalize the value
   const normalizedValue =
@@ -573,8 +533,8 @@ function translateRotateMesh(points) {
   // const YTMul = getYTMul(wrist.y);
   // console.log(newY);
 
-  const XTMul = isMobile ? 450 : 1400;
-  const YTMul = isMobile ? 550 : 850;
+  const XTMul = 1400;
+  const YTMul = 850;
 
   const canX = newX * XTMul;
   const canY = newY * YTMul;
@@ -614,7 +574,8 @@ function translateRotateMesh(points) {
     }
   }
 
-  const resizeMul = isMobile ? 3.5 : 4.5;
+  let resizeMul = isMobile ? 3.75 : 4.75;
+  if (isIOS) resizeMul = 3.25;
   if (resize && !isArcball) cameraControls.zoomTo(dist * resizeMul, false);
   if (resize && isArcball)
     gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);

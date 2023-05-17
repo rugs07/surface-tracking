@@ -266,15 +266,13 @@ function initFromParameters() {
 
   isMobile = mobileAndTabletCheck();
   // console.log("isMobile", isMobile);
-  // let width = isMobile ? 360 : 1280;
-  // let height = isMobile ? 640 : 720;
 
   let width = 1280,
     height = 720;
 
   if (isMobile) {
-    width = 400;
-    height = 400;
+    width = (window.innerWidth * 99) / 100;
+    height = (window.innerHeight * 110) / 100;
   }
   // const aspect = 720 / 1280;
   // if (window.innerWidth > window.innerHeight) {
