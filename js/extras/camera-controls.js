@@ -386,12 +386,12 @@
 	         * Speed of azimuth (horizontal) rotation.
 	         * @category Properties
 	         */
-	        this.azimuthRotateSpeed = 1.0;
+	        this.azimuthRotateSpeed = 10.0;
 	        /**
 	         * Speed of polar (vertical) rotation.
 	         * @category Properties
 	         */
-	        this.polarRotateSpeed = 1.0;
+	        this.polarRotateSpeed = 10.0;
 	        /**
 	         * Speed of mouse-wheel dollying.
 	         * @category Properties

@@ -34,6 +34,7 @@ const rayMarchFragmentShaderHeader = `
    uniform int displayMode;
    uniform int ndc;
    uniform float transVar;
+   uniform float ringTrans;
  
    uniform vec3 minPosition;
    uniform vec3 gridSize;
@@ -308,7 +309,7 @@ const rayMarchFragmentShaderBody = `
      int step = 0;
      int maxStep = int(ceil(length(gridSize)));
  
-     while (step < maxStep && t < (tMinMax.y / transVar) && visibility > 1.0 / 255.0) {
+     while (step < maxStep && t < (tMinMax.y / transVar) && t > (tMinMax.y / ringTrans) && visibility > 1.0 / 255.0) {
        // Skip empty macroblocks.
        if (atlasBlockIndex.x > 254.0) {
          t = 0.5 + tBlockMinMax.y;

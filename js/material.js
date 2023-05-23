@@ -85,6 +85,7 @@ function createRayMarchMaterial(
   const material = new THREE.ShaderMaterial({
     uniforms: {
       transVar: { value: transVar },
+      ringTrans: { value: ringTrans },
       mapAlpha: { value: alphaVolumeTexture },
       mapColor: { value: rgbVolumeTexture },
       mapFeatures: { value: featureVolumeTexture },

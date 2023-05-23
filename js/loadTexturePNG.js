@@ -4,7 +4,7 @@
  * @return {!Promise<!Uint8Array>}
  */
 function loadPNG(rgbaUrl) {
-  console.log(rgbaUrl);
+  // console.log(rgbaUrl);
   const rgbaPromise = fetch(rgbaUrl, {
     method: "GET",
     mode: "same-origin",

@@ -8,12 +8,15 @@ const canvasCtx = outputCanvasElement.getContext("2d");
 
 const viewSpaceContainer = document.getElementById("viewspacecontainer");
 const showhandscreen = document.getElementById("showhandscreen");
-let updateNote = document.getElementById("updatenote");
+const updateNote = document.getElementById("updatenote");
+const switchbtn = document.getElementById("switchbtn");
 
 isMobile = mobileAndTabletCheck();
 console.log("isMobile", isMobile);
 isIOS = iOSCheck();
 console.log("isIOS", isIOS);
+
+if (!isMobile) facingMode = "user";
 
 function iOSCheck() {
   return (
@@ -31,11 +34,15 @@ function iOSCheck() {
 }
 
 let width = 1280,
-  height = 720;
+  height = 720,
+  offset = 0,
+  smwidth = 0;
 
 if (isMobile) {
   width = (window.innerHeight * 110) / 100;
+  smwidth = (window.innerWidth * 99) / 100;
   height = (window.innerHeight * 110) / 100;
+  offset = (width - window.innerWidth) / 2;
 }
 // const aspect = 720 / 1280;
 // if (window.innerWidth > window.innerHeight) {
@@ -126,7 +133,6 @@ function testSupport(supportedDevices) {
 
 // Our input frames will come from here.
 const videoElement = document.getElementsByClassName("input_video")[0];
-const canvasElement = document.getElementsByClassName("output_canvas")[0];
 const controlsElement = document.getElementsByClassName("control-panel")[0];
 
 // We'll add this to our control panel later, but we'll save it here so we can
@@ -142,13 +148,18 @@ function onResults(results) {
 
   // Draw the overlays.
   canvasCtx.save();
-  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  canvasCtx.clearRect(
+    0,
+    0,
+    outputCanvasElement.width,
+    outputCanvasElement.height
+  );
   canvasCtx.drawImage(
     results.image,
     0,
     0,
-    canvasElement.width,
-    canvasElement.height
+    outputCanvasElement.width,
+    outputCanvasElement.height
   );
 
   // const currentTime = window.performance.now();
@@ -219,12 +230,13 @@ const hands = new mpHands.Hands({
 });
 
 hands.setOptions({
-  selfieMode: true,
+  selfieMode: isIOS ? true : !isMobile,
   maxNumHands: 1,
   modelComplexity: 0,
   minDetectionConfidence: 0.7,
   minTrackingConfidence: 0.7,
 });
+
 hands.onResults(onResults);
 
 if (!isIOS) {
@@ -232,6 +244,7 @@ if (!isIOS) {
     onFrame: async () => {
       await hands.send({ image: inputVideoElement });
     },
+    facingMode,
     width: width,
     height: height,
   });
@@ -278,6 +291,26 @@ const startCamera = () => {
   ]);
 };
 
+const switchFacingMode = () => {
+  if (facingMode === "environment") facingMode = "user";
+  else facingMode = "environment";
+
+  camera.stop();
+
+  hands.setOptions({
+    selfieMode: facingMode === "user",
+    maxNumHands: 1,
+    modelComplexity: 0,
+    minDetectionConfidence: 0.7,
+    minTrackingConfidence: 0.7,
+  });
+
+  if (!isIOS) {
+    camera.h.facingMode = facingMode;
+    camera.start();
+  }
+};
+
 // Method to enable or disable fullscreen view
 const fullscreen = (mode = true, el = "html") =>
   mode
@@ -303,15 +336,20 @@ async function toggleVideo() {
     outputCanvasElement.style.display = "block";
     if (!isIOS) camera.start();
     else {
+      switchbtn.style.display = "none";
       handleMediaCamera();
       startCamera();
+    }
+
+    if (!isMobile) {
+      switchbtn.style.display = "none";
     }
 
     isVideo = true;
     showhandscreen.style.display = "flex";
     updateNote.innerText = "Show your hand 👋";
     // trackButton.innerText = "Stop AR";
-    updateTransVar(1.08);
+    applyTransVar();
 
     const arToogleContainer = document.getElementById("ar-toggle-container");
     arToogleContainer.style.display = "none";
@@ -320,8 +358,10 @@ async function toggleVideo() {
       const arBottomContainer = document.getElementById("ar-bottom-container");
       arBottomContainer.style.display = "none";
 
-      const viewerContainer = document.getElementById("viewer-container");
-      viewerContainer.style.height = "96vh";
+      if (isMobile && !isIOS) {
+        setDims(viewSpaceContainer, smwidth, height);
+        outputCanvasElement.style.setProperty("left", `-${offset}px`);
+      }
 
       fullscreen();
     }
@@ -333,7 +373,7 @@ async function toggleVideo() {
 
     if (!isIOS) camera.stop();
     isVideo = false;
-    updateTransVar(1);
+    removeTransVars();
     viewSpaceContainer.style.display = "inline-block";
     outputCanvasElement.style.display = "none";
     showhandscreen.style.display = "none";
@@ -348,8 +388,10 @@ async function toggleVideo() {
       const arBottomContainer = document.getElementById("ar-bottom-container");
       arBottomContainer.style.display = "flex";
 
-      const viewerContainer = document.getElementById("viewer-container");
-      viewerContainer.style.height = "92vh";
+      if (isMobile && !isIOS) {
+        setDims(viewSpaceContainer, smwidth, height);
+        outputCanvasElement.style.setProperty("left", `0px`);
+      }
 
       fullscreen(false);
     }
@@ -367,3 +409,4 @@ async function toggleVideo() {
 }
 
 window.toggleVideo = toggleVideo;
+window.switchFacingMode = switchFacingMode;

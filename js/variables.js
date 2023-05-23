@@ -7,6 +7,7 @@ let varX = 2;
 let varY = 2;
 let varZ = 2;
 let transVar = 1;
+let ringTrans = 1.5;
 let YRMul = 1; // multiplier for rotation with respect to y-axis
 let translation = true;
 let horizontalRotation = true;
@@ -18,6 +19,7 @@ let YRAngle = 0.0; // in radians
 let ZRAngle = 0.0; // in degrees
 let isMobile = true;
 let isIOS = false;
+let jewelType = "";
 
 let glamCanvas = null;
 
@@ -115,6 +117,7 @@ let gBlitCamera = null;
 
 let isVideo = false;
 let camera = null;
+let facingMode = "environment";
 
 let isArcball = false;
 let loadFeatures = false;

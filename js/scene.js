@@ -249,7 +249,8 @@ function mobileAndTabletCheck() {
  */
 function initFromParameters() {
   const params = new URL(window.location.href).searchParams;
-  const dirUrl = params.get("dir") || "bangleresults/336";
+  const selectedJAR = params.get("dir") || "flowerbangle";
+  const dirUrl = "results/" + selectedJAR;
   // console.log(dirUrl);
   const size = params.get("s");
 
@@ -527,6 +528,9 @@ function loadOnFirstFrame() {
   if (isArcball) arcballControls.setTarget(0.0, 0.0, 0.0);
   else cameraControls.setTarget(0.0, 0.0, 0.0, true);
 
+  jewelType = gSceneParams["jeweltype"];
+  updateTransVar(gSceneParams["transVar"]);
+
   if (gSceneParams["ndc"]) {
     gCamera.position.x = 0.0;
     gCamera.position.y = 0.0;
@@ -535,6 +539,10 @@ function loadOnFirstFrame() {
     // gOrbitControls.minDistance = 0.05;
     // gOrbitControls.maxDistance = 0.3;
     // gOrbitControls.mouseButtons.LEFT = THREE.MOUSE.PAN;
+  } else {
+    gCamera.position.x = 0.0;
+    gCamera.position.y = 0.0;
+    gCamera.position.z = -2.0;
 
     if (!isArcball) {
       cameraControls.truckSpeed = 5.0;
@@ -542,10 +550,6 @@ function loadOnFirstFrame() {
       cameraControls.minDistance = 0.05;
       cameraControls.maxDistance = 0.3;
     }
-  } else {
-    gCamera.position.x = 0.0;
-    gCamera.position.y = 0.0;
-    gCamera.position.z = -2.0;
   }
 
   // gOrbitControls.position = gCamera.position;

@@ -4,6 +4,8 @@
 //   controlType.innerText = isArcball ? "Arcball" : "CameraCon";
 // }
 
+const viewSpaceContainer = document.getElementById("viewspacecontainer");
+
 function enableTranslation() {
   translation = true;
   console.log("translation", translation);
@@ -25,7 +27,6 @@ function disableTranslation() {
   console.log("horizontalRotation", horizontalRotation);
   console.log("verticalRotation", verticalRotation);
   console.log("XYRotation", XYRotation);
-
   console.log("resize", resize);
 
   if (isArcball) {
@@ -300,24 +301,7 @@ function normalizeAngle(angle) {
 }
 
 function rotateZ(angle, canX, canY) {
-  // var quaternion = new THREE.Quaternion().setFromAxisAngle(
-  //   new THREE.Vector3(0, 0, 1),
-  //   angle
-  // );
-  // gCamera.position.applyQuaternion(quaternion);
-  // gCamera.up.applyQuaternion(quaternion);
-  // gCamera.quaternion.multiplyQuaternions(quaternion, gCamera.quaternion);
-
-  // XRAngle = gCamera.rotation.x;
-  // YRAngle = gCamera.rotation.y;
-  // ZRAngle = gCamera.rotation.z;
-
   cameraControls.setFocalOffset(canX, canY, 0.0, false);
-
-  if (Math.abs(ZRAngle - angle) >= 175) {
-    angle = Math.abs(ZRAngle - angle);
-  }
-  if (angle == 0) angle = ZRAngle;
 
   let transform = null;
   if (!translation) transform = "rotateZ(" + angle + "deg)";
@@ -337,47 +321,91 @@ function rotateZ(angle, canX, canY) {
 
   ZRAngle = angle;
 
-  // console.log(
-  //   THREE.MathUtils.radToDeg(XRAngle),
-  //   THREE.MathUtils.radToDeg(YRAngle),
-  //   THREE.MathUtils.radToDeg(ZRAngle)
-  // );
+  // YRMul range : for ZRAngle ( 0 - 90 ) -> ( 1 - 1.5 )
+  //               for ZRAngle ( 0 - -90 ) -> ( 1 - 1.5 )
+  // YRMul = (ZRAngle / 90) * 0.5 + 1;
+
+  // console.log(THREE.MathUtils.radToDeg(XRAngle),THREE.MathUtils.radToDeg(YRAngle), THREE.MathUtils.radToDeg(ZRAngle));
 }
 
-// Using firstKnuckle + pinkyKnuckle for rotation around Y axis
-// Otherwise using wrist + middleKnuckle
+function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
+  if (jewelType === "ring") {
+    if (
+      Math.abs(newIndexRef.x - newPinkyRef.x) <= 0.15 &&
+      Math.abs(newIndexRef.y - newPinkyRef.y) <= 0.15
+    ) {
+      applyRingTrans(1.35);
+    } else {
+      applyRingTrans(1.5);
+    }
+  }
 
-// PinkyKnuckle when wrist is at origin and hand is verticle
-// x: 0.5783641338348389;
-// y: 0.31527265906333923;
-// z: -0.010244905017316341;
-
-// initPinkyRef = new THREE.Vector3(
-//   0.5783641338348389,
-//   0.31527265906333923,
-//   -0.010244905017316341
-// );
-
-function getYAngleAndRotate(newIndexRef, newPinkyRef) {
   if (lastPinkyRef && lastIndexRef) {
-    // XZ Plane
-    // m = (z2 - z1) / (x2 - x1);
-    // tan() = m1 - m2 / (1 + m1m2)
+    // rotate vectors around y-axis by -zAngle
+    let rotatedLastIndexRef = rotateVectorZ(lastIndexRef, -zAngle);
+    let rotatedLastPinkyRef = rotateVectorZ(lastPinkyRef, -zAngle);
+    let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
+    let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
 
     const my1 =
-      (lastPinkyRef.z - lastIndexRef.z) / (lastPinkyRef.x - lastIndexRef.x);
-
+      (rotatedLastPinkyRef.z - rotatedLastIndexRef.z) /
+      (rotatedLastPinkyRef.x - rotatedLastIndexRef.x);
     const my2 =
-      (newPinkyRef.z - newIndexRef.z) / (newPinkyRef.x - newIndexRef.x);
+      (rotatedNewPinkyRef.z - rotatedNewIndexRef.z) /
+      (rotatedNewPinkyRef.x - rotatedNewIndexRef.x);
 
     let yAngle = -Math.atan((my2 - my1) / (1 + my1 * my2));
 
-    if (horizontalRotation) rotateY(yAngle);
+    if (horizontalRotation) {
+      rotateY(yAngle);
+    }
   }
 
   lastPinkyRef = newPinkyRef;
   lastIndexRef = newIndexRef;
 }
+
+function rotateVectorZ(vector, angle) {
+  angle = THREE.MathUtils.degToRad(angle); // if the angle is in degrees, convert it to radians
+
+  let sin = Math.sin(angle);
+  let cos = Math.cos(angle);
+
+  let rotatedVector = {};
+  rotatedVector.x = vector.x * cos - vector.y * sin;
+  rotatedVector.y = vector.x * sin + vector.y * cos;
+  rotatedVector.z = vector.z;
+
+  return rotatedVector;
+}
+
+// function rotateVectorY(vector, angle) {
+//   angle = THREE.MathUtils.degToRad(angle); // if the angle is in degrees, convert it to radians
+
+//   let sin = Math.sin(angle);
+//   let cos = Math.cos(angle);
+
+//   let rotatedVector = {};
+//   rotatedVector.x = vector.x * cos - vector.z * sin;
+//   rotatedVector.y = vector.y;
+//   rotatedVector.z = vector.x * sin + vector.z * cos;
+
+//   return rotatedVector;
+// }
+
+// function rotateVectorX(vector, angle) {
+//   angle = THREE.MathUtils.degToRad(angle); // if the angle is in degrees, convert it to radians
+
+//   let sin = Math.sin(angle);
+//   let cos = Math.cos(angle);
+
+//   let rotatedVector = {};
+//   rotatedVector.x = vector.x;
+//   rotatedVector.y = vector.y * cos - vector.z * sin;
+//   rotatedVector.z = vector.y * sin + vector.z * cos;
+
+//   return rotatedVector;
+// }
 
 // MidKnuckle when wrist is at origin and hand is verticle
 // x: 0.481456995010376;
@@ -404,35 +432,25 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef) {
 //   return limitedAngle;
 // }
 
-function getZAngleAndRotate(
-  wrist,
-  newMidRef,
-  fthumbTip,
-  fpinkyTip,
-  canX,
-  canY
-) {
+function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
   if (lastMidRef) {
     const dy = newMidRef.y - wrist.y;
     const dx = newMidRef.x - wrist.x;
 
     let zAngle = Math.atan2(dy, dx);
-    zAngle = THREE.MathUtils.radToDeg(zAngle);
+    zAngle = THREE.MathUtils.radToDeg(zAngle) + 90;
 
+    // Normalize the angle to the range of -180 to 180 degrees
     const normZAngle = normalizeAngle(zAngle);
 
     // Set the maximum allowed rotation angle
-    const maxRotationAngle = 120;
+    const maxRotationAngle = 180;
 
     // Calculate the angle difference between the current and the new angle
     const angleDifference = Math.abs(ZRAngle - normZAngle);
-    // console.log("z rot:", ZRAngle, zAngle, normZAngle, angleDifference);
-    // Only apply the rotation if the angle difference is within the allowed limit
-    if (angleDifference < maxRotationAngle && normZAngle < 90) {
-      if (XYRotation) rotateZ(normZAngle + 90, canX, canY);
-    } else {
-      if (XYRotation) rotateZ(ZRAngle, canX, canY);
-    }
+    // console.log("z rot:", ZRAngle, angleDifference, zAngle, normZAngle);
+
+    rotateZ(normZAngle, canX, canY);
   }
 
   lastMidRef = newMidRef;
@@ -442,10 +460,19 @@ function getNormalizedXTSub(value) {
   // define the old and new ranges
   const oldMin = 0;
   const oldMax = 1;
-  let newMin = isMobile ? 0.15 : 0.45;
-  if (isIOS) newMin = 0.15;
-  let newMax = 0.55;
-  if (isIOS) newMax = 0.7;
+  let newMin, newMax;
+
+  if (jewelType === "bangle") {
+    newMin = isMobile ? 0.25 : 0.45;
+    if (isIOS) newMin = 0.15;
+    newMax = isMobile ? 0.75 : 0.55;
+    if (isIOS) newMax = 0.7;
+  } else if (jewelType === "ring") {
+    newMin = isMobile ? 0.28 : 0.45;
+    if (isIOS) newMin = 0.15;
+    newMax = isMobile ? 0.7 : 0.55;
+    if (isIOS) newMax = 0.7;
+  }
 
   // apply the formula to normalize the value
   const normalizedValue =
@@ -454,6 +481,7 @@ function getNormalizedXTSub(value) {
   // return the normalized value
   return normalizedValue;
 }
+
 function getNormalizedYTSub(value) {
   // define the old and new ranges
   const oldMin = 0;
@@ -515,15 +543,30 @@ function translateRotateMesh(points) {
     z: (points[17].z + points[18].z) / 2.0,
   };
   let midKnuckle = points[9];
+  let ringPos = {
+    x:
+      facingMode === "environment"
+        ? (points[13].x + points[14].x - 0.025) / 2.0
+        : (points[13].x + points[14].x - 0.01) / 2.0,
+    y: (points[13].y + points[14].y - 0.05) / 2.0,
+    z: (points[13].z + points[14].z) / 2.0,
+  };
 
-  const XTSub = getNormalizedXTSub(wrist.x);
-  const YTSub = getNormalizedYTSub(wrist.y);
-  const ZTSub = getNormalizedXTSub(wrist.z);
+  let stayPoint = null;
+  if (jewelType === "bangle") {
+    stayPoint = wrist;
+  } else if (jewelType === "ring") {
+    stayPoint = ringPos;
+  }
+
+  let XTSub = getNormalizedXTSub(stayPoint.x);
+  let YTSub = getNormalizedYTSub(stayPoint.y);
+  let ZTSub = getNormalizedXTSub(stayPoint.z);
 
   //   changing range from (0,1) to (-0.5 to 0.5)
-  const newX = wrist.x - XTSub;
-  const newY = wrist.y - YTSub;
-  const newZ = wrist.z - ZTSub;
+  const newX = stayPoint.x - XTSub;
+  const newY = stayPoint.y - YTSub;
+  const newZ = stayPoint.z - ZTSub;
 
   //   response time can be improved by uncommenting code below minimized arithmetic operations
   //     const newX = wrist.x*0.9 - 0.45;
@@ -550,32 +593,45 @@ function translateRotateMesh(points) {
   //     Math.abs(wrist.z - midKnuckle.z);
   const dist = calculateWristSize(points);
 
-  if (isArcball) {
-    // arcball-controls
-    if (translation && !XYRotation) {
-      // 1.5, 1, 1
-      // arcballControls.setTarget(transX, transY, transZ);
+  // if (isArcball) {
+  // arcball-controls
+  // if (translation && !XYRotation) {
+  // 1.5, 1, 1
+  // arcballControls.setTarget(transX, transY, transZ);
 
-      var transform =
-        "translate3d(" + canX + "px, " + canY + "px, " + 0 + "px)";
-      glamCanvas.style.transform = transform;
-    }
-  } else {
-    // camera-controls
-    if (translation && !XYRotation) {
-      // -1.5, 1, 1
-      // transX = -transX;
-      // cameraControls.moveTo(transX, transY, transZ, false);
-      cameraControls.setFocalOffset(canX, canY, 0.0, false);
-      // Translate the canvas
-      var transform =
-        "translate3d(" + canX + "px, " + canY + "px, " + 0 + "px)";
-      glamCanvas.style.transform = transform;
+  //     var transform =
+  //       "translate3d(" + canX + "px, " + canY + "px, " + 0 + "px)";
+  //     glamCanvas.style.transform = transform;
+  //   }
+  // } else {
+  // camera-controls
+  // if (translation && !XYRotation) {
+  // -1.5, 1, 1
+  // transX = -transX;
+  // cameraControls.moveTo(transX, transY, transZ, false);
+  // cameraControls.setFocalOffset(canX, canY, 0.0, false);
+  // Translate the canvas
+  //     var transform =
+  //       "translate3d(" + canX + "px, " + canY + "px, " + 0 + "px)";
+  //     glamCanvas.style.transform = transform;
+  //   }
+  // }
+
+  let resizeMul;
+
+  if (jewelType === "bangle") {
+    resizeMul = isMobile ? 3.75 : 4.75;
+    if (isIOS) resizeMul = 3.25;
+  } else if (jewelType === "ring") {
+    if (facingMode === "environment") {
+      resizeMul = isMobile ? 0.75 : 1.25;
+      if (isIOS) resizeMul = 0.75;
+    } else {
+      resizeMul = isMobile ? 0.85 : 1.25;
+      if (isIOS) resizeMul = 0.75;
     }
   }
 
-  let resizeMul = isMobile ? 3.75 : 4.75;
-  if (isIOS) resizeMul = 3.25;
   if (resize && !isArcball) cameraControls.zoomTo(dist * resizeMul, false);
   if (resize && isArcball)
     gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
@@ -589,7 +645,8 @@ function translateRotateMesh(points) {
   totalTransX = canX;
   totalTransY = canY;
 
-  getYAngleAndRotate(firstKnuckle, pinkyKnuckle);
   // getZAngleAndRotate(wrist, midKnuckle, canX, canY);
-  getZAngleAndRotate(wrist, midKnuckle, thumbTip, pinkyTip, canX, canY);
+  getZAngleAndRotate(wrist, midKnuckle, canX, canY);
+  getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
+  // console.log("z_rot", ZRAngle, "y_rot", YRAngle);
 }

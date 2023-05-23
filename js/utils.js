@@ -17,11 +17,32 @@ function updateYRMul(value) {
   YRMul = value;
 }
 
-function updateTransVar(value) {
-  console.log("transVar :", value);
-  transVar = value;
+function setJewellery(value) {
+  location.href = `/tryon.html?dir=${value}`;
+}
 
+function updateTransVar(value) {
+  // console.log("transVar :", value);
+  transVar = value;
+}
+
+function applyRingTrans(value) {
+  ringTrans = value;
+
+  gRayMarchScene.children[0].material.uniforms.ringTrans.value = value;
+  gRenderer.render(gRayMarchScene, gBlitCamera);
+}
+
+function applyTransVar() {
   gRayMarchScene.children[0].material.uniforms.transVar.value = transVar;
+  gRenderer.render(gRayMarchScene, gBlitCamera);
+}
+
+function removeTransVars() {
+  gRayMarchScene.children[0].material.uniforms.transVar.value = 1;
+  gRenderer.render(gRayMarchScene, gBlitCamera);
+
+  gRayMarchScene.children[0].material.uniforms.ringTrans.value = 1.5;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
 
@@ -32,7 +53,8 @@ function hideHandScreen() {
 
 function resetMesh() {
   cameraControls.moveTo(0.0, 0.0, 0.0, true);
-  cameraControls.zoomTo(1, true);
+  if (jewelType == "bangle") cameraControls.zoomTo(1, false);
+  else cameraControls.zoomTo(0.5, false);
   cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-40);
   cameraControls.polarAngle = basePhi;
   cameraControls.setFocalOffset(0.0, 0.0, 0.0);
@@ -178,8 +200,15 @@ function updateLoadingProgress() {
   let progress = document.getElementById("loadingprogress");
   let funOrFact = document.getElementById("funorfact");
 
-  const loadPercentage =
+  let loadPercentage =
     gNumTextures > 0 ? (100 * gLoadedRGBATextures) / gNumTextures : "0";
+
+  const num = parseFloat(loadPercentage);
+  loadPercentage = num.toFixed(2).toString();
+
+  if (loadPercentage.endsWith(".00")) {
+    loadPercentage = parseInt(num).toString();
+  }
 
   const timeSinceLastUpdate = Date.now() - lastUpdate;
   const updateInterval = 5000; // 5 seconds
