@@ -21,6 +21,7 @@ let isMobile = true;
 let isIOS = false;
 let jewelType = "";
 let selectedJewel = "";
+let handLabel = "";
 
 let glamCanvas = null;
 

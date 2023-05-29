@@ -167,7 +167,7 @@ function onResults(results) {
   if (isVideo) {
     const handDetected =
       results.multiHandLandmarks && results.multiHandLandmarks.length > 0;
-    const handLabel = results.multiHandedness.length
+    handLabel = results.multiHandedness.length
       ? results.multiHandedness[0].label
       : null;
 
@@ -215,7 +215,7 @@ function onResults(results) {
           if (handLabel === "Right") {
             baseThetha = isPalmFacing
               ? THREE.MathUtils.degToRad(firstRingAngle)
-              : THREE.MathUtils.degToRad(secondRingAngle);
+              : THREE.MathUtils.degToRad(-secondRingAngle);
           } else {
             baseThetha = isPalmFacing
               ? THREE.MathUtils.degToRad(secondRingAngle)
@@ -226,7 +226,7 @@ function onResults(results) {
         if (facingMode === "environment") {
           // Reversing values to keep the context same because back camera gives reverse values
           let isFacingPalm = !isPalmFacing;
-          let handConverted = handLabel === "Right" ? "Left" : "Right";
+          handLabel = handLabel === "Right" ? "Left" : "Right";
 
           if (handDetected)
             if (jewelType === "bangle") {
@@ -237,8 +237,8 @@ function onResults(results) {
             } else {
               // rings
               let showingPalm =
-                (handConverted === "Right" && isFacingPalm) ||
-                (handConverted === "Left" && !isFacingPalm);
+                (handLabel === "Right" && isFacingPalm) ||
+                (handLabel === "Left" && !isFacingPalm);
 
               if (showingPalm) {
                 baseThetha = THREE.MathUtils.degToRad(firstRingAngle);
