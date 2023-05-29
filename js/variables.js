@@ -20,6 +20,7 @@ let ZRAngle = 0.0; // in degrees
 let isMobile = true;
 let isIOS = false;
 let jewelType = "";
+let selectedJewel = "";
 
 let glamCanvas = null;
 
@@ -117,10 +118,12 @@ let gBlitCamera = null;
 
 let isVideo = false;
 let camera = null;
-let facingMode = "environment";
+let facingMode = "user";
 
 let isArcball = false;
 let loadFeatures = false;
+let enableSmoothing = true;
+let enableRingTransparency = false;
 
 let lastMidRef = null;
 let lastPinkyRef = null;

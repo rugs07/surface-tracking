@@ -19,8 +19,8 @@
     [0, 1, 0, 0],
     [0, 0, 0, 1]
   ],
-  "jeweltype": "bangle",
-  "transVar": 1.09,
+  "jeweltype": "ring",
+  "transVar": 1.08,
   "ndc": false,
   "0_weights": [
     [

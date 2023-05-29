@@ -4,6 +4,13 @@
   box-sizing: border-box;
 }
 
+*:focus {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
+
 h1,
 h2 {
   margin: 0;
@@ -406,7 +413,7 @@ button {
   }
 
   .handimg {
-    height: 60dvh;
+    height: 65dvh;
     margin-right: 15px;
   }
 

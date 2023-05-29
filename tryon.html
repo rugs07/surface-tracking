@@ -17,6 +17,7 @@
 
     <link rel="stylesheet" href="css/style.css" />
     <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js></script>
+    <script src="https://cdn.jsdelivr.net/npm/kalmanjs@1.1.0/lib/kalman.min.js"></script>
   </head>
   <body>
     <div>
@@ -145,7 +146,7 @@
       <div id="showhandscreen">
         <h2>Place your hand vertically as shown below</h2>
         <img src="assets/hand.png" class="handimg"><img>
-        <button class="primarybtn" type="button" onclick="hideHandScreen()">OK</button>
+        <!-- <button class="primarybtn" type="button" onclick="hideHandScreen()">OK</button> -->
         <button class="primarybtn" type="button" onclick="toggleVideo()">Stop AR</button>
         <button class="primarybtn switchbtn" onclick="switchFacingMode()" id="switchbtn">
           <img src="assets/switch.png" class="switchimg">

@@ -249,8 +249,8 @@ function mobileAndTabletCheck() {
  */
 function initFromParameters() {
   const params = new URL(window.location.href).searchParams;
-  const selectedJAR = params.get("dir") || "flowerbangle";
-  const dirUrl = "results/" + selectedJAR;
+  selectedJewel = params.get("dir") || "flowerbangle";
+  const dirUrl = "results/" + selectedJewel;
   // console.log(dirUrl);
   const size = params.get("s");
 
@@ -300,6 +300,7 @@ function initFromParameters() {
   //   view.style.height = "100vh";
   setDims(view, width, height);
   view.textContent = "";
+  view.id = "view";
 
   const showhandscreen = document.getElementById("showhandscreen");
   setDims(showhandscreen, width, height);

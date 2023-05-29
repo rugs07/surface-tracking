@@ -4,7 +4,25 @@
 //   controlType.innerText = isArcball ? "Arcball" : "CameraCon";
 // }
 
+// R : The change in values we have
+// Q : How much noiced data?
+// A : multiplication for conversion
+var kfResize = new KalmanFilter({ R: 0.0000000001, Q: 5, A: 1.1 });
+var kfZRotate = new KalmanFilter({ R: 0.0000000001, Q: 20, A: 1.5 });
+// var kfYRotate = new KalmanFilter({ R: 0.0000000001, Q: 2, A: 1.1 });
+
+// var kf = new KalmanFilter({ R: 0.0000000001, Q: 5, A: 1.1 });
+
+// console.log(kf.filter(2));
+// console.log(kf.filter(3));
+// console.log(kf.filter(2));
+// console.log(kf.filter(1));
+
 const viewSpaceContainer = document.getElementById("viewspacecontainer");
+
+let zArr = [];
+let rsArr = [];
+let yArr = [];
 
 function enableTranslation() {
   translation = true;
@@ -225,8 +243,7 @@ function rotateY(angle) {
     cameraControls.rotate(angle, 0, false);
   }
 
-  XRAngle = gCamera.rotation.x;
-  YRAngle = gCamera.rotation.y;
+  YRAngle = angle;
 
   // console.log(
   //   THREE.MathUtils.radToDeg(XRAngle),
@@ -329,7 +346,7 @@ function rotateZ(angle, canX, canY) {
 }
 
 function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
-  if (jewelType === "ring") {
+  if (jewelType === "ring" && enableRingTransparency) {
     if (
       Math.abs(newIndexRef.x - newPinkyRef.x) <= 0.15 &&
       Math.abs(newIndexRef.y - newPinkyRef.y) <= 0.15
@@ -355,6 +372,24 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
       (rotatedNewPinkyRef.x - rotatedNewIndexRef.x);
 
     let yAngle = -Math.atan((my2 - my1) / (1 + my1 * my2));
+
+    if (enableSmoothing) {
+      let diff = yAngle - YRAngle;
+      if (Math.abs(diff) < 0.05) {
+        yArr.push(diff); // Insert new value at the end
+
+        if (yArr.length > 3) {
+          yArr.shift(); // Remove first index value
+
+          // Check if all 5 values are either positive or negative
+          var allSameSign = yArr.every(function (value) {
+            return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
+          });
+
+          if (!allSameSign) yAngle = YRAngle;
+        }
+      }
+    }
 
     if (horizontalRotation) {
       rotateY(yAngle);
@@ -441,14 +476,39 @@ function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
     zAngle = THREE.MathUtils.radToDeg(zAngle) + 90;
 
     // Normalize the angle to the range of -180 to 180 degrees
-    const normZAngle = normalizeAngle(zAngle);
+    let normZAngle = normalizeAngle(zAngle);
 
     // Set the maximum allowed rotation angle
     const maxRotationAngle = 180;
 
-    // Calculate the angle difference between the current and the new angle
-    const angleDifference = Math.abs(ZRAngle - normZAngle);
-    // console.log("z rot:", ZRAngle, angleDifference, zAngle, normZAngle);
+    if (enableSmoothing) {
+      // Calculate the angle difference between the current and the new angle
+      const angleDifference = ZRAngle - normZAngle;
+      // console.log("z rot:", ZRAngle, angleDifference, zAngle, normZAngle);
+
+      zArr.push(angleDifference); // Insert new value at the end
+
+      if (zArr.length > 3) {
+        zArr.shift(); // Remove first index value
+        // Check if all 5 values are either positive or negative
+        var allSameSign = zArr.every(function (value) {
+          return (
+            (value >= 0 && angleDifference >= 0) ||
+            (value < 0 && angleDifference < 0)
+          );
+        });
+
+        if (!allSameSign) {
+          normZAngle = ZRAngle;
+        }
+      }
+    }
+
+    // if (angleDifference <= 2) {
+    //   let newZRAngle = kf.filter(normZAngle);
+    //   console.log("origAngle", normZAngle, "filtered", kf.filter(newZRAngle));
+    //   normZAngle = newZRAngle;
+    // }
 
     rotateZ(normZAngle, canX, canY);
   }
@@ -468,10 +528,15 @@ function getNormalizedXTSub(value) {
     newMax = isMobile ? 0.75 : 0.55;
     if (isIOS) newMax = 0.7;
   } else if (jewelType === "ring") {
-    newMin = isMobile ? 0.28 : 0.45;
-    if (isIOS) newMin = 0.15;
-    newMax = isMobile ? 0.7 : 0.55;
-    if (isIOS) newMax = 0.7;
+    newMin = isMobile ? 0.27 : 0.44;
+    if (isIOS) newMin = 0.22;
+    newMax = isMobile ? 0.72 : 0.54;
+    if (isIOS) newMax = 0.72;
+
+    if (facingMode === "environment") {
+      if (isMobile) newMin = 0.26;
+      if (isIOS) newMin = 0.2;
+    }
   }
 
   // apply the formula to normalize the value
@@ -509,11 +574,43 @@ function euclideanDistance(a, b) {
 function manhattanDistance(a, b) {
   return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
 }
+
+let lastSize = null;
+
 function calculateWristSize(points) {
   // calculate wrist size as distance between wrist and first knuckle and distance between thumb knuckle and pinky knuckle on first frame and then adjust for scale using wrist.z value
-  let wristSize = manhattanDistance(points[0], points[5]);
-  wristSize += manhattanDistance(points[9], points[17]);
-  wristSize /= 2;
+  // let wristSize = manhattanDistance(points[0], points[5]);
+  // wristSize += manhattanDistance(points[9], points[17]);
+  // wristSize /= 2;
+
+  let wristSize = euclideanDistance(points[0], points[9]);
+
+  if (enableSmoothing) {
+    let diff = 0;
+    if (lastSize) {
+      diff = wristSize - lastSize;
+
+      rsArr.push(diff); // Insert new value at the end
+
+      if (rsArr.length > 3) {
+        rsArr.shift(); // Remove first index value
+
+        // Check if all 5 values are either positive or negative
+        var allSameSign = rsArr.every(function (value) {
+          return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
+        });
+
+        if (!allSameSign) return lastSize;
+      }
+    }
+  }
+  // if (diff <= 0.1) {
+  //     const newSize = kfResize.filter(wristSize);
+  //     console.log("origsize", wristSize, "filtered", newSize);
+  //     wristSize = newSize;
+  // }
+  lastSize = wristSize;
+
   return wristSize;
   // calculate wrist size as average distance between wrist and knuckles
   // let wristSize = 0;
@@ -532,7 +629,7 @@ function calculateWristSize(points) {
 }
 
 //function to use mediapipe hand prediction data for translation and rotation
-function translateRotateMesh(points) {
+function translateRotateMesh(points, handLabel, isPalmFacing) {
   let wrist = points[0];
   let firstKnuckle = points[5];
   let thumbTip = points[4];
@@ -542,7 +639,8 @@ function translateRotateMesh(points) {
     y: (points[17].y + points[18].y) / 2.0,
     z: (points[17].z + points[18].z) / 2.0,
   };
-  let midKnuckle = points[9];
+  // let midKnuckle = points[9];
+  let midPip = points[10];
   let ringPos = {
     x:
       facingMode === "environment"
@@ -559,22 +657,19 @@ function translateRotateMesh(points) {
     stayPoint = ringPos;
   }
 
+  // Translation calc
   let XTSub = getNormalizedXTSub(stayPoint.x);
   let YTSub = getNormalizedYTSub(stayPoint.y);
-  let ZTSub = getNormalizedXTSub(stayPoint.z);
 
-  //   changing range from (0,1) to (-0.5 to 0.5)
+  let rollMul = isMobile || isIOS ? -0.02 : -0.03;
+  let YTAdd = Math.abs(Math.sin(THREE.MathUtils.degToRad(ZRAngle))) * rollMul;
+
+  // Changing range from (0,1) to (-0.5 to 0.5)
   const newX = stayPoint.x - XTSub;
-  const newY = stayPoint.y - YTSub;
-  const newZ = stayPoint.z - ZTSub;
-
-  //   response time can be improved by uncommenting code below minimized arithmetic operations
-  //     const newX = wrist.x*0.9 - 0.45;
-  //   const newY = wrist.y*0.9 - 0.45;
-  //   const newZ = wrist.z*0.9 - 0.45;
-
-  // const YTMul = getYTMul(wrist.y);
-  // console.log(newY);
+  let newY = stayPoint.y - YTSub;
+  if (jewelType === "bangle") {
+    newY += YTAdd;
+  }
 
   const XTMul = 1400;
   const YTMul = 850;
@@ -582,40 +677,19 @@ function translateRotateMesh(points) {
   const canX = newX * XTMul;
   const canY = newY * YTMul;
 
-  // let transX = newX * 1.5;
-  // let transY = newY * 1;
-  // let transZ = newZ * 1;
+  // rotation & translation (getZAngleAndRotate also translates)
+  totalTransX = canX;
+  totalTransY = canY;
+  if (jewelType === "bangle") {
+    getZAngleAndRotate(wrist, midPip, canX, canY);
+    getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
+  } else if (jewelType === "ring") {
+    getZAngleAndRotate(points[13], points[14], canX, canY);
+    getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
+  }
 
-  // const midY = midKnuckle.y - 0.5;
-  //   const dist =
-  //     Math.abs(wrist.x - midKnuckle.x) +
-  //     Math.abs(wrist.y - midKnuckle.y) +
-  //     Math.abs(wrist.z - midKnuckle.z);
+  // Resizing
   const dist = calculateWristSize(points);
-
-  // if (isArcball) {
-  // arcball-controls
-  // if (translation && !XYRotation) {
-  // 1.5, 1, 1
-  // arcballControls.setTarget(transX, transY, transZ);
-
-  //     var transform =
-  //       "translate3d(" + canX + "px, " + canY + "px, " + 0 + "px)";
-  //     glamCanvas.style.transform = transform;
-  //   }
-  // } else {
-  // camera-controls
-  // if (translation && !XYRotation) {
-  // -1.5, 1, 1
-  // transX = -transX;
-  // cameraControls.moveTo(transX, transY, transZ, false);
-  // cameraControls.setFocalOffset(canX, canY, 0.0, false);
-  // Translate the canvas
-  //     var transform =
-  //       "translate3d(" + canX + "px, " + canY + "px, " + 0 + "px)";
-  //     glamCanvas.style.transform = transform;
-  //   }
-  // }
 
   let resizeMul;
 
@@ -624,29 +698,43 @@ function translateRotateMesh(points) {
     if (isIOS) resizeMul = 3.25;
   } else if (jewelType === "ring") {
     if (facingMode === "environment") {
-      resizeMul = isMobile ? 0.75 : 1.25;
-      if (isIOS) resizeMul = 0.75;
+      resizeMul = isMobile ? 0.95 : 1.25;
+      if (isIOS) resizeMul = 0.95;
     } else {
-      resizeMul = isMobile ? 0.85 : 1.25;
-      if (isIOS) resizeMul = 0.75;
+      resizeMul = isMobile ? 1.15 : 1.4;
+      if (isIOS) resizeMul = 1.15;
     }
   }
 
-  if (resize && !isArcball) cameraControls.zoomTo(dist * resizeMul, false);
+  let resizeAdd = YTAdd * -13;
+  if (jewelType === "ring") resizeAdd = YTAdd * -3;
+
+  if (resize && !isArcball)
+    cameraControls.zoomTo(dist * resizeMul + resizeAdd, false);
   if (resize && isArcball)
     gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
-
-  // const xAxis = new THREE.Vector3()
-  //   .subVectors(pinkyKnuckle, firstKnuckle)
-  //   .normalize();
-  // const yAxis = new THREE.Vector3().subVectors(midKnuckle, wrist).normalize();
-  // const zAxis = new THREE.Vector3().crossVectors(xAxis, yAxis);
-
-  totalTransX = canX;
-  totalTransY = canY;
-
-  // getZAngleAndRotate(wrist, midKnuckle, canX, canY);
-  getZAngleAndRotate(wrist, midKnuckle, canX, canY);
-  getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
-  // console.log("z_rot", ZRAngle, "y_rot", YRAngle);
 }
+
+// if (isArcball) {
+// arcball-controls
+// if (translation && !XYRotation) {
+// 1.5, 1, 1
+// arcballControls.setTarget(transX, transY, transZ);
+
+//     var transform =
+//       "translate3d(" + canX + "px, " + canY + "px, " + 0 + "px)";
+//     glamCanvas.style.transform = transform;
+//   }
+// } else {
+// camera-controls
+// if (translation && !XYRotation) {
+// -1.5, 1, 1
+// transX = -transX;
+// cameraControls.moveTo(transX, transY, transZ, false);
+// cameraControls.setFocalOffset(canX, canY, 0.0, false);
+// Translate the canvas
+//     var transform =
+//       "translate3d(" + canX + "px, " + canY + "px, " + 0 + "px)";
+//     glamCanvas.style.transform = transform;
+//   }
+// }

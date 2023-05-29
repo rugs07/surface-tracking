@@ -55,7 +55,14 @@ function resetMesh() {
   cameraControls.moveTo(0.0, 0.0, 0.0, true);
   if (jewelType == "bangle") cameraControls.zoomTo(1, false);
   else cameraControls.zoomTo(0.5, false);
-  cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-40);
+
+  if (jewelType === "ring") {
+    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-180);
+  } else {
+    if (selectedJewel === "tribangle")
+      cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-90);
+    else cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-40);
+  }
   cameraControls.polarAngle = basePhi;
   cameraControls.setFocalOffset(0.0, 0.0, 0.0);
   ZRAngle = 0;
@@ -173,7 +180,7 @@ function updateMessageAndFunFact() {
     "Unearthing precious stones: ",
     "Weaving a golden thread: ",
     "Crafting your royal jewels: ",
-    "Assembling a necklace of stars: ",
+    "Assembling a artwork of stars: ",
     "Unlocking the jewelry box: ",
   ];
 
