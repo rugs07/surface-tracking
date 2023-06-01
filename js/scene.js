@@ -372,7 +372,7 @@ function initFromParameters() {
   } else {
     CameraControls.install({ THREE: THREE });
     cameraControls = new CameraControls(gCamera, gRenderer.domElement);
-    cameraControls.azimuthAngle = baseThetha;
+    cameraControls.azimuthAngle = baseTheta;
     cameraControls.polarAngle = basePhi;
     cameraControls.enabled = false;
     // handleEvents();
@@ -530,6 +530,7 @@ function loadOnFirstFrame() {
   else cameraControls.setTarget(0.0, 0.0, 0.0, true);
 
   jewelType = gSceneParams["jeweltype"];
+  rawBaseTheta = gSceneParams["baseTheta"];
   updateTransVar(gSceneParams["transVar"]);
 
   if (gSceneParams["ndc"]) {

@@ -146,7 +146,7 @@ function enableResizing() {
     cameraControls.moveTo(0, 0, 0);
     // cameraControls.zoomTo(2, true);
 
-    cameraControls.azimuthAngle = baseThetha;
+    cameraControls.azimuthAngle = baseTheta;
     cameraControls.polarAngle = basePhi;
   }
 }
@@ -171,7 +171,7 @@ function disableResizing() {
     var transform = "rotateZ(" + degZ + "deg)";
     glamCanvas.style.transform = transform;
 
-    cameraControls.azimuthAngle = baseThetha;
+    cameraControls.azimuthAngle = baseTheta;
     cameraControls.polarAngle = basePhi;
   }
 }
@@ -243,98 +243,18 @@ function rotateY(angle) {
     // cameraControls.rotate(angle, 0, false);
     // Using Show zone to not show the part which was placed on for recording
 
-    let showZone = [-80, 100]; // flower-bangle
-    if (selectedJewel === "tribangle") {
-      showZone = [90, 270];
-    } else if (jewelType === "ring") {
-      if (handLabel === "Right") showZone = [0, 180];
-      else if (handLabel === "Left") showZone = [-180, 0];
-    }
-
-    if (jewelType === "bangle") {
-      let oldAngle = THREE.MathUtils.radToDeg(cameraControls.azimuthAngle);
-      // console.log(oldAngle);
-
-      if (oldAngle > showZone[0] && oldAngle < showZone[1]) {
-        cameraControls.rotate(angle, 0, false);
-        // cameraControls.azimuthAngle = angle;
-      } else if (oldAngle <= showZone[0]) {
-        cameraControls.azimuthAngle = THREE.MathUtils.degToRad(
-          showZone[0] + 0.1
-        );
-      } else {
-        cameraControls.azimuthAngle = THREE.MathUtils.degToRad(
-          showZone[1] - 0.1
-        );
-      }
-    } else {
-      cameraControls.rotate(angle, 0, false);
-    }
+    let showZone = [-90, 90];
+    if (angle > showZone[0] && angle < showZone[1]) {
+      // cameraControls.rotate(angle, 0, false);
+      cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
+    }  
+    console.log("yangle", angle.toFixed(2), 
+    THREE.MathUtils.radToDeg(baseTheta).toFixed(2),
+    handLabel);
   }
 
   YRAngle = THREE.MathUtils.radToDeg(cameraControls.azimuthAngle);
-  // console.log(YRAngle);
-  // console.log(
-  //   THREE.MathUtils.radToDeg(baseThetha),
-  //   THREE.MathUtils.radToDeg(cameraControls.azimuthAngle)
-  // );
-
-  // console.log(
-  //   THREE.MathUtils.radToDeg(XRAngle),
-  //   THREE.MathUtils.radToDeg(YRAngle),
-  //   THREE.MathUtils.radToDeg(ZRAngle)
-  // );
 }
-
-// To normalize angles betweeen -180deg to 180deg
-// function normalizeAngle(angle) {
-//   angle = angle % 360.0;
-//   if (angle > 180.0) {
-//     angle -= 360.0;
-//   }
-//   return angle;
-// }
-
-// function getYRMul(angle) {
-//   let old_min, old_max, new_min, new_max, new_val;
-//   // -90 to -180
-//   if (angle <= -90) {
-//     old_min = -90;
-//     old_max = -180;
-//     new_min = varY;
-//     new_max = varX;
-//     new_val =
-//       ((angle - old_max) * (new_max - new_min)) / (old_min - old_max) + new_min;
-//   }
-//   // 0 to -90
-//   else if (angle <= 0) {
-//     old_min = 0;
-//     old_max = -90;
-//     new_min = varX;
-//     new_max = varY;
-//     new_val =
-//       ((angle - old_max) * (new_max - new_min)) / (old_min - old_max) + new_min;
-//   }
-//   // 0 to 90
-//   else if (angle <= 90) {
-//     old_min = 0;
-//     old_max = 90;
-//     new_min = varX;
-//     new_max = varY;
-//     new_val =
-//       ((angle - old_min) * (new_max - new_min)) / (old_max - old_min) + new_min;
-//   }
-//   // 90 to 180
-//   else if (angle <= 180) {
-//     old_min = 90;
-//     old_max = 180;
-//     new_min = varY;
-//     new_max = varX;
-//     new_val =
-//       ((angle - old_max) * (new_max - new_min)) / (old_min - old_max) + new_min;
-//   }
-//   return new_val;
-// }
 
 // To normalize angles between 0 to 360 deg
 function normalizeAngle(angle) {
@@ -347,7 +267,6 @@ function normalizeAngle(angle) {
   } else if (angle > 180) {
     angle -= 360;
   }
-
   return angle;
 }
 
@@ -371,12 +290,6 @@ function rotateZ(angle, canX, canY) {
   glamCanvas.style.transform = transform;
 
   ZRAngle = angle;
-
-  // YRMul range : for ZRAngle ( 0 - 90 ) -> ( 1 - 1.5 )
-  //               for ZRAngle ( 0 - -90 ) -> ( 1 - 1.5 )
-  // YRMul = (ZRAngle / 90) * 0.5 + 1;
-
-  // console.log(THREE.MathUtils.radToDeg(XRAngle),THREE.MathUtils.radToDeg(YRAngle), THREE.MathUtils.radToDeg(ZRAngle));
 }
 
 function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
@@ -391,55 +304,91 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
     }
   }
 
-  if (lastPinkyRef && lastIndexRef) {
-    // rotate vectors around y-axis by -zAngle
-    let rotatedLastIndexRef = rotateVectorZ(lastIndexRef, -zAngle);
-    let rotatedLastPinkyRef = rotateVectorZ(lastPinkyRef, -zAngle);
-    let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
-    let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
+  // rotate vectors around y-axis by -zAngle
+  let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
+  let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
 
-    const my1 =
-      (rotatedLastPinkyRef.z - rotatedLastIndexRef.z) /
-      (rotatedLastPinkyRef.x - rotatedLastIndexRef.x);
-    const my2 =
-      (rotatedNewPinkyRef.z - rotatedNewIndexRef.z) /
-      (rotatedNewPinkyRef.x - rotatedNewIndexRef.x);
-
-    let yAngleChange = -Math.atan((my2 - my1) / (1 + my1 * my2));
-
-    if (enableSmoothing) {
-      let yNew = THREE.MathUtils.radToDeg(
-        cameraControls.azimuthAngle + yAngleChange
-      );
-
-      let diff = yNew - YRAngle;
-      // if (Math.abs(diff) < 0.05) {
-      yArr.push(diff); // Insert new value at the end
-
-      if (yArr.length > 3) {
-        yArr.shift(); // Remove first index value
-
-        // Check if all 5 values are either positive or negative
-        var allSameSign = yArr.every(function (value) {
-          return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
-        });
-
-        if (!allSameSign) {
-          yNew = YRAngle;
-          yAngleChange = 0;
-        }
-        // }
-      }
-    }
-
-    if (horizontalRotation) {
-      rotateY(yAngleChange);
-    }
+  // the arctangent of the slope is the angle of the hand with respect to the x-axis
+  let yAngle = -Math.atan2(rotatedNewPinkyRef.z - rotatedNewIndexRef.z, 
+                          rotatedNewPinkyRef.x - rotatedNewIndexRef.x);
+  // make show zone from -90 to 90
+  yAngle = THREE.MathUtils.radToDeg(yAngle) - 90; 
+  if (facingMode === "environment") {
+    yAngle += 180;
   }
 
+  let normYAngle = normalizeAngle(yAngle);
+
+  if (horizontalRotation) {
+    rotateY(normYAngle);
+  }
   lastPinkyRef = newPinkyRef;
   lastIndexRef = newIndexRef;
 }
+
+
+// function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
+//   if (jewelType === "ring" && enableRingTransparency) {
+//     if (
+//       Math.abs(newIndexRef.x - newPinkyRef.x) <= 0.15 &&
+//       Math.abs(newIndexRef.y - newPinkyRef.y) <= 0.15
+//     ) {
+//       applyRingTrans(1.35);
+//     } else {
+//       applyRingTrans(1.5);
+//     }
+//   }
+
+//   if (lastPinkyRef && lastIndexRef) {
+//     // rotate vectors around y-axis by -zAngle
+//     let rotatedLastIndexRef = rotateVectorZ(lastIndexRef, -zAngle);
+//     let rotatedLastPinkyRef = rotateVectorZ(lastPinkyRef, -zAngle);
+//     let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
+//     let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
+
+//     const my1 =
+//       (rotatedLastPinkyRef.z - rotatedLastIndexRef.z) /
+//       (rotatedLastPinkyRef.x - rotatedLastIndexRef.x);
+//     const my2 =
+//       (rotatedNewPinkyRef.z - rotatedNewIndexRef.z) /
+//       (rotatedNewPinkyRef.x - rotatedNewIndexRef.x);
+
+//     let yAngleChange = -Math.atan((my2 - my1) / (1 + my1 * my2));
+
+//     if (enableSmoothing) {
+//       let yNew = THREE.MathUtils.radToDeg(
+//         cameraControls.azimuthAngle + yAngleChange
+//       );
+
+//       let diff = yNew - YRAngle;
+//       // if (Math.abs(diff) < 0.05) {
+//       yArr.push(diff); // Insert new value at the end
+
+//       if (yArr.length > 3) {
+//         yArr.shift(); // Remove first index value
+
+//         // Check if all 5 values are either positive or negative
+//         var allSameSign = yArr.every(function (value) {
+//           return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
+//         });
+
+//         if (!allSameSign) {
+//           yNew = YRAngle;
+//           yAngleChange = 0;
+//         }
+//         // }
+//       }
+//     }
+
+//     if (horizontalRotation) {
+//       rotateY(yAngleChange);
+//     }
+//   }
+
+//   lastPinkyRef = newPinkyRef;
+//   lastIndexRef = newIndexRef;
+// }
+
 
 function rotateVectorZ(vector, angle) {
   angle = THREE.MathUtils.degToRad(angle); // if the angle is in degrees, convert it to radians

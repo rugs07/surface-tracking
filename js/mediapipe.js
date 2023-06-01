@@ -85,11 +85,11 @@ function setMeshVisibility() {
 }
 
 // if (isPalmFacing && !wasPalmFacing) {
-//   baseThetha += THREE.MathUtils.degToRad(180);
-//   cameraControls.azimuthAngle = baseThetha;
+//   baseTheta += THREE.MathUtils.degToRad(180);
+//   cameraControls.azimuthAngle = baseTheta;
 // } else if (!isPalmFacing && wasPalmFacing) {
-//   baseThetha -= THREE.MathUtils.degToRad(180);
-//   cameraControls.azimuthAngle = baseThetha;
+//   baseTheta -= THREE.MathUtils.degToRad(180);
+//   cameraControls.azimuthAngle = baseTheta;
 // }
 
 import DeviceDetector from "https://cdn.skypack.dev/device-detector-js@2.2.10";
@@ -173,80 +173,43 @@ function onResults(results) {
 
     if (handDetected) {
       const indexFingerKnuckle = results.multiHandLandmarks[0][5];
-      const middleFingerKnuckle = results.multiHandLandmarks[0][5];
+      // const middleFingerKnuckle = results.multiHandLandmarks[0][5];
       const littleFingerKnuckle = results.multiHandLandmarks[0][17];
       const isPalmFacing = indexFingerKnuckle.x < littleFingerKnuckle.x;
       // consider the isPalmFacing with respect to right hand and reverse values will be given for left hand
 
-      let firstRingAngle = 0;
-      let secondRingAngle = -180;
+      // Setting baseTheta for different jewel types
+      // TODO: load this from sceneParams file
+      baseTheta = THREE.MathUtils.degToRad(rawBaseTheta);
+      console.log("baseTheta", rawBaseTheta);
+      if (jewelType === "ring" && handLabel === "Left") {
+        baseTheta = THREE.MathUtils.degToRad(rawBaseTheta + 180);
+      }
+
+      if (facingMode === "environment" && jewelType === "ring") {
+        // Back Camera
+        baseTheta += THREE.MathUtils.degToRad(180);
+      }
+      //   // Reversing values to keep the context same because back camera gives reverse values
+      //   let isFacingPalm = !isPalmFacing;
+      //   handLabel = handLabel === "Right" ? "Left" : "Right";
+
+      //   if (handDetected){
+      //     if (jewelType === "bangle") {
+      //       // Back Camera
+      //       baseTheta += THREE.MathUtils.degToRad(180);
+      //     } else {
+      //       // rings
+      //       let showingPalm =
+      //         (handLabel === "Right" && isFacingPalm) ||
+      //         (handLabel === "Left" && !isFacingPalm);
+      //     }
+      //   }
+      // }
 
       if (!handPresent) {
         handPresent = true;
-        if (selectedJewel === "flowerbangle") {
-          baseThetha = isPalmFacing
-            ? THREE.MathUtils.degToRad(-60)
-            : THREE.MathUtils.degToRad(120);
-
-          // if (handLabel === "Right") {
-          //   baseThetha = isPalmFacing
-          //     ? THREE.MathUtils.degToRad(-60)
-          //     : THREE.MathUtils.degToRad(120);
-          // } else {
-          //   baseThetha = isPalmFacing
-          //     ? THREE.MathUtils.degToRad(-60)
-          //     : THREE.MathUtils.degToRad(120);
-          // }
-        } else if (selectedJewel === "tribangle") {
-          baseThetha = isPalmFacing
-            ? THREE.MathUtils.degToRad(90)
-            : THREE.MathUtils.degToRad(-115);
-          // if (handLabel === "Right") {
-          //   baseThetha = isPalmFacing
-          //     ? THREE.MathUtils.degToRad(90)
-          //     : THREE.MathUtils.degToRad(-115);
-          // } else {
-          //   baseThetha = isPalmFacing
-          //     ? THREE.MathUtils.degToRad(90)
-          //     : THREE.MathUtils.degToRad(-115);
-          // }
-        } else {
-          // rings
-          if (handLabel === "Right") {
-            baseThetha = isPalmFacing
-              ? THREE.MathUtils.degToRad(firstRingAngle)
-              : THREE.MathUtils.degToRad(-secondRingAngle);
-          } else {
-            baseThetha = isPalmFacing
-              ? THREE.MathUtils.degToRad(secondRingAngle)
-              : THREE.MathUtils.degToRad(firstRingAngle);
-          }
-        }
-
-        if (facingMode === "environment") {
-          // Reversing values to keep the context same because back camera gives reverse values
-          let isFacingPalm = !isPalmFacing;
-          handLabel = handLabel === "Right" ? "Left" : "Right";
-
-          if (handDetected)
-            if (jewelType === "bangle") {
-              // Back Camera
-              baseThetha += isPalmFacing
-                ? THREE.MathUtils.degToRad(-170)
-                : THREE.MathUtils.degToRad(170);
-            } else {
-              // rings
-              let showingPalm =
-                (handLabel === "Right" && isFacingPalm) ||
-                (handLabel === "Left" && !isFacingPalm);
-
-              if (showingPalm) {
-                baseThetha = THREE.MathUtils.degToRad(firstRingAngle);
-              }
-            }
-        }
-
-        cameraControls.azimuthAngle = baseThetha;
+        cameraControls.azimuthAngle = baseTheta;
       }
 
       isResults = true;

@@ -20,6 +20,7 @@
     [0, 0, 0, 1]
   ],
   "jeweltype": "bangle",
+  "baseTheta": 15,
   "transVar": 1.09,
   "ndc": false,
   "0_weights": [
