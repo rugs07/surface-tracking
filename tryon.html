@@ -18,12 +18,16 @@
     <link rel="stylesheet" href="css/style.css" />
     <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/kalmanjs@1.1.0/lib/kalman.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js" 
+      integrity="sha512-DSzvYfxJWRi3E6vfcGQfL5CqOlApxYrrdqRP3hRCnoiZ0oM6+ccYjbtdzQFUrAOI/ehKk0VKFuKs5GseGPkVjQ==" 
+      crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
   </head>
   <body>
     <div>
     <!-- Video for handtracker -->
     <div class="ar-toggle-container" id="ar-toggle-container">
-      <button onclick="toggleVideo()" class="desktop-viewar">View AR</button>
+      <button onclick="toggleVideo()" class="desktop-viewar" id="desktop-viewar">View AR</button>
       <!-- <p id="controlType">CameraCon</p> -->
       <!-- <button class="primarybtn loadbtns" onclick="start()">Start</button>
       <button class="primarybtn loadbtns" onclick="toggleControls()">Toggle</button> -->
@@ -154,7 +158,7 @@
       </div>
     </div>
     <div class="ar-bottom-container mobile-viewer" id="ar-bottom-container">
-      <button onclick="toggleVideo()">View AR</button>
+      <button onclick="toggleVideo()" id="mobile-viewar">View AR</button>
     </div>
   </div>
 

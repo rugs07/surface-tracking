@@ -11,6 +11,8 @@ const viewSpaceContainer = document.getElementById("viewspacecontainer");
 const showhandscreen = document.getElementById("showhandscreen");
 const updateNote = document.getElementById("updatenote");
 const switchbtn = document.getElementById("switchbtn");
+const desktopViewAR = document.getElementById("desktop-viewar");
+const mobileViewAR = document.getElementById("mobile-viewar");
 
 isMobile = mobileAndTabletCheck();
 console.log("isMobile", isMobile);
@@ -96,6 +98,18 @@ import DeviceDetector from "https://cdn.skypack.dev/device-detector-js@2.2.10";
 const mpHands = window;
 const drawingUtils = window;
 const controls = window;
+const noSleep = new NoSleep();
+
+let viewARButton = isMobile || isIOS ? mobileViewAR : desktopViewAR;
+
+viewARButton.addEventListener(
+  "click",
+  function enableNoSleep() {
+    document.removeEventListener("click", enableNoSleep, false);
+    noSleep.enable();
+  },
+  false
+);
 
 // Usage: testSupport({client?: string, os?: string}[])
 // Client and os are regular expressions.
@@ -223,7 +237,7 @@ function onResults(results) {
       );
     } else {
       handPresent = false;
-      if (timer === 0) setMeshVisibility();
+      setMeshVisibility();
     }
   }
 
@@ -275,9 +289,6 @@ if (!isIOS) {
     width: width,
     height: height,
   });
-
-  camera.width = width;
-  camera.height = height;
 }
 
 const startCamera = () => {
@@ -405,6 +416,7 @@ async function toggleVideo() {
     viewSpaceContainer.style.display = "inline-block";
     outputCanvasElement.style.display = "none";
     showhandscreen.style.display = "none";
+    noSleep.disable();
 
     updateNote.innerText = "Welcome to jAR4U";
 
