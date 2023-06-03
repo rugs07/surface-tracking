@@ -21,15 +21,8 @@ function setJewellery(value) {
   location.href = `/tryon.html?dir=${value}`;
 }
 
-function updateTransVar(value) {
-  // console.log("transVar :", value);
-  transVar = value;
-}
-
-function applyRingTrans(value) {
-  ringTrans = value;
-
-  gRayMarchScene.children[0].material.uniforms.ringTrans.value = value;
+function applyRingTrans() {
+  gRayMarchScene.children[0].material.uniforms.ringTrans.value = ringTrans;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
 
@@ -38,10 +31,12 @@ function applyTransVar() {
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
 
-function removeTransVars() {
+function resetTransVar() {
   gRayMarchScene.children[0].material.uniforms.transVar.value = 1;
   gRenderer.render(gRayMarchScene, gBlitCamera);
+}
 
+function resetRingTrans() {
   gRayMarchScene.children[0].material.uniforms.ringTrans.value = 1.5;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }

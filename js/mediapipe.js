@@ -412,7 +412,8 @@ async function toggleVideo() {
 
     if (!isIOS) camera.stop();
     isVideo = false;
-    removeTransVars();
+    resetTransVar();
+    resetRingTrans();
     viewSpaceContainer.style.display = "inline-block";
     outputCanvasElement.style.display = "none";
     showhandscreen.style.display = "none";

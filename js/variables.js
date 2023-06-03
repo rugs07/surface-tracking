@@ -126,7 +126,7 @@ let facingMode = "user";
 let isArcball = false;
 let loadFeatures = false;
 let enableSmoothing = true;
-let enableRingTransparency = false;
+let enableRingTransparency = true;
 
 let lastMidRef = null;
 let lastPinkyRef = null;

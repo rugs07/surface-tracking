@@ -531,7 +531,7 @@ function loadOnFirstFrame() {
 
   jewelType = gSceneParams["jeweltype"];
   rawBaseTheta = gSceneParams["baseTheta"];
-  updateTransVar(gSceneParams["transVar"]);
+  transVar = gSceneParams["transVar"];
 
   if (gSceneParams["ndc"]) {
     gCamera.position.x = 0.0;

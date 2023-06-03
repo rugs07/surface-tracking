@@ -247,10 +247,13 @@ function rotateY(angle) {
     if (angle > showZone[0] && angle < showZone[1]) {
       // cameraControls.rotate(angle, 0, false);
       cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
-    }  
-    console.log("yangle", angle.toFixed(2), 
-    THREE.MathUtils.radToDeg(baseTheta).toFixed(2),
-    handLabel);
+    }
+    console.log(
+      "yangle",
+      angle.toFixed(2),
+      THREE.MathUtils.radToDeg(baseTheta).toFixed(2),
+      handLabel
+    );
   }
 
   YRAngle = THREE.MathUtils.radToDeg(cameraControls.azimuthAngle);
@@ -292,32 +295,43 @@ function rotateZ(angle, canX, canY) {
   ZRAngle = angle;
 }
 
-function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
-  if (jewelType === "ring" && enableRingTransparency) {
-    if (
-      Math.abs(newIndexRef.x - newPinkyRef.x) <= 0.15 &&
-      Math.abs(newIndexRef.y - newPinkyRef.y) <= 0.15
-    ) {
-      applyRingTrans(1.35);
-    } else {
-      applyRingTrans(1.5);
-    }
-  }
+function convertRingTransRange(value) {
+  const oldMin = -25;
+  const oldMax = 25;
+  const newMin = 25;
+  const newMax = 65;
+  return ((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin;
+}
 
+function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
   // rotate vectors around y-axis by -zAngle
   let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
   let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
 
   // the arctangent of the slope is the angle of the hand with respect to the x-axis
-  let yAngle = -Math.atan2(rotatedNewPinkyRef.z - rotatedNewIndexRef.z, 
-                          rotatedNewPinkyRef.x - rotatedNewIndexRef.x);
+  let yAngle = -Math.atan2(
+    rotatedNewPinkyRef.z - rotatedNewIndexRef.z,
+    rotatedNewPinkyRef.x - rotatedNewIndexRef.x
+  );
   // make show zone from -90 to 90
-  yAngle = THREE.MathUtils.radToDeg(yAngle) - 90; 
+  yAngle = THREE.MathUtils.radToDeg(yAngle) - 90;
   if (facingMode === "environment") {
     yAngle += 180;
   }
 
   let normYAngle = normalizeAngle(yAngle);
+
+  if (jewelType === "ring" && enableRingTransparency) {
+    let transparencyZone = [-25, 25];
+    if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
+      ringTrans = 1.35;
+      applyRingTrans();
+      // converting angles to new range -20 to 20 -> 20 - 60 for transparency
+      normYAngle = convertRingTransRange(normYAngle);
+    } else {
+      resetRingTrans();
+    }
+  }
 
   if (horizontalRotation) {
     rotateY(normYAngle);
@@ -325,7 +339,6 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
   lastPinkyRef = newPinkyRef;
   lastIndexRef = newIndexRef;
 }
-
 
 // function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
 //   if (jewelType === "ring" && enableRingTransparency) {
@@ -388,7 +401,6 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
 //   lastPinkyRef = newPinkyRef;
 //   lastIndexRef = newIndexRef;
 // }
-
 
 function rotateVectorZ(vector, angle) {
   angle = THREE.MathUtils.degToRad(angle); // if the angle is in degrees, convert it to radians
