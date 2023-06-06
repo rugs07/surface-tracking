@@ -256,7 +256,7 @@ function rotateY(angle) {
     );
   }
 
-  YRAngle = THREE.MathUtils.radToDeg(cameraControls.azimuthAngle);
+  YRAngle = angle;
 }
 
 // To normalize angles between 0 to 360 deg
@@ -329,7 +329,27 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
     } else {
+      if (normYAngle > 0) normYAngle += 0.75;
+      else normYAngle -= 0.5;
       resetRingTrans();
+    }
+  }
+
+  if (enableSmoothing) {
+    let diff = normYAngle - YRAngle;
+    yArr.push(diff); // Insert new value at the end
+
+    if (yArr.length > 3) {
+      yArr.shift(); // Remove first index value
+
+      // Check if all 5 values are either positive or negative
+      var allSameSign = yArr.every(function (value) {
+        return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
+      });
+
+      if (!allSameSign) {
+        normYAngle = YRAngle;
+      }
     }
   }
 
@@ -577,8 +597,6 @@ function manhattanDistance(a, b) {
   return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
 }
 
-let lastSize = null;
-
 function calculateWristSize(points) {
   // calculate wrist size as distance between wrist and first knuckle and distance between thumb knuckle and pinky knuckle on first frame and then adjust for scale using wrist.z value
   // let wristSize = manhattanDistance(points[0], points[5]);
@@ -586,26 +604,6 @@ function calculateWristSize(points) {
   // wristSize /= 2;
 
   let wristSize = euclideanDistance(points[0], points[9]);
-
-  if (enableSmoothing) {
-    let diff = 0;
-    if (lastSize) {
-      diff = wristSize - lastSize;
-
-      rsArr.push(diff); // Insert new value at the end
-
-      if (rsArr.length > 3) {
-        rsArr.shift(); // Remove first index value
-
-        // Check if all 5 values are either positive or negative
-        var allSameSign = rsArr.every(function (value) {
-          return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
-        });
-
-        if (!allSameSign) return lastSize;
-      }
-    }
-  }
   // if (diff <= 0.1) {
   //     const newSize = kfResize.filter(wristSize);
   //     console.log("origsize", wristSize, "filtered", newSize);
@@ -628,6 +626,31 @@ function calculateWristSize(points) {
   // }
   // wristSize /= count;
   // return wristSize;
+}
+
+let lastSize = null;
+
+function smoothResizing(wristSize) {
+  if (enableSmoothing) {
+    let diff = 0;
+    if (lastSize) {
+      diff = wristSize - lastSize;
+
+      rsArr.push(diff); // Insert new value at the end
+
+      if (rsArr.length > 3) {
+        rsArr.shift(); // Remove first index value
+
+        // Check if all 5 values are either positive or negative
+        var allSameSign = rsArr.every(function (value) {
+          return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
+        });
+
+        if (!allSameSign) return lastSize;
+      }
+    }
+  }
+  return wristSize;
 }
 
 //function to use mediapipe hand prediction data for translation and rotation
@@ -711,8 +734,11 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   let resizeAdd = YTAdd * -13;
   if (jewelType === "ring") resizeAdd = YTAdd * -3;
 
-  if (resize && !isArcball)
-    cameraControls.zoomTo(dist * resizeMul + resizeAdd, false);
+  if (resize && !isArcball) {
+    let smoothenSize = smoothResizing(dist * resizeMul + resizeAdd);
+    cameraControls.zoomTo(smoothenSize, false);
+  }
+
   if (resize && isArcball)
     gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
 }
