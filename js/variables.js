@@ -24,6 +24,7 @@ let rawBaseTheta = 0;
 let baseTheta = 0;
 let selectedJewel = "";
 let handLabel = "";
+let userManualShown = false;
 
 let glamCanvas = null;
 

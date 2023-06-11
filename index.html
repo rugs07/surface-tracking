@@ -13,31 +13,68 @@
       <div class="title-container">
         <h2 id="updatenote">Welcome to jAR4U</h2>
       </div>
-      <div class="j4container">
-        <h2 class="choosetext">Choose a jewellery to try it on</h2>
+      <div class="same-openbox" id="same-openbox">
+        <h4 class="choosetext">
+          Oops...Looks like you've opened our website on some other tab /
+          browser as well
+        </h4>
+        <h4 class="choosetext">
+          For better performance, please use single tab at a time and close
+          others
+        </h4>
+      </div>
+      <div class="j4container" id="j4container">
+        <!-- <h2 class="choosetext">Choose a jewellery to try it on</h2> -->
+        <h3 class="type-label">Bangles ( 2 items )</h3>
         <div class="jrow">
           <div class="jewel-container">
             <img src="assets/flowerbangle.jpeg" class="jewelimg" />
+            <button class="primarybtn addcart-mobilebtn" type="button">
+              <img src="assets/addbag.png" class="addbag" />
+            </button>
             <div class="selectarea">
-              <button
-                class="primarybtn selectbtn"
-                type="button"
-                onclick="setJewellery('flowerbangle')"
-              >
-                Bangle
-              </button>
+              <div class="jewelinfo">
+                <h4 class="jewelname">Flower Bangle</h4>
+                <h4 class="pricelabel">&#8377; 40,825</h4>
+              </div>
+              <div class="jewelinfo">
+                <button
+                  class="primarybtn selectbtn"
+                  type="button"
+                  onclick="setJewellery('flowerbangle')"
+                >
+                  <p>Try On</p>
+                  <img src="assets/aricon.png" class="aricon" />
+                </button>
+                <button class="primarybtn addcartbtn" type="button">
+                  <img src="assets/addbag.png" class="addbag" />
+                </button>
+              </div>
             </div>
           </div>
           <div class="jewel-container">
+            <button class="primarybtn addcart-mobilebtn" type="button">
+              <img src="assets/addbag.png" class="addbag" />
+            </button>
             <img src="assets/tribangle.jpeg" class="jewelimg" />
             <div class="selectarea">
-              <button
-                class="primarybtn selectbtn"
-                type="button"
-                onclick="setJewellery('tribangle')"
-              >
-                Bangle
-              </button>
+              <div class="jewelinfo">
+                <h4 class="jewelname">Triveni Bangle</h4>
+                <h4 class="pricelabel">&#8377; 35,650</h4>
+              </div>
+              <div class="jewelinfo">
+                <button
+                  class="primarybtn selectbtn"
+                  type="button"
+                  onclick="setJewellery('tribangle')"
+                >
+                  <p>Try On</p>
+                  <img src="assets/aricon.png" class="aricon" />
+                </button>
+                <button class="primarybtn addcartbtn" type="button">
+                  <img src="assets/addbag.png" class="addbag" />
+                </button>
+              </div>
             </div>
           </div>
           <!-- <div class="jewel-container">
@@ -53,6 +90,7 @@
             </div>
           </div> -->
         </div>
+        <h3 class="type-label">Rings ( 2 items )</h3>
         <div class="jrow">
           <!-- <div class="jewel-container">
             <img src="assets/flowerring.jpeg" class="jewelimg" />
@@ -68,31 +106,76 @@
           </div> -->
           <div class="jewel-container">
             <img src="assets/patternring.jpeg" class="jewelimg" />
+            <button class="primarybtn addcart-mobilebtn" type="button">
+              <img src="assets/addbag.png" class="addbag" />
+            </button>
             <div class="selectarea">
-              <button
-                class="primarybtn selectbtn"
-                type="button"
-                onclick="setJewellery('patternring')"
-              >
-                Ring
-              </button>
+              <div class="jewelinfo">
+                <h4 class="jewelname">Crown Pattern Ring</h4>
+                <h4 class="pricelabel">&#8377; 25,225</h4>
+              </div>
+              <div class="jewelinfo">
+                <button
+                  class="primarybtn selectbtn"
+                  type="button"
+                  onclick="setJewellery('patternring')"
+                >
+                  <p>Try On</p>
+                  <img src="assets/aricon.png" class="aricon" />
+                </button>
+                <button class="primarybtn addcartbtn" type="button">
+                  <img src="assets/addbag.png" class="addbag" />
+                </button>
+              </div>
             </div>
           </div>
           <div class="jewel-container">
             <img src="assets/3linerring.jpeg" class="jewelimg" />
+            <button class="primarybtn addcart-mobilebtn" type="button">
+              <img src="assets/addbag.png" class="addbag" />
+            </button>
             <div class="selectarea">
-              <button
-                class="primarybtn selectbtn"
-                type="button"
-                onclick="setJewellery('3linerring')"
-              >
-                Ring
-              </button>
+              <div class="jewelinfo">
+                <h4 class="jewelname">Trinetra Ring</h4>
+                <h4 class="pricelabel">&#8377; 25,225</h4>
+              </div>
+              <div class="jewelinfo">
+                <button
+                  class="primarybtn selectbtn"
+                  type="button"
+                  onclick="setJewellery('3linerring')"
+                >
+                  <p>Try On</p>
+                  <img src="assets/aricon.png" class="aricon" />
+                </button>
+                <button class="primarybtn addcartbtn" type="button">
+                  <img src="assets/addbag.png" class="addbag" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <script>
+      localStorage.openpages = Date.now();
+      var onLocalStorageEvent = function (e) {
+        if (e.key == "page_available") {
+          let sameOpenBox = document.getElementById("same-openbox");
+          sameOpenBox.style.display = "block";
+
+          let j4container = document.getElementById("j4container");
+          j4container.style.display = "none";
+        }
+
+        if (e.key == "openpages") {
+          // Listen if anybody else is opening the same page!
+          localStorage.page_available = Date.now();
+        }
+      };
+
+      window.addEventListener("storage", onLocalStorageEvent, false);
+    </script>
     <script src="js/utils.js"></script>
   </body>
 </html>

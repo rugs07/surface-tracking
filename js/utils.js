@@ -41,10 +41,18 @@ function resetRingTrans() {
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
 
+let showhandscreen = document.getElementById("showhandscreen");
+let usermanual = document.getElementById("usermanual");
+
 function hideHandScreen() {
-  let showhandscreen = document.getElementById("showhandscreen");
   showhandscreen.style.display = "none";
 }
+
+// Method to enable or disable fullscreen view
+const fullscreen = (mode = true, el = "html") =>
+  mode
+    ? document.querySelector(el).requestFullscreen()
+    : document.exitFullscreen();
 
 function resetMesh() {
   cameraControls.moveTo(0.0, 0.0, 0.0, true);
@@ -62,6 +70,27 @@ function resetMesh() {
   cameraControls.setFocalOffset(0.0, 0.0, 0.0);
   ZRAngle = 0;
   glamCanvas.style.transform = "none";
+}
+
+function startSession() {
+  usermanual.style.display = "none";
+  toggleVideo();
+}
+
+function showManual() {
+  if (!userManualShown) {
+    let step2img = document.getElementById("step2img");
+    let step3img = document.getElementById("step3img");
+
+    step2img.src = `assets/${jewelType}step2.jpg`;
+    step3img.src = `assets/${jewelType}step3.gif`;
+
+    usermanual.style.display = "flex";
+    userManualShown = true;
+  } else {
+    toggleVideo();
+  }
+  if (isMobile || isIOS) fullscreen();
 }
 
 /**

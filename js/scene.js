@@ -305,6 +305,9 @@ function initFromParameters() {
   const showhandscreen = document.getElementById("showhandscreen");
   setDims(showhandscreen, width, height);
 
+  const usermanual = document.getElementById("usermanual");
+  setDims(usermanual, width, height);
+
   const viewSpaceContainer = document.getElementById("viewspacecontainer");
   viewSpaceContainer.style.display = "inline-block";
 
@@ -325,6 +328,25 @@ function initFromParameters() {
   var devicePixelRatio = window.devicePixelRatio || 1;
   canvas.width = desiredWidthInCSSPixels * devicePixelRatio;
   canvas.height = desiredHeightInCSSPixels * devicePixelRatio;
+
+  canvas.addEventListener(
+    "webglcontextlost",
+    function (event) {
+      console.log("my-context-lost");
+      event.preventDefault();
+    },
+    false
+  );
+
+  canvas.addEventListener(
+    "webglcontextrestored",
+    function (event) {
+      console.log("my-context-restored");
+      event.preventDefault();
+      start();
+    },
+    false
+  );
 
   view.appendChild(canvas);
 
@@ -713,7 +735,7 @@ function render(t) {
 
   gRenderer.render(gRayMarchScene, gBlitCamera);
 
-  updateFPSCounter();
+  // updateFPSCounter();
   requestAnimationFrame(render);
 }
 
@@ -732,4 +754,5 @@ function start() {
   addHandlers();
 }
 
+window.THREE.Cache.clear();
 start();

@@ -27,7 +27,7 @@
     <div>
     <!-- Video for handtracker -->
     <div class="ar-toggle-container" id="ar-toggle-container">
-      <button onclick="toggleVideo()" class="desktop-viewar" id="desktop-viewar">View AR</button>
+      <button onclick="showManual()" class="desktop-viewar" id="desktop-viewar">View AR</button>
       <!-- <p id="controlType">CameraCon</p> -->
       <!-- <button class="primarybtn loadbtns" onclick="start()">Start</button>
       <button class="primarybtn loadbtns" onclick="toggleControls()">Toggle</button> -->
@@ -127,10 +127,10 @@
       <div id="error"></div>
 
       <div id="viewspacecontainer">
-        <div id="info" class="info">
+        <!-- <div id="info" class="info">
           Fps:
           <div id="fpsdisplay"></div>
-        </div>
+        </div> -->
         <div id="Loading">
           <h4>
             <!-- [ Loading your experience ] -->
@@ -147,6 +147,28 @@
         </div>
         <div class="viewspace" id="viewspace"></div>
       </div>
+      <div id="usermanual">
+        <h2>Try on with 3 simple steps !</h2>
+        <div class="allsteps">
+          <div class="step">
+            <img src="assets/step1.jpg" class="stepimg" id="step1img"/>
+            <p class="steptext">
+              First place your hand vertically in front of camera
+            </p>
+          </div>
+          <div class="step">
+            <img src="" class="stepimg" id="step2img"/>
+            <p class="steptext">Set the jewellery on your hand correctly</p>
+          </div>
+          <div class="step">
+            <img src="assets/banglestep3.gif" class="stepimg" id="step3img"/>
+            <p class="steptext">Try it on freely to view all its details</p>
+          </div>
+        </div>
+        <button class="primarybtn" type="button" onclick="startSession()">
+          Get Started
+        </button>
+      </div>
       <div id="showhandscreen">
         <h2>Place your hand vertically as shown below</h2>
         <img src="assets/hand.png" class="handimg"><img>
@@ -158,7 +180,7 @@
       </div>
     </div>
     <div class="ar-bottom-container mobile-viewer" id="ar-bottom-container">
-      <button onclick="toggleVideo()" id="mobile-viewar">View AR</button>
+      <button onclick="showManual()" id="mobile-viewar">View AR</button>
     </div>
   </div>
 
@@ -173,6 +195,25 @@
     <script src="https://unpkg.com/png-js@1.0.0/png.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <!-- <script src="js/extras/zip.js"></script> -->
+    <script>
+      localStorage.openpages = Date.now();
+      var onLocalStorageEvent = function (e) {
+        if (e.key == "page_available") {
+          let sameOpenBox = document.getElementById("same-openbox");
+          sameOpenBox.style.display = "block";
+
+          let j4container = document.getElementById("j4container");
+          j4container.style.display = "none";
+        }
+
+        if (e.key == "openpages") {
+          // Listen if anybody else is opening the same page!
+          localStorage.page_available = Date.now();
+        }
+      };
+
+      window.addEventListener("storage", onLocalStorageEvent, false);
+    </script>
     <script src="js/extras/camera-controls.js"></script>
     <script src="js/variables.js"></script>
     <script src="js/shaders.js"></script>

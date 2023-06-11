@@ -349,12 +349,6 @@ const switchFacingMode = () => {
   }
 };
 
-// Method to enable or disable fullscreen view
-const fullscreen = (mode = true, el = "html") =>
-  mode
-    ? document.querySelector(el).requestFullscreen()
-    : document.exitFullscreen();
-
 const handleMediaCamera = () => {
   const aspect = 960 / 720;
   let width, height;
@@ -401,8 +395,6 @@ async function toggleVideo() {
         // setDims(view, width, height);
         outputCanvasElement.style.setProperty("left", `-${offset}px`);
       }
-
-      fullscreen();
     }
     // modeButtons.forEach((btn) => {
     //   btn.style.display = "block";
