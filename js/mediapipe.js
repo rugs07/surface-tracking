@@ -395,6 +395,8 @@ async function toggleVideo() {
         // setDims(view, width, height);
         outputCanvasElement.style.setProperty("left", `-${offset}px`);
       }
+
+      fullscreen();
     }
     // modeButtons.forEach((btn) => {
     //   btn.style.display = "block";
@@ -409,6 +411,7 @@ async function toggleVideo() {
     viewSpaceContainer.style.display = "inline-block";
     outputCanvasElement.style.display = "none";
     showhandscreen.style.display = "none";
+    usermanual.style.display = "none";
     noSleep.disable();
 
     updateNote.innerText = "Welcome to jAR4U";
@@ -441,6 +444,12 @@ async function toggleVideo() {
     resetMesh();
   }
 }
+
+window.addEventListener("resize", function handleResize(event) {
+  if (window.innerHeight !== screen.height) {
+    if (isVideo) toggleVideo();
+  }
+});
 
 window.toggleVideo = toggleVideo;
 window.switchFacingMode = switchFacingMode;

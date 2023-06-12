@@ -74,23 +74,19 @@ function resetMesh() {
 
 function startSession() {
   usermanual.style.display = "none";
-  toggleVideo();
 }
 
 function showManual() {
-  if (!userManualShown) {
-    let step2img = document.getElementById("step2img");
-    let step3img = document.getElementById("step3img");
+  let step2img = document.getElementById("step2img");
+  let step3img = document.getElementById("step3img");
 
-    step2img.src = `assets/${jewelType}step2.jpg`;
-    step3img.src = `assets/${jewelType}step3.gif`;
+  step2img.src = `assets/${jewelType}step2.jpg`;
+  step3img.src = `assets/${jewelType}step3.gif`;
 
-    usermanual.style.display = "flex";
-    userManualShown = true;
-  } else {
-    toggleVideo();
-  }
-  if (isMobile || isIOS) fullscreen();
+  usermanual.style.display = "flex";
+  userManualShown = true;
+
+  toggleVideo();
 }
 
 /**
