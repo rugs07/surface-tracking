@@ -77,9 +77,11 @@ function startSession() {
 }
 
 function showManual() {
+  let step1img = document.getElementById("step1img");
   let step2img = document.getElementById("step2img");
   let step3img = document.getElementById("step3img");
 
+  step1img.src = `assets/${jewelType}step1.jpg`;
   step2img.src = `assets/${jewelType}step2.jpg`;
   step3img.src = `assets/${jewelType}step3.gif`;
 
