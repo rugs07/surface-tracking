@@ -23,6 +23,9 @@ body {
   overflow: auto;
   font-family: "Lato", sans-serif;
   margin: 3px;
+  letter-spacing: 0.25px;
+  word-spacing: 2.5px;
+  line-height: 1.5rem;
 }
 
 button {
@@ -40,7 +43,7 @@ button {
 
   background-color: #ffe161 !important;
   border: 1px solid#ffe161 !important;
-  color: #614f00 !important;
+  color: #730b16 !important;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
 }
 
@@ -126,7 +129,7 @@ button {
 }
 
 .pricelabel {
-  color: rgb(255, 98, 0);
+  color: #c21526;
 }
 
 .aricon {
@@ -240,7 +243,7 @@ button {
   margin: 0 auto;
   padding: 0;
   /* border: 3px solid #ffe161; */
-  /* border-radius: 5px; */
+  border-radius: 5px;
 }
 
 #error {
@@ -385,10 +388,11 @@ button {
   align-items: center;
   justify-content: center;
   z-index: 30;
-  padding: 10px;
+  padding: 25px;
   gap: 20px;
-  background-color: #614f00;
+  background-color: #730b16;
   color: #ffe161;
+  font-weight: 500;
   border: 2px solid #ffe161;
   border-radius: 5px;
   display: none;
@@ -405,10 +409,10 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  border: 1px solid #ffe161;
+  justify-content: center;
+  border: 2px solid #ffe161;
   border-radius: 5px;
-  padding: 10px;
+  padding: 20px;
   width: 100%;
   height: 100%;
 }
@@ -420,7 +424,8 @@ button {
 
 .steptext {
   font-size: 18px;
-  padding: 10px;
+  padding: 15px;
+  height: 10vh;
 }
 
 #showhandscreen {
@@ -514,7 +519,7 @@ button {
 
   .selectarea {
     padding: 10px;
-    gap: 5px;
+    gap: 0px;
   }
 
   .jewelinfo {
@@ -553,13 +558,13 @@ button {
 
   .viewer-container {
     width: 99vw;
-    height: 97dvh;
+    height: 99dvh;
     max-width: 99vw;
     overflow: hidden;
   }
 
   #usermanual {
-    gap: 10px;
+    gap: 15px;
     padding: 5px;
   }
 
@@ -570,6 +575,7 @@ button {
 
   .step {
     flex-direction: row;
+    padding: 10px;
   }
 
   .stepimg {
@@ -577,8 +583,11 @@ button {
     height: auto;
   }
 
-  #showhandscreen {
-    padding: 15px 0;
+  .steptext {
+    width: 60%;
+    height: auto;
+    padding: 0px;
+    margin-left: 15px;
   }
 
   #showhandscreen h2 {
@@ -593,14 +602,19 @@ button {
 
   .switchbtn {
     margin: 20px;
-    margin-left: auto;
     border-radius: 50%;
     width: fit-content;
+    width: 60px;
+    height: 60px;
+    padding: 12px;
+    position: absolute;
+    bottom: 30px;
+    right: 0;
   }
 
   .switchimg {
-    width: 30px;
-    height: 35px;
+    width: 100%;
+    height: 100%;
   }
 
   .desktop-viewar {

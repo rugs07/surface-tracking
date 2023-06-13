@@ -195,7 +195,7 @@ function onResults(results) {
       // Setting baseTheta for different jewel types
       // TODO: load this from sceneParams file
       baseTheta = THREE.MathUtils.degToRad(rawBaseTheta);
-      console.log("baseTheta", rawBaseTheta);
+      // console.log("baseTheta", rawBaseTheta);
       if (jewelType === "ring" && handLabel === "Left") {
         baseTheta = THREE.MathUtils.degToRad(rawBaseTheta + 180);
       }
@@ -364,7 +364,6 @@ const handleMediaCamera = () => {
 async function toggleVideo() {
   if (!isVideo) {
     updateNote.innerText = "Starting video...";
-
     outputCanvasElement.style.display = "block";
     if (!isIOS) camera.start();
     else {
@@ -391,7 +390,7 @@ async function toggleVideo() {
       arBottomContainer.style.display = "none";
 
       if (isMobile && !isIOS) {
-        setDims(viewSpaceContainer, smwidth, height);
+        setDims(viewSpaceContainer, width, height);
         // setDims(view, width, height);
         outputCanvasElement.style.setProperty("left", `-${offset}px`);
       }

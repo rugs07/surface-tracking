@@ -441,23 +441,25 @@ function handleEvents() {
       cameraControls.mouseButtons.left = CameraControls.ACTION.ROTATE;
     }
 
-    // if (keyState.arrowUp) {
-    //   cameraControls.zoom(0.1, false);
-    // } else if (keyState.arrowDown) {
-    //   cameraControls.zoom(-0.1, false);
-    // } else if (keyState.arrowLeft) {
+    if (keyState.arrowUp) {
+      cameraControls.zoom(0.1, false);
+    } else if (keyState.arrowDown) {
+      cameraControls.zoom(-0.1, false);
+    }
+    // else if (keyState.arrowLeft) {
     //   cameraControls.truck(0.1, 0, false);
     // } else if (keyState.arrowRight) {
     //   cameraControls.truck(-0.1, 0, false);
-    // } else if (keyState.keyW) {
-    //   cameraControls.rotate(0, 1.5 * THREE.MathUtils.DEG2RAD, true);
-    // } else if (keyState.keyA) {
-    //   cameraControls.rotate(1.5 * THREE.MathUtils.DEG2RAD, 0, true);
-    // } else if (keyState.keyS) {
-    //   cameraControls.rotate(0, -1.5 * THREE.MathUtils.DEG2RAD, true);
-    // } else if (keyState.keyD) {
-    //   cameraControls.rotate(-1.5 * THREE.MathUtils.DEG2RAD, 0, true);
     // }
+    else if (keyState.keyW) {
+      cameraControls.rotate(0, 1.5 * THREE.MathUtils.DEG2RAD, true);
+    } else if (keyState.keyA) {
+      cameraControls.rotate(1.5 * THREE.MathUtils.DEG2RAD, 0, true);
+    } else if (keyState.keyS) {
+      cameraControls.rotate(0, -1.5 * THREE.MathUtils.DEG2RAD, true);
+    } else if (keyState.keyD) {
+      cameraControls.rotate(-1.5 * THREE.MathUtils.DEG2RAD, 0, true);
+    }
   });
 
   document.addEventListener("keyup", (event) => {
@@ -482,23 +484,25 @@ function handleEvents() {
       cameraControls.mouseButtons.left = CameraControls.ACTION.ROTATE;
     }
 
-    // if (keyState.arrowUp) {
-    //   cameraControls.zoom(0.1, false);
-    // } else if (keyState.arrowDown) {
-    //   cameraControls.zoom(-0.1, false);
-    // } else if (keyState.arrowLeft) {
+    if (keyState.arrowUp) {
+      cameraControls.zoom(0.1, false);
+    } else if (keyState.arrowDown) {
+      cameraControls.zoom(-0.1, false);
+    }
+    // else if (keyState.arrowLeft) {
     //   cameraControls.truck(0.1, 0, false);
     // } else if (keyState.arrowRight) {
     //   cameraControls.truck(-0.1, 0, false);
-    // } else if (keyState.keyW) {
-    //   cameraControls.rotate(0, 1.5 * THREE.MathUtils.DEG2RAD, true);
-    // } else if (keyState.keyA) {
-    //   cameraControls.rotate(1.5 * THREE.MathUtils.DEG2RAD, 0, true);
-    // } else if (keyState.keyS) {
-    //   cameraControls.rotate(0, -1.5 * THREE.MathUtils.DEG2RAD, true);
-    // } else if (keyState.keyD) {
-    //   cameraControls.rotate(-1.5 * THREE.MathUtils.DEG2RAD, 0, true);
     // }
+    else if (keyState.keyW) {
+      cameraControls.rotate(0, 1.5 * THREE.MathUtils.DEG2RAD, true);
+    } else if (keyState.keyA) {
+      cameraControls.rotate(1.5 * THREE.MathUtils.DEG2RAD, 0, true);
+    } else if (keyState.keyS) {
+      cameraControls.rotate(0, -1.5 * THREE.MathUtils.DEG2RAD, true);
+    } else if (keyState.keyD) {
+      cameraControls.rotate(-1.5 * THREE.MathUtils.DEG2RAD, 0, true);
+    }
   });
 
   let lastTapTime = performance.now();
