@@ -248,12 +248,12 @@ function rotateY(angle) {
       // cameraControls.rotate(angle, 0, false);
       cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
     }
-    console.log(
-      "yangle",
-      angle.toFixed(2),
-      THREE.MathUtils.radToDeg(baseTheta).toFixed(2),
-      handLabel
-    );
+    // console.log(
+    //   "yangle",
+    //   angle.toFixed(2),
+    //   THREE.MathUtils.radToDeg(baseTheta).toFixed(2),
+    //   handLabel
+    // );
   }
 
   YRAngle = angle;

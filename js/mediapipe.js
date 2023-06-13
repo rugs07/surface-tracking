@@ -446,8 +446,17 @@ async function toggleVideo() {
 }
 
 window.addEventListener("resize", function handleResize(event) {
-  if (window.innerHeight !== screen.height) {
-    if (isVideo) toggleVideo();
+  if (isMobile || isIOS) {
+    if (isVideo && window.innerHeight !== screen.height) {
+      const newWidth = (window.innerWidth * 99) / 100;
+      const newHeight = (window.innerHeight * 99) / 100;
+
+      const showhandscreen = document.getElementById("showhandscreen");
+      setDims(showhandscreen, newWidth, newHeight);
+
+      const usermanual = document.getElementById("usermanual");
+      setDims(usermanual, newWidth, newHeight);
+    }
   }
 });
 

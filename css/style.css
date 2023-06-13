@@ -592,16 +592,15 @@ button {
   }
 
   .switchbtn {
-    margin: 15px;
+    margin: 20px;
     margin-left: auto;
-    margin-right: 25px;
     border-radius: 50%;
     width: fit-content;
   }
 
   .switchimg {
     width: 30px;
-    height: 30px;
+    height: 35px;
   }
 
   .desktop-viewar {

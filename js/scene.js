@@ -332,7 +332,6 @@ function initFromParameters() {
   canvas.addEventListener(
     "webglcontextlost",
     function (event) {
-      console.log("my-context-lost");
       event.preventDefault();
     },
     false
@@ -341,7 +340,6 @@ function initFromParameters() {
   canvas.addEventListener(
     "webglcontextrestored",
     function (event) {
-      console.log("my-context-restored");
       event.preventDefault();
       start();
     },
