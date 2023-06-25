@@ -49,10 +49,34 @@ function hideHandScreen() {
 }
 
 // Method to enable or disable fullscreen view
-const fullscreen = (mode = true, el = "html") =>
+const fullscreen = (mode = true, el = "body") =>
   mode
     ? document.querySelector(el).requestFullscreen()
     : document.exitFullscreen();
+
+function resetMeshForVR() {
+  cameraControls.moveTo(0.0, 0.0, 0.0, true);
+  if (jewelType == "bangle") cameraControls.zoomTo(1, false);
+  else cameraControls.zoomTo(0.5, false);
+
+  if (selectedJewel === "flowerbangle") {
+    console.log(selectedJewel);
+    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(80);
+    cameraControls.polarAngle = THREE.MathUtils.degToRad(80);
+  } else if (selectedJewel === "tribangle") {
+    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(100);
+    cameraControls.polarAngle = THREE.MathUtils.degToRad(77);
+  } else if (selectedJewel === "patternring") {
+    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-140);
+    cameraControls.polarAngle = THREE.MathUtils.degToRad(80);
+  } else if (selectedJewel === "3linerring") {
+    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
+    cameraControls.polarAngle = THREE.MathUtils.degToRad(85);
+  }
+  cameraControls.setFocalOffset(0.0, 0.0, 0.0);
+  ZRAngle = 0;
+  glamCanvas.style.transform = "none";
+}
 
 function resetMesh() {
   cameraControls.moveTo(0.0, 0.0, 0.0, true);

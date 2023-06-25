@@ -596,7 +596,7 @@ function loadOnFirstFrame() {
   if (isArcball) {
     arcballControls.update();
   } else {
-    resetMesh();
+    resetMeshForVR();
     cameraControls.setFocalOffset(0.0, 0.0, 0.0);
   }
 

@@ -296,8 +296,8 @@ function rotateZ(angle, canX, canY) {
 }
 
 function convertRingTransRange(value) {
-  const oldMin = -25;
-  const oldMax = 25;
+  const oldMin = -35;
+  const oldMax = 15;
   const newMin = 25;
   const newMax = 65;
   return ((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin;
@@ -322,14 +322,14 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
   let normYAngle = normalizeAngle(yAngle);
 
   if (jewelType === "ring" && enableRingTransparency) {
-    let transparencyZone = [-25, 25];
+    let transparencyZone = [-35, 15];
     if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
       ringTrans = 1.35;
       applyRingTrans();
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
     } else {
-      if (normYAngle > 0) normYAngle += 0.75;
+      if (normYAngle > 0) normYAngle += 0.5;
       else normYAngle -= 0.5;
       resetRingTrans();
     }
@@ -550,14 +550,15 @@ function getNormalizedXTSub(value) {
     newMax = isMobile ? 0.75 : 0.55;
     if (isIOS) newMax = 0.7;
   } else if (jewelType === "ring") {
-    newMin = isMobile ? 0.27 : 0.44;
+    newMin = isMobile ? 0.27 : 0.435;
     if (isIOS) newMin = 0.22;
-    newMax = isMobile ? 0.72 : 0.54;
-    if (isIOS) newMax = 0.72;
+    newMax = isMobile ? 0.7 : 0.525;
+    if (isIOS) newMax = 0.7;
 
     if (facingMode === "environment") {
-      if (isMobile) newMin = 0.26;
-      if (isIOS) newMin = 0.2;
+      if (isMobile || isIOS) {
+        newMax = 0.71;
+      }
     }
   }
 
@@ -575,8 +576,8 @@ function getNormalizedYTSub(value) {
   const oldMax = 1;
   let newMin = isMobile ? 0.45 : 0.4;
   if (isIOS) newMin = 0.44;
-  let newMax = isMobile ? 0.5 : 0.55;
-  if (isIOS) newMax = 0.5;
+  let newMax = isMobile ? 0.52 : 0.55;
+  if (isIOS) newMax = 0.52;
 
   // apply the formula to normalize the value
   const normalizedValue =
@@ -667,17 +668,25 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   // let midKnuckle = points[9];
   let midPip = points[10];
   let ringPos = {
-    x:
+    x: (points[13].x + points[14].x - 0.03) / 2.0,
+    y:
       facingMode === "environment"
-        ? (points[13].x + points[14].x - 0.025) / 2.0
-        : (points[13].x + points[14].x - 0.01) / 2.0,
-    y: (points[13].y + points[14].y - 0.05) / 2.0,
+        ? (points[13].y + points[14].y - 0.03) / 2.0
+        : (points[13].y + points[14].y - 0.05) / 2.0,
     z: (points[13].z + points[14].z) / 2.0,
   };
+
+  if (isMobile || isIOS) {
+    if (handLabel === "Left") ringPos.x -= 0.01;
+  } else {
+    ringPos.y -= 0.0175;
+    if (handLabel === "Left") ringPos.x -= 0.005;
+  }
 
   let stayPoint = null;
   if (jewelType === "bangle") {
     stayPoint = wrist;
+    stayPoint.y += isMobile || isIOS ? 0.025 : 0.015;
   } else if (jewelType === "ring") {
     stayPoint = ringPos;
   }
@@ -690,7 +699,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   let YTAdd = Math.abs(Math.sin(THREE.MathUtils.degToRad(ZRAngle))) * rollMul;
 
   // Changing range from (0,1) to (-0.5 to 0.5)
-  const newX = stayPoint.x - XTSub;
+  let newX = stayPoint.x - XTSub;
   let newY = stayPoint.y - YTSub;
   if (jewelType === "bangle") {
     newY += YTAdd;
@@ -722,17 +731,18 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
     resizeMul = isMobile ? 3.75 : 4.75;
     if (isIOS) resizeMul = 3.25;
   } else if (jewelType === "ring") {
-    if (facingMode === "environment") {
-      resizeMul = isMobile ? 0.95 : 1.25;
-      if (isIOS) resizeMul = 0.95;
-    } else {
-      resizeMul = isMobile ? 1.15 : 1.4;
-      if (isIOS) resizeMul = 1.15;
+    // front-cam
+    resizeMul = 0.9;
+
+    // back-cam
+    if (facingMode !== "environment") {
+      resizeMul = isMobile ? 1 : 1.25;
+      if (isIOS) resizeMul = 1;
     }
   }
 
   let resizeAdd = YTAdd * -13;
-  if (jewelType === "ring") resizeAdd = YTAdd * -3;
+  if (jewelType === "ring") resizeAdd = YTAdd * -0.5;
 
   if (resize && !isArcball) {
     let smoothenSize = smoothResizing(dist * resizeMul + resizeAdd);

@@ -299,14 +299,14 @@ button {
   padding: 0px;
   margin: -40px 0 0 -40px;
   position: absolute;
-  top: 50%;
-  left: 48%;
+  top: 40%;
+  left: 40%;
 }
 
 @media (max-width: 768px) {
   #loading-container {
-    top: 40%;
-    left: 40%;
+    top: 42.5%;
+    left: 22.5%;
   }
 }
 
@@ -317,6 +317,11 @@ button {
   background-color: #ddd;
   width: 65px;
   height: 65px;
+}
+
+.loadimg {
+  width: 400px;
+  height: auto;
 }
 
 #topleft {
@@ -512,9 +517,14 @@ button {
     overflow: hidden;
   }
 
+  .loadimg {
+    width: 300px;
+    height: auto;
+  }
+
   .jewelimg {
     height: auto;
-    top: 45px;
+    top: 30px;
   }
 
   .selectarea {

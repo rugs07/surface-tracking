@@ -381,6 +381,7 @@ async function toggleVideo() {
     updateNote.innerText = "Show your hand 👋";
     // trackButton.innerText = "Stop AR";
     applyTransVar();
+    resetMesh();
 
     const arToogleContainer = document.getElementById("ar-toggle-container");
     arToogleContainer.style.display = "none";
@@ -407,6 +408,7 @@ async function toggleVideo() {
     isVideo = false;
     resetTransVar();
     resetRingTrans();
+    resetMeshForVR();
     viewSpaceContainer.style.display = "inline-block";
     outputCanvasElement.style.display = "none";
     showhandscreen.style.display = "none";
@@ -435,12 +437,6 @@ async function toggleVideo() {
     // modeButtons.forEach((btn) => {
     //   btn.style.display = "none";
     // });
-  }
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    resetMesh();
   }
 }
 
