@@ -67,8 +67,8 @@ function resetMeshForVR() {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(100);
     cameraControls.polarAngle = THREE.MathUtils.degToRad(77);
   } else if (selectedJewel === "patternring") {
-    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-140);
-    cameraControls.polarAngle = THREE.MathUtils.degToRad(80);
+    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
+    cameraControls.polarAngle = THREE.MathUtils.degToRad(90);
   } else if (selectedJewel === "3linerring") {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
     cameraControls.polarAngle = THREE.MathUtils.degToRad(85);

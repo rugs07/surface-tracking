@@ -85,10 +85,17 @@ button {
   position: relative;
   border-radius: 10px;
   padding: 10px;
-  margin: 15px;
+  margin: 20px;
   margin-left: 0;
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ccc;
+  transition: transform 0.5s, box-shadow 1s;
+  cursor: pointer;
+}
+
+.jewel-container:hover {
+  transform: scale(1.025) translate(0, -3px) perspective(0px);
   box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.25);
-  border: 1px solid #aaa;
 }
 
 .jewelimg {
@@ -299,13 +306,17 @@ button {
   padding: 0px;
   margin: -40px 0 0 -40px;
   position: absolute;
+  /* top: 50%;
+  left: 48%; */
   top: 40%;
   left: 40%;
 }
 
 @media (max-width: 768px) {
   #loading-container {
+    /* top: 40%; */
     top: 42.5%;
+    /* left: 40%; */
     left: 22.5%;
   }
 }
@@ -510,11 +521,16 @@ button {
   .jewel-container {
     width: 45vw;
     min-height: 60vw;
-    margin: 5px;
+    margin: 8px;
     margin-left: 0;
     padding: 5px;
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
     overflow: hidden;
+  }
+
+  .jewel-container:hover {
+    transform: none;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
   }
 
   .loadimg {
