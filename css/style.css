@@ -692,3 +692,9 @@ button {
     width: 50px;
   }
 }
+
+@media (max-width: 384px) {
+  .j4container {
+    margin: 1.5% 1.25%;
+  }
+}
