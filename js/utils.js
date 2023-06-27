@@ -56,9 +56,13 @@ const fullscreen = (mode = true, el = "body") =>
 
 function resetMeshForVR() {
   cameraControls.moveTo(0.0, 0.0, 0.0, true);
-  if ((isIOS || isMobile) && jewelType === "ring")
-    cameraControls.zoomTo(0.5, false);
-  else cameraControls.zoomTo(0.75, false);
+  if (jewelType === "ring") {
+    if (isIOS || isMobile) cameraControls.zoomTo(0.5, false);
+    else cameraControls.zoomTo(0.75, false);
+  } else {
+    if (isIOS || isMobile) cameraControls.zoomTo(1, false);
+    else cameraControls.zoomTo(1.25, false);
+  }
 
   if (selectedJewel === "flowerbangle") {
     console.log(selectedJewel);
