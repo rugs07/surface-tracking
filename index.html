@@ -108,15 +108,40 @@
               </button>
             </div>
           </div> -->
+          <div class="jewel-container" onclick="setJewellery('patternring')">
+            <img src="assets/patternflip.jpeg" class="jewelimg" />
+            <button class="primarybtn addcart-mobilebtn" type="button">
+              <img src="assets/addbag.png" class="addbag" />
+            </button>
+            <div class="selectarea">
+              <div class="jewelinfo">
+                <h4 class="jewelname">Patterned Ring</h4>
+                <h4 class="pricelabel">&#8377; 24,225</h4>
+              </div>
+              <div class="jewelinfo">
+                <button
+                  class="primarybtn selectbtn"
+                  type="button"
+                  onclick="setJewellery('patternring')"
+                >
+                  <p>Try On</p>
+                  <img src="assets/aricon.png" class="aricon" />
+                </button>
+                <button class="primarybtn addcartbtn" type="button">
+                  <img src="assets/addbag2.png" class="addbag" />
+                </button>
+              </div>
+            </div>
+          </div>
           <div class="jewel-container" onclick="setJewellery('3linerring')">
-            <img src="assets/3linerring.jpeg" class="jewelimg" />
+            <img src="assets/trinetraflip.jpeg" class="jewelimg" />
             <button class="primarybtn addcart-mobilebtn" type="button">
               <img src="assets/addbag.png" class="addbag" />
             </button>
             <div class="selectarea">
               <div class="jewelinfo">
                 <h4 class="jewelname">Trinetra Ring</h4>
-                <h4 class="pricelabel">&#8377; 24,445</h4>
+                <h4 class="pricelabel">&#8377; 25,445</h4>
               </div>
               <div class="jewelinfo">
                 <button
@@ -133,21 +158,21 @@
               </div>
             </div>
           </div>
-          <div class="jewel-container" onclick="setJewellery('patternring')">
-            <img src="assets/patternring.jpeg" class="jewelimg" />
+          <div class="jewel-container" onclick="setJewellery('floralring')">
+            <img src="assets/floralflip.jpeg" class="jewelimg" />
             <button class="primarybtn addcart-mobilebtn" type="button">
               <img src="assets/addbag.png" class="addbag" />
             </button>
             <div class="selectarea">
               <div class="jewelinfo">
-                <h4 class="jewelname">Patterned Ring</h4>
-                <h4 class="pricelabel">&#8377; 25,225</h4>
+                <h4 class="jewelname">Floral Ring</h4>
+                <h4 class="pricelabel">&#8377; 20,750</h4>
               </div>
               <div class="jewelinfo">
                 <button
                   class="primarybtn selectbtn"
                   type="button"
-                  onclick="setJewellery('patternring')"
+                  onclick="setJewellery('floralring')"
                 >
                   <p>Try On</p>
                   <img src="assets/aricon.png" class="aricon" />
@@ -180,6 +205,7 @@
 
       window.addEventListener("storage", onLocalStorageEvent, false);
     </script>
+    <script src="js/home.js"></script>
     <script src="js/utils.js"></script>
   </body>
 </html>

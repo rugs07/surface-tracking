@@ -196,14 +196,22 @@ function onResults(results) {
       // TODO: load this from sceneParams file
       baseTheta = THREE.MathUtils.degToRad(rawBaseTheta);
       // console.log("baseTheta", rawBaseTheta);
-      if (jewelType === "ring" && handLabel === "Left") {
+      if (
+        jewelType === "ring" &&
+        (!isDirectionalRing || handLabel === "Left")
+      ) {
         baseTheta = THREE.MathUtils.degToRad(rawBaseTheta + 180);
       }
 
-      if (facingMode === "environment" && jewelType === "ring") {
+      if (
+        facingMode === "environment" &&
+        jewelType === "ring" &&
+        isDirectionalRing
+      ) {
         // Back Camera
         baseTheta += THREE.MathUtils.degToRad(180);
       }
+
       //   // Reversing values to keep the context same because back camera gives reverse values
       //   let isFacingPalm = !isPalmFacing;
       //   handLabel = handLabel === "Right" ? "Left" : "Right";

@@ -123,6 +123,7 @@ let gBlitCamera = null;
 let isVideo = false;
 let camera = null;
 let facingMode = "user";
+let isDirectionalRing = false;
 
 let isArcball = false;
 let loadFeatures = false;

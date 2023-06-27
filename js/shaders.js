@@ -43,6 +43,9 @@ const rayMarchFragmentShaderHeader = `
    uniform float blockSize;
    uniform mat3 worldspace_R_opengl;
    uniform float nearPlane;
+   uniform float brightness;
+   uniform float contrast;
+   uniform float gamma;
  
    uniform float ndc_h;
    uniform float ndc_w;
@@ -394,6 +397,17 @@ const rayMarchFragmentShaderBody = `
        color += evaluateNetwork(
          color, features, worldspace_R_opengl * normalize(vDirection));
      }
+
+      // Applying brighness to color
+      color = color * brightness;
+
+      // Applying contrast to color
+      color = (color - 0.5) * contrast + 0.5;
+
+      // Applying gamma to color
+      color.r = pow(color.r, 1.0 / gamma);
+      color.g = pow(color.g, 1.0 / gamma);
+      color.b = pow(color.b, 1.0 / gamma);
 
       gl_FragColor = vec4(color, 1.0 - visibility);     
     }

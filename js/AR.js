@@ -296,10 +296,10 @@ function rotateZ(angle, canX, canY) {
 }
 
 function convertRingTransRange(value) {
-  const oldMin = -35;
-  const oldMax = 15;
-  const newMin = 25;
-  const newMax = 65;
+  const oldMin = -20;
+  const oldMax = 20;
+  const newMin = 20;
+  const newMax = 60;
   return ((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin;
 }
 
@@ -322,7 +322,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
   let normYAngle = normalizeAngle(yAngle);
 
   if (jewelType === "ring" && enableRingTransparency) {
-    let transparencyZone = [-35, 15];
+    let transparencyZone = [-20, 20];
     if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
       ringTrans = 1.35;
       applyRingTrans();
@@ -677,8 +677,8 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   };
 
   if (isMobile || isIOS) {
-    if (handLabel === "Left" && facingMode !== "environment")
-      ringPos.x -= 0.00225;
+    ringPos.x += 0.0025;
+    if (handLabel === "Left") ringPos.x -= 0.0025;
   } else {
     ringPos.y -= 0.0175;
     if (handLabel === "Left") ringPos.x -= 0.005;
@@ -720,7 +720,19 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
     getZAngleAndRotate(wrist, midPip, canX, canY);
     getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
   } else if (jewelType === "ring") {
-    getZAngleAndRotate(points[13], points[14], canX, canY);
+    if (isDirectionalRing)
+      getZAngleAndRotate(points[13], points[14], canX, canY);
+    else {
+      if (
+        (handLabel === "Right" && facingMode !== "environment") ||
+        (handLabel === "Left" && facingMode === "environment")
+      ) {
+        getZAngleAndRotate(points[14], points[13], canX, canY);
+      } else {
+        getZAngleAndRotate(points[13], points[14], canX, canY);
+      }
+    }
+
     getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
   }
 

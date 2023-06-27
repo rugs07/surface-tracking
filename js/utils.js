@@ -56,26 +56,35 @@ const fullscreen = (mode = true, el = "body") =>
 
 function resetMeshForVR() {
   cameraControls.moveTo(0.0, 0.0, 0.0, true);
-  if (jewelType == "bangle") cameraControls.zoomTo(1, false);
-  else cameraControls.zoomTo(0.5, false);
+  if ((isIOS || isMobile) && jewelType === "ring")
+    cameraControls.zoomTo(0.5, false);
+  else cameraControls.zoomTo(1, false);
 
   if (selectedJewel === "flowerbangle") {
     console.log(selectedJewel);
-    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(80);
-    cameraControls.polarAngle = THREE.MathUtils.degToRad(80);
+    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-125);
+    cameraControls.polarAngle = THREE.MathUtils.degToRad(72);
   } else if (selectedJewel === "tribangle") {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(100);
-    cameraControls.polarAngle = THREE.MathUtils.degToRad(77);
+    cameraControls.polarAngle = THREE.MathUtils.degToRad(72);
   } else if (selectedJewel === "patternring") {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
     cameraControls.polarAngle = THREE.MathUtils.degToRad(90);
   } else if (selectedJewel === "3linerring") {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
-    cameraControls.polarAngle = THREE.MathUtils.degToRad(85);
+    cameraControls.polarAngle = THREE.MathUtils.degToRad(83);
+  } else if (selectedJewel === "floralring") {
+    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
+    cameraControls.polarAngle = THREE.MathUtils.degToRad(90);
   }
   cameraControls.setFocalOffset(0.0, 0.0, 0.0);
   ZRAngle = 0;
-  glamCanvas.style.transform = "none";
+  // flipping canvas
+  if (jewelType === "ring" && !isDirectionalRing) {
+    glamCanvas.style.transform = "rotateZ(" + 180 + "deg)";
+  } else {
+    glamCanvas.style.transform = "none";
+  }
 }
 
 function resetMesh() {
@@ -273,6 +282,17 @@ function updateLoadingProgress() {
   ) {
     updateMessageAndFunFact();
   }
+
+  // let loadingcircle = document.getElementById("loadingcircle");
+  // loadingcircle.setAttribute("data-value", parseInt(loadPercentage));
+  // console.log(loadPercentage, loadingcircle);
+
+  // let loadimg = document.getElementById("loadimg");
+  // const index = parseInt(loadPercentage);
+  // console.log(index);
+  // const path = `assets/${index}.jpeg`;
+  // console.log(path);
+  // loadimg.src = path;
 
   progress.innerHTML = currentMessage + loadPercentage + "%";
   funOrFact.innerHTML = currentFunFact;

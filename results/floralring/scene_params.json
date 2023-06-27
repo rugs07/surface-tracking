@@ -22,9 +22,9 @@
   "jeweltype": "ring",
   "baseTheta": 90,
   "transVar": 1.14,
-  "brightness": 1.0,
-  "contrast": 1.0,
-  "gamma": 1.0,
+  "brightness": 1.1,
+  "contrast": 0.95,
+  "gamma": 1.4,
   "ndc": false,
   "0_weights": [
     [

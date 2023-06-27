@@ -22,6 +22,9 @@
   "jeweltype": "bangle",
   "baseTheta": 0.0,
   "transVar": 1.148,
+  "brightness": 1.0,
+  "contrast": 1.0,
+  "gamma": 1.0,
   "ndc": false,
   "0_weights": [
     [

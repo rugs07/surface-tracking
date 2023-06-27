@@ -136,6 +136,9 @@ function loadScene(dirUrl, width, height) {
       rgbVolumeTexture,
       featureVolumeTexture,
       atlasIndexTexture,
+      gSceneParams["brightness"],
+      gSceneParams["contrast"],
+      gSceneParams["gamma"],
       new THREE.Vector3(
         gSceneParams["min_x"],
         gSceneParams["min_y"],
