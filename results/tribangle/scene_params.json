@@ -23,7 +23,7 @@
   "baseTheta": 180,
   "transVar": 1.12,
   "brightness": 1.0,
-  "contrast": 1.05,
+  "contrast": 1.1,
   "gamma": 1.5,
   "ndc": false,
   "0_weights": [
