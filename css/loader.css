@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
+
+@property --percentage {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+[role="progressbar"] {
+  --percentage: var(--value);
+  --primary: #f6c95f;
+  --secondary: #f6deae;
+  --size: 200px;
+  width: var(--size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 12px rgb(240, 206, 58) !important;
+  /* animation: progress 2s 0.5s forwards; */
+}
+
+[role="progressbar"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    var(--primary) calc(var(--percentage) * 1%),
+    var(--secondary) 0
+  );
+  mask: radial-gradient(white 60%, transparent 0);
+  mask-mode: alpha;
+  -webkit-mask: radial-gradient(#0000 60%, #000 0);
+  -webkit-mask-mode: alpha;
+}
+
+[role="progressbar"]::after {
+  counter-reset: percentage var(--value);
+  content: counter(percentage) "%";
+  font-family: "Lato", sans-serif;
+  font-size: calc(var(--size) / 6);
+  color: #000;
+}
+
+@media screen and (max-width: 767px) {
+  [role="progressbar"] {
+    --size: 150px;
+  }
+}
+
+/* @keyframes progress {
+  0% {
+    --percentage: 0;
+  }
+  100% {
+    --percentage: var(--value);
+  }
+} */

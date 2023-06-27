@@ -58,19 +58,19 @@ function resetMeshForVR() {
   cameraControls.moveTo(0.0, 0.0, 0.0, true);
   if ((isIOS || isMobile) && jewelType === "ring")
     cameraControls.zoomTo(0.5, false);
-  else cameraControls.zoomTo(1, false);
+  else cameraControls.zoomTo(0.75, false);
 
   if (selectedJewel === "flowerbangle") {
     console.log(selectedJewel);
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-125);
     cameraControls.polarAngle = THREE.MathUtils.degToRad(72);
-  } else if (selectedJewel === "tribangle") {
+  } else if (selectedJewel === "trivenibangle") {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(100);
     cameraControls.polarAngle = THREE.MathUtils.degToRad(72);
-  } else if (selectedJewel === "patternring") {
+  } else if (selectedJewel === "patternedring") {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
     cameraControls.polarAngle = THREE.MathUtils.degToRad(90);
-  } else if (selectedJewel === "3linerring") {
+  } else if (selectedJewel === "trinetraring") {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
     cameraControls.polarAngle = THREE.MathUtils.degToRad(83);
   } else if (selectedJewel === "floralring") {
@@ -210,7 +210,26 @@ function hideLoading() {
   loadingContainer.style.display = "none";
 
   let updateNote = document.getElementById("updatenote");
-  updateNote.innerText = "Welcome to jAR4U";
+  switch (selectedJewel) {
+    case "flowerbangle":
+      updateNote.innerText = "Flower Bangle";
+      break;
+    case "trivenibangle":
+      updateNote.innerText = "Triveni Bangle";
+      break;
+    case "trinetraring":
+      updateNote.innerText = "Trinetra Ring";
+      break;
+    case "patternedring":
+      updateNote.innerText = "Patterned Ring";
+      break;
+    case "floralring":
+      updateNote.innerText = "Floral Ring";
+      break;
+    default:
+      updateNote.innerText = "Welcome to jAR4U";
+      break;
+  }
 }
 
 /**
@@ -283,19 +302,11 @@ function updateLoadingProgress() {
     updateMessageAndFunFact();
   }
 
-  // let loadingcircle = document.getElementById("loadingcircle");
-  // loadingcircle.setAttribute("data-value", parseInt(loadPercentage));
-  // console.log(loadPercentage, loadingcircle);
-
-  // let loadimg = document.getElementById("loadimg");
-  // const index = parseInt(loadPercentage);
-  // console.log(index);
-  // const path = `assets/${index}.jpeg`;
-  // console.log(path);
-  // loadimg.src = path;
-
   progress.innerHTML = currentMessage + loadPercentage + "%";
   funOrFact.innerHTML = currentFunFact;
+
+  const loadingContainer = document.getElementById("loading-container");
+  loadingContainer.innerHTML = `<div role="progressbar" aria-valuenow="${loadPercentage}" aria-valuemin="0" aria-valuemax="100" style="--value: ${loadPercentage}"></div>`;
 }
 
 /**

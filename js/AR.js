@@ -668,7 +668,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   // let midKnuckle = points[9];
   let midPip = points[10];
   let ringPos = {
-    x: (points[13].x + points[14].x - 0.045) / 2.0,
+    x: (points[13].x + points[14].x - 0.04) / 2.0,
     y:
       facingMode === "environment"
         ? (points[13].y + points[14].y - 0.03) / 2.0
@@ -677,7 +677,6 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   };
 
   if (isMobile || isIOS) {
-    ringPos.x += 0.0025;
     if (handLabel === "Left") ringPos.x -= 0.0025;
   } else {
     ringPos.y -= 0.0175;

@@ -41,10 +41,10 @@ button {
   cursor: pointer;
   font-family: "Lato", sans-serif;
 
-  background-color: #ffe161 !important;
-  border: 1px solid#ffe161 !important;
-  color: #730b16 !important;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+  background-color: #f6c95f !important;
+  border: 1px solid#f6c95f !important;
+  color: #9e2531 !important;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15) !important;
 }
 
 .primarybtn {
@@ -60,15 +60,20 @@ button {
   margin: 0 auto;
   padding: 0;
   border-radius: 10px;
+  margin-top: 30px;
 }
 
 .type-label {
-  color: #614f00;
+  color: #865d06;
   margin: 0;
   width: 100%;
   text-align: left;
   font-size: 20px;
   margin-top: 10px;
+}
+
+.items-text {
+  font-size: 18px;
 }
 
 .jrow {
@@ -100,7 +105,7 @@ button {
 
 .jewelimg {
   position: absolute;
-  top: 0px;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
@@ -113,30 +118,35 @@ button {
   align-items: center;
   justify-content: flex-start;
   gap: 15px;
-  background-image: linear-gradient(to bottom, white, #ffe161);
+  background-image: linear-gradient(to bottom, white, #f6c95f);
   border-radius: 10px;
   width: 100%;
-  height: 50%;
+  height: 45%;
   position: absolute;
   bottom: 0px;
   left: 0;
   padding: 10px;
-  padding-top: 25px;
+  padding-top: 30px;
 }
 
 .jewelinfo {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  gap: 5px;
 }
 
 .jewelname {
+  color: #333;
+  font-size: 18px;
   text-align: center;
 }
 
 .pricelabel {
-  color: #c21526;
+  color: #9e2531;
+  font-size: 18px;
 }
 
 .aricon {
@@ -145,6 +155,9 @@ button {
 }
 
 .addcartbtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
   margin: 0;
   padding: 4px 8px;
   width: fit-content;
@@ -152,7 +165,9 @@ button {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background-color: white !important;
+  background-color: #f6cd6e !important;
+  z-index: 1;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15) !important;
 }
 
 .addbag {
@@ -177,12 +192,13 @@ button {
 .same-openbox {
   text-align: center;
   display: none;
+  margin-top: 30px;
 }
 
 .choosetext {
   color: #000;
   font-size: 20px;
-  margin: 10px;
+  margin: 15px;
 }
 
 .main-container {
@@ -198,6 +214,17 @@ button {
   font-size: 30px;
   margin: 3px;
   font-weight: bold;
+}
+
+.sitename {
+  color: #333;
+  background-color: #f6c95f;
+  padding: 12px 25px;
+  border-radius: 0 0 10px 10px;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: -3px;
 }
 
 .title-container {
@@ -249,7 +276,7 @@ button {
   height: 720px;
   margin: 0 auto;
   padding: 0;
-  /* border: 3px solid #ffe161; */
+  /* border: 3px solid #f6c95f; */
   border-radius: 5px;
 }
 
@@ -301,19 +328,19 @@ button {
 }
 
 #loading-container {
-  width: 150px;
-  height: 150px;
+  /* width: 150px;
+  height: 150px; */
   padding: 0px;
-  margin: -40px 0 0 -40px;
+  /* margin: -40px 0 0 -40px; */
   position: absolute;
   top: 40%;
-  left: 40%;
+  left: 42.5%;
 }
 
 @media (max-width: 768px) {
   #loading-container {
-    top: 42.5%;
-    left: 22.5%;
+    top: 40%;
+    left: 30%;
   }
 }
 
@@ -403,9 +430,9 @@ button {
   padding: 25px;
   gap: 20px;
   background-color: #730b16;
-  color: #ffe161;
+  color: #f6c95f;
   font-weight: 500;
-  border: 2px solid #ffe161;
+  border: 2px solid #f6c95f;
   border-radius: 5px;
   display: none;
 }
@@ -422,7 +449,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px solid #ffe161;
+  border: 2px solid #f6c95f;
   border-radius: 5px;
   padding: 20px;
   width: 100%;
@@ -481,7 +508,7 @@ button {
   top: 0;
   /* left: 0; */
   margin: 0 auto;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 #00000030;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.15), 0 4px 10px 0 #00000030;
   z-index: 10;
   display: none;
 }
@@ -510,17 +537,22 @@ button {
 
   .j4container {
     margin: 0 2%;
+    margin-top: 10px;
   }
 
   .type-label {
-    font-size: 16px;
+    font-size: 18px;
     margin-top: 15px;
     margin-bottom: 5px;
   }
 
+  .items-text {
+    font-size: 16px;
+  }
+
   .jewel-container {
     width: 45vw;
-    min-height: 60vw;
+    height: 55vw;
     margin: 8px;
     margin-left: 0;
     padding: 5px;
@@ -545,12 +577,17 @@ button {
 
   .selectarea {
     padding: 10px;
+    padding-top: 20px;
     gap: 0px;
   }
 
   .jewelinfo {
-    flex-direction: column;
-    gap: 5px;
+    gap: 3px;
+  }
+
+  .jewelname,
+  .pricelabel {
+    font-size: 16px;
   }
 
   .selectbtn {
@@ -558,28 +595,20 @@ button {
   }
 
   .addcartbtn {
-    display: none;
-  }
-
-  .addcart-mobilebtn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    margin: 0;
-    padding: 4px 8px;
-    width: fit-content;
-    height: fit-content;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background-color: #f5de7b !important;
-    z-index: 1;
+    width: 40px;
+    height: 40px;
+    top: 3px;
   }
 
   #updatenote {
     font-size: 20px;
     margin: 0;
     margin-top: 3px;
+  }
+
+  .sitename {
+    font-size: 18px;
+    padding: 5px 15px;
   }
 
   .viewer-container {
