@@ -41,9 +41,9 @@ button {
   cursor: pointer;
   font-family: "Lato", sans-serif;
 
-  background-color: #f6c95f !important;
-  border: 1px solid#f6c95f !important;
-  color: #9e2531 !important;
+  background-color: #f6deae !important;
+  border: 1px solid#f6deae !important;
+  color: #eb960e !important;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15) !important;
 }
 
@@ -64,7 +64,7 @@ button {
 }
 
 .type-label {
-  color: #865d06;
+  color: #666;
   margin: 0;
   width: 100%;
   text-align: left;
@@ -118,7 +118,7 @@ button {
   align-items: center;
   justify-content: flex-start;
   gap: 15px;
-  background-image: linear-gradient(to bottom, white, #f6c95f);
+  background-image: linear-gradient(to bottom, white, #f6deae);
   border-radius: 10px;
   width: 100%;
   height: 45%;
@@ -145,7 +145,7 @@ button {
 }
 
 .pricelabel {
-  color: #9e2531;
+  color: #eb960e;
   font-size: 18px;
 }
 
@@ -165,7 +165,7 @@ button {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background-color: #f6cd6e !important;
+  background-color: #f6deae !important;
   z-index: 1;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15) !important;
 }
@@ -218,7 +218,7 @@ button {
 
 .sitename {
   color: #333;
-  background-color: #f6c95f;
+  background-color: #f6deae;
   padding: 12px 25px;
   border-radius: 0 0 10px 10px;
   font-size: 28px;
@@ -276,7 +276,6 @@ button {
   height: 720px;
   margin: 0 auto;
   padding: 0;
-  /* border: 3px solid #f6c95f; */
   border-radius: 5px;
 }
 
@@ -335,12 +334,16 @@ button {
   position: absolute;
   top: 40%;
   left: 42.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
   #loading-container {
-    top: 40%;
-    left: 30%;
+    top: 35%;
+    left: 25%;
   }
 }
 
@@ -409,6 +412,10 @@ button {
   }
 }
 
+#funorfact {
+  margin: 0;
+}
+
 #viewspacecontainer {
   position: absolute;
   top: 0;
@@ -429,10 +436,10 @@ button {
   z-index: 30;
   padding: 25px;
   gap: 20px;
-  background-color: #730b16;
-  color: #f6c95f;
+  background-color: #eee;
+  color: #eb960e;
   font-weight: 500;
-  border: 2px solid #f6c95f;
+  border: 2px solid #eee;
   border-radius: 5px;
   display: none;
 }
@@ -449,8 +456,8 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px solid #f6c95f;
   border-radius: 5px;
+  box-shadow: 0 0 8px 0px rgba(0, 0, 0, 0.15);
   padding: 20px;
   width: 100%;
   height: 100%;
@@ -461,8 +468,13 @@ button {
   width: auto;
 }
 
+.trytitle {
+  font-size: 20px;
+}
+
 .steptext {
   font-size: 18px;
+  font-weight: 500;
   padding: 15px;
   height: 10vh;
 }
@@ -508,7 +520,7 @@ button {
   top: 0;
   /* left: 0; */
   margin: 0 auto;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.15), 0 4px 10px 0 #00000030;
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.15);
   z-index: 10;
   display: none;
 }
@@ -619,7 +631,6 @@ button {
   }
 
   #usermanual {
-    gap: 15px;
     padding: 5px;
   }
 

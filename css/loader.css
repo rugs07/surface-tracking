@@ -8,7 +8,7 @@
 
 [role="progressbar"] {
   --percentage: var(--value);
-  --primary: #f6c95f;
+  --primary: #f6ad37;
   --secondary: #f6deae;
   --size: 200px;
   width: var(--size);
@@ -18,7 +18,7 @@
   overflow: hidden;
   display: grid;
   place-items: center;
-  box-shadow: 0 0 12px rgb(240, 206, 58) !important;
+  box-shadow: 0 0 12px rgb(239, 189, 108) !important;
   /* animation: progress 2s 0.5s forwards; */
 }
 

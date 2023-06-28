@@ -250,16 +250,15 @@ function getRandomItem(array) {
 
 function updateMessageAndFunFact() {
   const loadingMessages = [
-    "Polishing your gems: ",
-    "Stringing your pearls: ",
-    "Forging your treasures: ",
-    "Creating your sparkle: ",
-    "Designing your masterpiece: ",
-    "Unearthing precious stones: ",
-    "Weaving a golden thread: ",
-    "Crafting your royal jewels: ",
-    "Assembling a artwork of stars: ",
-    "Unlocking the jewelry box: ",
+    "Polishing precious jewels",
+    "Stringing precious pearls",
+    "Forging jewelry treasures",
+    "Creating jewelry sparkle",
+    "Designing the masterpiece",
+    "Unearthing golden stones",
+    "Weaving the golden thread",
+    "Crafting artwork of stars",
+    "Unlocking the jewelry box",
   ];
 
   const funFactsAndTips = [
@@ -282,7 +281,6 @@ function updateMessageAndFunFact() {
 }
 
 function updateLoadingProgress() {
-  let progress = document.getElementById("loadingprogress");
   let funOrFact = document.getElementById("funorfact");
 
   let loadPercentage =
@@ -306,11 +304,13 @@ function updateLoadingProgress() {
     updateMessageAndFunFact();
   }
 
-  progress.innerHTML = currentMessage + loadPercentage + "%";
   funOrFact.innerHTML = currentFunFact;
 
   const loadingContainer = document.getElementById("loading-container");
-  loadingContainer.innerHTML = `<div role="progressbar" aria-valuenow="${loadPercentage}" aria-valuemin="0" aria-valuemax="100" style="--value: ${loadPercentage}"></div>`;
+  loadingContainer.innerHTML = `
+  <div role="progressbar" aria-valuenow="${loadPercentage}" aria-valuemin="0" aria-valuemax="100" style="--value: ${loadPercentage}"></div>            
+  <p class="progresstext">${currentMessage}</p>
+  `;
 }
 
 /**
