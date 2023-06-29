@@ -332,6 +332,7 @@ function initFromParameters() {
   var devicePixelRatio = window.devicePixelRatio || 1;
   canvas.width = desiredWidthInCSSPixels * devicePixelRatio;
   canvas.height = desiredHeightInCSSPixels * devicePixelRatio;
+  canvas.style.display = "none";
 
   canvas.addEventListener(
     "webglcontextlost",
@@ -674,7 +675,7 @@ function loadOnFirstFrame() {
     gl.generateMipmap(gl.TEXTURE_3D);
     gl.bindTexture(gl.TEXTURE_3D, oldTexture);
 
-    hideLoading();
+    setTimeout(hideLoading, 100);
     console.log("Successfully loaded scene from: " + gSceneParams["dirUrl"]);
     var d = new Date();
     var n = d.toLocaleTimeString();

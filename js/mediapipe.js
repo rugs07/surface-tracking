@@ -417,9 +417,7 @@ async function toggleVideo() {
     showhandscreen.style.display = "none";
     usermanual.style.display = "none";
     noSleep.disable();
-
-    updateNote.innerText = "Welcome to jAR4U";
-
+    updateJewelname();
     // trackButton.innerText = "View AR";
 
     const arToogleContainer = document.getElementById("ar-toggle-container");

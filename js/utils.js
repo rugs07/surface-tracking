@@ -217,16 +217,7 @@ function addHandlers() {
   });
 }
 
-/**
- * Hides the Loading prompt.
- */
-function hideLoading() {
-  let loading = document.getElementById("Loading");
-  loading.style.display = "none";
-
-  let loadingContainer = document.getElementById("loading-container");
-  loadingContainer.style.display = "none";
-
+function updateJewelname() {
   let updateNote = document.getElementById("updatenote");
   switch (selectedJewel) {
     case "flowerbangle":
@@ -248,6 +239,20 @@ function hideLoading() {
       updateNote.innerText = "Welcome to jAR4U";
       break;
   }
+}
+
+/**
+ * Hides the Loading prompt.
+ */
+function hideLoading() {
+  let loading = document.getElementById("Loading");
+  loading.style.display = "none";
+
+  let loadingContainer = document.getElementById("loading-container");
+  loadingContainer.style.display = "none";
+
+  updateJewelname();
+  glamCanvas.style.display = "block";
 }
 
 /**
