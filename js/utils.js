@@ -41,6 +41,18 @@ function resetRingTrans() {
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
 
+function hideJewel() {
+  showingJewel = 0;
+  gRayMarchScene.children[0].material.uniforms.showingJewel.value = 0;
+  gRenderer.render(gRayMarchScene, gBlitCamera);
+}
+
+function showJewel() {
+  showingJewel = 1;
+  gRayMarchScene.children[0].material.uniforms.showingJewel.value = 1;
+  gRenderer.render(gRayMarchScene, gBlitCamera);
+}
+
 let showhandscreen = document.getElementById("showhandscreen");
 let usermanual = document.getElementById("usermanual");
 
@@ -89,6 +101,7 @@ function resetMeshForVR() {
   } else {
     glamCanvas.style.transform = "none";
   }
+  showJewel();
 }
 
 function resetMesh() {
@@ -107,6 +120,7 @@ function resetMesh() {
   cameraControls.setFocalOffset(0.0, 0.0, 0.0);
   ZRAngle = 0;
   glamCanvas.style.transform = "none";
+  hideJewel();
 }
 
 function startSession() {

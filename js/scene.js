@@ -139,6 +139,7 @@ function loadScene(dirUrl, width, height) {
       gSceneParams["brightness"],
       gSceneParams["contrast"],
       gSceneParams["gamma"],
+      showingJewel,
       new THREE.Vector3(
         gSceneParams["min_x"],
         gSceneParams["min_y"],

@@ -8,7 +8,7 @@
 
 [role="progressbar"] {
   --percentage: var(--value);
-  --primary: #f6ad37;
+  --primary: #f5c67b;
   --secondary: #f6deae;
   --size: 200px;
   width: var(--size);

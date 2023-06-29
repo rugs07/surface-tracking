@@ -70,7 +70,7 @@ function setMeshVisibility() {
     viewSpaceContainer.style.display = "none";
     showhandscreen.style.display = "flex";
     resetMesh();
-    viewSpaceContainer.style.display = "block";
+    viewSpaceContainer.style.display = "inline-block";
   } else {
     setTimeout(() => {
       if (isResults) {
@@ -78,21 +78,13 @@ function setMeshVisibility() {
           viewSpaceContainer.style.display = "none";
           showhandscreen.style.display = "flex";
           resetMesh();
-          viewSpaceContainer.style.display = "block";
+          viewSpaceContainer.style.display = "inline-block";
         }
       }
       timer++;
     }, 500);
   }
 }
-
-// if (isPalmFacing && !wasPalmFacing) {
-//   baseTheta += THREE.MathUtils.degToRad(180);
-//   cameraControls.azimuthAngle = baseTheta;
-// } else if (!isPalmFacing && wasPalmFacing) {
-//   baseTheta -= THREE.MathUtils.degToRad(180);
-//   cameraControls.azimuthAngle = baseTheta;
-// }
 
 import DeviceDetector from "https://cdn.skypack.dev/device-detector-js@2.2.10";
 const mpHands = window;
@@ -238,6 +230,9 @@ function onResults(results) {
       timer = 0;
       showhandscreen.style.display = "none";
       viewSpaceContainer.style.display = "inline-block";
+      if (!showingJewel) {
+        showJewel();
+      }
       translateRotateMesh(
         results.multiHandLandmarks[0],
         handLabel,

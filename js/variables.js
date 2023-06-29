@@ -129,6 +129,7 @@ let isArcball = false;
 let loadFeatures = false;
 let enableSmoothing = true;
 let enableRingTransparency = true;
+let showingJewel = 1;
 
 let lastMidRef = null;
 let lastPinkyRef = null;

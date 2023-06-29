@@ -35,6 +35,7 @@ const rayMarchFragmentShaderHeader = `
    uniform int ndc;
    uniform float transVar;
    uniform float ringTrans;
+   uniform int showingJewel;
  
    uniform vec3 minPosition;
    uniform vec3 gridSize;
@@ -409,6 +410,10 @@ const rayMarchFragmentShaderBody = `
       color.g = pow(color.g, 1.0 / gamma);
       color.b = pow(color.b, 1.0 / gamma);
 
+      if(showingJewel == 0) {
+        gl_FragColor = vec4(vec3(0.0, 0.0, 0.0), 0.0);     
+        return;
+      }
       gl_FragColor = vec4(color, 1.0 - visibility);     
     }
  `;
