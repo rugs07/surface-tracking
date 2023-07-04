@@ -8,6 +8,7 @@ const canvasCtx = outputCanvasElement.getContext("2d");
 
 const viewSpaceContainer = document.getElementById("viewspacecontainer");
 // const viewElement = document.getElementById("view");
+const getStartedBtn = document.getElementById("getstartedbtn");
 const showhandscreen = document.getElementById("showhandscreen");
 const updateNote = document.getElementById("updatenote");
 const switchbtn = document.getElementById("switchbtn");
@@ -169,8 +170,15 @@ function onResults(results) {
     outputCanvasElement.height
   );
 
-  // const currentTime = window.performance.now();
+  if (getStartedBtn.disabled) {
+    getStartedBtn.disabled = false;
+    getStartedBtn.onclick = startSession;
+    getStartedBtn.classList.remove("disabledbtn");
+    getStartedBtn.innerText = "Get Started";
+  }
+
   if (isVideo) {
+    // const currentTime = window.performance.now();
     const handDetected =
       results.multiHandLandmarks && results.multiHandLandmarks.length > 0;
     handLabel = results.multiHandedness.length

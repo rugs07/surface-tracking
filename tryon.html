@@ -27,7 +27,7 @@
     <div>
     <!-- Video for handtracker -->
     <div class="ar-toggle-container" id="ar-toggle-container">
-      <button onclick="showManual()" class="desktop-viewar" id="desktop-viewar">View AR</button>
+      <button class="desktop-viewar disabledbtn" id="desktop-viewar" disabled>View AR</button>
       <!-- <p id="controlType">CameraCon</p> -->
       <!-- <button class="primarybtn loadbtns" onclick="start()">Start</button>
       <button class="primarybtn loadbtns" onclick="toggleControls()">Toggle</button> -->
@@ -166,8 +166,8 @@
             <p class="steptext">Try it on freely to view all its details</p>
           </div>
         </div>
-        <button class="primarybtn" type="button" onclick="startSession()">
-          Get Started
+        <button class="primarybtn disabledbtn" type="button" id="getstartedbtn" disabled>
+          Setting up
         </button>
       </div>
       <div id="showhandscreen">
@@ -181,7 +181,7 @@
       </div>
     </div>
     <div class="ar-bottom-container mobile-viewer" id="ar-bottom-container">
-      <button onclick="showManual()" id="mobile-viewar">View AR</button>
+      <button class="disabledbtn" id="mobile-viewar" disabled>View AR</button>
     </div>
   </div>
 

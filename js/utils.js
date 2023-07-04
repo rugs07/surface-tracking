@@ -253,6 +253,13 @@ function hideLoading() {
 
   updateJewelname();
   glamCanvas.style.display = "block";
+
+  const desktopViewAR = document.getElementById("desktop-viewar");
+  const mobileViewAR = document.getElementById("mobile-viewar");
+  let viewARButton = isMobile || isIOS ? mobileViewAR : desktopViewAR;
+  viewARButton.disabled = false;
+  viewARButton.onclick = showManual;
+  viewARButton.classList.remove("disabledbtn");
 }
 
 /**

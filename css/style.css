@@ -51,6 +51,11 @@ button {
   margin-left: 40px;
 }
 
+.disabledbtn {
+  opacity: 0.5;
+  cursor: wait;
+}
+
 .j4container {
   display: flex;
   flex-direction: column;
