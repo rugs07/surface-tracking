@@ -18,7 +18,12 @@ const jewels = [
       ],
     },
     rings: [
-      { id: 1, label: "patternedring", name: "Patterned Ring", price: "24,225" },
+      {
+        id: 1,
+        label: "patternedring",
+        name: "Patterned Ring",
+        price: "24,225",
+      },
       { id: 1, label: "trinetraring", name: "Trinetra Ring", price: "24,225" },
       { id: 1, label: "floralring", name: "Floral Ring", price: "20,750" },
     ],

@@ -8,11 +8,13 @@
     <link rel="icon" type="image/x-icon" href="/assets/logo.png">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="js/extras/camera_utils.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js" crossorigin="anonymous"></script>
+    <script src="js/extras/hands.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js" crossorigin="anonymous"></script> -->
 
     <link rel="stylesheet" type="text/css" href="css/loader.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -170,6 +172,20 @@
           Setting up
         </button>
       </div>
+      <div id="retrycamscreen">
+        <h3 class="trytitle">Oops...Looks like your camera is already being accessed by another application(s)</h3>
+        <div class="allsteps">
+          <div class="step">
+            <img src="assets/no-camerafeed.jpg" class="stepimg" id="step1img"/>
+            <p class="steptext">
+              Please close your camera on that application(s) and Try again !
+            </p>
+          </div>
+        </div>
+        <button class="primarybtn" type="button" id="retrycambtn" onclick="showManual()">
+          Try again
+        </button>
+      </div>
       <div id="showhandscreen">
         <h2>Place your hand vertically as shown below</h2>
         <img src="assets/hand.png" class="handimg"><img>
@@ -196,25 +212,7 @@
     <script src="https://unpkg.com/png-js@1.0.0/png.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script> -->
     <!-- <script src="js/extras/zip.js"></script> -->
-    <script>
-      localStorage.openpages = Date.now();
-      var onLocalStorageEvent = function (e) {
-        if (e.key == "page_available") {
-          let sameOpenBox = document.getElementById("same-openbox");
-          sameOpenBox.style.display = "block";
-
-          let j4container = document.getElementById("j4container");
-          j4container.style.display = "none";
-        }
-
-        if (e.key == "openpages") {
-          // Listen if anybody else is opening the same page!
-          localStorage.page_available = Date.now();
-        }
-      };
-
-      window.addEventListener("storage", onLocalStorageEvent, false);
-    </script>
+    <script src="js/start.js"></script>
     <script src="js/extras/camera-controls.js"></script>
     <script src="js/variables.js"></script>
     <script src="js/shaders.js"></script>

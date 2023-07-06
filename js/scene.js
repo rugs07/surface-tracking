@@ -312,6 +312,9 @@ function initFromParameters() {
   const usermanual = document.getElementById("usermanual");
   setDims(usermanual, width, height);
 
+  const retrycamscreen = document.getElementById("retrycamscreen");
+  setDims(retrycamscreen, width, height);
+
   const viewSpaceContainer = document.getElementById("viewspacecontainer");
   viewSpaceContainer.style.display = "inline-block";
 

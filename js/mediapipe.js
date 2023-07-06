@@ -10,6 +10,7 @@ const viewSpaceContainer = document.getElementById("viewspacecontainer");
 // const viewElement = document.getElementById("view");
 const getStartedBtn = document.getElementById("getstartedbtn");
 const showhandscreen = document.getElementById("showhandscreen");
+const retrycamscreen = document.getElementById("retrycamscreen");
 const updateNote = document.getElementById("updatenote");
 const switchbtn = document.getElementById("switchbtn");
 const desktopViewAR = document.getElementById("desktop-viewar");
@@ -371,18 +372,52 @@ const handleMediaCamera = () => {
   outputCanvasElement.height = height;
 };
 
+const setupCamera = () => {
+  navigator.mediaDevices
+    .getUserMedia({
+      video: true,
+      audio: false,
+    })
+    .then((mediaStream) => {
+      const stream = mediaStream;
+      const tracks = stream?.getTracks();
+      // if (tracks?.length) console.log(tracks);
+      tracks.forEach((track) => track.stop());
+    })
+    .catch(() => {
+      retrycamscreen.style.display = "flex";
+      toggleVideo();
+    });
+
+  camera = new Camera(inputVideoElement, {
+    onFrame: async () => {
+      await hands.send({ image: inputVideoElement });
+    },
+    facingMode,
+    width: width,
+    height: height,
+  });
+
+  // clearing previous mediastream if exist before new start
+  camera?.g?.getTracks().forEach((track) => {
+    track.stop();
+  });
+};
+
 // Method to toggle a video
 async function toggleVideo() {
   if (!isVideo) {
     updateNote.innerText = "Starting video...";
     outputCanvasElement.style.display = "block";
-    if (!isIOS) camera.start();
+
+    setupCamera();
+
+    if (!isIOS) camera?.start();
     else {
       switchbtn.style.display = "none";
       handleMediaCamera();
       startCamera();
     }
-
     if (!isMobile) {
       switchbtn.style.display = "none";
     }
@@ -415,7 +450,17 @@ async function toggleVideo() {
   } else {
     updateNote.innerText = "Stopping video...";
 
-    if (!isIOS) camera.stop();
+    if (!isIOS) {
+      camera?.stop();
+      camera = null;
+    } else {
+      // stop camera for iOS devices
+      camera?.g?.getTracks().forEach((track) => {
+        track.stop();
+      });
+      camera = null;
+    }
+
     isVideo = false;
     resetTransVar();
     resetRingTrans();
@@ -460,6 +505,9 @@ window.addEventListener("resize", function handleResize(event) {
 
       const usermanual = document.getElementById("usermanual");
       setDims(usermanual, newWidth, newHeight);
+
+      const retrycamscreen = document.getElementById("retrycamscreen");
+      setDims(retrycamscreen, newWidth, newHeight);
     }
   }
 });

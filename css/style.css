@@ -430,7 +430,8 @@ button {
   display: none;
 }
 
-#usermanual {
+#usermanual,
+#retrycamscreen {
   position: absolute;
   top: 0;
   left: 0;
@@ -636,7 +637,8 @@ button {
     overflow: hidden;
   }
 
-  #usermanual {
+  #usermanual,
+  #retrycamscreen {
     padding: 5px;
   }
 

@@ -136,8 +136,8 @@ function showManual() {
   step2img.src = `assets/${jewelType}step2.jpg`;
   step3img.src = `assets/${jewelType}step3.gif`;
 
+  retrycamscreen.style.display = "none";
   usermanual.style.display = "flex";
-  userManualShown = true;
 
   toggleVideo();
 }

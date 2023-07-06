@@ -14,11 +14,11 @@
         <h2 class="sitename">Welcome to jAR4U</h2>
       </div>
       <div class="same-openbox" id="same-openbox">
-        <h4 class="choosetext">
+        <h4 class="choosetext" id="choose-text-1">
           Oops...Looks like you've opened our website on some other tab /
           browser as well
         </h4>
-        <h4 class="choosetext">
+        <h4 class="choosetext" id="choose-text-2">
           For better performance, please use single tab at a time and close
           others
         </h4>
@@ -100,25 +100,7 @@
         </div>
       </div>
     </div>
-    <script>
-      localStorage.openpages = Date.now();
-      var onLocalStorageEvent = function (e) {
-        if (e.key == "page_available") {
-          let sameOpenBox = document.getElementById("same-openbox");
-          sameOpenBox.style.display = "block";
-
-          let j4container = document.getElementById("j4container");
-          j4container.style.display = "none";
-        }
-
-        if (e.key == "openpages") {
-          // Listen if anybody else is opening the same page!
-          localStorage.page_available = Date.now();
-        }
-      };
-
-      window.addEventListener("storage", onLocalStorageEvent, false);
-    </script>
+    <script src="js/start.js"></script>
     <script src="js/home.js"></script>
     <script src="js/utils.js"></script>
   </body>
