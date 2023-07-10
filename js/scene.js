@@ -337,22 +337,22 @@ function initFromParameters() {
   canvas.height = desiredHeightInCSSPixels * devicePixelRatio;
   canvas.style.display = "none";
 
-  canvas.addEventListener(
-    "webglcontextlost",
-    function (event) {
-      event.preventDefault();
-    },
-    false
-  );
+  // canvas.addEventListener(
+  //   "webglcontextlost",
+  //   function (event) {
+  //     event.preventDefault();
+  //   },
+  //   false
+  // );
 
-  canvas.addEventListener(
-    "webglcontextrestored",
-    function (event) {
-      event.preventDefault();
-      start();
-    },
-    false
-  );
+  // canvas.addEventListener(
+  //   "webglcontextrestored",
+  //   function (event) {
+  //     event.preventDefault();
+  //     start();
+  //   },
+  //   false
+  // );
 
   view.appendChild(canvas);
 

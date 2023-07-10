@@ -339,27 +339,66 @@ function updateLoadingProgress() {
   `;
 }
 
+function showError(error, msg1, msg2, imgsrc) {
+  const j4container = document.getElementById("j4container");
+  const titleContainer = document.getElementById("tryon-title");
+  const arToggleContainer = document.getElementById("ar-toggle-container");
+  const viewerContainer = document.getElementById("viewer-container");
+  const arBottomContainer = document.getElementById("ar-bottom-container");
+  const reloadbtn = document.getElementById("reloadbtn");
+
+  let errorBox = document.getElementById("error-box");
+  let errormsg1 = document.getElementById("error-msg1");
+  let errormsg2 = document.getElementById("error-msg2");
+  let errorimg = document.getElementById("errorimg");
+
+  if (errormsg1) errormsg1.innerText = msg1;
+  if (errormsg2) errormsg2.innerText = msg2;
+  if (errorimg) errorimg.src = `assets/${imgsrc}`;
+
+  const newWidth = (window.innerWidth * 85) / 100;
+  const newHeight = (window.innerHeight * 85) / 100;
+  setDims(errorBox, newWidth, newHeight);
+  errorBox.style.display = "block";
+  if (titleContainer) titleContainer.style.display = "block";
+  if (j4container) j4container.style.display = "none";
+  if (arToggleContainer) arToggleContainer.style.display = "none";
+  if (viewerContainer) viewerContainer.style.display = "none";
+  if (arBottomContainer) arBottomContainer.style.display = "none";
+  reloadbtn.onclick = function () {
+    location.reload();
+  };
+
+  console.error(error);
+}
+
 /**
  * Checks whether the WebGL context is valid and the underlying hardware is
  * powerful enough. Otherwise displays a warning.
  * @return {boolean}
  */
 function isRendererUnsupported() {
-  let loading = document.getElementById("Loading");
-
   let gl = document.getElementsByTagName("canvas")[1].getContext("webgl2");
+  // console.log("renderer-webgl-context", gl);
+
   if (!gl) {
-    loading.innerHTML =
-      "Error: WebGL2 context not found. Is your machine" +
-      " equipped with a discrete GPU?";
+    showError(
+      "jar4u Error: WebGL2 context not found.",
+      "Oops...Looks like we're having problems loading your selected jewellery",
+      "Please try again with better internet connectivity, browser support and GPU equipments !",
+      "system-issue.png"
+    );
     return true;
   }
 
   let debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
   if (!debugInfo) {
-    loading.innerHTML =
-      "Error: Could not fetch renderer info. Is your" +
-      " machine equipped with a discrete GPU?";
+    showError(
+      "jar4u Error: Could not fetch renderer info.",
+      "Oops...Looks like we're having problems loading your selected jewellery",
+      "Please try again with better internet connectivity, browser support and GPU equipments !",
+      "system-issue.png"
+    );
     return true;
   }
 
@@ -376,3 +415,5 @@ function isRendererUnsupported() {
 
   return false;
 }
+
+window.showError = showError;

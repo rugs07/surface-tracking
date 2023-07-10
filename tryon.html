@@ -26,7 +26,7 @@
     </script>
   </head>
   <body>
-    <div>
+    <div class="main-container">
     <!-- Video for handtracker -->
     <div class="ar-toggle-container" id="ar-toggle-container">
       <button class="desktop-viewar disabledbtn" id="desktop-viewar" disabled>View AR</button>
@@ -34,6 +34,31 @@
       <!-- <button class="primarybtn loadbtns" onclick="start()">Start</button>
       <button class="primarybtn loadbtns" onclick="toggleControls()">Toggle</button> -->
       <h2 id="updatenote">Setting up</h2>
+    </div>
+    <div class="title-container tryon-title" id="tryon-title">
+      <h2 class="sitename">Welcome to jAR4U</h2>
+    </div>
+    <div class="error-box" id="error-box">
+      <h4 class="error-msg" id="error-msg1">
+        Oops...Looks like you've opened our website on some other tab /
+        browser as well
+      </h4>
+      <h4 class="error-msg" id="error-msg2">
+        For better performance, please use single tab at a time and close
+        others
+      </h4>
+      <div class="allsteps errorsteps">
+        <div class="errorstep">
+          <img
+            src="assets/duplicate-tabs.jpg"
+            class="errorimg"
+            id="errorimg"
+          />
+        </div>
+        <button class="primarybtn" type="button" id="reloadbtn">
+          Try again
+        </button>
+      </div>
     </div>
     <!-- <div class="testing-container"> -->
       <!-- X
@@ -173,13 +198,13 @@
         </button>
       </div>
       <div id="retrycamscreen">
-        <h3 class="trytitle">Oops...Looks like your camera is already being accessed by another application(s)</h3>
+        <h4 class="trytitle" >Oops...Looks like your camera is already being accessed by another application(s)</h4>
+        <h4 class="trytitle">
+          Please close your camera on that application(s) and Try again !
+        </h4>
         <div class="allsteps">
-          <div class="step">
-            <img src="assets/no-camerafeed.jpg" class="stepimg" id="step1img"/>
-            <p class="steptext">
-              Please close your camera on that application(s) and Try again !
-            </p>
+          <div class="errorstep">
+            <img src="assets/no-camerafeed.png" class="errorimg" id="step1img"/>
           </div>
         </div>
         <button class="primarybtn" type="button" id="retrycambtn" onclick="showManual()">

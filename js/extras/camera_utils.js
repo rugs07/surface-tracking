@@ -519,6 +519,11 @@
               .catch(function (f) {
                 var h = "Failed to acquire camera feed: " + f;
                 console.error(h);
+
+                const retrycamscreen =
+                  document.getElementById("retrycamscreen");
+                retrycamscreen.style.display = "flex";
+                window.toggleVideo();
                 // alert(h);
                 // throw f;
               })

@@ -373,22 +373,6 @@ const handleMediaCamera = () => {
 };
 
 const setupCamera = () => {
-  navigator.mediaDevices
-    .getUserMedia({
-      video: true,
-      audio: false,
-    })
-    .then((mediaStream) => {
-      const stream = mediaStream;
-      const tracks = stream?.getTracks();
-      // if (tracks?.length) console.log(tracks);
-      tracks.forEach((track) => track.stop());
-    })
-    .catch(() => {
-      retrycamscreen.style.display = "flex";
-      toggleVideo();
-    });
-
   camera = new Camera(inputVideoElement, {
     onFrame: async () => {
       await hands.send({ image: inputVideoElement });
