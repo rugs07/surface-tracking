@@ -2426,7 +2426,7 @@
             );
             showError(
               "jar4u Error: Failed to create WebGL canvas context when passing video frame",
-              "Oops...Looks like we're having problems loading your AR experience",
+              "Looks like we're having problems loading your AR experience",
               "Please try again with better internet connectivity, browser support and GPU equipments !",
               "system-issue.png"
             );

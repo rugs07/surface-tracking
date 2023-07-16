@@ -354,7 +354,10 @@ function showError(error, msg1, msg2, imgsrc) {
 
   if (errormsg1) errormsg1.innerText = msg1;
   if (errormsg2) errormsg2.innerText = msg2;
-  if (errorimg) errorimg.src = `assets/${imgsrc}`;
+  if (errorimg) {
+    if (imgsrc && imgsrc.length) errorimg.src = `assets/${imgsrc}`;
+    else errorimg.style.display = "none";
+  }
 
   const newWidth = (window.innerWidth * 85) / 100;
   const newHeight = (window.innerHeight * 85) / 100;
@@ -372,6 +375,47 @@ function showError(error, msg1, msg2, imgsrc) {
   console.error(error);
 }
 
+function generateQR(user_input) {
+  let qr_container = document.querySelector(".qr-code-container");
+  qr_container.style.display = "flex";
+
+  let qr_code_element = document.querySelector(".qr-code");
+  qr_code_element.style = "";
+
+  var qrcode = new QRCode(qr_code_element, {
+    text: `${user_input.value}`,
+    width: 180, //128
+    height: 180,
+    colorDark: "#333333",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+
+  // To Download QR Code
+
+  // let download = document.createElement("button");
+  // qr_code_element.appendChild(download);
+
+  // let download_link = document.createElement("a");
+  // download_link.setAttribute("download", "qr_code.png");
+  // download_link.innerHTML = `Download <i class="fa-solid fa-download"></i>`;
+
+  // download.appendChild(download_link);
+
+  let qr_code_img = document.querySelector(".qr-code img");
+  let qr_code_canvas = document.querySelector("canvas");
+
+  if (qr_code_img.getAttribute("src") == null) {
+    setTimeout(() => {
+      download_link.setAttribute("href", `${qr_code_canvas.toDataURL()}`);
+    }, 300);
+  } else {
+    setTimeout(() => {
+      download_link.setAttribute("href", `${qr_code_img.getAttribute("src")}`);
+    }, 300);
+  }
+}
+
 /**
  * Checks whether the WebGL context is valid and the underlying hardware is
  * powerful enough. Otherwise displays a warning.
@@ -384,10 +428,13 @@ function isRendererUnsupported() {
   if (!gl) {
     showError(
       "jar4u Error: WebGL2 context not found.",
-      "Oops...Looks like we're having problems loading your selected jewellery",
-      "Please try again with better internet connectivity, browser support and GPU equipments !",
-      "system-issue.png"
+      "Looks like your browser doesn't support advanced AR.",
+      "Please scan the QR code below or navigate to this link in your phone to try out the jewellery piece. !",
+      ""
     );
+    generateQR({
+      value: window.location.href,
+    });
     return true;
   }
 
@@ -395,10 +442,13 @@ function isRendererUnsupported() {
   if (!debugInfo) {
     showError(
       "jar4u Error: Could not fetch renderer info.",
-      "Oops...Looks like we're having problems loading your selected jewellery",
-      "Please try again with better internet connectivity, browser support and GPU equipments !",
-      "system-issue.png"
+      "Looks like your browser doesn't support advanced AR.",
+      "Please scan the QR code below or navigate to this link in your phone to try out the jewellery piece. !",
+      ""
     );
+    generateQR({
+      value: window.location.href,
+    });
     return true;
   }
 

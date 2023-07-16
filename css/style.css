@@ -53,6 +53,10 @@ button {
   margin-left: 40px;
 }
 
+.centerbtn {
+  margin-left: 0px;
+}
+
 .disabledbtn {
   opacity: 0.5;
   cursor: wait;
@@ -502,6 +506,25 @@ button {
   height: auto;
 }
 
+.qr-code-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60vh;
+  display: none;
+}
+
+.qr-code-container .qr-code {
+  display: flex;
+  border-radius: 1rem;
+  background-color: #f6deae;
+  width: fit-content;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
 .trytitle {
   font-size: 20px;
 }
@@ -686,6 +709,10 @@ button {
   .stepimg {
     width: 40%;
     height: auto;
+  }
+
+  .qr-code-container {
+    height: 45vh;
   }
 
   .steptext {

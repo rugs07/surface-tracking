@@ -3,7 +3,7 @@ var onLocalStorageEvent = function (e) {
   if (e.key == "page_available") {
     showError(
       "jar4u Error: Duplicate tabs at the same time",
-      "Oops...Looks like you've opened our website on some other tab / browser as well",
+      "Looks like you've opened our website on some other tab / browser as well",
       "For better performance, please use single tab at a time and close others",
       "duplicate-tabs.png"
     );

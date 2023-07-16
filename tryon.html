@@ -24,6 +24,7 @@
       integrity="sha512-DSzvYfxJWRi3E6vfcGQfL5CqOlApxYrrdqRP3hRCnoiZ0oM6+ccYjbtdzQFUrAOI/ehKk0VKFuKs5GseGPkVjQ==" 
       crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   </head>
   <body>
     <div class="main-container">
@@ -40,7 +41,7 @@
     </div>
     <div class="error-box" id="error-box">
       <h4 class="error-msg" id="error-msg1">
-        Oops...Looks like you've opened our website on some other tab /
+        Looks like you've opened our website on some other tab /
         browser as well
       </h4>
       <h4 class="error-msg" id="error-msg2">
@@ -54,8 +55,11 @@
             class="errorimg"
             id="errorimg"
           />
+          <div class="qr-code-container">
+            <div class="qr-code" style></div>
+          </div>
         </div>
-        <button class="primarybtn" type="button" id="reloadbtn">
+        <button class="centerbtn" type="button" id="reloadbtn">
           Try again
         </button>
       </div>
@@ -193,12 +197,12 @@
             <p class="steptext">Try it on freely to view all its details</p>
           </div>
         </div>
-        <button class="primarybtn disabledbtn" type="button" id="getstartedbtn" disabled>
+        <button class="centerbtn disabledbtn" type="button" id="getstartedbtn" disabled>
           Setting up
         </button>
       </div>
       <div id="retrycamscreen">
-        <h4 class="trytitle" >Oops...Looks like your camera is already being accessed by another application(s)</h4>
+        <h4 class="trytitle" >Looks like your camera is already being accessed by another application(s)</h4>
         <h4 class="trytitle">
           Please close your camera on that application(s) and Try again !
         </h4>
@@ -207,7 +211,7 @@
             <img src="assets/no-camerafeed.png" class="errorimg" id="step1img"/>
           </div>
         </div>
-        <button class="primarybtn" type="button" id="retrycambtn" onclick="showManual()">
+        <button class="centerbtn" type="button" id="retrycambtn" onclick="showManual()">
           Try again
         </button>
       </div>
