@@ -621,6 +621,8 @@ function isRendererUnsupported() {
     unMaskedInfo.renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
     unMaskedInfo.vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
 
+    console.log(unMaskedInfo);
+
     if (
       !(isMobile || isIOS) &&
       browserName === "Chrome" &&

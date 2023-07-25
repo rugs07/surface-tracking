@@ -536,9 +536,9 @@ function loadOnFirstFrame() {
   }
 
   // Also early out if the renderer is not supported.
-  if (isRendererUnsupported()) {
-    gSceneParams["loadingTextures"] = true;
-  }
+  // if (isRendererUnsupported()) {
+  gSceneParams["loadingTextures"] = true;
+  // }
 
   // Set up the camera controls for the scene type.
   // gOrbitControls.target.x = 0.0;
