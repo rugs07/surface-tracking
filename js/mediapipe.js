@@ -16,27 +16,7 @@ const switchbtn = document.getElementById("switchbtn");
 const desktopViewAR = document.getElementById("desktop-viewar");
 const mobileViewAR = document.getElementById("mobile-viewar");
 
-isMobile = mobileAndTabletCheck();
-console.log("isMobile", isMobile);
-isIOS = iOSCheck();
-console.log("isIOS", isIOS);
-
 if (!isMobile) facingMode = "user";
-
-function iOSCheck() {
-  return (
-    [
-      "iPad Simulator",
-      "iPhone Simulator",
-      "iPod Simulator",
-      "iPad",
-      "iPhone",
-      "iPod",
-    ].includes(navigator.platform) ||
-    // iPad on iOS 13 detection
-    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-  );
-}
 
 let width = 1280,
   height = 720,

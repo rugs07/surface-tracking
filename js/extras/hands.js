@@ -2421,15 +2421,15 @@
           r = a.m.getContext("webgl2", {});
           if (!r && ((r = a.m.getContext("webgl", {})), !r)) {
             // console.log("hands-webgl-context", r);
-            console.log(
-              "Failed to create WebGL canvas context when passing video frame."
-            );
-            showError(
-              "jar4u Error: Failed to create WebGL canvas context when passing video frame",
-              "Looks like we're having problems loading your AR experience",
-              "Please try again with better internet connectivity, browser support and GPU equipments !",
-              "system-issue.png"
-            );
+            showErrors([
+              {
+                error: "jar4u Error: Failed to create WebGL canvas context when passing video frame",
+                msg1: "Looks like we're having problems loading your AR experience",
+                msg2: "Please try again with better internet connectivity, browser support and GPU equipments !",
+                imgsrc: "system-issue.png",
+                tryagain: true,
+              },
+            ]);
             p.return();
           }
           // console.log("hands-webgl-context", r);

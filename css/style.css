@@ -260,6 +260,7 @@ button {
   top: 0;
   left: 0;
   margin: 15px auto;
+  display: none;
 }
 
 .testing-container {
@@ -439,7 +440,7 @@ button {
 
 #usermanual,
 #retrycamscreen,
-#error-box {
+.side-errors {
   position: absolute;
   top: 0;
   left: 0;
@@ -458,12 +459,20 @@ button {
   display: none;
 }
 
-#error-box {
-  top: 60px;
+.side-errors {
+  flex-direction: row;
+  top: 100px;
   left: 8%;
-  padding: 10px;
-  background-color: #fff;
   border: none;
+  padding: 0;
+  background-color: #fff;
+}
+
+.error-box {
+  color: #eb960e !important;
+  width: 100%;
+  height: 100%;
+  gap: 20px;
 }
 
 .allsteps {
@@ -491,8 +500,11 @@ button {
 }
 
 .errorstep {
-  width: 33%;
+  width: 100%;
   height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .stepimg {
@@ -502,8 +514,22 @@ button {
 
 .errorimg {
   margin: 20px 0;
-  width: 100%;
+  width: 25vw;
   height: auto;
+}
+
+.opengl-image {
+  width: 45vw;
+}
+
+.flag-instruction {
+  font-size: 18px;
+  margin: 20px 0;
+  color: #333;
+}
+
+.highlight {
+  color: #eb960e !important;
 }
 
 .qr-code-container {
@@ -511,7 +537,7 @@ button {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 60vh;
+  height: 40vh;
   display: none;
 }
 
@@ -692,6 +718,10 @@ button {
     padding: 5px;
   }
 
+  .side-errors {
+    top: 50px;
+  }
+
   .allsteps {
     flex-direction: column;
     gap: 10px;
@@ -702,17 +732,13 @@ button {
     padding: 10px;
   }
 
-  .errorstep {
-    width: 95%;
+  .errorimg {
+    width: 90vw;
   }
 
   .stepimg {
     width: 40%;
     height: auto;
-  }
-
-  .qr-code-container {
-    height: 45vh;
   }
 
   .steptext {

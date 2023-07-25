@@ -19,6 +19,7 @@ let YRAngle = 0.0; // in radians
 let ZRAngle = 0.0; // in degrees
 let isMobile = true;
 let isIOS = false;
+let browserName = "";
 let jewelType = "";
 let rawBaseTheta = 0;
 let baseTheta = 0;
