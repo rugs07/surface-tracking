@@ -450,6 +450,7 @@ button {
   justify-content: center;
   z-index: 30;
   padding: 25px;
+  padding-bottom: 100px;
   gap: 20px;
   background-color: #eee;
   color: #eb960e !important;
@@ -558,8 +559,9 @@ button {
 .steptext {
   font-size: 18px;
   font-weight: 500;
-  padding: 15px;
+  padding: 20px;
   height: 10vh;
+  margin: 0;
 }
 
 #showhandscreen {
@@ -571,7 +573,9 @@ button {
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  padding: 30px 0;
+  padding: 0;
+  padding-top: 30px;
+  padding-bottom: 15px;
   gap: 10px;
   background-color: rgba(0, 0, 0, 0.25);
   color: white;
@@ -579,7 +583,7 @@ button {
 }
 
 .handimg {
-  height: 70dvh;
+  height: 65dvh;
 }
 
 /* The main RIV view */
@@ -716,6 +720,7 @@ button {
   #usermanual,
   #retrycamscreen {
     padding: 5px;
+    padding-bottom: 75px;
   }
 
   .side-errors {
@@ -737,7 +742,7 @@ button {
   }
 
   .stepimg {
-    width: 40%;
+    width: 35%;
     height: auto;
   }
 
@@ -758,20 +763,18 @@ button {
   }
 
   .handimg {
-    height: 65dvh;
+    height: 60dvh;
     margin-right: 15px;
   }
 
   .switchbtn {
-    margin: 20px;
+    margin: 0 20px;
     border-radius: 50%;
     width: fit-content;
     width: 60px;
     height: 60px;
     padding: 12px;
-    position: absolute;
-    bottom: 30px;
-    right: 0;
+    margin-left: auto;
   }
 
   .switchimg {
@@ -790,7 +793,7 @@ button {
     width: 100%;
     z-index: 20;
     position: absolute;
-    bottom: 0;
+    bottom: 40px;
     left: 0;
     margin: 50px auto;
   }

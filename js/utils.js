@@ -97,9 +97,27 @@ function resetMeshForVR() {
   ZRAngle = 0;
   // flipping canvas
   if (jewelType === "ring" && !isDirectionalRing) {
-    glamCanvas.style.transform = "rotateZ(" + 180 + "deg)";
+    if (isMobile || isIOS) {
+      glamCanvas.style.transform =
+        "translate3d(" +
+        0 +
+        "px, " +
+        -60 +
+        "px, " +
+        0 +
+        "px) rotateZ(" +
+        180 +
+        "deg)";
+    } else {
+      glamCanvas.style.transform = "rotateZ(" + 180 + "deg)";
+    }
   } else {
-    glamCanvas.style.transform = "none";
+    if (isMobile || isIOS) {
+      glamCanvas.style.transform =
+        "translate3d(" + 0 + "px, " + -60 + "px, " + 0 + "px)";
+    } else {
+      glamCanvas.style.transform = "none";
+    }
   }
   showJewel();
 }
@@ -112,9 +130,7 @@ function resetMesh() {
   if (jewelType === "ring") {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-180);
   } else {
-    if (selectedJewel === "tribangle")
-      cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-90);
-    else cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-40);
+    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-40);
   }
   cameraControls.polarAngle = basePhi;
   cameraControls.setFocalOffset(0.0, 0.0, 0.0);
@@ -626,7 +642,8 @@ function isRendererUnsupported() {
     if (
       !(isMobile || isIOS) &&
       browserName === "Chrome" &&
-      unMaskedInfo.renderer.indexOf("OpenGL") === -1
+      unMaskedInfo.renderer.indexOf("OpenGL") === -1 &&
+      unMaskedInfo.renderer.indexOf("SwiftShader") === -1
     ) {
       showErrors([
         {
