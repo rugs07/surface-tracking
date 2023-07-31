@@ -18,7 +18,13 @@ function updateYRMul(value) {
 }
 
 function setJewellery(value) {
-  location.href = `/tryon.html?dir=${value}`;
+  sessionStorage.setItem("selectedJewel", value);
+  location.href = "/tryon.html";
+  // window.open(`/tryon.html`, "_blank");
+}
+
+function gotoHome() {
+  location.href = `/`;
 }
 
 function applyRingTrans() {
@@ -27,6 +33,7 @@ function applyRingTrans() {
 }
 
 function applyTransVar() {
+  console.log(transVar);
   gRayMarchScene.children[0].material.uniforms.transVar.value = transVar;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
@@ -54,7 +61,11 @@ function showJewel() {
 }
 
 let showhandscreen = document.getElementById("showhandscreen");
+let outputCanvasElement = document.getElementsByClassName("output_canvas")[0];
 let usermanual = document.getElementById("usermanual");
+let arToogleContainer = document.getElementById("ar-toggle-container");
+let desktopViewAR = document.getElementById("desktop-viewar");
+let mobileViewAR = document.getElementById("mobile-viewar");
 
 function hideHandScreen() {
   showhandscreen.style.display = "none";
@@ -77,7 +88,6 @@ function resetMeshForVR() {
   }
 
   if (selectedJewel === "flowerbangle") {
-    console.log(selectedJewel);
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-125);
     cameraControls.polarAngle = THREE.MathUtils.degToRad(72);
   } else if (selectedJewel === "trivenibangle") {
@@ -252,7 +262,7 @@ function updateJewelname() {
       updateNote.innerText = "Floral Ring";
       break;
     default:
-      updateNote.innerText = "Welcome to jAR4U";
+      updateNote.innerText = "Welcome to JAR4U";
       break;
   }
 }
@@ -266,16 +276,45 @@ function hideLoading() {
 
   let loadingContainer = document.getElementById("loading-container");
   loadingContainer.style.display = "none";
+  viewSpaceContainer.style.backgroundColor = "transparent";
+  let viewARButton = isMobile || isIOS ? mobileViewAR : desktopViewAR;
 
   updateJewelname();
   glamCanvas.style.display = "block";
+  if (isVideo) {
+    showhandscreen.style.display = "flex";
+    outputCanvasElement.style.display = "block";
+    viewARButton.style.display = "block";
+    arToogleContainer.style.display = "none";
+  }
 
-  const desktopViewAR = document.getElementById("desktop-viewar");
-  const mobileViewAR = document.getElementById("mobile-viewar");
-  let viewARButton = isMobile || isIOS ? mobileViewAR : desktopViewAR;
   viewARButton.disabled = false;
   viewARButton.onclick = showManual;
   viewARButton.classList.remove("disabledbtn");
+}
+
+function showLoading() {
+  let loading = document.getElementById("Loading");
+  loading.style.display = "block";
+
+  let loadingContainer = document.getElementById("loading-container");
+  loadingContainer.style.display = "flex";
+
+  viewSpaceContainer.style.backgroundColor = "#eee";
+  let viewARButton = isMobile || isIOS ? mobileViewAR : desktopViewAR;
+
+  updateJewelname();
+  showhandscreen.style.display = "none";
+  arToogleContainer.style.display = "flex";
+  viewARButton.style.display = "none";
+  outputCanvasElement.style.display = "none";
+  glamCanvas.style.display = "none";
+
+  let activeElement = document.getElementsByClassName("active-ar-jewel")[0];
+  if (activeElement) activeElement.classList.remove("active-ar-jewel");
+
+  let activeJewel = document.getElementById(`${selectedJewel}`);
+  if (activeJewel) activeJewel.classList.add("active-ar-jewel");
 }
 
 /**
@@ -294,24 +333,24 @@ function updateMessageAndFunFact() {
   const loadingMessages = [
     "Polishing precious jewels",
     "Stringing precious pearls",
-    "Forging jewelry treasures",
-    "Creating jewelry sparkle",
+    "Forging jewellery treasures",
+    "Creating jewellery sparkle",
     "Designing the masterpiece",
     "Unearthing golden stones",
     "Weaving the golden thread",
     "Crafting artwork of stars",
-    "Unlocking the jewelry box",
+    "Unlocking the jewellery box",
   ];
 
   const funFactsAndTips = [
     "Did you know? The Hope Diamond is one of the most famous gemstones, weighing 45.52 carats!",
     "Tip: To get the best AR experience, make sure you're in a well-lit room.",
     "Fact: Pearls are the only gemstones created by living creatures, like oysters and mussels.",
-    "Tip: Make sure your device's camera lens is clean for the best AR jewelry viewing experience.",
-    "Fact: The word 'jewelry' is derived from the Latin word 'jocale,' meaning 'plaything.'",
-    "Tip: For a more accurate jewelry fit in the AR experience, hold your device steady and parallel to the surface.",
+    "Tip: Make sure your device's camera lens is clean for the best AR jewellery viewing experience.",
+    "Fact: The word 'jewellery' is derived from the Latin word 'jocale,' meaning 'plaything.'",
+    "Tip: For a more accurate jewellery fit in the AR experience, hold your device steady and parallel to the surface.",
     "Fact: The largest diamond ever discovered, the Cullinan Diamond, weighed 3,106 carats!",
-    "Tip: You can take screenshots of your favorite AR jewelry pieces to share with friends or for future reference.",
+    "Tip: You can take screenshots of your favorite AR jewellery pieces to share with friends or for future reference.",
     "Fact: Rubies, sapphires, and emeralds are considered 'precious' gemstones, while all others are categorized as 'semi-precious.'",
     "Tip: For best AR experience, make sure that no major light source is behind you.",
   ];
@@ -444,17 +483,17 @@ function addError(errorObj, index) {
   errorBox.classList.add("error-box");
   sideErrors.appendChild(errorBox);
 
-  let errormsg1 = ` <h4 class="error-msg" id="error-head${index}">${msg1}</h4>`;
+  let errormsg1 = ` <p class="error-msg" id="error-head${index}">${msg1}</p>`;
   if (msg1) errorBox.innerHTML += errormsg1;
 
-  let errormsg2 = `<h4 class="error-msg" id="error-sub${index}">${msg2}</h4>`;
+  let errormsg2 = `<p class="error-msg" id="error-sub${index}">${msg2}</p>`;
   if (msg2) errorBox.innerHTML += errormsg2;
 
   if (instructions && instructions.length > 0) {
     instructions.forEach((inst, ind) => {
-      errorBox.innerHTML += `<h4 class="flag-instruction">${ind + 1}. ${inst}
+      errorBox.innerHTML += `<p class="flag-instruction">${ind + 1}. ${inst}
       ${ind === 1 ? `<span class="highlight">OpenGL</span>` : ""}
-      </h4>`;
+      </p>`;
       if (ind === 0) {
         errorBox.innerHTML += `<button class="centerbtn" type="button" id="copybtn">Copy URL</button>`;
       }
@@ -515,7 +554,7 @@ function showErrors(errors) {
   const arBottomContainer = document.getElementById("ar-bottom-container");
   const sideErrors = document.getElementById("side-errors");
 
-  if (titleContainer) titleContainer.style.display = "block";
+  if (titleContainer) titleContainer.style.display = "flex";
   if (j4container) j4container.style.display = "none";
   if (arToggleContainer) arToggleContainer.style.display = "none";
   if (viewerContainer) viewerContainer.style.display = "none";
@@ -595,7 +634,7 @@ function isRendererUnsupported() {
       },
       {
         error: "jar4u Error: Could not fetch renderer info.",
-        msg1: "To try out the jewelry piece on your phone !",
+        msg1: "To try out the jewellery piece on your phone !",
         msg2: "Please scan the QR code below or navigate to this link.",
         imgsrc: "",
         tryagain: false,
@@ -621,7 +660,7 @@ function isRendererUnsupported() {
       },
       {
         error: "jar4u Error: Could not fetch renderer info.",
-        msg1: "To try out the jewelry piece on your phone !",
+        msg1: "To try out the jewellery piece on your phone !",
         msg2: "Please scan the QR code below or navigate to this link.",
         imgsrc: "",
         tryagain: false,
@@ -660,7 +699,7 @@ function isRendererUnsupported() {
         },
         {
           error: "",
-          msg1: "To try out the jewelry piece on your phone !",
+          msg1: "To try out the jewellery piece on your phone !",
           msg2: "Please scan the QR code below or navigate to this link.",
           imgsrc: "",
           tryagain: false,

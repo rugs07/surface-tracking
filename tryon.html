@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>JAR4U</title>
-    <link rel="icon" type="image/x-icon" href="/assets/logo.png">
+    <title>JAR4U | Demo</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css" crossorigin="anonymous">
     <script src="js/extras/camera_utils.js" crossorigin="anonymous"></script>
@@ -36,8 +36,9 @@
       <button class="primarybtn loadbtns" onclick="toggleControls()">Toggle</button> -->
       <h2 id="updatenote">Setting up</h2>
     </div>
-    <div class="title-container tryon-title" id="tryon-title">
-      <h2 class="sitename">Welcome to jAR4U</h2>
+    <div class="title-container tryon-title" id="tryon-title" onclick="gotoHome()">
+      <img src="assets/logo.png" class="logoimg" />
+      <h2 class="sitename">3D Try On for Jewellery</h2>
     </div>
     <div class="side-errors" id="side-errors">
     </div>
@@ -141,10 +142,8 @@
           <div id="fpsdisplay"></div>
         </div> -->
         <div id="Loading">
-          <h4>
             <!-- [ Loading your experience ] -->
             <p id="funorfact">Tip: For best AR experience, make sure that no major light source is behind you.</p>
-          </h4>
         </div>
         <div id="loading-container">
           <!-- <img src="assets/imagebox.gif" class="loadimg" /> -->
@@ -168,7 +167,7 @@
           </div>
           <div class="step">
             <img src="" class="stepimg" id="step2img"/>
-            <p class="steptext">Set the jewelry on your hand correctly</p>
+            <p class="steptext">Set the jewellery on your hand correctly</p>
           </div>
           <div class="step">
             <img src="assets/banglestep3.gif" class="stepimg" id="step3img"/>
@@ -194,13 +193,60 @@
         </button>
       </div>
       <div id="showhandscreen">
-        <h2>Place your hand vertically as shown below</h2>
-        <img src="assets/hand.png" class="handimg"><img>
-        <!-- <button class="primarybtn" type="button" onclick="hideHandScreen()">OK</button> -->
-        <button class="primarybtn" type="button" onclick="toggleVideo()">Stop AR</button>
-        <button class="primarybtn switchbtn" onclick="switchFacingMode()" id="switchbtn">
-          <img src="assets/switch.png" class="switchimg">
-        </button>
+        <div class="camerasection">
+          <p>Place your hand vertically as shown below</p>
+          <img src="assets/hand.png" class="handimg"><img>
+          <!-- <button class="primarybtn" type="button" onclick="hideHandScreen()">OK</button> -->
+          <button class="primarybtn" type="button" onclick="toggleVideo()">Stop AR</button>
+          <button class="primarybtn switchbtn" onclick="switchFacingMode()" id="switchbtn">
+            <img src="assets/switch.png" class="switchimg">
+          </button>
+        </div>
+        <div class="rowar">
+          <div
+            class="jewel-container ar-jewel"
+            onclick="changeJewellery('flowerbangle')"
+            id="flowerbangle"
+          >
+            <img
+              src="assets/flowerbangle.jpeg"
+              class="jewelimg"
+            />
+            <div class="selectarea">
+              <button type="button">Flower Bangle</button>
+            </div>
+          </div>
+          <div
+            class="jewel-container ar-jewel"
+            onclick="changeJewellery('trivenibangle')"
+            id="trivenibangle"
+          >
+            <img src="assets/trivenibangle.jpeg" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Triveni Bangle</button>
+            </div>
+          </div>
+          <div
+            class="jewel-container ar-jewel"
+            onclick="changeJewellery('patternedring')"
+            id="patternedring"
+          >
+            <img src="assets/patternedflip.jpeg" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Patterned Ring</button>
+            </div>
+          </div>
+          <div
+            class="jewel-container ar-jewel"
+            onclick="changeJewellery('floralring')"
+            id="floralring"
+          >
+            <img src="assets/floralflip.jpeg" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Floral Ring</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="ar-bottom-container mobile-viewer" id="ar-bottom-container">
@@ -219,7 +265,7 @@
     <script src="https://unpkg.com/png-js@1.0.0/png.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script> -->
     <!-- <script src="js/extras/zip.js"></script> -->
-    <script src="js/start.js"></script>
+    <!-- <script src="js/start.js"></script> -->
     <script src="js/extras/camera-controls.js"></script>
     <script src="js/variables.js"></script>
     <script src="js/shaders.js"></script>

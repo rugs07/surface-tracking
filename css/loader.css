@@ -8,8 +8,8 @@
 
 [role="progressbar"] {
   --percentage: var(--value);
-  --primary: #f5c67b;
-  --secondary: #f6deae;
+  --primary: #aaa;
+  --secondary: #ddd;
   --size: 200px;
   width: var(--size);
   aspect-ratio: 1;
@@ -18,7 +18,7 @@
   overflow: hidden;
   display: grid;
   place-items: center;
-  box-shadow: 0 0 12px rgb(239, 189, 108) !important;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.25) !important;
   /* animation: progress 2s 0.5s forwards; */
 }
 
@@ -44,7 +44,10 @@
   content: counter(percentage) "%";
   font-family: "Lato", sans-serif;
   font-size: calc(var(--size) / 6);
-  color: #000;
+  background: var(--gradientColor);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
 }
 
 @media screen and (max-width: 767px) {

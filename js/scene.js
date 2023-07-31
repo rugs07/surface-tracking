@@ -236,11 +236,11 @@ function loadScene(dirUrl, width, height) {
  * Initializes the application based on the URL parameters.
  */
 function initFromParameters() {
-  const params = new URL(window.location.href).searchParams;
-  selectedJewel = params.get("dir") || "flowerbangle";
-  const dirUrl = "results/" + selectedJewel;
+  // const params = new URL(window.location.href).searchParams;
+  selectedJewel = sessionStorage.getItem("selectedJewel") || "flowerbangle";
+  let dirUrl = "results/" + selectedJewel;
   // console.log(dirUrl);
-  const size = params.get("s");
+  // const size = params.get("s");
 
   const usageString =
     "To view a RIV scene, specify the following parameters in the URL:\n" +
@@ -269,14 +269,17 @@ function initFromParameters() {
   //   height = width * aspect;
   // }
 
-  if (size) {
-    const match = size.match(/([\d]+),([\d]+)/);
-    width = parseInt(match[1], 10);
-    height = parseInt(match[2], 10);
-  }
+  // if (size) {
+  //   const match = size.match(/([\d]+),([\d]+)/);
+  //   width = parseInt(match[1], 10);
+  //   height = parseInt(match[2], 10);
+  // }
 
-  gNearPlane = parseFloat(params.get("near") || 0.33);
-  const vfovy = parseFloat(params.get("vfovy") || 35);
+  // gNearPlane = parseFloat(params.get("near") || 0.33);
+  // const vfovy = parseFloat(params.get("vfovy") || 35);
+
+  gNearPlane = 0.33;
+  const vfovy = 35.0;
 
   const view = create("div", "view");
   //   view.style.width = "100vw";
@@ -397,6 +400,28 @@ function initFromParameters() {
   const arToggleContainer = document.getElementById("ar-toggle-container");
   arToggleContainer.style.display = "flex";
 
+  loadScene(dirUrl, width, height);
+}
+
+function changeJewellery(newJewel) {
+  const lastJewel = sessionStorage.getItem("selectedJewel");
+  if (lastJewel === newJewel) return;
+
+  // const params = new URL(window.location.href).searchParams;
+  sessionStorage.setItem("selectedJewel", newJewel);
+  selectedJewel = newJewel || "flowerbangle";
+  dirUrl = "results/" + selectedJewel;
+  // console.log(dirUrl);
+
+  let width = 1280,
+    height = 720;
+
+  if (isMobile) {
+    width = (window.innerWidth * 99) / 100;
+    height = (window.innerHeight * 110) / 100;
+  }
+
+  showLoading();
   loadScene(dirUrl, width, height);
 }
 
@@ -591,7 +616,15 @@ function loadOnFirstFrame() {
   if (isArcball) {
     arcballControls.update();
   } else {
-    resetMeshForVR();
+    if (isVideo) {
+      applyTransVar();
+      resetRingTrans();
+      resetMesh();
+    } else {
+      resetTransVar();
+      resetRingTrans();
+      resetMeshForVR();
+    }
     cameraControls.setFocalOffset(0.0, 0.0, 0.0);
   }
 
@@ -754,3 +787,5 @@ function start() {
 window.THREE.Cache.clear();
 checkDevice();
 start();
+
+window.changeJewellery = changeJewellery;

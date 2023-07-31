@@ -4,95 +4,68 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>JAR4U</title>
-    <link rel="icon" type="image/x-icon" href="/assets/logo.png" />
+    <title>JAR4U | Demo</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.png" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <div class="main-container">
-      <div class="title-container">
-        <h2 class="sitename">Welcome to jAR4U</h2>
+      <div class="title-container" onclick="gotoHome()">
+        <img src="assets/logo.png" class="logoimg" />
+        <h2 class="sitename">3D Try On for Jewellery</h2>
       </div>
       <div class="side-errors" id="side-errors"></div>
       <div class="j4container" id="j4container">
         <h3 class="type-label">
           Bangles <span class="items-text">(2 Items)</span>
         </h3>
-        <div class="jrow">
-          <div class="jewel-container" onclick="setJewellery('flowerbangle')">
-            <img
-              src="assets/flowerbangle.jpeg"
-              class="jewelimg"
-              id="flowerimg"
-            />
-            <button class="primarybtn addcartbtn" type="button">
-              <img src="assets/addbag.png" class="addbag" />
-            </button>
+        <div class="jrow home-row">
+          <div
+            class="jewel-container home-jewel"
+            onclick="setJewellery('flowerbangle')"
+          >
+            <img src="assets/flowerbangle.jpeg" class="jewelimg" />
             <div class="selectarea">
-              <div class="jewelinfo">
-                <h4 class="jewelname">Flower Bangle</h4>
-                <h4 class="pricelabel">&#8377; 40,825</h4>
-              </div>
+              <button type="button">Flower Bangle</button>
             </div>
           </div>
-          <div class="jewel-container" onclick="setJewellery('trivenibangle')">
-            <button class="primarybtn addcartbtn" type="button">
-              <img src="assets/addbag.png" class="addbag" />
-            </button>
+          <div
+            class="jewel-container home-jewel"
+            onclick="setJewellery('trivenibangle')"
+          >
             <img src="assets/trivenibangle.jpeg" class="jewelimg" />
             <div class="selectarea">
-              <div class="jewelinfo">
-                <h4 class="jewelname">Triveni Bangle</h4>
-                <h4 class="pricelabel">&#8377; 35,650</h4>
-              </div>
+              <button type="button">Triveni Bangle</button>
             </div>
           </div>
         </div>
         <h3 class="type-label">
           Rings <span class="items-text">(2 Items)</span>
         </h3>
-        <div class="jrow">
-          <div class="jewel-container" onclick="setJewellery('patternedring')">
+        <div class="jrow home-row">
+          <div
+            class="jewel-container home-jewel"
+            onclick="setJewellery('patternedring')"
+          >
             <img src="assets/patternedflip.jpeg" class="jewelimg" />
-            <button class="primarybtn addcartbtn" type="button">
-              <img src="assets/addbag.png" class="addbag" />
-            </button>
             <div class="selectarea">
-              <div class="jewelinfo">
-                <h4 class="jewelname">Patterned Ring</h4>
-                <h4 class="pricelabel">&#8377; 24,225</h4>
-              </div>
+              <button type="button">Patterned Ring</button>
             </div>
           </div>
-          <!-- <div class="jewel-container" onclick="setJewellery('trinetraring')">
-            <img src="assets/trinetraflip.jpeg" class="jewelimg" />
-            <button class="primarybtn addcartbtn" type="button">
-              <img src="assets/addbag.png" class="addbag" />
-            </button>
-            <div class="selectarea">
-              <div class="jewelinfo">
-                <h4 class="jewelname">Trinetra Ring</h4>
-                <h4 class="pricelabel">&#8377; 25,445</h4>
-              </div>
-            </div>
-          </div> -->
-          <div class="jewel-container" onclick="setJewellery('floralring')">
+          <div
+            class="jewel-container home-jewel"
+            onclick="setJewellery('floralring')"
+          >
             <img src="assets/floralflip.jpeg" class="jewelimg" />
-            <button class="primarybtn addcartbtn" type="button">
-              <img src="assets/addbag.png" class="addbag" />
-            </button>
             <div class="selectarea">
-              <div class="jewelinfo">
-                <h4 class="jewelname">Floral Ring</h4>
-                <h4 class="pricelabel">&#8377; 20,750</h4>
-              </div>
+              <button type="button">Floral Ring</button>
             </div>
           </div>
         </div>
       </div>
     </div>
     <script src="js/utils.js"></script>
-    <script src="js/start.js"></script>
+    <!-- <script src="js/start.js"></script> -->
     <script src="js/home.js"></script>
   </body>
 </html>

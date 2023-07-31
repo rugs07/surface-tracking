@@ -393,6 +393,12 @@ async function toggleVideo() {
     applyTransVar();
     resetMesh();
 
+    let activeElement = document.getElementsByClassName("active-ar-jewel")[0];
+    if (activeElement) activeElement.classList.remove("active-ar-jewel");
+
+    let activeJewel = document.getElementById(`${selectedJewel}`);
+    if (activeJewel) activeJewel.classList.add("active-ar-jewel");
+
     const arToogleContainer = document.getElementById("ar-toggle-container");
     arToogleContainer.style.display = "none";
 
