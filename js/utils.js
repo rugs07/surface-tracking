@@ -474,33 +474,25 @@ function copyText(text) {
   navigator.clipboard.writeText("chrome://flags/#use-angle");
 }
 
-function addError(errorObj, index) {
+function addError(errorObj, index, arr) {
   const { error, msg1, msg2, instructions, imgsrc, tryagain } = errorObj;
   console.log(error);
   const sideErrors = document.getElementById("side-errors");
 
   let errorBox = document.createElement("div");
   errorBox.classList.add("error-box");
+  if (index !== arr.length - 1) errorBox.classList.add("seperation");
   sideErrors.appendChild(errorBox);
 
-  let errormsg1 = ` <p class="error-msg" id="error-head${index}">${msg1}</p>`;
+  let errormsg1 = ` <p class="error-msg ${
+    (!imgsrc || !error) && "color-msg"
+  }" id="error-head${index}">${msg1}</p>`;
   if (msg1) errorBox.innerHTML += errormsg1;
 
-  let errormsg2 = `<p class="error-msg" id="error-sub${index}">${msg2}</p>`;
+  let errormsg2 = `<p class="error-msg ${
+    (!imgsrc || !error) && "color-msg"
+  }" id="error-sub${index}">${msg2}</p>`;
   if (msg2) errorBox.innerHTML += errormsg2;
-
-  if (instructions && instructions.length > 0) {
-    instructions.forEach((inst, ind) => {
-      errorBox.innerHTML += `<p class="flag-instruction">${ind + 1}. ${inst}
-      ${ind === 1 ? `<span class="highlight">OpenGL</span>` : ""}
-      </p>`;
-      if (ind === 0) {
-        errorBox.innerHTML += `<button class="centerbtn" type="button" id="copybtn">Copy URL</button>`;
-      }
-    });
-  }
-
-  let trybutton = `<button class="centerbtn" type="button" id="reloadbtn">Try again</button>`;
 
   let imgcontainer = `<div class="allsteps errorsteps">
                         <div class="errorstep">
@@ -514,6 +506,22 @@ function addError(errorObj, index) {
                         ${tryagain ? trybutton : ""}
                       </div>`;
 
+  if (instructions && instructions.length > 0) {
+    instructions.forEach((inst, ind) => {
+      errorBox.innerHTML += `<p class="flag-instruction">${ind + 1}. ${inst}
+      ${ind === 1 ? `<span class="highlight">OpenGL</span>` : ""}
+      ${
+        ind === 0
+          ? `<button class="centerbtn" type="button" id="copybtn">Copy URL</button>`
+          : ""
+      }
+      </p>`;
+      errorBox.innerHTML += ind === 1 ? imgcontainer : "";
+    });
+  }
+
+  let trybutton = `<button class="centerbtn" type="button" id="reloadbtn">Try again</button>`;
+
   let qrcontainer = `<div class="allsteps errorsteps">
                         <div class="errorstep">
                           <div class="qr-code-container">
@@ -523,8 +531,9 @@ function addError(errorObj, index) {
                         ${tryagain ? trybutton : ""}
                       </div>`;
 
-  if (imgsrc && imgsrc.length) errorBox.innerHTML += imgcontainer;
-  else {
+  if (imgsrc && imgsrc.length) {
+    if (!imgsrc.includes("opengl")) errorBox.innerHTML += imgcontainer;
+  } else {
     errorBox.innerHTML += qrcontainer;
     generateQR({
       value: window.location.href,
@@ -687,20 +696,20 @@ function isRendererUnsupported() {
       showErrors([
         {
           error: "",
-          msg1: "",
-          msg2: "To try this advanced AR experience smoothly on desktop !",
+          msg1: "To ensure a smooth AR experience on your desktop,",
+          msg2: "Please follow these steps !",
           instructions: [
-            "Open chrome://flags/#use-angle in new tab",
-            "In the dropdown of 'Choose ANGLE graphics backend', select",
-            "On the bottom right, press Relaunch chrome for the changes to take effect",
+            "Open a new tab and type chrome://flags/#use-angle in the address bar",
+            'In the dropdown menu next to "Choose ANGLE graphics backend", select',
+            'Click "Relaunch Chrome" at the bottom right to apply the changes.',
           ],
           imgsrc: "opengl-flag.png",
           tryagain: false,
         },
         {
           error: "",
-          msg1: "To try out the jewellery piece on your phone !",
-          msg2: "Please scan the QR code below or navigate to this link.",
+          msg1: "Scan this QR code to",
+          msg2: "Try on the jewelry now!",
           imgsrc: "",
           tryagain: false,
         },

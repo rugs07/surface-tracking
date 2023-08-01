@@ -389,7 +389,6 @@ async function toggleVideo() {
     isVideo = true;
     showhandscreen.style.display = "flex";
     updateNote.innerText = "Show your hand 👋";
-    // trackButton.innerText = "Stop AR";
     applyTransVar();
     resetMesh();
 
@@ -441,7 +440,6 @@ async function toggleVideo() {
     usermanual.style.display = "none";
     noSleep.disable();
     updateJewelname();
-    // trackButton.innerText = "View AR";
 
     const arToogleContainer = document.getElementById("ar-toggle-container");
     arToogleContainer.style.display = "flex";
