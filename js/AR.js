@@ -671,10 +671,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   let midPip = points[10];
   let ringPos = {
     x: (points[13].x + points[14].x - 0.04) / 2.0,
-    y:
-      facingMode === "environment"
-        ? (points[13].y + points[14].y - 0.03) / 2.0
-        : (points[13].y + points[14].y - 0.05) / 2.0,
+    y: (points[13].y + points[14].y - 0.05) / 2.0,
     z: (points[13].z + points[14].z) / 2.0,
   };
 
@@ -698,14 +695,20 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   let XTSub = getNormalizedXTSub(stayPoint.x);
   let YTSub = getNormalizedYTSub(stayPoint.y);
 
-  let rollMul = isMobile || isIOS ? -0.02 : -0.03;
-  let YTAdd = Math.abs(Math.sin(THREE.MathUtils.degToRad(ZRAngle))) * rollMul;
+  let rollMul = isMobile || isIOS ? -0.01 : -0.03;
+  if (jewelType === "ring") rollMul = isMobile || isIOS ? 0 : 0.005;
+  let YTAdd = Math.abs(Math.sin(THREE.MathUtils.degToRad(ZRAngle)));
 
   // Changing range from (0,1) to (-0.5 to 0.5)
   let newX = stayPoint.x - XTSub;
   let newY = stayPoint.y - YTSub;
+  newY += YTAdd * rollMul;
   if (jewelType === "bangle") {
-    newY += YTAdd;
+    newX += YTAdd * -rollMul * 0.5;
+    if (isMobile || isIOS) {
+      if (facingMode === "environment") newX += YTAdd * rollMul * 2;
+      else newX += YTAdd * -rollMul;
+    }
   }
 
   const XTMul = 1400;
@@ -743,24 +746,23 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   let resizeMul;
 
   if (jewelType === "bangle") {
-    resizeMul = isMobile ? 3.75 : 4.75;
-    if (isIOS) resizeMul = 3.25;
+    resizeMul = isMobile || isIOS ? 3.9 : 4.75;
   } else if (jewelType === "ring") {
-    // front-cam
-    resizeMul = 0.9;
-
     // back-cam
+    resizeMul = 1;
+
+    // front-cam
     if (facingMode !== "environment") {
-      resizeMul = isMobile ? 1 : 1.25;
-      if (isIOS) resizeMul = 1;
+      resizeMul = isMobile || isIOS ? 1.1 : 1.35;
     }
   }
 
-  let resizeAdd = YTAdd * -13;
-  if (jewelType === "ring") resizeAdd = YTAdd * -0.5;
+  let resizeAdd = YTAdd * 0.1;
+  if (isMobile || isIOS) resizeAdd = YTAdd * 0.075;
 
   if (resize && !isArcball) {
     let smoothenSize = smoothResizing(dist * resizeMul + resizeAdd);
+
     cameraControls.zoomTo(smoothenSize, false);
   }
 

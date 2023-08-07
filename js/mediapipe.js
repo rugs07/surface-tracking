@@ -16,8 +16,6 @@ const switchbtn = document.getElementById("switchbtn");
 const desktopViewAR = document.getElementById("desktop-viewar");
 const mobileViewAR = document.getElementById("mobile-viewar");
 
-if (!isMobile) facingMode = "user";
-
 let width = 1280,
   height = 720,
   offset = 0,
@@ -262,8 +260,10 @@ const hands = new mpHands.Hands({
   },
 });
 
+facingMode = sessionStorage.getItem("facingMode");
+
 hands.setOptions({
-  selfieMode: true,
+  selfieMode: facingMode === "user",
   maxNumHands: 1,
   modelComplexity: 0,
   minDetectionConfidence: 0.7,
@@ -271,17 +271,6 @@ hands.setOptions({
 });
 
 hands.onResults(onResults);
-
-if (!isIOS) {
-  camera = new Camera(inputVideoElement, {
-    onFrame: async () => {
-      await hands.send({ image: inputVideoElement });
-    },
-    facingMode,
-    width: width,
-    height: height,
-  });
-}
 
 const startCamera = () => {
   // Present a control panel through which the user can manipulate the solution
@@ -322,8 +311,13 @@ const startCamera = () => {
 };
 
 const switchFacingMode = () => {
-  if (facingMode === "environment") facingMode = "user";
-  else facingMode = "environment";
+  if (facingMode === "environment") {
+    sessionStorage.setItem("facingMode", "user");
+    facingMode = "user";
+  } else {
+    sessionStorage.setItem("facingMode", "environment");
+    facingMode = "environment";
+  }
 
   camera.stop();
 

@@ -18,6 +18,9 @@ function updateYRMul(value) {
 }
 
 function setJewellery(value) {
+  facingMode = sessionStorage.getItem("facingMode") || "user";
+  sessionStorage.setItem("facingMode", facingMode);
+
   sessionStorage.setItem("selectedJewel", value);
   location.href = "/tryon.html";
   // window.open(`/tryon.html`, "_blank");
@@ -33,7 +36,6 @@ function applyRingTrans() {
 }
 
 function applyTransVar() {
-  console.log(transVar);
   gRayMarchScene.children[0].material.uniforms.transVar.value = transVar;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
