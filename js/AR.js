@@ -244,6 +244,8 @@ function rotateY(angle) {
     // Using Show zone to not show the part which was placed on for recording
 
     let showZone = [-90, 90];
+    if (selectedJewel === "flowerbangle") showZone = [-60, 90];
+
     if (angle > showZone[0] && angle < showZone[1]) {
       // cameraControls.rotate(angle, 0, false);
       cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
