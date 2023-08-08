@@ -631,6 +631,11 @@ function calculateWristSize(points) {
   // return wristSize;
 }
 
+function getFoldedSize(points) {
+  let foldedSize = euclideanDistance(points[9], points[11]);
+  return foldedSize;
+}
+
 let lastSize = null;
 
 function smoothResizing(wristSize) {
@@ -709,6 +714,11 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
       if (facingMode === "environment") newX += YTAdd * rollMul * 2;
       else newX += YTAdd * -rollMul;
     }
+  } else {
+    if (YRAngle >= 0) {
+      if (isMobile || isIOS) newX -= YRAngle * -0.00005;
+      else newX -= YRAngle * -0.0001;
+    }
   }
 
   const XTMul = 1400;
@@ -742,23 +752,55 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
 
   // Resizing
   const dist = calculateWristSize(points);
+  const foldedSize = getFoldedSize(points);
 
   let resizeMul;
 
   if (jewelType === "bangle") {
-    resizeMul = isMobile || isIOS ? 3.9 : 4.75;
+    resizeMul = isMobile || isIOS ? 4 : 5;
   } else if (jewelType === "ring") {
     // back-cam
     resizeMul = 1;
 
     // front-cam
     if (facingMode !== "environment") {
-      resizeMul = isMobile || isIOS ? 1.1 : 1.35;
+      resizeMul = isMobile || isIOS ? 1.1 : 1.4;
     }
   }
 
-  let resizeAdd = YTAdd * 0.1;
-  if (isMobile || isIOS) resizeAdd = YTAdd * 0.075;
+  let resizeAdd = YTAdd * 0.15;
+  if (isMobile || isIOS) resizeAdd = YTAdd * 0.1;
+
+  if (jewelType === "ring") {
+    resizeAdd = YTAdd * 0.075;
+  }
+
+  if (jewelType === "ring") {
+    if (YRAngle >= 30) {
+      resizeAdd -= YRAngle * 0.00075;
+    }
+  } else {
+    console.log(YRAngle);
+    // back-hand
+    if (YRAngle >= 0) {
+      if (isMobile || isIOS) {
+        resizeAdd -= foldedSize;
+        if (facingMode !== "environment") resizeMul += 1.35;
+        else resizeMul += 1.5;
+      } else resizeAdd += foldedSize * 0.01;
+    } else {
+      // palm
+
+      if (isMobile || isIOS) {
+        resizeAdd -= foldedSize * 2;
+        if (facingMode !== "environment") resizeMul += 1.35;
+        else resizeMul += 1.5;
+      } else {
+        resizeAdd -= foldedSize * 4;
+        resizeMul += 2.5;
+      }
+    }
+  }
 
   if (resize && !isArcball) {
     let smoothenSize = smoothResizing(dist * resizeMul + resizeAdd);

@@ -260,7 +260,7 @@ const hands = new mpHands.Hands({
   },
 });
 
-facingMode = sessionStorage.getItem("facingMode");
+facingMode = sessionStorage.getItem("facingMode") || "user";
 
 hands.setOptions({
   selfieMode: facingMode === "user",
