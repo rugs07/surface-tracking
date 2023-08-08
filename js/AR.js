@@ -786,7 +786,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
       if (isMobile || isIOS) {
         resizeAdd -= foldedSize;
         if (facingMode !== "environment") resizeMul += 1.35;
-        else resizeMul += 1.5;
+        else resizeMul += 1.35;
       } else resizeAdd += foldedSize * 0.01;
     } else {
       // palm
@@ -794,7 +794,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
       if (isMobile || isIOS) {
         resizeAdd -= foldedSize * 2;
         if (facingMode !== "environment") resizeMul += 1.35;
-        else resizeMul += 1.5;
+        else resizeMul += 1.25;
       } else {
         resizeAdd -= foldedSize * 4;
         resizeMul += 2.5;
