@@ -151,6 +151,44 @@ function resetMesh() {
   hideJewel();
 }
 
+// Define a function to calculate the angle at the middle point of three 3D landmarks
+function calculateAngleAtMiddle(landmark1, landmark2, landmark3) {
+  // Calculate vectors between landmarks
+  const vector1 = [
+    landmark1.x - landmark2.x,
+    landmark1.y - landmark2.y,
+    landmark1.z - landmark2.z,
+  ];
+  const vector2 = [
+    landmark3.x - landmark2.x,
+    landmark3.y - landmark2.y,
+    landmark3.z - landmark2.z,
+  ];
+
+  // Calculate dot product of the two vectors
+  const dotProduct =
+    vector1[0] * vector2[0] + vector1[1] * vector2[1] + vector1[2] * vector2[2];
+
+  // Calculate magnitudes of the vectors
+  const magnitude1 = Math.sqrt(
+    vector1[0] * vector1[0] + vector1[1] * vector1[1] + vector1[2] * vector1[2]
+  );
+  const magnitude2 = Math.sqrt(
+    vector2[0] * vector2[0] + vector2[1] * vector2[1] + vector2[2] * vector2[2]
+  );
+
+  // Calculate the cosine of the angle using dot product and magnitudes
+  const cosAngle = dotProduct / (magnitude1 * magnitude2);
+
+  // Calculate the angle in radians
+  const angleInRadians = Math.acos(cosAngle);
+
+  // Convert the angle to degrees
+  const angleInDegrees = (angleInRadians * 180) / Math.PI;
+
+  return Math.trunc(angleInDegrees / 10);
+}
+
 function startSession() {
   usermanual.style.display = "none";
 }
