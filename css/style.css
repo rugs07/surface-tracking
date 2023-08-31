@@ -48,10 +48,11 @@ h4 {
 }
 
 body {
-  max-width: 99vw;
+  max-width: 100vw;
   overflow: auto;
   font-family: var(--fontFamily);
-  margin: 3px;
+  margin: 0;
+  padding: 0;
   color: var(--blackColor);
   font-size: var(--fontSize);
   letter-spacing: 0.25px;
@@ -355,13 +356,18 @@ button:hover {
   display: none;
 }
 
-.viewer-container {
+.viewer-container,
+#viewspacecontainer {
   position: relative;
-  width: 1280px;
-  height: 720px;
+  /* width: 1280px; */
+  /* height: 720px; */
+  width: 100vw;
+  height: 100dvh;
+  max-width: 100vw;
+  overflow: hidden;
   margin: 0 auto;
   padding: 0;
-  border-radius: 5px;
+  /* border-radius: 5px; */
 }
 
 #error {
@@ -659,7 +665,7 @@ button:hover {
 #showhandscreen {
   position: absolute;
   top: 0;
-  /* left: 0; */
+  left: 0;
   text-align: center;
   z-index: 20;
   align-items: center;
@@ -683,9 +689,12 @@ button:hover {
 
 .rowar {
   display: block;
-  width: 270px;
+  width: 15%;
+  min-width: 275px;
   height: 100%;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-left: auto;
   display: block;
 }
 
@@ -712,6 +721,7 @@ button:hover {
 .ar-jewel {
   margin: 0;
   transition: 0.15s;
+  width: 100%;
 }
 
 .active-ar-jewel,
@@ -725,7 +735,7 @@ button:hover {
 }
 
 .handimg {
-  height: 65dvh;
+  height: 70dvh;
 }
 
 /* The main RIV view */
@@ -746,7 +756,7 @@ button:hover {
 
 .output_canvas {
   position: absolute !important;
-  top: 0;
+  /* top: 0; */
   /* left: 0; */
   margin: 0 auto;
   box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.15);
@@ -767,6 +777,10 @@ button:hover {
 }
 
 @media (max-width: 768px) {
+  body {
+    margin: 3px;
+  }
+
   p {
     font-size: 14px;
     line-height: 1.5rem;
@@ -915,6 +929,7 @@ button:hover {
   .camerasection {
     width: 100%;
     height: 70%;
+    gap: 5px;
   }
 
   .rowar {
@@ -923,6 +938,8 @@ button:hover {
     justify-content: flex-start;
     width: 100%;
     height: 60vw;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .rowar::-webkit-scrollbar-thumb {

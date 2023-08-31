@@ -253,21 +253,10 @@ function initFromParameters() {
     return;
   }
 
-  let width = 1280,
-    height = 720;
+  let width = document.documentElement.clientWidth,
+    height = document.documentElement.clientHeight;
 
-  if (isMobile) {
-    width = (window.innerWidth * 99) / 100;
-    height = (window.innerHeight * 110) / 100;
-  }
-  // const aspect = 720 / 1280;
-  // if (window.innerWidth > window.innerHeight) {
-  //   height = window.innerHeight;
-  //   width = height / aspect;
-  // } else {
-  //   width = window.innerWidth;
-  //   height = width * aspect;
-  // }
+
 
   // if (size) {
   //   const match = size.match(/([\d]+),([\d]+)/);
@@ -413,13 +402,8 @@ function changeJewellery(newJewel) {
   dirUrl = "results/" + selectedJewel;
   // console.log(dirUrl);
 
-  let width = 1280,
-    height = 720;
-
-  if (isMobile) {
-    width = (window.innerWidth * 99) / 100;
-    height = (window.innerHeight * 110) / 100;
-  }
+  let width = document.documentElement.clientWidth,
+    height = document.documentElement.clientHeight;
 
   showLoading();
   loadScene(dirUrl, width, height);

@@ -114,7 +114,7 @@ function resetMeshForVR() {
         "translate3d(" +
         0 +
         "px, " +
-        -60 +
+        -50 +
         "px, " +
         0 +
         "px) rotateZ(" +
@@ -126,7 +126,7 @@ function resetMeshForVR() {
   } else {
     if (isMobile || isIOS) {
       glamCanvas.style.transform =
-        "translate3d(" + 0 + "px, " + -60 + "px, " + 0 + "px)";
+        "translate3d(" + 0 + "px, " + -50 + "px, " + 0 + "px)";
     } else {
       glamCanvas.style.transform = "none";
     }
@@ -149,6 +149,13 @@ function resetMesh() {
   ZRAngle = 0;
   glamCanvas.style.transform = "none";
   hideJewel();
+}
+
+function mapRange(value, oldMin, oldMax, newMin, newMax) {
+  const oldRange = oldMax - oldMin;
+  const newRange = newMax - newMin;
+  const newValue = ((value - oldMin) * newRange) / oldRange + newMin;
+  return newValue;
 }
 
 // Define a function to calculate the angle at the middle point of three 3D landmarks

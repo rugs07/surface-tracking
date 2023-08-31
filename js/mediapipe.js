@@ -7,7 +7,7 @@ const outputCanvasElement = document.getElementsByClassName("output_canvas")[0];
 const canvasCtx = outputCanvasElement.getContext("2d");
 
 const viewSpaceContainer = document.getElementById("viewspacecontainer");
-// const viewElement = document.getElementById("view");
+const viewElement = document.getElementById("view");
 const getStartedBtn = document.getElementById("getstartedbtn");
 const showhandscreen = document.getElementById("showhandscreen");
 const retrycamscreen = document.getElementById("retrycamscreen");
@@ -16,29 +16,13 @@ const switchbtn = document.getElementById("switchbtn");
 const desktopViewAR = document.getElementById("desktop-viewar");
 const mobileViewAR = document.getElementById("mobile-viewar");
 
-let width = 1280,
-  height = 720,
-  offset = 0,
-  smwidth = 0;
+let width = document.documentElement.clientHeight,
+  height = document.documentElement.clientHeight;
 
 if (isMobile) {
-  width = (window.innerHeight * 110) / 100;
-  smwidth = (window.innerWidth * 99) / 100;
-  height = (window.innerHeight * 110) / 100;
-  offset = (width - window.innerWidth) / 2;
+  height *= 9 / 16;
 }
-// const aspect = 720 / 1280;
-// if (window.innerWidth > window.innerHeight) {
-//   height = window.innerHeight;
-//   width = height / aspect;
-// } else {
-//   width = window.innerWidth;
-//   height = width * aspect;
-// }
-if (!isIOS) {
-  outputCanvasElement.width = width;
-  outputCanvasElement.height = height;
-}
+
 let timer = 0;
 let isResults = false;
 // let lastHand = null;
@@ -133,20 +117,34 @@ function onResults(results) {
   // Update the frame rate.
   if (isIOS) fpsControl.tick();
 
-  // Draw the overlays.
+  outputCanvasElement.width = document.documentElement.clientWidth;
+  outputCanvasElement.height = document.documentElement.clientHeight;
+  const heightMargin = Math.max(
+    (results.image.width / results.image.height) *
+      (outputCanvasElement.height / 8) -
+      outputCanvasElement.width / 8,
+    0
+  );
+  const widthMargin = Math.max(
+    (results.image.height / results.image.width) *
+      (outputCanvasElement.width / 8) -
+      outputCanvasElement.height / 8,
+    0
+  );
+
   canvasCtx.save();
   canvasCtx.clearRect(
     0,
     0,
-    outputCanvasElement.width,
-    outputCanvasElement.height
+    Math.trunc(outputCanvasElement.width + 4 * heightMargin),
+    Math.trunc(outputCanvasElement.height + 4 * widthMargin)
   );
   canvasCtx.drawImage(
     results.image,
     0,
     0,
-    outputCanvasElement.width,
-    outputCanvasElement.height
+    Math.trunc(outputCanvasElement.width + 4 * heightMargin),
+    Math.trunc(outputCanvasElement.height + 4 * widthMargin)
   );
 
   if (getStartedBtn.disabled) {
@@ -399,12 +397,6 @@ async function toggleVideo() {
       const arBottomContainer = document.getElementById("ar-bottom-container");
       arBottomContainer.style.display = "none";
 
-      if (isMobile && !isIOS) {
-        setDims(viewSpaceContainer, width, height);
-        // setDims(view, width, height);
-        outputCanvasElement.style.setProperty("left", `-${offset}px`);
-      }
-
       fullscreen();
     }
     // modeButtons.forEach((btn) => {
@@ -441,12 +433,6 @@ async function toggleVideo() {
       const arBottomContainer = document.getElementById("ar-bottom-container");
       arBottomContainer.style.display = "flex";
 
-      if (isMobile && !isIOS) {
-        setDims(viewSpaceContainer, smwidth, height);
-        // setDims(view, smwidth, height);
-        outputCanvasElement.style.setProperty("left", `0px`);
-      }
-
       fullscreen(false);
     }
 
@@ -456,23 +442,23 @@ async function toggleVideo() {
   }
 }
 
-// window.addEventListener("resize", function handleResize(event) {
-//   if (isMobile || isIOS) {
-//     if (isVideo && window.innerHeight !== screen.height) {
-//       const newWidth = (window.innerWidth * 99) / 100;
-//       const newHeight = (window.innerHeight * 110) / 100;
+window.addEventListener("resize", function handleResize(event) {
+  if (isMobile || isIOS) {
+    let newWidth = document.documentElement.clientWidth;
+    let newHeight = document.documentElement.clientHeight;
+    // if (isVideo && window.innerHeight === screen.height) {
+    //   newHeight = document.documentElement.clientHeight;
+    // }
 
-//       const showhandscreen = document.getElementById("showhandscreen");
-//       setDims(showhandscreen, newWidth, newHeight);
+    setDims(viewElement, newWidth, newHeight);
 
-//       const usermanual = document.getElementById("usermanual");
-//       setDims(usermanual, newWidth, newHeight);
+    setDims(showhandscreen, newWidth, newHeight);
 
-//       const retrycamscreen = document.getElementById("retrycamscreen");
-//       setDims(retrycamscreen, newWidth, newHeight);
-//     }
-//   }
-// });
+    setDims(usermanual, newWidth, newHeight);
+
+    setDims(retrycamscreen, newWidth, newHeight);
+  }
+});
 
 window.toggleVideo = toggleVideo;
 window.switchFacingMode = switchFacingMode;

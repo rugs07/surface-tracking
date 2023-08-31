@@ -23,6 +23,8 @@ const viewSpaceContainer = document.getElementById("viewspacecontainer");
 let zArr = [];
 let rsArr = [];
 let yArr = [];
+let windowWidth = document.documentElement.clientWidth;
+let windowHeight = document.documentElement.clientHeight;
 
 function enableTranslation() {
   translation = true;
@@ -502,9 +504,6 @@ function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
     // Normalize the angle to the range of -180 to 180 degrees
     let normZAngle = normalizeAngle(zAngle);
 
-    // Set the maximum allowed rotation angle
-    const maxRotationAngle = 180;
-
     if (enableSmoothing) {
       // Calculate the angle difference between the current and the new angle
       const angleDifference = ZRAngle - normZAngle;
@@ -528,6 +527,11 @@ function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
       }
     }
 
+    // normZAngle *= 0.85;
+    if ((isMobile || isIOS) && jewelType === "bangle") {
+      normZAngle *= 0.9;
+    }
+
     // if (angleDifference <= 2) {
     //   let newZRAngle = kf.filter(normZAngle);
     //   console.log("origAngle", normZAngle, "filtered", kf.filter(newZRAngle));
@@ -547,20 +551,26 @@ function getNormalizedXTSub(value) {
   let newMin, newMax;
 
   if (jewelType === "bangle") {
-    newMin = isMobile ? 0.25 : 0.45;
-    if (isIOS) newMin = 0.15;
-    newMax = isMobile ? 0.75 : 0.55;
-    if (isIOS) newMax = 0.7;
+    newMin = isMobile ? 0.125 : 0.49;
+    if (isIOS) newMin = 0.1;
+    newMax = isMobile ? 0.85 : 0.51;
+    if (isIOS) newMax = 0.85;
+
+    if (!(isMobile || isIOS)) {
+      let respX = mapRange(windowWidth, 1600, 1100, 0.0215, 0.15);
+      newMin -= respX;
+      newMax += respX;
+    }
   } else if (jewelType === "ring") {
-    newMin = isMobile ? 0.27 : 0.435;
+    newMin = isMobile ? 0.125 : 0.46;
     if (isIOS) newMin = 0.22;
-    newMax = isMobile ? 0.7 : 0.525;
+    newMax = isMobile ? 0.825 : 0.5;
     if (isIOS) newMax = 0.7;
 
-    if (facingMode === "environment") {
-      if (isMobile || isIOS) {
-        newMax = 0.71;
-      }
+    if (!(isMobile || isIOS)) {
+      let respX = mapRange(windowWidth, 1600, 1100, 0.0215, 0.155);
+      newMin -= respX;
+      newMax += respX;
     }
   }
 
@@ -576,9 +586,9 @@ function getNormalizedYTSub(value) {
   // define the old and new ranges
   const oldMin = 0;
   const oldMax = 1;
-  let newMin = isMobile ? 0.45 : 0.4;
+  let newMin = isMobile ? 0.45 : 0.48;
   if (isIOS) newMin = 0.44;
-  let newMax = isMobile ? 0.52 : 0.55;
+  let newMax = isMobile ? 0.52 : 0.485;
   if (isIOS) newMax = 0.52;
 
   // apply the formula to normalize the value
@@ -600,7 +610,7 @@ function manhattanDistance(a, b) {
   return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
 }
 
-function calculateWristSize(points) {
+function calculateWristSize(points, YTAdd) {
   // calculate wrist size as distance between wrist and first knuckle and distance between thumb knuckle and pinky knuckle on first frame and then adjust for scale using wrist.z value
   // let wristSize = manhattanDistance(points[0], points[5]);
   // wristSize += manhattanDistance(points[9], points[17]);
@@ -612,9 +622,17 @@ function calculateWristSize(points) {
   //     console.log("origsize", wristSize, "filtered", newSize);
   //     wristSize = newSize;
   // }
-  lastSize = wristSize;
+  if (isMobile || isIOS) {
+    const plusVal = mapRange(YTAdd, 0, 1, 0, 0.12);
+    wristSize -= plusVal;
+  } else {
+    const plusVal = mapRange(YTAdd, 0, 1, 0, 0.06);
+    wristSize += plusVal;
+  }
 
+  lastSize = wristSize;
   return wristSize;
+
   // calculate wrist size as average distance between wrist and knuckles
   // let wristSize = 0;
   // let count = 0;
@@ -694,16 +712,27 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   // Translation calc
   let XTSub = getNormalizedXTSub(stayPoint.x);
   let YTSub = getNormalizedYTSub(stayPoint.y);
+  let respY = windowWidth / 15000;
+  if (windowWidth < 1250) respY = windowWidth / 30000;
 
-  let rollMul = isMobile || isIOS ? -0.01 : -0.03;
-  if (jewelType === "ring") rollMul = isMobile || isIOS ? 0 : 0.005;
+  let rollMul = 0;
+  if (jewelType === "bangle") {
+    rollMul = mapRange(windowWidth, 1600, 1100, 0.01, -0.03);
+    if (isMobile || isIOS) rollMul = -0.005;
+  }
+  if (jewelType === "ring") {
+    rollMul = mapRange(windowWidth, 1600, 1100, 0.03, -0.001);
+    if (isMobile || isIOS) rollMul = 0;
+  }
   let YTAdd = Math.abs(Math.sin(THREE.MathUtils.degToRad(ZRAngle)));
+  let foldedAngle = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
 
   // Changing range from (0,1) to (-0.5 to 0.5)
   let newX = stayPoint.x - XTSub;
   let newY = stayPoint.y - YTSub;
+  if (!(isMobile || isIOS)) newY += respY;
   if (jewelType === "bangle") {
-    newY += YTAdd * rollMul * 0.5;
+    newY += YTAdd * rollMul;
     if (handLabel === "Right") newX -= YTAdd * rollMul;
     else newX += YTAdd * rollMul;
 
@@ -716,37 +745,55 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
           newY += 0.01;
           newX -= 0.025;
         } else {
-          newY -= 0.01;
-          newX += 0.025;
+          if (YRAngle < 0) {
+            newY += 0.01;
+            newX += 0.025;
+          } else {
+            newY -= 0.03;
+            newX += 0.01;
+          }
+        }
+
+        if (YRAngle >= -30 && YRAngle < 0) {
+          // newY += YRAngle * (foldedAngle * 0.0000125);
+          // newY += 0.1;
+          const val = YRAngle / 1800;
+          newY -= val;
+          newX += val / 4;
+        } else if (YRAngle >= 0 && YRAngle < 30) {
+          // newY += (90 - YRAngle) * (foldedAngle * 0.0000125);
+          // newY -= 0.1;
+          if (handLabel === "Right") {
+            const val = YRAngle / 300;
+            newY += val;
+            newX -= val / 4;
+          }
+        } else if (YRAngle >= 30 && YRAngle < 60) {
+          const val = YRAngle / 1200;
+          newY += val;
+          newX -= val / 4;
+        } else if (YRAngle >= 60 && YRAngle < 90) {
+          const val = YRAngle / 3600;
+          newY += val;
+          newX -= val / 4;
         }
       }
+    } else {
+      if (YRAngle >= 45 && YRAngle < 90) {
+        newY += (90 - YRAngle) * (foldedAngle * 0.00003125);
+      } else if (YRAngle >= 0 && YRAngle < 45) {
+        newY += YRAngle * (foldedAngle * 0.00003125);
+      }
     }
-
-    console.log(YRAngle);
-
-    if (YRAngle < 0 && YRAngle > -60) {
-      newX -= YRAngle * (ZRAngle * 0.000001) * 0.5;
-    } else if (YRAngle < -60) {
-      newX -= YRAngle * (ZRAngle * 0.0001) * 0.0005;
-    }
-
-    if (YRAngle > 0 && YRAngle < 60) {
-      newY += YRAngle * 0.0001;
-    }
+    // console.log(YRAngle);
   } else {
     newY += YTAdd * rollMul;
     if (handLabel === "Left") {
-      newX -= 0.0001;
-    }
-    if (YRAngle >= 0) {
-      if (isMobile || isIOS) {
-        if (facingMode === "environment") newX -= YRAngle * -0.000075;
-        else newX -= YRAngle * -0.000025;
-      } else newX -= YRAngle * -0.0001;
+      newX -= 0.001;
     }
   }
 
-  const XTMul = 1400;
+  const XTMul = isMobile || isIOS ? 1400 : 1700;
   const YTMul = 850;
 
   const canX = newX * XTMul;
@@ -776,9 +823,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   }
 
   // Resizing
-  const dist = calculateWristSize(points);
-
-  const foldedAngle = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
+  const dist = calculateWristSize(points, YTAdd);
 
   let resizeMul;
 
@@ -788,15 +833,27 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
 
     // front-cam
     if (facingMode !== "environment") {
-      resizeMul = isMobile || isIOS ? 6.5 : 6.5;
+      resizeMul = isMobile || isIOS ? 7 : 6.5;
+    }
+
+    if (!(isIOS || isMobile)) {
+      resizeMul += mapRange(windowWidth, 1600, 1100, 1, 0);
     }
   } else if (jewelType === "ring") {
     // back-cam
-    resizeMul = 1.1;
+    resizeMul = 1.2;
 
     // front-cam
     if (facingMode !== "environment") {
-      resizeMul = isMobile || isIOS ? 1.15 : 1.45;
+      resizeMul = isMobile || isIOS ? 1.2 : 1.4;
+    }
+
+    if (!(isIOS || isMobile)) {
+      resizeMul += mapRange(windowWidth, 1600, 1100, 0.35, 0);
+    }
+
+    if (selectedJewel === "floralring") {
+      resizeMul -= 0.15;
     }
   }
 
@@ -804,18 +861,20 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   // if (isMobile || isIOS) resizeAdd = YTAdd * 0.1;
 
   if (jewelType === "ring") {
-    resizeAdd = YTAdd;
+    resizeAdd = isMobile || isIOS ? YTAdd : 0;
   }
 
   if (jewelType === "ring") {
-    if (YRAngle >= 30) {
-      resizeAdd -= YRAngle * 0.00075;
-    }
+    // if (YRAngle >= 30 && (isMobile || isIOS)) {
+    //   resizeAdd -= YRAngle * 0.00075;
+    // }
   } else {
+    console.log(YRAngle);
     if (YRAngle > 30) {
       resizeMul -= foldedAngle * 0.01;
       if (isIOS || isMobile) {
-        resizeMul -= 0.75;
+        if (facingMode !== "environment") resizeMul -= 0.75;
+        else resizeMul -= 0.5;
       }
     } else if (YRAngle < -30) {
       resizeMul += 2;
@@ -823,14 +882,32 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
       resizeAdd += foldedAngle * 10;
 
       if (isIOS || isMobile) {
-        resizeMul -= 1;
+        if (facingMode !== "environment") {
+          if (handLabel === "Right") resizeMul -= 1;
+        } else {
+          // if (handLabel === "Right") resizeMul -= 0.5;
+        }
       }
     } else {
       // -30 to 30
-      resizeMul -= YTAdd * 0.1;
       resizeMul -= foldedAngle * 0.01;
+      if (isIOS || isMobile) {
+        if (facingMode !== "environment") resizeMul -= 0.5;
+        else resizeMul -= 0.25;
+      }
+    }
 
-      if (isIOS || isMobile) resizeMul -= 1.25;
+    if ((isMobile || isIOS) && facingMode === "environment") {
+      if (handLabel === "Right") {
+        if (YRAngle >= -45 && YRAngle <= 0)
+          resizeMul += mapRange(YRAngle, -45, 0, 0, 3);
+        else if (YRAngle >= 90 && YRAngle <= 110)
+          resizeMul += mapRange(YRAngle, 90, 110, 1.5, 3);
+      } else {
+        if (YRAngle >= -110 && YRAngle <= -60) {
+          resizeMul += mapRange(YRAngle, -110, -60, 0, 3);
+        }
+      }
     }
   }
 
