@@ -17,6 +17,8 @@ let resize = true;
 let XRAngle = 0.0; // in radians
 let YRAngle = 0.0; // in radians
 let ZRAngle = 0.0; // in degrees
+let XTrans = 0;
+let YTrans = 0;
 let isMobile = true;
 let isIOS = false;
 let browserName = "";
@@ -25,6 +27,8 @@ let rawBaseTheta = 0;
 let baseTheta = 0;
 let selectedJewel = "";
 let handLabel = "";
+let aspectRatio = 1;
+let crop = 1;
 
 let glamCanvas = null;
 

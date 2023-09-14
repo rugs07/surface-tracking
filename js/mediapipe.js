@@ -113,39 +113,115 @@ if (isIOS) {
   fpsControl = new controls.FPS();
 }
 
+function cropImage(results, canvasAspectRatio, canvasWidth, canvasHeight) {
+  const sourceImage = results.image;
+  const sourceWidth = sourceImage.width;
+  const sourceHeight = sourceImage.height;
+
+  let leftCrop = 0;
+  let rightCrop = 0;
+  let topCrop = 0;
+  let bottomCrop = 0;
+
+  if (canvasAspectRatio > sourceWidth / sourceHeight) {
+    // Image is taller than the canvas, so we crop the top and bottom.
+    topCrop = (sourceHeight - sourceWidth / canvasAspectRatio) / 2;
+    bottomCrop = topCrop;
+    crop = bottomCrop;
+  } else {
+    // Image is wider than the canvas, so we crop left and right.
+    leftCrop = (sourceWidth - sourceHeight * canvasAspectRatio) / 2;
+    rightCrop = leftCrop;
+    crop = rightCrop;
+  }
+
+  // Calculate the dimensions of the cropped image.
+  const croppedWidth = sourceWidth - leftCrop - rightCrop;
+  const croppedHeight = sourceHeight - topCrop - bottomCrop;
+
+  // Create a canvas to draw the cropped image.
+  const canvas = document.createElement("canvas");
+  canvas.width = croppedWidth;
+  canvas.height = croppedHeight;
+  const ctx = canvas.getContext("2d");
+
+  // Draw the cropped portion of the image onto the canvas.
+  // ctx.drawImage(
+  //   sourceImage,
+  //   leftCrop,
+  //   topCrop,
+  //   croppedWidth,
+  //   croppedHeight,
+  //   0,
+  //   0,
+  //   croppedWidth,
+  //   croppedHeight
+  // );
+
+  canvasCtx.drawImage(
+    sourceImage,
+    leftCrop,
+    topCrop,
+    croppedWidth,
+    croppedHeight,
+    0,
+    0,
+    canvasWidth,
+    canvasHeight
+  );
+
+  // The 'canvas' now contains the cropped image.
+  return canvas.toDataURL(); // You can also return the canvas or use toDataURL() as needed.
+}
+
 function onResults(results) {
   // Update the frame rate.
   if (isIOS) fpsControl.tick();
+  // Get the dimensions of the available space for the canvas.
+  const canvasWidth = document.documentElement.clientWidth;
+  const canvasHeight = document.documentElement.clientHeight;
 
-  outputCanvasElement.width = document.documentElement.clientWidth;
-  outputCanvasElement.height = document.documentElement.clientHeight;
-  const heightMargin = Math.max(
-    (results.image.width / results.image.height) *
-      (outputCanvasElement.height / 8) -
-      outputCanvasElement.width / 8,
-    0
-  );
-  const widthMargin = Math.max(
-    (results.image.height / results.image.width) *
-      (outputCanvasElement.width / 8) -
-      outputCanvasElement.height / 8,
-    0
-  );
+  // Calculate the aspect ratios of the canvas and the image.
+  const canvasAspectRatio = canvasWidth / canvasHeight;
+  const imageAspectRatio = results.image.width / results.image.height;
+
+  let drawWidth, drawHeight;
+  let drawX = 0;
+  let drawY = 0;
+
+  if (canvasAspectRatio > imageAspectRatio) {
+    // Canvas is wider than the image.
+    drawHeight = canvasHeight;
+    drawWidth = canvasHeight * imageAspectRatio;
+    drawX = (canvasWidth - drawWidth) / 2;
+  } else {
+    // Canvas is taller than the image.
+    drawWidth = canvasWidth;
+    drawHeight = canvasWidth / imageAspectRatio;
+    drawY = (canvasHeight - drawHeight) / 2;
+  }
+
+  // Set the canvas size to match the available space.
+  outputCanvasElement.width = canvasWidth;
+  outputCanvasElement.height = canvasHeight;
 
   canvasCtx.save();
-  canvasCtx.clearRect(
-    0,
-    0,
-    Math.trunc(outputCanvasElement.width + 4 * heightMargin),
-    Math.trunc(outputCanvasElement.height + 4 * widthMargin)
+  // Clear the canvas.
+  canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+  // Draw the image with the calculated dimensions.
+  // canvasCtx.drawImage(results.image, drawX, drawY, drawWidth, drawHeight);
+
+  aspectRatio = canvasAspectRatio;
+
+  const croppedImageDataURL = cropImage(
+    results,
+    canvasAspectRatio,
+    canvasWidth,
+    canvasHeight
   );
-  canvasCtx.drawImage(
-    results.image,
-    0,
-    0,
-    Math.trunc(outputCanvasElement.width + 4 * heightMargin),
-    Math.trunc(outputCanvasElement.height + 4 * widthMargin)
-  );
+
+  // canvasCtx.drawImage(croppedImageDataURL, 0, 0, canvasWidth, canvasHeight);
 
   if (getStartedBtn.disabled) {
     getStartedBtn.disabled = false;

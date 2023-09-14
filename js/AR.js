@@ -23,6 +23,8 @@ const viewSpaceContainer = document.getElementById("viewspacecontainer");
 let zArr = [];
 let rsArr = [];
 let yArr = [];
+let xtArr = [];
+let ytArr = [];
 let windowWidth = document.documentElement.clientWidth;
 let windowHeight = document.documentElement.clientHeight;
 
@@ -297,6 +299,8 @@ function rotateZ(angle, canX, canY) {
   glamCanvas.style.transform = transform;
 
   ZRAngle = angle;
+  XTrans = canX;
+  YTrans = canY;
 }
 
 function convertRingTransRange(value) {
@@ -468,23 +472,6 @@ function rotateVectorZ(vector, angle) {
 //   return rotatedVector;
 // }
 
-// MidKnuckle when wrist is at origin and hand is verticle
-// x: 0.481456995010376;
-// y: 0.2965908646583557;
-// z: 0.016597559675574303;
-
-// initMidRef = new THREE.Vector3(
-//   0.481456995010376,
-//   0.2965908646583557,
-//   0.016597559675574303
-// );
-
-// initWrist = new THREE.Vector3(
-//   0.5131832957267761,
-//   0.4570295810699463,
-//   -1.5639262107569607e-9
-// );
-
 // function limitAngleDifference(currentAngle, targetAngle, maxDifference) {
 //   let angleDifference = targetAngle - currentAngle;
 //   // Clamp the angle difference
@@ -525,18 +512,44 @@ function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
           normZAngle = ZRAngle;
         }
       }
+
+      const XDiff = XTrans - canX;
+
+      xtArr.push(XDiff); // Insert new value at the end
+
+      if (xtArr.length > 3) {
+        xtArr.shift(); // Remove first index value
+        // Check if all 5 values are either positive or negative
+        var allSameSign = xtArr.every(function (value) {
+          return (value >= 0 && XDiff >= 0) || (value < 0 && XDiff < 0);
+        });
+
+        if (!allSameSign) {
+          canX = XTrans;
+        }
+      }
+
+      const YDiff = YTrans - canY;
+
+      ytArr.push(YDiff); // Insert new value at the end
+
+      if (ytArr.length > 3) {
+        ytArr.shift(); // Remove first index value
+        // Check if all 5 values are either positive or negative
+        var allSameSign = ytArr.every(function (value) {
+          return (value >= 0 && YDiff >= 0) || (value < 0 && YDiff < 0);
+        });
+
+        if (!allSameSign) {
+          canY = YTrans;
+        }
+      }
     }
 
     // normZAngle *= 0.85;
-    if ((isMobile || isIOS) && jewelType === "bangle") {
-      normZAngle *= 0.9;
+    if (isMobile || isIOS) {
+      if (jewelType === "bangle") normZAngle *= 0.9;
     }
-
-    // if (angleDifference <= 2) {
-    //   let newZRAngle = kf.filter(normZAngle);
-    //   console.log("origAngle", normZAngle, "filtered", kf.filter(newZRAngle));
-    //   normZAngle = newZRAngle;
-    // }
 
     rotateZ(normZAngle, canX, canY);
   }
@@ -551,27 +564,11 @@ function getNormalizedXTSub(value) {
   let newMin, newMax;
 
   if (jewelType === "bangle") {
-    newMin = isMobile ? 0.125 : 0.49;
-    if (isIOS) newMin = 0.1;
-    newMax = isMobile ? 0.85 : 0.51;
-    if (isIOS) newMax = 0.85;
-
-    if (!(isMobile || isIOS)) {
-      let respX = mapRange(windowWidth, 1600, 1100, 0.0215, 0.15);
-      newMin -= respX;
-      newMax += respX;
-    }
+    newMin = 0.42;
+    newMax = 0.56;
   } else if (jewelType === "ring") {
-    newMin = isMobile ? 0.125 : 0.46;
-    if (isIOS) newMin = 0.22;
-    newMax = isMobile ? 0.825 : 0.5;
-    if (isIOS) newMax = 0.7;
-
-    if (!(isMobile || isIOS)) {
-      let respX = mapRange(windowWidth, 1600, 1100, 0.0215, 0.155);
-      newMin -= respX;
-      newMax += respX;
-    }
+    newMin = 0.435;
+    newMax = 0.525;
   }
 
   // apply the formula to normalize the value
@@ -586,10 +583,8 @@ function getNormalizedYTSub(value) {
   // define the old and new ranges
   const oldMin = 0;
   const oldMax = 1;
-  let newMin = isMobile ? 0.45 : 0.48;
-  if (isIOS) newMin = 0.44;
-  let newMax = isMobile ? 0.52 : 0.485;
-  if (isIOS) newMax = 0.52;
+  let newMin = 0.4;
+  let newMax = 0.55;
 
   // apply the formula to normalize the value
   const normalizedValue =
@@ -690,11 +685,12 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   let midPip = points[10];
   let ringPos = {
     x: (points[13].x + points[14].x - 0.04) / 2.0,
-    y: (points[13].y + points[14].y - 0.05) / 2.0,
+    y: (points[13].y + points[14].y - 0.08) / 2.0,
     z: (points[13].z + points[14].z) / 2.0,
   };
 
   if (isMobile || isIOS) {
+    ringPos.y -= 0.0275;
     if (handLabel === "Left") ringPos.x -= 0.0025;
   } else {
     ringPos.y -= 0.0175;
@@ -712,89 +708,39 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   // Translation calc
   let XTSub = getNormalizedXTSub(stayPoint.x);
   let YTSub = getNormalizedYTSub(stayPoint.y);
-  let respY = windowWidth / 15000;
-  if (windowWidth < 1250) respY = windowWidth / 30000;
+  // let respY = windowWidth / 15000;
+  // if (windowWidth < 1250) respY = windowWidth / 30000;
 
-  let rollMul = 0;
-  if (jewelType === "bangle") {
-    rollMul = mapRange(windowWidth, 1600, 1100, 0.01, -0.03);
-    if (isMobile || isIOS) rollMul = -0.005;
-  }
-  if (jewelType === "ring") {
-    rollMul = mapRange(windowWidth, 1600, 1100, 0.03, -0.001);
-    if (isMobile || isIOS) rollMul = 0;
-  }
   let YTAdd = Math.abs(Math.sin(THREE.MathUtils.degToRad(ZRAngle)));
   let foldedAngle = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
 
-  // Changing range from (0,1) to (-0.5 to 0.5)
   let newX = stayPoint.x - XTSub;
   let newY = stayPoint.y - YTSub;
-  if (!(isMobile || isIOS)) newY += respY;
-  if (jewelType === "bangle") {
-    newY += YTAdd * rollMul;
-    if (handLabel === "Right") newX -= YTAdd * rollMul;
-    else newX += YTAdd * rollMul;
 
-    if (isMobile || isIOS) {
-      if (handLabel === "Right") newX += YTAdd * -rollMul * 2;
-      else newX += YTAdd * rollMul * 2;
-
-      if (facingMode === "environment") {
-        if (handLabel === "Right") {
-          newY += 0.01;
-          newX -= 0.025;
-        } else {
-          if (YRAngle < 0) {
-            newY += 0.01;
-            newX += 0.025;
-          } else {
-            newY -= 0.03;
-            newX += 0.01;
-          }
-        }
-
-        if (YRAngle >= -30 && YRAngle < 0) {
-          // newY += YRAngle * (foldedAngle * 0.0000125);
-          // newY += 0.1;
-          const val = YRAngle / 1800;
-          newY -= val;
-          newX += val / 4;
-        } else if (YRAngle >= 0 && YRAngle < 30) {
-          // newY += (90 - YRAngle) * (foldedAngle * 0.0000125);
-          // newY -= 0.1;
-          if (handLabel === "Right") {
-            const val = YRAngle / 300;
-            newY += val;
-            newX -= val / 4;
-          }
-        } else if (YRAngle >= 30 && YRAngle < 60) {
-          const val = YRAngle / 1200;
-          newY += val;
-          newX -= val / 4;
-        } else if (YRAngle >= 60 && YRAngle < 90) {
-          const val = YRAngle / 3600;
-          newY += val;
-          newX -= val / 4;
-        }
-      }
-    } else {
-      if (YRAngle >= 45 && YRAngle < 90) {
-        newY += (90 - YRAngle) * (foldedAngle * 0.00003125);
-      } else if (YRAngle >= 0 && YRAngle < 45) {
-        newY += YRAngle * (foldedAngle * 0.00003125);
-      }
+  if (handLabel === "Right") {
+    newX -= YTAdd * 0.025;
+    newY += YTAdd * 0.025;
+    if (facingMode === "environment") {
+      newX += 0.025;
     }
-    // console.log(YRAngle);
   } else {
-    newY += YTAdd * rollMul;
-    if (handLabel === "Left") {
-      newX -= 0.001;
+    newX += YTAdd * 0.025;
+    newY += YTAdd * 0.025;
+    if (facingMode === "environment") {
+      newX -= 0.015;
     }
   }
 
-  const XTMul = isMobile || isIOS ? 1400 : 1700;
-  const YTMul = 850;
+  // const XTMul = mapRange(windowWidth, 300, 1600, 425, 1800);
+  // const YTMul = mapRange(windowHeight, 600, 850, 1, 2100);
+
+  let XTMul, YTMul;
+  if (isMobile || isIOS) XTMul = windowWidth * 1.3;
+  else XTMul = windowWidth * 1.15;
+  // let YTMul = mapRange(windowHeight, 600, 800, 1.45, 1.85);
+  // YTMul *= windowHeight;
+  if (isMobile || isIOS) YTMul = windowHeight * aspectRatio * 2.75;
+  else YTMul = windowHeight * aspectRatio * 0.9;
 
   const canX = newX * XTMul;
   const canY = newY * YTMul;
@@ -837,19 +783,19 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
     }
 
     if (!(isIOS || isMobile)) {
-      resizeMul += mapRange(windowWidth, 1600, 1100, 1, 0);
+      resizeMul += mapRange(windowWidth, 1600, 1000, 1.25, 0);
     }
   } else if (jewelType === "ring") {
     // back-cam
-    resizeMul = 1.2;
+    resizeMul = 1.3;
 
     // front-cam
     if (facingMode !== "environment") {
-      resizeMul = isMobile || isIOS ? 1.2 : 1.4;
+      resizeMul = isMobile || isIOS ? 1.3 : 1.5;
     }
 
     if (!(isIOS || isMobile)) {
-      resizeMul += mapRange(windowWidth, 1600, 1100, 0.35, 0);
+      resizeMul += mapRange(windowWidth, 1600, 1000, 0.5, 0);
     }
 
     if (selectedJewel === "floralring") {
@@ -869,7 +815,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
     //   resizeAdd -= YRAngle * 0.00075;
     // }
   } else {
-    console.log(YRAngle);
+    // console.log(YRAngle);
     if (YRAngle > 30) {
       resizeMul -= foldedAngle * 0.01;
       if (isIOS || isMobile) {
