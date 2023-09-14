@@ -564,7 +564,7 @@ function getNormalizedXTSub(value) {
   let newMin, newMax;
 
   if (jewelType === "bangle") {
-    newMin = 0.42;
+    newMin = 0.44;
     newMax = 0.56;
   } else if (jewelType === "ring") {
     newMin = 0.435;
@@ -691,11 +691,8 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
 
   if (isMobile || isIOS) {
     ringPos.y -= 0.0275;
-    if (handLabel === "Left") ringPos.x -= 0.0025;
   } else {
     ringPos.y -= 0.0175;
-    if (handLabel === "Left") ringPos.x -= 0.005;
-    else ringPos.x -= 0.0025;
   }
 
   let stayPoint = null;
@@ -717,17 +714,21 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   let newX = stayPoint.x - XTSub;
   let newY = stayPoint.y - YTSub;
 
-  if (handLabel === "Right") {
-    newX -= YTAdd * 0.025;
-    newY += YTAdd * 0.025;
-    if (facingMode === "environment") {
-      newX += 0.025;
+  if (jewelType === "bangle") {
+    if (handLabel === "Right") {
+      newX += YTAdd * 0.025;
+      newY -= YTAdd * 0.015;
+    } else {
+      newX -= YTAdd * 0.05;
+      newY -= YTAdd * 0.015;
     }
   } else {
-    newX += YTAdd * 0.025;
-    newY += YTAdd * 0.025;
-    if (facingMode === "environment") {
-      newX -= 0.015;
+    if (handLabel === "Right") {
+      newX -= YTAdd * 0.025;
+      newY += YTAdd * 0.025;
+    } else {
+      newX += YTAdd * 0.025;
+      newY += YTAdd * 0.025;
     }
   }
 
@@ -736,7 +737,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
 
   let XTMul, YTMul;
   if (isMobile || isIOS) XTMul = windowWidth * 1.3;
-  else XTMul = windowWidth * 1.15;
+  else XTMul = windowWidth * 1.1;
   // let YTMul = mapRange(windowHeight, 600, 800, 1.45, 1.85);
   // YTMul *= windowHeight;
   if (isMobile || isIOS) YTMul = windowHeight * aspectRatio * 2.75;
@@ -779,7 +780,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
 
     // front-cam
     if (facingMode !== "environment") {
-      resizeMul = isMobile || isIOS ? 7 : 6.5;
+      resizeMul = isMobile || isIOS ? 7 : 7;
     }
 
     if (!(isIOS || isMobile)) {
