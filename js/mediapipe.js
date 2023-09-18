@@ -15,12 +15,10 @@ const switchbtn = document.getElementById("switchbtn");
 const desktopViewAR = document.getElementById("desktop-viewar");
 const mobileViewAR = document.getElementById("mobile-viewar");
 
-let width = document.documentElement.clientHeight,
+let width = document.documentElement.clientWidth,
   height = document.documentElement.clientHeight;
 
-if (isMobile) {
-  height *= 9 / 16;
-}
+width = height;
 
 let timer = 0;
 let isResults = false;
