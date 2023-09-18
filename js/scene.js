@@ -238,7 +238,7 @@ function loadScene(dirUrl, width, height) {
 function initFromParameters() {
   // const params = new URL(window.location.href).searchParams;
   selectedJewel = sessionStorage.getItem("selectedJewel") || "flowerbangle";
-  let dirUrl = "results/" + selectedJewel;
+  dirUrl = "results/" + selectedJewel + "/" + resolution;
   // console.log(dirUrl);
   // const size = params.get("s");
 
@@ -253,10 +253,11 @@ function initFromParameters() {
     return;
   }
 
-  let width = document.documentElement.clientWidth,
-    height = document.documentElement.clientHeight;
+  let deviceWidth = document.documentElement.clientWidth;
+  let deviceHeight = document.documentElement.clientHeight;
 
-
+  let canvasHeight = deviceHeight;
+  let canvasWidth = Math.max(deviceWidth, deviceHeight);
 
   // if (size) {
   //   const match = size.match(/([\d]+),([\d]+)/);
@@ -273,18 +274,9 @@ function initFromParameters() {
   const view = create("div", "view");
   //   view.style.width = "100vw";
   //   view.style.height = "100vh";
-  setDims(view, width, height);
+  setDims(view, canvasWidth, canvasHeight);
   view.textContent = "";
   view.id = "view";
-
-  const showhandscreen = document.getElementById("showhandscreen");
-  setDims(showhandscreen, width, height);
-
-  const usermanual = document.getElementById("usermanual");
-  setDims(usermanual, width, height);
-
-  const retrycamscreen = document.getElementById("retrycamscreen");
-  setDims(retrycamscreen, width, height);
 
   const viewSpaceContainer = document.getElementById("viewspacecontainer");
   viewSpaceContainer.style.display = "inline-block";
@@ -295,8 +287,8 @@ function initFromParameters() {
 
   let canvas = document.createElement("canvas");
   canvas.id = "glamCanvas";
-  var desiredWidthInCSSPixels = width;
-  var desiredHeightInCSSPixels = height;
+  var desiredWidthInCSSPixels = canvasWidth;
+  var desiredHeightInCSSPixels = canvasHeight;
 
   // set the display size of the canvas.
   canvas.style.width = desiredWidthInCSSPixels + "px";
@@ -389,7 +381,7 @@ function initFromParameters() {
   const arToggleContainer = document.getElementById("ar-toggle-container");
   arToggleContainer.style.display = "flex";
 
-  loadScene(dirUrl, width, height);
+  loadScene(dirUrl, canvasWidth, canvasHeight);
 }
 
 function changeJewellery(newJewel) {
@@ -399,14 +391,16 @@ function changeJewellery(newJewel) {
   // const params = new URL(window.location.href).searchParams;
   sessionStorage.setItem("selectedJewel", newJewel);
   selectedJewel = newJewel || "flowerbangle";
-  dirUrl = "results/" + selectedJewel;
-  // console.log(dirUrl);
+  dirUrl = "results/" + selectedJewel + "/" + resolution;
 
-  let width = document.documentElement.clientWidth,
-    height = document.documentElement.clientHeight;
+  let deviceWidth = document.documentElement.clientWidth;
+  let deviceHeight = document.documentElement.clientHeight;
+
+  let canvasHeight = deviceHeight;
+  let canvasWidth = Math.max(deviceWidth, deviceHeight);
 
   showLoading();
-  loadScene(dirUrl, width, height);
+  loadScene(dirUrl, canvasWidth, canvasHeight);
 }
 
 // To handle Camera-Controls events
@@ -608,6 +602,7 @@ function loadOnFirstFrame() {
       resetTransVar();
       resetRingTrans();
       resetMeshForVR();
+      resetGlamCanvas();
     }
     cameraControls.setFocalOffset(0.0, 0.0, 0.0);
   }

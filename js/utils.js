@@ -73,6 +73,18 @@ function hideHandScreen() {
   showhandscreen.style.display = "none";
 }
 
+function resetScale() {
+  if (jewelType === "ring") {
+    if (isIOS || isMobile) cameraControls.zoomTo(0.5, false);
+    else cameraControls.zoomTo(0.75, false);
+  } else {
+    let scale = isIOS || isMobile ? 1 : 1.25;
+    if (selectedJewel !== "flowerbangle")
+      scale += isIOS || isMobile ? 0.25 : 0.5;
+    cameraControls.zoomTo(scale, false);
+  }
+}
+
 // Method to enable or disable fullscreen view
 const fullscreen = (mode = true, el = "body") =>
   mode
@@ -81,13 +93,7 @@ const fullscreen = (mode = true, el = "body") =>
 
 function resetMeshForVR() {
   cameraControls.moveTo(0.0, 0.0, 0.0, true);
-  if (jewelType === "ring") {
-    if (isIOS || isMobile) cameraControls.zoomTo(0.5, false);
-    else cameraControls.zoomTo(0.75, false);
-  } else {
-    if (isIOS || isMobile) cameraControls.zoomTo(1, false);
-    else cameraControls.zoomTo(1.25, false);
-  }
+  resetScale();
 
   if (selectedJewel === "flowerbangle") {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-125);
@@ -134,15 +140,51 @@ function resetMeshForVR() {
   showJewel();
 }
 
+function resetGlamCanvas() {
+  let deviceWidth = document.documentElement.clientWidth;
+  let deviceHeight = document.documentElement.clientHeight;
+  let canvasWidth = Math.max(deviceWidth, deviceHeight);
+
+  const XDiff = (canvasWidth - deviceWidth) / 2;
+
+  // flipping canvas
+  if (jewelType === "ring" && !isDirectionalRing) {
+    if (isMobile || isIOS) {
+      glamCanvas.style.transform =
+        "translate3d(" +
+        -XDiff +
+        "px, " +
+        -50 +
+        "px, " +
+        0 +
+        "px) rotateZ(" +
+        180 +
+        "deg)";
+    } else {
+      glamCanvas.style.transform = "rotateZ(" + 180 + "deg)";
+    }
+  } else {
+    if (isMobile || isIOS) {
+      glamCanvas.style.transform =
+        "translate3d(" + -XDiff + "px, " + -50 + "px, " + 0 + "px)";
+    } else {
+      glamCanvas.style.transform = "none";
+    }
+  }
+}
+
 function resetMesh() {
   cameraControls.moveTo(0.0, 0.0, 0.0, true);
-  if (jewelType == "bangle") cameraControls.zoomTo(1, false);
-  else cameraControls.zoomTo(0.5, false);
+  resetScale();
 
   if (jewelType === "ring") {
     cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-180);
   } else {
-    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-40);
+    if (facingMode === "user") {
+      cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-40);
+    } else {
+      cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-90);
+    }
   }
   cameraControls.polarAngle = basePhi;
   cameraControls.setFocalOffset(0.0, 0.0, 0.0);
@@ -541,7 +583,9 @@ function addError(errorObj, index, arr) {
   }" id="error-sub${index}">${msg2}</p>`;
   if (msg2) errorBox.innerHTML += errormsg2;
 
-  let imgcontainer = `<div class="allsteps errorsteps">
+  let trybutton = `<button class="centerbtn" type="button" id="reloadbtn">Try again</button>`;
+
+  let imgcontainer = `<div class="errorsteps">
                         <div class="errorstep">
                           <img
                             src="assets/${imgsrc}"
@@ -567,9 +611,7 @@ function addError(errorObj, index, arr) {
     });
   }
 
-  let trybutton = `<button class="centerbtn" type="button" id="reloadbtn">Try again</button>`;
-
-  let qrcontainer = `<div class="allsteps errorsteps">
+  let qrcontainer = `<div class="errorsteps">
                         <div class="errorstep">
                           <div class="qr-code-container">
                             <div class="qr-code" style></div>
@@ -618,9 +660,6 @@ function showErrors(errors) {
 
   errors.forEach(addError);
 
-  let newWidth = (window.innerWidth * 85) / 100;
-  let newHeight = (window.innerHeight * 85) / 100;
-  setDims(sideErrors, newWidth, newHeight);
   sideErrors.style.display = "flex";
 }
 

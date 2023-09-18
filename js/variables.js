@@ -26,6 +26,7 @@ let jewelType = "";
 let rawBaseTheta = 0;
 let baseTheta = 0;
 let selectedJewel = "";
+let resolution = 336;
 let handLabel = "";
 let aspectRatio = 1;
 let crop = 1;

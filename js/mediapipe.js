@@ -10,7 +10,6 @@ const viewSpaceContainer = document.getElementById("viewspacecontainer");
 const viewElement = document.getElementById("view");
 const getStartedBtn = document.getElementById("getstartedbtn");
 const showhandscreen = document.getElementById("showhandscreen");
-const retrycamscreen = document.getElementById("retrycamscreen");
 const updateNote = document.getElementById("updatenote");
 const switchbtn = document.getElementById("switchbtn");
 const desktopViewAR = document.getElementById("desktop-viewar");
@@ -113,51 +112,51 @@ if (isIOS) {
   fpsControl = new controls.FPS();
 }
 
-function cropImage(results, canvasAspectRatio, canvasWidth, canvasHeight) {
+function cropAndDrawImage(
+  results,
+  canvasAspectRatio,
+  canvasWidth,
+  canvasHeight
+) {
+  // if (canvasAspectRatio > imageAspectRatio) {
+  //   // Image is taller than the canvas so we crop the top and bottom.
+  //    Full Image height [0 to h]
+  //    Crop_len = (h - (w/canvasAspectRatio)) /2
+  //    Cropped image height [0+crop_len, h-crop_len]
+  // Else
+  //   // Image is wider than the canvas so we crop left and right.
+  //    Full Image width [0 to w]
+  //    Crop_len = (w - (h*canvasAspectRatio)) /2
+  //    Cropped image width [0+crop_len, w-crop_len]
+
   const sourceImage = results.image;
   const sourceWidth = sourceImage.width;
   const sourceHeight = sourceImage.height;
+  const sourceAspectRatio = sourceWidth / sourceHeight;
 
   let leftCrop = 0;
   let rightCrop = 0;
   let topCrop = 0;
   let bottomCrop = 0;
 
-  if (canvasAspectRatio > sourceWidth / sourceHeight) {
+  if (canvasAspectRatio > sourceAspectRatio) {
     // Image is taller than the canvas, so we crop the top and bottom.
     topCrop = (sourceHeight - sourceWidth / canvasAspectRatio) / 2;
     bottomCrop = topCrop;
-    crop = bottomCrop;
+    // crop = bottomCrop;
   } else {
     // Image is wider than the canvas, so we crop left and right.
     leftCrop = (sourceWidth - sourceHeight * canvasAspectRatio) / 2;
     rightCrop = leftCrop;
-    crop = rightCrop;
+    // crop = rightCrop;
   }
 
   // Calculate the dimensions of the cropped image.
   const croppedWidth = sourceWidth - leftCrop - rightCrop;
   const croppedHeight = sourceHeight - topCrop - bottomCrop;
 
-  // Create a canvas to draw the cropped image.
-  const canvas = document.createElement("canvas");
-  canvas.width = croppedWidth;
-  canvas.height = croppedHeight;
-  const ctx = canvas.getContext("2d");
-
   // Draw the cropped portion of the image onto the canvas.
-  // ctx.drawImage(
-  //   sourceImage,
-  //   leftCrop,
-  //   topCrop,
-  //   croppedWidth,
-  //   croppedHeight,
-  //   0,
-  //   0,
-  //   croppedWidth,
-  //   croppedHeight
-  // );
-
+  // Ref: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
   canvasCtx.drawImage(
     sourceImage,
     leftCrop,
@@ -169,59 +168,29 @@ function cropImage(results, canvasAspectRatio, canvasWidth, canvasHeight) {
     canvasWidth,
     canvasHeight
   );
-
-  // The 'canvas' now contains the cropped image.
-  return canvas.toDataURL(); // You can also return the canvas or use toDataURL() as needed.
 }
 
 function onResults(results) {
   // Update the frame rate.
   if (isIOS) fpsControl.tick();
   // Get the dimensions of the available space for the canvas.
-  const canvasWidth = document.documentElement.clientWidth;
-  const canvasHeight = document.documentElement.clientHeight;
+  let canvasWidth = document.documentElement.clientWidth;
+  let canvasHeight = document.documentElement.clientHeight;
 
   // Calculate the aspect ratios of the canvas and the image.
   const canvasAspectRatio = canvasWidth / canvasHeight;
-  const imageAspectRatio = results.image.width / results.image.height;
-
-  let drawWidth, drawHeight;
-  let drawX = 0;
-  let drawY = 0;
-
-  if (canvasAspectRatio > imageAspectRatio) {
-    // Canvas is wider than the image.
-    drawHeight = canvasHeight;
-    drawWidth = canvasHeight * imageAspectRatio;
-    drawX = (canvasWidth - drawWidth) / 2;
-  } else {
-    // Canvas is taller than the image.
-    drawWidth = canvasWidth;
-    drawHeight = canvasWidth / imageAspectRatio;
-    drawY = (canvasHeight - drawHeight) / 2;
-  }
 
   // Set the canvas size to match the available space.
   outputCanvasElement.width = canvasWidth;
   outputCanvasElement.height = canvasHeight;
 
+  // Save & clear the canvas.
   canvasCtx.save();
-  // Clear the canvas.
   canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-  // Draw the image with the calculated dimensions.
-  // canvasCtx.drawImage(results.image, drawX, drawY, drawWidth, drawHeight);
-
+  // Draw the cropped/scaled image as per the current canvas aspect ratio
   aspectRatio = canvasAspectRatio;
-
-  const croppedImageDataURL = cropImage(
-    results,
-    canvasAspectRatio,
-    canvasWidth,
-    canvasHeight
-  );
-
-  // canvasCtx.drawImage(croppedImageDataURL, 0, 0, canvasWidth, canvasHeight);
+  cropAndDrawImage(results, canvasAspectRatio, canvasWidth, canvasHeight);
 
   if (getStartedBtn.disabled) {
     getStartedBtn.disabled = false;
@@ -297,7 +266,8 @@ function onResults(results) {
       translateRotateMesh(
         results.multiHandLandmarks[0],
         handLabel,
-        isPalmFacing
+        isPalmFacing,
+        results.image
       );
     } else {
       handPresent = false;
@@ -407,17 +377,18 @@ const switchFacingMode = () => {
     camera.h.facingMode = facingMode;
     camera.start();
   }
+  resetMesh();
 };
 
 const handleMediaCamera = () => {
-  const aspect = 960 / 720;
-  let width, height;
+  let deviceWidth = document.documentElement.clientWidth;
+  let deviceHeight = document.documentElement.clientHeight;
 
-  height = (window.innerHeight * 110) / 100;
-  width = height / aspect;
+  let canvasHeight = deviceHeight;
+  let canvasWidth = Math.max(deviceWidth, deviceHeight);
 
-  outputCanvasElement.width = width;
-  outputCanvasElement.height = height;
+  outputCanvasElement.width = canvasWidth;
+  outputCanvasElement.height = canvasHeight;
 };
 
 const setupCamera = () => {
@@ -522,17 +493,12 @@ window.addEventListener("resize", function handleResize(event) {
   if (isMobile || isIOS) {
     let newWidth = document.documentElement.clientWidth;
     let newHeight = document.documentElement.clientHeight;
-    // if (isVideo && window.innerHeight === screen.height) {
-    //   newHeight = document.documentElement.clientHeight;
-    // }
-
+    if (isVideo && window.innerHeight === screen.height) {
+      // Going full-screen
+    } else {
+      // Exiting from full-screen
+    }
     setDims(viewElement, newWidth, newHeight);
-
-    setDims(showhandscreen, newWidth, newHeight);
-
-    setDims(usermanual, newWidth, newHeight);
-
-    setDims(retrycamscreen, newWidth, newHeight);
   }
 });
 

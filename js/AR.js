@@ -28,6 +28,11 @@ let ytArr = [];
 let windowWidth = document.documentElement.clientWidth;
 let windowHeight = document.documentElement.clientHeight;
 
+if (isMobile || isIOS) {
+  windowWidth = window.screen.width;
+  windowHeight = window.screen.height;
+}
+
 function enableTranslation() {
   translation = true;
   console.log("translation", translation);
@@ -617,11 +622,29 @@ function calculateWristSize(points, YTAdd) {
   //     console.log("origsize", wristSize, "filtered", newSize);
   //     wristSize = newSize;
   // }
+
   if (isMobile || isIOS) {
-    const plusVal = mapRange(YTAdd, 0, 1, 0, 0.12);
-    wristSize -= plusVal;
+    if (YTAdd > 0.4) {
+      let plusVal = mapRange(YTAdd, 0.4, 1, 0, 0.12);
+      wristSize -= plusVal;
+    }
+
+    if (jewelType === "bangle") {
+      if (facingMode === "user") {
+        if (handLabel === "Right" && YRAngle < 0) {
+          wristSize += YRAngle * 0.00025;
+        }
+        if (handLabel === "Left" && YRAngle > -30 && YRAngle < 30) {
+          wristSize += YRAngle * 0.00001;
+        }
+      } else {
+        if (handLabel === "Left" && YRAngle > 0) {
+          wristSize += (90 - YRAngle) * 0.005;
+        }
+      }
+    }
   } else {
-    const plusVal = mapRange(YTAdd, 0, 1, 0, 0.06);
+    const plusVal = mapRange(YTAdd, 0, 1, 0, 0.05);
     wristSize += plusVal;
   }
 
@@ -670,7 +693,7 @@ function smoothResizing(wristSize) {
 }
 
 //function to use mediapipe hand prediction data for translation and rotation
-function translateRotateMesh(points, handLabel, isPalmFacing) {
+function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   let wrist = points[0];
   let firstKnuckle = points[5];
   let thumbTip = points[4];
@@ -684,16 +707,10 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   let midTop = points[12];
   let midPip = points[10];
   let ringPos = {
-    x: (points[13].x + points[14].x - 0.04) / 2.0,
-    y: (points[13].y + points[14].y - 0.08) / 2.0,
+    x: (points[13].x + points[14].x) / 2.0,
+    y: (points[13].y + points[14].y) / 2.0,
     z: (points[13].z + points[14].z) / 2.0,
   };
-
-  if (isMobile || isIOS) {
-    ringPos.y -= 0.0275;
-  } else {
-    ringPos.y -= 0.0175;
-  }
 
   let stayPoint = null;
   if (jewelType === "bangle") {
@@ -702,49 +719,27 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
     stayPoint = ringPos;
   }
 
-  // Translation calc
-  let XTSub = getNormalizedXTSub(stayPoint.x);
-  let YTSub = getNormalizedYTSub(stayPoint.y);
-  // let respY = windowWidth / 15000;
-  // if (windowWidth < 1250) respY = windowWidth / 30000;
-
   let YTAdd = Math.abs(Math.sin(THREE.MathUtils.degToRad(ZRAngle)));
   let foldedAngle = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
 
-  let newX = stayPoint.x - XTSub;
-  let newY = stayPoint.y - YTSub;
-
-  if (jewelType === "bangle") {
-    if (handLabel === "Right") {
-      newX += YTAdd * 0.025;
-      newY -= YTAdd * 0.015;
-    } else {
-      newX -= YTAdd * 0.05;
-      newY -= YTAdd * 0.015;
-    }
+  let window_scale, canX, canY;
+  if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
+    // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
+    canX = stayPoint.x * windowWidth - windowWidth / 2;
+    window_scale = windowWidth / sourceImage.width;
+    canY =
+      stayPoint.y * (sourceImage.height * window_scale) -
+      (sourceImage.height * window_scale) / 2;
   } else {
-    if (handLabel === "Right") {
-      newX -= YTAdd * 0.025;
-      newY += YTAdd * 0.025;
-    } else {
-      newX += YTAdd * 0.025;
-      newY += YTAdd * 0.025;
-    }
+    // Image is wider than the canvas, so we crop left & right & scale as per best fit of height
+    canY = stayPoint.y * windowHeight - windowHeight / 2;
+    window_scale = windowHeight / sourceImage.height;
+    canX =
+      stayPoint.x * (sourceImage.width * window_scale) -
+      (sourceImage.width * window_scale) / 2;
   }
 
-  // const XTMul = mapRange(windowWidth, 300, 1600, 425, 1800);
-  // const YTMul = mapRange(windowHeight, 600, 850, 1, 2100);
-
-  let XTMul, YTMul;
-  if (isMobile || isIOS) XTMul = windowWidth * 1.3;
-  else XTMul = windowWidth * 1.1;
-  // let YTMul = mapRange(windowHeight, 600, 800, 1.45, 1.85);
-  // YTMul *= windowHeight;
-  if (isMobile || isIOS) YTMul = windowHeight * aspectRatio * 2.75;
-  else YTMul = windowHeight * aspectRatio * 0.9;
-
-  const canX = newX * XTMul;
-  const canY = newY * YTMul;
+  // console.log(sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
 
   // rotation & translation (getZAngleAndRotate also translates)
   totalTransX = canX;
@@ -775,25 +770,15 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
   let resizeMul;
 
   if (jewelType === "bangle") {
-    // back-cam
-    resizeMul = 7.5;
-
-    // front-cam
-    if (facingMode !== "environment") {
-      resizeMul = isMobile || isIOS ? 7 : 7;
-    }
+    resizeMul = 5.5;
 
     if (!(isIOS || isMobile)) {
       resizeMul += mapRange(windowWidth, 1600, 1000, 1.25, 0);
     }
-  } else if (jewelType === "ring") {
-    // back-cam
-    resizeMul = 1.3;
 
-    // front-cam
-    if (facingMode !== "environment") {
-      resizeMul = isMobile || isIOS ? 1.3 : 1.5;
-    }
+    if (selectedJewel !== "flowerbangle") resizeMul += 0.5;
+  } else if (jewelType === "ring") {
+    resizeMul = 1.5;
 
     if (!(isIOS || isMobile)) {
       resizeMul += mapRange(windowWidth, 1600, 1000, 0.5, 0);
@@ -804,63 +789,8 @@ function translateRotateMesh(points, handLabel, isPalmFacing) {
     }
   }
 
-  let resizeAdd = 1;
-  // if (isMobile || isIOS) resizeAdd = YTAdd * 0.1;
-
-  if (jewelType === "ring") {
-    resizeAdd = isMobile || isIOS ? YTAdd : 0;
-  }
-
-  if (jewelType === "ring") {
-    // if (YRAngle >= 30 && (isMobile || isIOS)) {
-    //   resizeAdd -= YRAngle * 0.00075;
-    // }
-  } else {
-    // console.log(YRAngle);
-    if (YRAngle > 30) {
-      resizeMul -= foldedAngle * 0.01;
-      if (isIOS || isMobile) {
-        if (facingMode !== "environment") resizeMul -= 0.75;
-        else resizeMul -= 0.5;
-      }
-    } else if (YRAngle < -30) {
-      resizeMul += 2;
-      resizeMul -= foldedAngle * 0.15;
-      resizeAdd += foldedAngle * 10;
-
-      if (isIOS || isMobile) {
-        if (facingMode !== "environment") {
-          if (handLabel === "Right") resizeMul -= 1;
-        } else {
-          // if (handLabel === "Right") resizeMul -= 0.5;
-        }
-      }
-    } else {
-      // -30 to 30
-      resizeMul -= foldedAngle * 0.01;
-      if (isIOS || isMobile) {
-        if (facingMode !== "environment") resizeMul -= 0.5;
-        else resizeMul -= 0.25;
-      }
-    }
-
-    if ((isMobile || isIOS) && facingMode === "environment") {
-      if (handLabel === "Right") {
-        if (YRAngle >= -45 && YRAngle <= 0)
-          resizeMul += mapRange(YRAngle, -45, 0, 0, 3);
-        else if (YRAngle >= 90 && YRAngle <= 110)
-          resizeMul += mapRange(YRAngle, 90, 110, 1.5, 3);
-      } else {
-        if (YRAngle >= -110 && YRAngle <= -60) {
-          resizeMul += mapRange(YRAngle, -110, -60, 0, 3);
-        }
-      }
-    }
-  }
-
   if (resize && !isArcball) {
     let smoothenSize = smoothResizing(dist * resizeMul);
-
     cameraControls.zoomTo(smoothenSize, false);
   }
 
