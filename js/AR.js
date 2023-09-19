@@ -637,8 +637,8 @@ function calculateWristSize(points, YRAngle, ZRAngle, foldedHand) {
 
     wristSize *= mapRange(foldResize, 0, 1, 1, 0.5);
   } else {
-    const mulVal = mapRange(YTAdd, 0, 1, 1, 1.25);
-    wristSize *= mulVal;
+    const mulVal = mapRange(YTAdd, 0, 1, 1, 1.4);
+    wristSize *= mulVal * 1.75;
 
     wristSize *= mapRange(foldResize, 0, 1, 1, 0.75);
   }
