@@ -1,6 +1,7 @@
 /**************************************************************************************************************
  * ************************************************************************************************************
  */
+import DeviceDetector from "https://cdn.skypack.dev/device-detector-js@2.2.10";
 
 const inputVideoElement = document.getElementsByClassName("input_video")[0];
 const outputCanvasElement = document.getElementsByClassName("output_canvas")[0];
@@ -19,6 +20,74 @@ let width = document.documentElement.clientWidth,
   height = document.documentElement.clientHeight;
 
 width = height;
+/**************************************************************************************************************
+ * ************************************************************************************************************
+ */
+const frameSets = [];
+const smoothFrame = [];
+
+/**
+ * smoothLandmarks
+ * @param {Object} results This should be coming directly from Mediapipe
+ * @param {Function} onResults Optional: If you want to call another function instead of getting return
+ * @returns {Object}
+ */
+let frames = [];
+const smoothLandmarks = (results, onResults) => {
+  // Pushing frame at the end of frameSet array
+  if (results.multiHandLandmarks[0]) {
+    frameSets.push(results.multiHandLandmarks[0]);
+    frames.push(results);
+  }
+
+  if (frameSets.length === 8) {
+    // This loop will run 33 times to make an average of each joint
+    for (let i = 0; i < 21; i++) {
+      // Making an array of each joint coordinates
+      let x = frameSets.map((a) => a[i].x);
+      let y = frameSets.map((a) => a[i].y);
+      let z = frameSets.map((a) => a[i].z);
+      let visibility = frameSets.map((a) => a[i].visibility);
+
+      // Sorting the array into ascending order
+      x = x.sort((a, b) => a - b);
+      y = y.sort((a, b) => a - b);
+      z = z.sort((a, b) => a - b);
+      visibility = visibility.sort((a, b) => a - b);
+
+      // Dropping 2 min and 2 max coordinates
+      x = x.slice(2, 6);
+      y = y.slice(2, 6);
+      z = z.slice(2, 6);
+      visibility = visibility.slice(2, 6);
+
+      // Making the average of the 4 remaining coordinates
+      smoothFrame[i] = {
+        x: x.reduce((a, b) => a + b, 0) / x.length,
+        y: y.reduce((a, b) => a + b, 0) / y.length,
+        z: z.reduce((a, b) => a + b, 0) / z.length,
+        visibility: visibility.reduce((a, b) => a + b, 0) / visibility.length,
+      };
+    }
+
+    // Removing the first frame from frameSet
+    frameSets.shift();
+    frames.shift();
+  }
+
+  // after the first 8 frames, we have averaged coordinates, so now updating the poseLandmarks with averaged coordinates
+  if (smoothFrame.length > 0) {
+    results.multiHandLandmarks[0] = smoothFrame;
+  }
+
+  return onResults
+    ? onResults(frames[frames.length - 1])
+    : frames[frames.length - 1];
+};
+
+/**************************************************************************************************************
+ * ************************************************************************************************************
+ */
 
 let timer = 0;
 let isResults = false;
@@ -47,7 +116,6 @@ function setMeshVisibility() {
   }
 }
 
-import DeviceDetector from "https://cdn.skypack.dev/device-detector-js@2.2.10";
 const mpHands = window;
 const drawingUtils = window;
 const controls = window;
@@ -76,6 +144,7 @@ function testSupport(supportedDevices) {
 
   let isSupported = false;
   for (const device of supportedDevices) {
+    // console.log("device : ", device);
     if (device.client !== undefined) {
       const re = new RegExp(`^${device.client}$`);
       if (!re.test(detectedDevice.client.name)) {
@@ -109,7 +178,7 @@ let fpsControl = null;
 if (isIOS) {
   fpsControl = new controls.FPS();
 }
-
+let frameCount = 0;
 function cropAndDrawImage(
   results,
   canvasAspectRatio,
@@ -155,6 +224,11 @@ function cropAndDrawImage(
 
   // Draw the cropped portion of the image onto the canvas.
   // Ref: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+  // if (frameCount < 4) {
+  //   frameCount++; // Increment the frame count
+  //   return; // Skip rendering for the first 4 frames
+  // }
+
   canvasCtx.drawImage(
     sourceImage,
     leftCrop,
@@ -166,9 +240,36 @@ function cropAndDrawImage(
     canvasWidth,
     canvasHeight
   );
+  // if (frameCount === 4) {
+  //   frameCount = 0;
+  // }
 }
 
+const initialX = 0; // Initial estimated value (could be the first detected x-coordinate)
+let kalmanX = initialX; // Estimated x-coordinate
+let kalmanP = 1; // Estimated error in the x-coordinate
+const processNoise = 0.1; // Process noise (adjust as needed)
+const measurementNoise = 1; // Measurement noise (adjust as needed)
+
+function kalmanFilter(newX) {
+  // Prediction step
+  const predictionX = kalmanX;
+  const predictionP = kalmanP + processNoise;
+
+  // Update step
+  const kalmanGain = predictionP / (predictionP + measurementNoise);
+  kalmanX = predictionX + kalmanGain * (newX - predictionX);
+  kalmanP = (1 - kalmanGain) * predictionP;
+
+  return kalmanX;
+}
+// let frameCount = 0; // Add this variable to keep track of the frames
+
 function onResults(results) {
+  // if (frameCount < 4) {
+  //   frameCount++; // Increment the frame count
+  //   return; // Skip rendering for the first 4 frames
+  // }
   // Update the frame rate.
   if (isIOS) fpsControl.tick();
   // Get the dimensions of the available space for the canvas.
@@ -188,6 +289,12 @@ function onResults(results) {
 
   // Draw the cropped/scaled image as per the current canvas aspect ratio
   aspectRatio = canvasAspectRatio;
+  if (results.multiHandLandmarks[0]) {
+    // console.log("amenitytech_log_002", results.multiHandLandmarks[0][0]);
+
+    results = smoothLandmarks(results);
+    // console.log("amenitytech_log_003 after", results.multiHandLandmarks[0][0]);
+  }
   cropAndDrawImage(results, canvasAspectRatio, canvasWidth, canvasHeight);
 
   if (getStartedBtn.disabled) {
@@ -204,7 +311,7 @@ function onResults(results) {
     handLabel = results.multiHandedness.length
       ? results.multiHandedness[0].label
       : null;
-
+    // console.log("amenity_test_001", results);
     if (handDetected) {
       const indexFingerKnuckle = results.multiHandLandmarks[0][5];
       // const middleFingerKnuckle = results.multiHandLandmarks[0][5];
@@ -271,6 +378,9 @@ function onResults(results) {
       handPresent = false;
       setMeshVisibility();
     }
+    // if (frameCount === 4) {
+    //   frameCount = 0;
+    // }
   }
 
   // if (results.multiHandLandmarks && results.multiHandedness) {
@@ -307,7 +417,7 @@ facingMode = sessionStorage.getItem("facingMode") || "user";
 hands.setOptions({
   selfieMode: facingMode === "user",
   maxNumHands: 1,
-  modelComplexity: 0,
+  modelComplexity: 1,
   minDetectionConfidence: 0.7,
   minTrackingConfidence: 0.7,
 });
@@ -493,8 +603,10 @@ window.addEventListener("resize", function handleResize(event) {
     let newHeight = document.documentElement.clientHeight;
     if (isVideo && window.innerHeight === screen.height) {
       // Going full-screen
+      console.log("Going full-screen");
     } else {
       // Exiting from full-screen
+      console.log("Exiting from full-screen");
     }
     setDims(viewElement, newWidth, newHeight);
   }

@@ -27,6 +27,8 @@ let xtArr = [];
 let ytArr = [];
 let windowWidth = document.documentElement.clientWidth;
 let windowHeight = document.documentElement.clientHeight;
+console.log("windowWidth : ", windowWidth);
+console.log("windowHeight : ", windowHeight);
 
 if (isMobile || isIOS) {
   windowWidth = window.screen.width;
@@ -637,10 +639,10 @@ function calculateWristSize(points, YRAngle, ZRAngle, foldedHand) {
 
     wristSize *= mapRange(foldResize, 0, 1, 1, 0.5);
   } else {
-    const mulVal = mapRange(YTAdd, 0, 1, 1, 1.4);
+    const mulVal = mapRange(YTAdd, 0, 1, 1, 1.25);
     wristSize *= mulVal * 1.75;
 
-    wristSize *= mapRange(foldResize, 0, 1, 1, 0.75);
+    wristSize *= mapRange(foldResize, 0, 1, 1, 0.65);
   }
 
   lastSize = wristSize;
@@ -765,7 +767,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
 
   if (jewelType === "bangle") {
     if (isMobile || isIOS) resizeMul = window_scale * 3.5;
-    else resizeMul = window_scale * 2.5;
+    else resizeMul = window_scale * 2;
 
     if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
   } else if (jewelType === "ring") {

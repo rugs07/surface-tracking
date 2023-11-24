@@ -76,6 +76,12 @@ function init() {
       let position = new THREE.Vector3(),
         quaternion = new THREE.Quaternion(),
         scale = new THREE.Vector3();
+      console.log(
+        "position, quaternion, scale : ",
+        position,
+        quaternion,
+        scale
+      );
       reticle.matrix.decompose(position, quaternion, scale);
       // console.log(
       //   "position",
@@ -110,13 +116,38 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
 }
+window.addEventListener("resize", onWindowResize);
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+  const originalFOV = 70;
+  // Update the canvas size as you did before
+  let canvasWidth = document.documentElement.clientWidth;
+  let canvasHeight = document.documentElement.clientHeight;
+  // console.log("canvasWidth  : ", canvasWidth);
+  // console.log("canvasHeight  : ", canvasHeight);
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  // outputCanvasElement.width = canvasWidth;
+  // outputCanvasElement.height = canvasHeight;
+
+  // Calculate the zoom level (you may need to adjust this factor)
+  const zoomLevel = window.devicePixelRatio;
+
+  // Adjust the camera's field of view based on the zoom level
+  camera.fov = originalFOV / zoomLevel; // originalFOV is your base FOV
+  camera.aspect = canvasWidth / canvasHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(canvasWidth, canvasHeight);
 }
+// function onWindowResize() {
+//   console.log("window.innerWidth : ", window.innerWidth);
+//   console.log("window.innerHeight : ", window.innerHeight);
+//   // const zoomLevel = window.devicePixelRatio;
+
+//   camera.aspect = window.innerWidth / window.innerHeight;
+//   camera.updateProjectionMatrix();
+
+//   renderer.setSize(window.innerWidth, window.innerHeight);
+// }
 
 function animate() {
   renderer.setAnimationLoop(render);
