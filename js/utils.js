@@ -247,6 +247,7 @@ function showManual() {
   let step2img = document.getElementById("step2img");
   let step3img = document.getElementById("step3img");
 
+  jewelType = "ring";
   step1img.src = `assets/${jewelType}step1.jpg`;
   step2img.src = `assets/${jewelType}step2.jpg`;
   step3img.src = `assets/${jewelType}step3.gif`;

@@ -330,10 +330,10 @@ button:hover {
   z-index: 20;
   gap: 10px;
   position: absolute;
-  top: 0;
+  top: 20px;
   left: 0;
   margin: 15px auto;
-  display: none;
+  /* display: none; */
 }
 
 .testing-container {
@@ -522,7 +522,8 @@ button:hover {
   /* left: 0; */
   text-align: left;
   z-index: 10;
-  display: none;
+  background: #000;
+  /* display: none; */
 }
 
 #usermanual,
@@ -780,7 +781,7 @@ button:hover {
 }
 
 .ar-bottom-container {
-  display: none;
+  /* display: none; */
 }
 
 .mobile-viewar {

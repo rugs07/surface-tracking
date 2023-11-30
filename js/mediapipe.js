@@ -6,6 +6,7 @@ import DeviceDetector from "https://cdn.skypack.dev/device-detector-js@2.2.10";
 const inputVideoElement = document.getElementsByClassName("input_video")[0];
 const outputCanvasElement = document.getElementsByClassName("output_canvas")[0];
 const canvasCtx = outputCanvasElement.getContext("2d");
+const gsplatCanvas = document.getElementById("gsplatCanvas");
 
 const viewSpaceContainer = document.getElementById("viewspacecontainer");
 const viewElement = document.getElementById("view");
@@ -97,22 +98,20 @@ let handPresent = false;
 
 function setMeshVisibility() {
   if (isIOS) {
-    viewSpaceContainer.style.display = "none";
     showhandscreen.style.display = "flex";
-    resetMesh();
-    viewSpaceContainer.style.display = "inline-block";
+    viewSpaceContainer.style.display = "none";
   } else {
-    setTimeout(() => {
-      if (isResults) {
-        if (timer === 4) {
-          viewSpaceContainer.style.display = "none";
-          showhandscreen.style.display = "flex";
-          resetMesh();
-          viewSpaceContainer.style.display = "inline-block";
-        }
-      }
-      timer++;
-    }, 500);
+    // setTimeout(() => {
+    //   if (isResults) {
+    //     if (timer === 4) {
+    //       showhandscreen.style.display = "flex";
+    //       viewSpaceContainer.style.display = "none";
+    //     }
+    //   }
+    //   timer++;
+    // }, 500);
+    showhandscreen.style.display = "flex";
+    viewSpaceContainer.style.display = "none";
   }
 }
 
@@ -358,7 +357,7 @@ function onResults(results) {
 
       if (!handPresent) {
         handPresent = true;
-        cameraControls.azimuthAngle = baseTheta;
+        // cameraControls.azimuthAngle = baseTheta;
       }
 
       isResults = true;
@@ -485,7 +484,7 @@ const switchFacingMode = () => {
     camera.h.facingMode = facingMode;
     camera.start();
   }
-  resetMesh();
+  // resetMesh();
 };
 
 const handleMediaCamera = () => {
@@ -536,8 +535,12 @@ async function toggleVideo() {
     isVideo = true;
     showhandscreen.style.display = "flex";
     updateNote.innerText = "Show your hand 👋";
-    applyTransVar();
-    resetMesh();
+    // applyTransVar();
+    // resetMesh();
+
+    viewSpaceContainer.style.display = "none";
+    gsplatCanvas.style.background = "transparent";
+    viewSpaceContainer.style.background = "transparent";
 
     let activeElement = document.getElementsByClassName("active-ar-jewel")[0];
     if (activeElement) activeElement.classList.remove("active-ar-jewel");
@@ -572,15 +575,18 @@ async function toggleVideo() {
     }
 
     isVideo = false;
-    resetTransVar();
-    resetRingTrans();
-    resetMeshForVR();
+    // resetTransVar();
+    // resetRingTrans();
+    // resetMeshForVR();
     viewSpaceContainer.style.display = "inline-block";
     outputCanvasElement.style.display = "none";
     showhandscreen.style.display = "none";
     usermanual.style.display = "none";
     noSleep.disable();
     updateJewelname();
+
+    gsplatCanvas.style.background = "#000";
+    viewSpaceContainer.style.background = "#000";
 
     const arToogleContainer = document.getElementById("ar-toggle-container");
     arToogleContainer.style.display = "flex";

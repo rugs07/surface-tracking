@@ -35,188 +35,6 @@ if (isMobile || isIOS) {
   windowHeight = window.screen.height;
 }
 
-function enableTranslation() {
-  translation = true;
-  console.log("translation", translation);
-  console.log("horizontalRotation", horizontalRotation);
-  console.log("verticalRotation", verticalRotation);
-  console.log("XYRotation", XYRotation);
-  console.log("resize", resize);
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    resetMesh();
-  }
-}
-
-function disableTranslation() {
-  translation = false;
-  console.log("translation", translation);
-  console.log("horizontalRotation", horizontalRotation);
-  console.log("verticalRotation", verticalRotation);
-  console.log("XYRotation", XYRotation);
-  console.log("resize", resize);
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    resetMesh();
-
-    let degZ = ZRAngle;
-    degZ = -degZ;
-    ZRAngle = 0;
-    var transform = "rotateZ(" + degZ + "deg)";
-    glamCanvas.style.transform = transform;
-  }
-}
-
-function enableHorizontalRotation() {
-  horizontalRotation = true;
-  console.log("translation", translation);
-  console.log("horizontalRotation", horizontalRotation);
-  console.log("verticalRotation", verticalRotation);
-  console.log("XYRotation", XYRotation);
-  console.log("resize", resize);
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    resetMesh();
-  }
-}
-
-function disableHorizontalRotation() {
-  horizontalRotation = false;
-  console.log("translation", translation);
-  console.log("horizontalRotation", horizontalRotation);
-  console.log("verticalRotation", verticalRotation);
-  console.log("XYRotation", XYRotation);
-  console.log("resize", resize);
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    resetMesh();
-
-    let degZ = ZRAngle;
-    degZ = -degZ;
-    ZRAngle = 0;
-    var transform = "rotateZ(" + degZ + "deg)";
-    glamCanvas.style.transform = transform;
-  }
-}
-
-function enableVerticalRotation() {
-  verticalRotation = true;
-  console.log("translation", translation);
-  console.log("horizontalRotation", horizontalRotation);
-  console.log("verticalRotation", verticalRotation);
-  console.log("XYRotation", XYRotation);
-  console.log("resize", resize);
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    resetMesh();
-  }
-}
-
-function disableVerticalRotation() {
-  verticalRotation = false;
-  console.log("translation", translation);
-  console.log("horizontalRotation", horizontalRotation);
-  console.log("verticalRotation", verticalRotation);
-  console.log("XYRotation", XYRotation);
-  console.log("resize", resize);
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    resetMesh();
-
-    let degZ = ZRAngle;
-    degZ = -degZ;
-    ZRAngle = 0;
-    var transform = "rotateZ(" + degZ + "deg)";
-    glamCanvas.style.transform = transform;
-  }
-}
-
-function enableResizing() {
-  resize = true;
-  console.log("translation", translation);
-  console.log("horizontalRotation", horizontalRotation);
-  console.log("verticalRotation", verticalRotation);
-  console.log("XYRotation", XYRotation);
-  console.log("resize", resize);
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    cameraControls.moveTo(0, 0, 0);
-    // cameraControls.zoomTo(2, true);
-
-    cameraControls.azimuthAngle = baseTheta;
-    cameraControls.polarAngle = basePhi;
-  }
-}
-
-function disableResizing() {
-  resize = false;
-  console.log("translation", translation);
-  console.log("horizontalRotation", horizontalRotation);
-  console.log("verticalRotation", verticalRotation);
-  console.log("XYRotation", XYRotation);
-  console.log("resize", resize);
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    cameraControls.moveTo(0, 0, 0);
-    // // cameraControls.zoomTo(2, true);
-
-    let degZ = THREE.MathUtils.radToDeg(ZRAngle);
-    degZ = -degZ;
-    ZRAngle = 0;
-    var transform = "rotateZ(" + degZ + "deg)";
-    glamCanvas.style.transform = transform;
-
-    cameraControls.azimuthAngle = baseTheta;
-    cameraControls.polarAngle = basePhi;
-  }
-}
-
-function enableXYRotation() {
-  XYRotation = true;
-  console.log("translation", translation);
-  console.log("horizontalRotation", horizontalRotation);
-  console.log("verticalRotation", verticalRotation);
-  console.log("XYRotation", XYRotation);
-  console.log("resize", resize);
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    resetMesh();
-  }
-}
-
-function disableXYRotation() {
-  XYRotation = false;
-  console.log("translation", translation);
-  console.log("horizontalRotation", horizontalRotation);
-  console.log("verticalRotation", verticalRotation);
-  console.log("XYRotation", XYRotation);
-  console.log("resize", resize);
-
-  if (isArcball) {
-    arcballControls.setTarget(0.0, 0.0, 0.0);
-  } else {
-    resetMesh();
-  }
-}
-
 function rotateX(angle) {
   if (isArcball) {
     var quaternion = new THREE.Quaternion().setFromAxisAngle(
@@ -228,7 +46,7 @@ function rotateX(angle) {
     gCamera.up.applyQuaternion(quaternion);
     gCamera.quaternion.multiplyQuaternions(quaternion, gCamera.quaternion);
   } else {
-    cameraControls.rotate(0, angle, false);
+    // cameraControls.rotate(0, angle, false);
   }
 
   XRAngle = gCamera.rotation.x;
@@ -258,8 +76,7 @@ function rotateY(angle) {
     if (selectedJewel === "flowerbangle") showZone = [-60, 90];
 
     if (angle > showZone[0] && angle < showZone[1]) {
-      // cameraControls.rotate(angle, 0, false);
-      cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
+      // cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
     }
     // console.log(
     //   "yangle",
@@ -287,7 +104,7 @@ function normalizeAngle(angle) {
 }
 
 function rotateZ(angle, canX, canY) {
-  cameraControls.setFocalOffset(canX, canY, 0.0, false);
+  // cameraControls.setFocalOffset(canX, canY, 0.0, false);
 
   let transform = null;
   if (!translation) transform = "rotateZ(" + angle + "deg)";
@@ -303,7 +120,7 @@ function rotateZ(angle, canX, canY) {
       angle +
       "deg)";
 
-  glamCanvas.style.transform = transform;
+  // glamCanvas.style.transform = transform;
 
   ZRAngle = angle;
   XTrans = canX;
@@ -340,13 +157,13 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
     let transparencyZone = [-20, 20];
     if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
       ringTrans = 1.35;
-      applyRingTrans();
+      // applyRingTrans();
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
     } else {
       if (normYAngle > 0) normYAngle += 0.5;
       else normYAngle -= 0.5;
-      resetRingTrans();
+      // resetRingTrans();
     }
   }
 
@@ -738,6 +555,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   // console.log(sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
 
   // rotation & translation (getZAngleAndRotate also translates)
+
   totalTransX = canX;
   totalTransY = canY;
   if (jewelType === "bangle") {
@@ -783,33 +601,9 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
 
   if (resize && !isArcball) {
     let smoothenSize = smoothResizing(dist * resizeMul);
-    cameraControls.zoomTo(smoothenSize, false);
+    // cameraControls.zoomTo(smoothenSize, false);
   }
 
   if (resize && isArcball)
     gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
 }
-
-// if (isArcball) {
-// arcball-controls
-// if (translation && !XYRotation) {
-// 1.5, 1, 1
-// arcballControls.setTarget(transX, transY, transZ);
-
-//     var transform =
-//       "translate3d(" + canX + "px, " + canY + "px, " + 0 + "px)";
-//     glamCanvas.style.transform = transform;
-//   }
-// } else {
-// camera-controls
-// if (translation && !XYRotation) {
-// -1.5, 1, 1
-// transX = -transX;
-// cameraControls.moveTo(transX, transY, transZ, false);
-// cameraControls.setFocalOffset(canX, canY, 0.0, false);
-// Translate the canvas
-//     var transform =
-//       "translate3d(" + canX + "px, " + canY + "px, " + 0 + "px)";
-//     glamCanvas.style.transform = transform;
-//   }
-// }

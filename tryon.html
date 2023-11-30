@@ -9,15 +9,14 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css" crossorigin="anonymous">
     <script src="js/extras/camera_utils.js" crossorigin="anonymous"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="js/extras/hands.js" crossorigin="anonymous"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js" crossorigin="anonymous"></script> -->
 
     <link rel="stylesheet" type="text/css" href="css/loader.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/gsplat.css" />
     <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/kalmanjs@1.1.0/lib/kalman.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js" 
@@ -28,22 +27,12 @@
   </head>
   <body>
     <div class="main-container">
-    <!-- Video for handtracker -->
-    <div class="ar-toggle-container" id="ar-toggle-container">
-      <button class="desktop-viewar disabledbtn" id="desktop-viewar" disabled>Try On</button>
-      <!-- <p id="controlType">CameraCon</p> -->
-      <!-- <button class="primarybtn loadbtns" onclick="start()">Start</button>
-      <button class="primarybtn loadbtns" onclick="toggleControls()">Toggle</button> -->
-      <h2 id="updatenote">Setting up</h2>
-    </div>
     <div class="title-container tryon-title" id="tryon-title" onclick="gotoHome()">
       <img src="assets/logo.png" class="logoimg" />
       <h2 class="sitename">3D Try On for Jewellery</h2>
     </div>
     <div class="side-errors" id="side-errors">
     </div>
-
-
     <div class="viewer-container" id="viewer-container">
       <video class="input_video"></video>
       <canvas class="output_canvas"></canvas>
@@ -51,14 +40,22 @@
       </div>
 
       <div id="error"></div>
-
       <div id="viewspacecontainer">
-        <div id="Loading">
-            <p id="funorfact">Tip: For best AR experience, make sure that no major light source is behind you.</p>
+        <div id="progress-container">
+          <dialog open id="progress-dialog">
+            <p>
+              <label for="progress-indicator">Loading ...</label>
+            </p>
+            <progress max="100" id="progress-indicator"></progress>
+          </dialog>
         </div>
-        <div id="loading-container">
+  
+        <div class="ar-toggle-container" id="ar-toggle-container">
+          <button class="desktop-viewar" id="desktop-viewar" onclick="showManual()">Try On</button>
+          <h2 id="updatenote">Setting up</h2>
         </div>
-        <div class="viewspace" id="viewspace"></div>
+  
+        <canvas id="gsplatCanvas"></canvas>
       </div>
       <div id="usermanual">
         <h3 class="trytitle">Try on with 3 simple steps !</h3>
@@ -100,7 +97,6 @@
         <div class="camerasection">
           <p>Place your hand vertically as shown below</p>
           <img src="assets/hand.png" class="handimg"><img>
-          <!-- <button class="primarybtn" type="button" onclick="hideHandScreen()">OK</button> -->
           <button class="primarybtn" type="button" onclick="toggleVideo()">Stop AR</button>
           <button class="primarybtn switchbtn" onclick="switchFacingMode()" id="switchbtn">
             <img src="assets/switch.png" class="switchimg">
@@ -154,31 +150,15 @@
       </div>
     </div>
     <div class="ar-bottom-container mobile-viewer" id="ar-bottom-container">
-      <button class="disabledbtn" id="mobile-viewar" disabled>Try On</button>
+      <button id="mobile-viewar" onclick="showManual()">Try On</button>
     </div>
   </div>
 
-    <!-- <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"></script> -->
     <script src="https://unpkg.com/three@0.135.0/build/three.js"></script>
-    <!-- <script src="https://unpkg.com/three@0.113.1/examples/js/controls/OrbitControls.js"></script> -->
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.135.0/build/three.min.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.135.0/examples/js/controls/ArcballControls.js"></script> -->
-
-    <script src="https://unpkg.com/png-js@1.0.0/zlib.js"></script>
-    <script src="https://unpkg.com/png-js@1.0.0/png.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script> -->
-    <!-- <script src="js/extras/zip.js"></script> -->
-    <!-- <script src="js/start.js"></script> -->
-    <script src="js/extras/camera-controls.js"></script>
     <script src="js/variables.js"></script>
-    <script src="js/shaders.js"></script>
-    <script src="js/texture.js"></script>
-    <script src="js/material.js"></script>
-    <script src="js/loadTexturePNG.js"></script>
     <script src="js/utils.js"></script>
-    <script src="js/scene.js"></script>
     <script type="module" src="js/mediapipe.js"></script>
+    <script type="module" src="js/gsplat.js" ></script>
     <script src="js/AR.js"></script>
   </body>
 </html>
