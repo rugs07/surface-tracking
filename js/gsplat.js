@@ -10,9 +10,9 @@ const camera = new SPLAT.Camera();
 const controls = new SPLAT.OrbitControls(camera, canvas);
 
 async function main() {
-  const query = new URLSearchParams(window.location.search);
-  const model = query.get("id") ?? "jewel7";
-  // const model = sessionStorage.getItem("selectedJewel");
+  // const query = new URLSearchParams(window.location.search);
+  // const model = query.get("id") ?? "jewel7";
+  const model = sessionStorage.getItem("selectedJewel");
 
   const url =
     "https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/" +
