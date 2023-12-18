@@ -25,7 +25,7 @@ async function main() {
   // const objectMatrix = await object.json()
   // viewMatrix = objectMatrix.defualt_view_matrix
 
-  await SPLAT.Loader.LoadAsync(
+  const splat = await SPLAT.Loader.LoadAsync(
     url,
     scene,
     (progress) => (progressIndicator.value = progress * 100)
@@ -36,7 +36,41 @@ async function main() {
     renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
+  const baseXRot = 0.25;
+  const baseYRot = 2.5;
+  const baseZRot = -0.05;
+
+  // const rotation = new SPLAT.Vector3(baseXRot, baseYRot, baseZRot);
+  // splat.rotation = SPLAT.Quaternion.FromEuler(rotation);
+
+  // const translation = new SPLAT.Vector3(0, 0, 0);
+  // splat.position = translation;
+
+  // const scaling = new SPLAT.Vector3(baseScale, baseScale, baseScale);
+  // splat.scale = scaling;
+
+  // splat.applyPosition();
+  // splat.applyRotation();
+  // splat.applyScale();
+
   const frame = () => {
+    // adding radians of x-rotation, y-rotation, z-rotation
+    const rotation = new SPLAT.Vector3(
+      baseXRot + XRDelta,
+      baseYRot + YRDelta,
+      baseZRot + ZRDelta
+    );
+    splat.rotation = SPLAT.Quaternion.FromEuler(rotation);
+
+    // adding units of translation in x,y,z, direction
+
+    // const translation = new SPLAT.Vector3(XTrans / 200, YTrans / 200, 0);
+    // splat.position = translation;
+
+    // scaleFactor to be applied inn all directions
+    const scaling = new SPLAT.Vector3(scaleMul, scaleMul, scaleMul);
+    splat.scale = scaling;
+
     controls.update();
     renderer.render(scene, camera);
 

@@ -49,8 +49,8 @@ function rotateX(angle) {
     // cameraControls.rotate(0, angle, false);
   }
 
-  XRAngle = gCamera.rotation.x;
-  YRAngle = gCamera.rotation.y;
+  XRAngle = angle;
+  XRDelta = THREE.MathUtils.degToRad(-XRAngle);
 
   // console.log(
   //   THREE.MathUtils.radToDeg(XRAngle),
@@ -87,6 +87,7 @@ function rotateY(angle) {
   }
 
   YRAngle = angle;
+  YRDelta = THREE.MathUtils.degToRad(-YRAngle - 90);
 }
 
 // To normalize angles between 0 to 360 deg
@@ -125,6 +126,8 @@ function rotateZ(angle, canX, canY) {
   ZRAngle = angle;
   XTrans = canX;
   YTrans = canY;
+
+  ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
 }
 
 function convertRingTransRange(value) {
@@ -194,67 +197,54 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
   lastIndexRef = newIndexRef;
 }
 
-// function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
-//   if (jewelType === "ring" && enableRingTransparency) {
-//     if (
-//       Math.abs(newIndexRef.x - newPinkyRef.x) <= 0.15 &&
-//       Math.abs(newIndexRef.y - newPinkyRef.y) <= 0.15
-//     ) {
-//       applyRingTrans(1.35);
-//     } else {
-//       applyRingTrans(1.5);
-//     }
-//   }
+function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
+  if (lastRefOfMid) {
+    // rotate vectors around y-axis by -zAngle
+    newRefOfMid = rotateVectorZ(newRefOfMid, -zAngle);
+    wrist = rotateVectorZ(wrist, -zAngle);
 
-//   if (lastPinkyRef && lastIndexRef) {
-//     // rotate vectors around y-axis by -zAngle
-//     let rotatedLastIndexRef = rotateVectorZ(lastIndexRef, -zAngle);
-//     let rotatedLastPinkyRef = rotateVectorZ(lastPinkyRef, -zAngle);
-//     let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
-//     let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
+    const dy = newRefOfMid.y - wrist.y;
+    const dz = newRefOfMid.z - wrist.z;
 
-//     const my1 =
-//       (rotatedLastPinkyRef.z - rotatedLastIndexRef.z) /
-//       (rotatedLastPinkyRef.x - rotatedLastIndexRef.x);
-//     const my2 =
-//       (rotatedNewPinkyRef.z - rotatedNewIndexRef.z) /
-//       (rotatedNewPinkyRef.x - rotatedNewIndexRef.x);
+    let xAngle = Math.atan2(dy, dz);
+    xAngle = THREE.MathUtils.radToDeg(xAngle) + 90;
 
-//     let yAngleChange = -Math.atan((my2 - my1) / (1 + my1 * my2));
+    // Normalize the angle to the range of -180 to 180 degrees
+    let normXAngle = normalizeAngle(xAngle);
 
-//     if (enableSmoothing) {
-//       let yNew = THREE.MathUtils.radToDeg(
-//         cameraControls.azimuthAngle + yAngleChange
-//       );
+    if (normXAngle < -27) normXAngle = -27;
+    if (normXAngle > 27) normXAngle = 27;
+    // if (jewelType === "ring") {
+    //   if (normXAngle >= 0 && normXAngle <= 10) normXAngle = 0;
+    // }
 
-//       let diff = yNew - YRAngle;
-//       // if (Math.abs(diff) < 0.05) {
-//       yArr.push(diff); // Insert new value at the end
+    // if (enableSmoothing) {
+    //   // Calculate the angle difference between the current and the new angle
+    //   const angleDifference = XRAngle - normXAngle;
+    //   // console.log("z rot:", ZRAngle, angleDifference, zAngle, normXAngle);
 
-//       if (yArr.length > 3) {
-//         yArr.shift(); // Remove first index value
+    //   xArr.push(angleDifference); // Insert new value at the end
+    //   if (xArr.length > 3) {
+    //     xArr.shift(); // Remove first index value
+    //     // Check if all 3 values are either positive or negative
+    //     var allSameSign = xArr.every(function (value) {
+    //       return (
+    //         (value >= 0 && angleDifference >= 0 && angleDifference <= 20) ||
+    //         (value < 0 && angleDifference < 0 && angleDifference >= -20)
+    //       );
+    //     });
 
-//         // Check if all 5 values are either positive or negative
-//         var allSameSign = yArr.every(function (value) {
-//           return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
-//         });
+    //     if (!allSameSign) {
+    //       normXAngle = XRAngle;
+    //     }
+    //   }
+    // }
 
-//         if (!allSameSign) {
-//           yNew = YRAngle;
-//           yAngleChange = 0;
-//         }
-//         // }
-//       }
-//     }
+    rotateX(normXAngle);
+  }
 
-//     if (horizontalRotation) {
-//       rotateY(yAngleChange);
-//     }
-//   }
-
-//   lastPinkyRef = newPinkyRef;
-//   lastIndexRef = newIndexRef;
-// }
+  lastRefOfMid = newRefOfMid;
+}
 
 function rotateVectorZ(vector, angle) {
   angle = THREE.MathUtils.degToRad(angle); // if the angle is in degrees, convert it to radians
@@ -560,6 +550,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   totalTransY = canY;
   if (jewelType === "bangle") {
     getZAngleAndRotate(wrist, midPip, canX, canY);
+    getXAngleAndRotate(wrist, midPip, ZRAngle);
     getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
   } else if (jewelType === "ring") {
     if (isDirectionalRing)
@@ -570,8 +561,10 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
         (handLabel === "Left" && facingMode === "environment")
       ) {
         getZAngleAndRotate(points[14], points[13], canX, canY);
+        getXAngleAndRotate(points[14], points[13], ZRAngle);
       } else {
         getZAngleAndRotate(points[13], points[14], canX, canY);
+        getXAngleAndRotate(points[13], points[14], ZRAngle);
       }
     }
 
@@ -599,10 +592,9 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     }
   }
 
-  if (resize && !isArcball) {
-    let smoothenSize = smoothResizing(dist * resizeMul);
-    // cameraControls.zoomTo(smoothenSize, false);
-  }
+  let smoothenSize = smoothResizing(dist * resizeMul);
+  scaleMul = smoothenSize * 0.45;
+  // cameraControls.zoomTo(smoothenSize, false);
 
   if (resize && isArcball)
     gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);

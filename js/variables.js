@@ -15,10 +15,13 @@ let verticalRotation = false;
 let XYRotation = true;
 let resize = true;
 let XRAngle = 0.0; // in radians
-let YRAngle = 0.0; // in radians
+let YRAngle = 0.0; // in degrees
 let ZRAngle = 0.0; // in degrees
 let XTrans = 0;
 let YTrans = 0;
+let XRDelta = 0.0; // diff in XRAngle (radian)
+let YRDelta = 0.0; // diff in YRAngle (radian)
+let ZRDelta = 0.0; // diff in ZRAngle (radian)
 let isMobile = true;
 let isIOS = false;
 let browserName = "";
@@ -30,6 +33,7 @@ let resolution = 336;
 let handLabel = "";
 let aspectRatio = 1;
 let crop = 1;
+let scaleMul = 0.5;
 
 let glamCanvas = null;
 
@@ -137,6 +141,7 @@ let enableRingTransparency = true;
 let showingJewel = 1;
 
 let lastMidRef = null;
+let lastRefOfMid = null;
 let lastPinkyRef = null;
 let lastIndexRef = null;
 let totalTransX = 0;
