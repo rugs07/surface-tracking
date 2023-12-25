@@ -28,6 +28,8 @@ let browserName = "";
 let jewelType = "";
 let rawBaseTheta = 0;
 let baseTheta = 0;
+let basePhi = 0;
+let baseGama = 0;
 let selectedJewel = "";
 let resolution = 336;
 let handLabel = "";
@@ -71,8 +73,6 @@ let gLoadedFeatureTextures = 0;
 let cameraControls = null;
 let arcballControls = null;
 let clock = null;
-// let baseTheta = THREE.MathUtils.degToRad(-40); //18.799324332763266 + 225;
-let basePhi = 1.555185868967246;
 let currThetha = 0;
 let currPhi = 0;
 
@@ -132,7 +132,7 @@ let gBlitCamera = null;
 let isVideo = false;
 let camera = null;
 let facingMode = "user";
-let isDirectionalRing = false;
+let isDirectionalRing = true;
 
 let isArcball = false;
 let loadFeatures = false;

@@ -41,7 +41,7 @@ const smoothLandmarks = (results, onResults) => {
     frames.push(results);
   }
 
-  if (frameSets.length === 8) {
+  if (frameSets.length === 4) {
     // This loop will run 33 times to make an average of each joint
     for (let i = 0; i < 21; i++) {
       // Making an array of each joint coordinates
@@ -320,23 +320,25 @@ function onResults(results) {
 
       // Setting baseTheta for different jewel types
       // TODO: load this from sceneParams file
-      baseTheta = THREE.MathUtils.degToRad(rawBaseTheta);
       // console.log("baseTheta", rawBaseTheta);
-      if (
-        jewelType === "ring" &&
-        (!isDirectionalRing || handLabel === "Left")
-      ) {
-        baseTheta = THREE.MathUtils.degToRad(rawBaseTheta + 180);
-      }
 
-      if (
-        facingMode === "environment" &&
-        jewelType === "ring" &&
-        isDirectionalRing
-      ) {
-        // Back Camera
-        baseTheta += THREE.MathUtils.degToRad(180);
-      }
+      // if (
+      //   jewelType === "ring" &&
+      //   (!isDirectionalRing || handLabel === "Left")
+      // ) {
+      //   baseTheta = THREE.MathUtils.degToRad(
+      //     THREE.MathUtils.radToDeg(rawBaseTheta) + 180
+      //   );
+      // }
+
+      // if (
+      //   facingMode === "environment" &&
+      //   jewelType === "ring" &&
+      //   isDirectionalRing
+      // ) {
+      //   // Back Camera
+      //   baseTheta += THREE.MathUtils.degToRad(180);
+      // }
 
       //   // Reversing values to keep the context same because back camera gives reverse values
       //   let isFacingPalm = !isPalmFacing;
@@ -484,7 +486,7 @@ const switchFacingMode = () => {
     camera.h.facingMode = facingMode;
     camera.start();
   }
-  // resetMesh();
+  resetMeshForAR();
 };
 
 const handleMediaCamera = () => {
@@ -536,7 +538,7 @@ async function toggleVideo() {
     showhandscreen.style.display = "flex";
     updateNote.innerText = "Show your hand 👋";
     // applyTransVar();
-    // resetMesh();
+    resetMeshForAR();
 
     viewSpaceContainer.style.display = "none";
     gsplatCanvas.style.background = "transparent";
@@ -577,7 +579,7 @@ async function toggleVideo() {
     isVideo = false;
     // resetTransVar();
     // resetRingTrans();
-    // resetMeshForVR();
+    resetMeshForVR();
     viewSpaceContainer.style.display = "inline-block";
     outputCanvasElement.style.display = "none";
     showhandscreen.style.display = "none";

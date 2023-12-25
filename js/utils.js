@@ -1,29 +1,40 @@
-function updateX(value) {
-  console.log("x :", value);
-  varX = value;
-}
-
-function updateY(value) {
-  console.log("y :", value);
-  varY = value;
-}
-
-function updateZ(value) {
-  console.log("z:", value);
-  varZ = value;
-}
-
-function updateYRMul(value) {
-  YRMul = value;
-}
+let jewelsList = {
+  jewel7: {
+    name: "jewel7",
+    label: "Diamond Bracelet",
+    type: "bangle",
+    image: "assets/diamondring.png",
+    baseTheta: 0.15,
+    basePhi: 2.5,
+    baseGama: -0.05,
+  },
+  jewel12: {
+    name: "jewel12",
+    label: "Triveni Bangle",
+    type: "bangle",
+    image: "assets/diamondring.png",
+    baseTheta: 0.15,
+    basePhi: 2.5,
+    baseGama: -1.55,
+  },
+  jewel26: {
+    name: "jewel26",
+    label: "Flower Ring",
+    type: "ring",
+    image: "assets/diamondring.png",
+    baseTheta: -0.05,
+    basePhi: -0.6,
+    baseGama: -1.5,
+  },
+};
 
 function setJewellery(value) {
   facingMode = sessionStorage.getItem("facingMode") || "user";
   sessionStorage.setItem("facingMode", facingMode);
 
   sessionStorage.setItem("selectedJewel", value);
+
   location.href = "/tryon.html";
-  // window.open(`/tryon.html`, "_blank");
 }
 
 function gotoHome() {
@@ -73,16 +84,17 @@ function hideHandScreen() {
   showhandscreen.style.display = "none";
 }
 
-function resetScale() {
-  if (jewelType === "ring") {
-    if (isIOS || isMobile) cameraControls.zoomTo(0.5, false);
-    else cameraControls.zoomTo(0.75, false);
-  } else {
-    let scale = isIOS || isMobile ? 1 : 1.25;
-    if (selectedJewel !== "flowerbangle")
-      scale += isIOS || isMobile ? 0.25 : 0.5;
-    cameraControls.zoomTo(scale, false);
-  }
+function setJewelParams() {
+  selectedJewel = sessionStorage.getItem("selectedJewel") || "jewel7";
+  const selectedJewelDetails = jewelsList[selectedJewel];
+
+  jewelType = selectedJewelDetails.type || "ring";
+  baseTheta = selectedJewelDetails.baseTheta || 0.25;
+  basePhi = selectedJewelDetails.basePhi || 2.5;
+  baseGama = selectedJewelDetails.baseGama || 2.5;
+
+  let updateNote = document.getElementById("updatenote");
+  updateNote.innerText = selectedJewelDetails.label;
 }
 
 // Method to enable or disable fullscreen view
@@ -91,32 +103,26 @@ const fullscreen = (mode = true, el = "body") =>
     ? document.querySelector(el).requestFullscreen()
     : document.exitFullscreen();
 
-function resetMeshForVR() {
-  cameraControls.moveTo(0.0, 0.0, 0.0, true);
-  resetScale();
-
-  if (selectedJewel === "flowerbangle") {
-    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-125);
-    cameraControls.polarAngle = THREE.MathUtils.degToRad(72);
-  } else if (selectedJewel === "trivenibangle") {
-    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(100);
-    cameraControls.polarAngle = THREE.MathUtils.degToRad(72);
-  } else if (selectedJewel === "patternedring") {
-    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
-    cameraControls.polarAngle = THREE.MathUtils.degToRad(90);
-  } else if (selectedJewel === "trinetraring") {
-    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
-    cameraControls.polarAngle = THREE.MathUtils.degToRad(83);
-  } else if (selectedJewel === "floralring") {
-    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-170);
-    cameraControls.polarAngle = THREE.MathUtils.degToRad(90);
-  }
-  cameraControls.setFocalOffset(0.0, 0.0, 0.0);
+function resetMeshForAR() {
+  scaleMul = 0.5;
+  XRDelta = 0;
+  YRDelta = 0;
   ZRAngle = 0;
+  resetGlamCanvas();
+}
+
+function resetMeshForVR() {
+  setJewelParams();
+  scaleMul = 1;
+  XRDelta = 0;
+  YRDelta = 0;
+  ZRAngle = 0;
+  // resetGlamCanvas();
+
   // flipping canvas
   if (jewelType === "ring" && !isDirectionalRing) {
     if (isMobile || isIOS) {
-      glamCanvas.style.transform =
+      gsplatCanvas.style.transform =
         "translate3d(" +
         0 +
         "px, " +
@@ -124,20 +130,19 @@ function resetMeshForVR() {
         "px, " +
         0 +
         "px) rotateZ(" +
-        180 +
+        0 +
         "deg)";
     } else {
-      glamCanvas.style.transform = "rotateZ(" + 180 + "deg)";
+      gsplatCanvas.style.transform = "rotateZ(" + 0 + "deg)";
     }
   } else {
     if (isMobile || isIOS) {
-      glamCanvas.style.transform =
+      gsplatCanvas.style.transform =
         "translate3d(" + 0 + "px, " + -50 + "px, " + 0 + "px)";
     } else {
-      glamCanvas.style.transform = "none";
+      gsplatCanvas.style.transform = "none";
     }
   }
-  showJewel();
 }
 
 function resetGlamCanvas() {
@@ -146,11 +151,12 @@ function resetGlamCanvas() {
   let canvasWidth = Math.max(deviceWidth, deviceHeight);
 
   const XDiff = (canvasWidth - deviceWidth) / 2;
+  const gsplatCanvas = document.getElementById("gsplatCanvas");
 
   // flipping canvas
   if (jewelType === "ring" && !isDirectionalRing) {
     if (isMobile || isIOS) {
-      glamCanvas.style.transform =
+      gsplatCanvas.style.transform =
         "translate3d(" +
         -XDiff +
         "px, " +
@@ -158,38 +164,26 @@ function resetGlamCanvas() {
         "px, " +
         0 +
         "px) rotateZ(" +
-        180 +
+        0 +
         "deg)";
     } else {
-      glamCanvas.style.transform = "rotateZ(" + 180 + "deg)";
+      gsplatCanvas.style.transform = "rotateZ(" + 0 + "deg)";
     }
   } else {
     if (isMobile || isIOS) {
-      glamCanvas.style.transform =
+      gsplatCanvas.style.transform =
         "translate3d(" + -XDiff + "px, " + -50 + "px, " + 0 + "px)";
     } else {
-      glamCanvas.style.transform = "none";
+      gsplatCanvas.style.transform = "none";
     }
   }
 }
 
 function resetMesh() {
-  cameraControls.moveTo(0.0, 0.0, 0.0, true);
-  resetScale();
-
-  if (jewelType === "ring") {
-    cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-180);
-  } else {
-    if (facingMode === "user") {
-      cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-40);
-    } else {
-      cameraControls.azimuthAngle = THREE.MathUtils.degToRad(-90);
-    }
-  }
-  cameraControls.polarAngle = basePhi;
-  cameraControls.setFocalOffset(0.0, 0.0, 0.0);
+  scaleMul = 0.5;
+  const gsplatCanvas = document.getElementById("gsplatCanvas");
   ZRAngle = 0;
-  glamCanvas.style.transform = "none";
+  gsplatCanvas.style.transform = "none";
   hideJewel();
 }
 
@@ -247,7 +241,6 @@ function showManual() {
   let step2img = document.getElementById("step2img");
   let step3img = document.getElementById("step3img");
 
-  jewelType = "ring";
   step1img.src = `assets/${jewelType}step1.jpg`;
   step2img.src = `assets/${jewelType}step2.jpg`;
   step3img.src = `assets/${jewelType}step3.gif`;
@@ -361,6 +354,7 @@ function updateJewelname() {
  * Hides the Loading prompt.
  */
 function hideLoading() {
+  const gsplatCanvas = document.getElementById("gsplatCanvas");
   let loading = document.getElementById("Loading");
   loading.style.display = "none";
 
@@ -370,7 +364,7 @@ function hideLoading() {
   let viewARButton = isMobile || isIOS ? mobileViewAR : desktopViewAR;
 
   updateJewelname();
-  glamCanvas.style.display = "block";
+  gsplatCanvas.style.display = "block";
   if (isVideo) {
     showhandscreen.style.display = "flex";
     outputCanvasElement.style.display = "block";
@@ -384,6 +378,7 @@ function hideLoading() {
 }
 
 function showLoading() {
+  const gsplatCanvas = document.getElementById("gsplatCanvas");
   let loading = document.getElementById("Loading");
   loading.style.display = "block";
 
@@ -398,7 +393,7 @@ function showLoading() {
   arToogleContainer.style.display = "flex";
   viewARButton.style.display = "none";
   outputCanvasElement.style.display = "none";
-  glamCanvas.style.display = "none";
+  gsplatCanvas.style.display = "none";
 
   let activeElement = document.getElementsByClassName("active-ar-jewel")[0];
   if (activeElement) activeElement.classList.remove("active-ar-jewel");

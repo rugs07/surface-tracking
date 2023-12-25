@@ -36,9 +36,10 @@ async function main() {
     renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
-  const baseXRot = 0.25;
-  const baseYRot = 2.5;
-  const baseZRot = -0.05;
+  // baseTheta = 0.25;
+  rawBaseTheta = baseTheta;
+  // basePhi = 2.5;
+  // baseGama = -0.05;
 
   // const rotation = new SPLAT.Vector3(baseXRot, baseYRot, baseZRot);
   // splat.rotation = SPLAT.Quaternion.FromEuler(rotation);
@@ -56,9 +57,9 @@ async function main() {
   const frame = () => {
     // adding radians of x-rotation, y-rotation, z-rotation
     const rotation = new SPLAT.Vector3(
-      baseXRot + XRDelta,
-      baseYRot + YRDelta,
-      baseZRot + ZRDelta
+      baseTheta + XRDelta,
+      basePhi + YRDelta,
+      baseGama
     );
     splat.rotation = SPLAT.Quaternion.FromEuler(rotation);
 
@@ -86,3 +87,4 @@ async function main() {
 window.THREE.Cache.clear();
 checkDevice();
 main();
+resetMeshForVR();

@@ -87,7 +87,13 @@ function rotateY(angle) {
   }
 
   YRAngle = angle;
-  YRDelta = THREE.MathUtils.degToRad(-YRAngle - 90);
+
+  if (
+    (handLabel === "Right" && facingMode !== "environment") ||
+    (handLabel === "Left" && facingMode === "environment")
+  )
+    YRDelta = THREE.MathUtils.degToRad(YRAngle - 90);
+  else YRDelta = THREE.MathUtils.degToRad(YRAngle + 90);
 }
 
 // To normalize angles between 0 to 360 deg
@@ -121,13 +127,13 @@ function rotateZ(angle, canX, canY) {
       angle +
       "deg)";
 
-  // glamCanvas.style.transform = transform;
+  gsplatCanvas.style.transform = transform;
 
   ZRAngle = angle;
   XTrans = canX;
   YTrans = canY;
 
-  ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
+  // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
 }
 
 function convertRingTransRange(value) {
@@ -212,8 +218,8 @@ function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
     // Normalize the angle to the range of -180 to 180 degrees
     let normXAngle = normalizeAngle(xAngle);
 
-    if (normXAngle < -27) normXAngle = -27;
-    if (normXAngle > 27) normXAngle = 27;
+    if (normXAngle < -17) normXAngle = -17;
+    if (normXAngle > 17) normXAngle = 17;
     // if (jewelType === "ring") {
     //   if (normXAngle >= 0 && normXAngle <= 10) normXAngle = 0;
     // }
@@ -553,9 +559,10 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     getXAngleAndRotate(wrist, midPip, ZRAngle);
     getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
   } else if (jewelType === "ring") {
-    if (isDirectionalRing)
+    if (isDirectionalRing) {
       getZAngleAndRotate(points[13], points[14], canX, canY);
-    else {
+      // getXAngleAndRotate(points[13], points[14], ZRAngle);
+    } else {
       if (
         (handLabel === "Right" && facingMode !== "environment") ||
         (handLabel === "Left" && facingMode === "environment")
@@ -593,7 +600,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   }
 
   let smoothenSize = smoothResizing(dist * resizeMul);
-  scaleMul = smoothenSize * 0.45;
+  scaleMul = smoothenSize * 0.5;
   // cameraControls.zoomTo(smoothenSize, false);
 
   if (resize && isArcball)
