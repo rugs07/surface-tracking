@@ -29,7 +29,7 @@
     <div class="main-container">
     <div class="title-container tryon-title" id="tryon-title" onclick="gotoHome()">
       <img src="assets/logo.png" class="logoimg" />
-      <h2 class="sitename">3D Try On for Jewellery</h2>
+      <h2 class="sitename">3D Try-On for Jewellery</h2>
     </div>
     <div class="side-errors" id="side-errors">
     </div>
@@ -41,18 +41,26 @@
 
       <div id="error"></div>
       <div id="viewspacecontainer">
-        <div id="progress-container">
+        <!-- <div id="progress-container">
           <dialog open id="progress-dialog">
             <p>
               <label for="progress-indicator">Loading ...</label>
             </p>
             <progress max="100" id="progress-indicator"></progress>
           </dialog>
-        </div>
+        </div> -->
   
         <div class="ar-toggle-container" id="ar-toggle-container">
           <button class="desktop-viewar" id="desktop-viewar" onclick="showManual()">Try On</button>
           <h2 id="updatenote">Welcome to JAR4U</h2>
+        </div>
+
+        <div id="Loading">
+          <p id="funorfact">Tip: For best AR experience, make sure that no major light source is behind you.</p>
+        </div>
+        <div id="loading-container">
+          <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="--value: 0"></div>            
+          <p class="progresstext">Crafting artwork of stars</p>
         </div>
   
         <canvas id="gsplatCanvas"></canvas>
@@ -104,17 +112,19 @@
         </div>
         <div class="rowar">
             <div
-              class="jewel-container home-jewel"
+              class="jewel-container ar-jewel"
               onclick="changeJewellery('jewel7')"
+              id="jewel7"
             >
-              <img src="assets/diamondring.png" class="jewelimg" />
+              <img src="assets/diamondbracelet.png" class="jewelimg" />
               <div class="selectarea">
                 <button type="button">Diamond Bracelet</button>
               </div>
             </div>
             <div
-              class="jewel-container home-jewel"
+              class="jewel-container ar-jewel"
               onclick="changeJewellery('jewel12')"
+              id="jewel12"
             >
               <img src="assets/triveni.png" class="jewelimg" />
               <div class="selectarea">
@@ -122,8 +132,9 @@
               </div>
             </div>
             <div
-              class="jewel-container home-jewel"
+              class="jewel-container ar-jewel"
               onclick="changeJewellery('bangle4_gen')"
+              id="bangle4_gen"
             >
               <img src="assets/flowerban.png" class="jewelimg" />
               <div class="selectarea">
@@ -131,8 +142,9 @@
               </div>
             </div>
             <div
-              class="jewel-container home-jewel"
+              class="jewel-container ar-jewel"
               onclick="changeJewellery('laxmi')"
+              id="laxmi"
             >
               <img src="assets/laxmi.png" class="jewelimg" />
               <div class="selectarea">
@@ -140,8 +152,9 @@
               </div>
             </div>
             <div
-              class="jewel-container home-jewel"
+              class="jewel-container ar-jewel"
               onclick="changeJewellery('jewel3')"
+              id="jewel3"
             >
               <img src="assets/queen.png" class="jewelimg" />
               <div class="selectarea">
@@ -149,8 +162,9 @@
               </div>
             </div>
             <div
-              class="jewel-container home-jewel"
+              class="jewel-container ar-jewel"
               onclick="changeJewellery('jewel26')"
+              id="jewel26"
             >
               <img src="assets/flower.png" class="jewelimg" />
               <div class="selectarea">
@@ -158,8 +172,9 @@
               </div>
             </div>
             <div
-              class="jewel-container home-jewel"
+              class="jewel-container ar-jewel"
               onclick="changeJewellery('jewel34')"
+              id="jewel34"
             >
               <img src="assets/patterned.png" class="jewelimg" />
               <div class="selectarea">
@@ -167,8 +182,9 @@
               </div>
             </div>
             <div
-              class="jewel-container home-jewel"
+              class="jewel-container ar-jewel"
               onclick="changeJewellery('jewel1')"
+              id="jewel1"
             >
               <img src="assets/sunny.png" class="jewelimg" />
               <div class="selectarea">
@@ -176,8 +192,9 @@
               </div>
             </div>
             <div
-              class="jewel-container home-jewel"
+              class="jewel-container ar-jewel"
               onclick="changeJewellery('jewel15')"
+              id="jewel15"
             >
               <img src="assets/redeye.png" class="jewelimg" />
               <div class="selectarea">

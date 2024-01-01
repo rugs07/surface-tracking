@@ -9,7 +9,7 @@ const canvasCtx = outputCanvasElement.getContext("2d");
 const gsplatCanvas = document.getElementById("gsplatCanvas");
 
 const viewSpaceContainer = document.getElementById("viewspacecontainer");
-const viewElement = document.getElementById("view");
+// const viewElement = document.getElementById("view");
 const getStartedBtn = document.getElementById("getstartedbtn");
 const showhandscreen = document.getElementById("showhandscreen");
 const updateNote = document.getElementById("updatenote");
@@ -97,6 +97,7 @@ let isResults = false;
 let handPresent = false;
 
 function setMeshVisibility() {
+  if (isLoading) return;
   if (isIOS) {
     showhandscreen.style.display = "flex";
     viewSpaceContainer.style.display = "none";
@@ -542,7 +543,7 @@ async function toggleVideo() {
 
     viewSpaceContainer.style.display = "none";
     // gsplatCanvas.style.background = "transparent";
-    // viewSpaceContainer.style.background = "transparent";
+    viewSpaceContainer.style.background = "transparent";
 
     let activeElement = document.getElementsByClassName("active-ar-jewel")[0];
     if (activeElement) activeElement.classList.remove("active-ar-jewel");
@@ -585,10 +586,9 @@ async function toggleVideo() {
     showhandscreen.style.display = "none";
     usermanual.style.display = "none";
     noSleep.disable();
-    updateJewelname();
 
-    // gsplatCanvas.style.background = "#000";
-    // viewSpaceContainer.style.background = "#000";
+    // gsplatCanvas.style.background = "#eee";
+    viewSpaceContainer.style.background = "#eee";
 
     const arToogleContainer = document.getElementById("ar-toggle-container");
     arToogleContainer.style.display = "flex";
@@ -616,7 +616,8 @@ window.addEventListener("resize", function handleResize(event) {
       // Exiting from full-screen
       console.log("Exiting from full-screen");
     }
-    setDims(viewElement, newWidth, newHeight);
+    setDims(viewSpaceContainer, newWidth, newHeight);
+    setDims(glamCanvas, newWidth, newHeight);
   }
 });
 

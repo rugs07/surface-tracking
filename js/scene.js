@@ -8,7 +8,7 @@
 function loadScene(dirUrl, width, height) {
   // Reset the texture loading window.
   gLoadedRGBATextures = gLoadedFeatureTextures = gNumTextures = 0;
-  updateLoadingProgress();
+  // updateLoadingProgress();
 
   // Loads scene parameters (voxel grid size, NDC/no-NDC, view-dependence MLP).
   let sceneParamsUrl = dirUrl + "/" + "scene_params.json";
@@ -623,7 +623,7 @@ function loadOnFirstFrame() {
     gSceneParams["atlas_depth"],
     function () {
       gLoadedRGBATextures++;
-      updateLoadingProgress();
+      // updateLoadingProgress();
     }
   );
 
@@ -640,7 +640,7 @@ function loadOnFirstFrame() {
       gSceneParams["atlas_depth"],
       function () {
         gLoadedFeatureTextures++;
-        updateLoadingProgress();
+        // updateLoadingProgress();
       }
     );
   }

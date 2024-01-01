@@ -27,13 +27,15 @@ async function loadGsplat() {
 
   scene.reset();
 
-  progressDialog.open();
   const splat = await SPLAT.Loader.LoadAsync(
     url,
     scene,
-    (progress) => (progressIndicator.value = progress * 100)
+    // (progress) => (progressIndicator.value = progress * 100)
+    (progress) => {
+      updateLoadingProgress(progress * 100);
+    }
   );
-  progressDialog.close();
+  // progressDialog.close();
 
   // scene.removeObject(splat);
   // scene.addObject(splat);
@@ -46,15 +48,6 @@ async function loadGsplat() {
   rawBaseTheta = baseTheta;
   // basePhi = 2.5;
   // baseGama = -0.05;
-
-  // const rotation = new SPLAT.Vector3(baseXRot, baseYRot, baseZRot);
-  // splat.rotation = SPLAT.Quaternion.FromEuler(rotation);
-
-  // const translation = new SPLAT.Vector3(0, 0, 0);
-  // splat.position = translation;
-
-  // const scaling = new SPLAT.Vector3(baseScale, baseScale, baseScale);
-  // splat.scale = scaling;
 
   // splat.applyPosition();
   // splat.applyRotation();

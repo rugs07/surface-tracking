@@ -18,7 +18,7 @@
   overflow: hidden;
   display: grid;
   place-items: center;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.20) !important;
   /* animation: progress 2s 0.5s forwards; */
 }
 

@@ -95,8 +95,7 @@ function changeJewellery(newJewel) {
   // const params = new URL(window.location.href).searchParams;
   sessionStorage.setItem("selectedJewel", newJewel);
   selectedJewel = newJewel || "bangle4_gen";
-  console.log(selectedJewel);
-  showhandscreen.style.display = "none";
+  showLoading();
   loadGsplat();
   resetMeshForVR();
 }
@@ -165,41 +164,16 @@ function resetMeshForAR() {
   XRDelta = 0;
   YRDelta = 0;
   ZRAngle = 0;
-  resetGlamCanvas();
+  gsplatCanvas.style.transform = "none";
 }
 
 function resetMeshForVR() {
   setJewelParams();
-  scaleMul = 1;
+  scaleMul = 0.75;
   XRDelta = 0;
   YRDelta = 0;
   ZRAngle = 0;
-  // resetGlamCanvas();
-
-  // flipping canvas
-  if (jewelType === "ring" && !isDirectionalRing) {
-    if (isMobile || isIOS) {
-      gsplatCanvas.style.transform =
-        "translate3d(" +
-        0 +
-        "px, " +
-        -50 +
-        "px, " +
-        0 +
-        "px) rotateZ(" +
-        0 +
-        "deg)";
-    } else {
-      gsplatCanvas.style.transform = "rotateZ(" + 0 + "deg)";
-    }
-  } else {
-    if (isMobile || isIOS) {
-      gsplatCanvas.style.transform =
-        "translate3d(" + 0 + "px, " + -50 + "px, " + 0 + "px)";
-    } else {
-      gsplatCanvas.style.transform = "none";
-    }
-  }
+  resetGlamCanvas();
 }
 
 function resetGlamCanvas() {
@@ -207,7 +181,8 @@ function resetGlamCanvas() {
   let deviceHeight = document.documentElement.clientHeight;
   let canvasWidth = Math.max(deviceWidth, deviceHeight);
 
-  const XDiff = (canvasWidth - deviceWidth) / 2;
+  // const XDiff = (canvasWidth - deviceWidth) / 2;
+  const XDiff = 0;
   const gsplatCanvas = document.getElementById("gsplatCanvas");
 
   // flipping canvas
@@ -383,30 +358,6 @@ function addHandlers() {
   });
 }
 
-function updateJewelname() {
-  let updateNote = document.getElementById("updatenote");
-  switch (selectedJewel) {
-    case "flowerbangle":
-      updateNote.innerText = "Flower Bangle";
-      break;
-    case "trivenibangle":
-      updateNote.innerText = "Triveni Bangle";
-      break;
-    case "trinetraring":
-      updateNote.innerText = "Trinetra Ring";
-      break;
-    case "patternedring":
-      updateNote.innerText = "Patterned Ring";
-      break;
-    case "floralring":
-      updateNote.innerText = "Floral Ring";
-      break;
-    default:
-      updateNote.innerText = "Welcome to JAR4U";
-      break;
-  }
-}
-
 /**
  * Hides the Loading prompt.
  */
@@ -420,7 +371,6 @@ function hideLoading() {
   viewSpaceContainer.style.backgroundColor = "transparent";
   let viewARButton = isMobile || isIOS ? mobileViewAR : desktopViewAR;
 
-  updateJewelname();
   gsplatCanvas.style.display = "block";
   if (isVideo) {
     showhandscreen.style.display = "flex";
@@ -432,9 +382,11 @@ function hideLoading() {
   viewARButton.disabled = false;
   viewARButton.onclick = showManual;
   viewARButton.classList.remove("disabledbtn");
+  isLoading = false;
 }
 
 function showLoading() {
+  isLoading = true;
   const gsplatCanvas = document.getElementById("gsplatCanvas");
   let loading = document.getElementById("Loading");
   loading.style.display = "block";
@@ -442,10 +394,10 @@ function showLoading() {
   let loadingContainer = document.getElementById("loading-container");
   loadingContainer.style.display = "flex";
 
+  viewSpaceContainer.style.display = "block";
   viewSpaceContainer.style.backgroundColor = "#eee";
   let viewARButton = isMobile || isIOS ? mobileViewAR : desktopViewAR;
 
-  updateJewelname();
   showhandscreen.style.display = "none";
   arToogleContainer.style.display = "flex";
   viewARButton.style.display = "none";
@@ -503,14 +455,16 @@ function updateMessageAndFunFact() {
   lastUpdate = Date.now();
 }
 
-function updateLoadingProgress() {
+function updateLoadingProgress(percentage) {
   let funOrFact = document.getElementById("funorfact");
 
-  let loadPercentage =
-    gNumTextures > 0 ? (100 * gLoadedRGBATextures) / gNumTextures : "0";
+  // let loadPercentage =
+  //   gNumTextures > 0 ? (100 * gLoadedRGBATextures) / gNumTextures : "0";
+
+  let loadPercentage = `${percentage}`;
 
   const num = parseFloat(loadPercentage);
-  loadPercentage = num.toFixed(2).toString();
+  loadPercentage = num.toFixed().toString();
 
   if (loadPercentage.endsWith(".00")) {
     loadPercentage = parseInt(num).toString();
@@ -534,6 +488,11 @@ function updateLoadingProgress() {
   <div role="progressbar" aria-valuenow="${loadPercentage}" aria-valuemin="0" aria-valuemax="100" style="--value: ${loadPercentage}"></div>            
   <p class="progresstext">${currentMessage}</p>
   `;
+
+  if (loadPercentage === "100") {
+    setTimeout(hideLoading, 100);
+    loadPercentage = 0;
+  }
 }
 
 function mobileAndTabletCheck() {

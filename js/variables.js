@@ -36,7 +36,8 @@ let handLabel = "";
 let aspectRatio = 1;
 let crop = 1;
 let scaleMul = 0.5;
-
+let isLoading = false;
+let loadPercentage = "0";
 let glamCanvas = null;
 
 /**
