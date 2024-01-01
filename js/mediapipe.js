@@ -541,8 +541,8 @@ async function toggleVideo() {
     resetMeshForAR();
 
     viewSpaceContainer.style.display = "none";
-    gsplatCanvas.style.background = "transparent";
-    viewSpaceContainer.style.background = "transparent";
+    // gsplatCanvas.style.background = "transparent";
+    // viewSpaceContainer.style.background = "transparent";
 
     let activeElement = document.getElementsByClassName("active-ar-jewel")[0];
     if (activeElement) activeElement.classList.remove("active-ar-jewel");
@@ -587,8 +587,8 @@ async function toggleVideo() {
     noSleep.disable();
     updateJewelname();
 
-    gsplatCanvas.style.background = "#000";
-    viewSpaceContainer.style.background = "#000";
+    // gsplatCanvas.style.background = "#000";
+    // viewSpaceContainer.style.background = "#000";
 
     const arToogleContainer = document.getElementById("ar-toggle-container");
     arToogleContainer.style.display = "flex";

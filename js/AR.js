@@ -60,31 +60,31 @@ function rotateX(angle) {
 }
 
 function rotateY(angle) {
-  if (isArcball) {
-    var quaternion = new THREE.Quaternion().setFromAxisAngle(
-      new THREE.Vector3(0, 1, 0),
-      angle
-    );
-    gCamera.position.applyQuaternion(quaternion);
-    gCamera.up.applyQuaternion(quaternion);
-    gCamera.quaternion.multiplyQuaternions(quaternion, gCamera.quaternion);
-  } else {
-    // cameraControls.rotate(angle, 0, false);
-    // Using Show zone to not show the part which was placed on for recording
+  // if (isArcball) {
+  //   var quaternion = new THREE.Quaternion().setFromAxisAngle(
+  //     new THREE.Vector3(0, 1, 0),
+  //     angle
+  //   );
+  //   gCamera.position.applyQuaternion(quaternion);
+  //   gCamera.up.applyQuaternion(quaternion);
+  //   gCamera.quaternion.multiplyQuaternions(quaternion, gCamera.quaternion);
+  // } else {
+  //   // cameraControls.rotate(angle, 0, false);
+  //   // Using Show zone to not show the part which was placed on for recording
 
-    let showZone = [-90, 90];
-    if (selectedJewel === "flowerbangle") showZone = [-60, 90];
+  //   let showZone = [-90, 90];
+  //   if (selectedJewel === "flowerbangle") showZone = [-60, 90];
 
-    if (angle > showZone[0] && angle < showZone[1]) {
-      // cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
-    }
-    // console.log(
-    //   "yangle",
-    //   angle.toFixed(2),
-    //   THREE.MathUtils.radToDeg(baseTheta).toFixed(2),
-    //   handLabel
-    // );
-  }
+  //   if (angle > showZone[0] && angle < showZone[1]) {
+  //     // cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
+  //   }
+  //   // console.log(
+  //   //   "yangle",
+  //   //   angle.toFixed(2),
+  //   //   THREE.MathUtils.radToDeg(baseTheta).toFixed(2),
+  //   //   handLabel
+  //   // );
+  // }
 
   YRAngle = angle;
 
@@ -195,8 +195,8 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
   }
 
   if (horizontalRotation) {
-    if (normYAngle > 90) normYAngle = 90;
-    else if (normYAngle < -90) normYAngle = -90;
+    // if (normYAngle > 90) normYAngle = 90;
+    // else if (normYAngle < -90) normYAngle = -90;
     rotateY(normYAngle);
   }
   lastPinkyRef = newPinkyRef;

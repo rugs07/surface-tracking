@@ -9,7 +9,7 @@ const scene = new SPLAT.Scene();
 const camera = new SPLAT.Camera();
 const controls = new SPLAT.OrbitControls(camera, canvas);
 
-async function main() {
+async function loadGsplat() {
   // const query = new URLSearchParams(window.location.search);
   // const model = query.get("id") ?? "jewel7";
   const model = sessionStorage.getItem("selectedJewel");
@@ -25,12 +25,18 @@ async function main() {
   // const objectMatrix = await object.json()
   // viewMatrix = objectMatrix.defualt_view_matrix
 
+  scene.reset();
+
+  progressDialog.open();
   const splat = await SPLAT.Loader.LoadAsync(
     url,
     scene,
     (progress) => (progressIndicator.value = progress * 100)
   );
   progressDialog.close();
+
+  // scene.removeObject(splat);
+  // scene.addObject(splat);
 
   const handleResize = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -86,5 +92,7 @@ async function main() {
 
 window.THREE.Cache.clear();
 checkDevice();
-main();
+loadGsplat();
 resetMeshForVR();
+
+window.loadGsplat = loadGsplat;

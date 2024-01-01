@@ -4,15 +4,7 @@ let jewelsList = {
     label: "Diamond Bracelet",
     type: "bangle",
     baseTheta: 0.15,
-    basePhi: 2.5,
-    baseGama: -0.05,
-  },
-  jewel3: {
-    name: "jewel3",
-    label: "Queen Bracelet",
-    type: "bangle",
-    baseTheta: 0.15,
-    basePhi: 2.5,
+    basePhi: 2.55,
     baseGama: -0.05,
   },
   bangle4_gen: {
@@ -36,8 +28,16 @@ let jewelsList = {
     label: "Triveni Bangle",
     type: "bangle",
     baseTheta: 0.15,
-    basePhi: 2.5,
+    basePhi: 2.55,
     baseGama: -1.55,
+  },
+  jewel3: {
+    name: "jewel3",
+    label: "Queen's Ring",
+    type: "ring",
+    baseTheta: 0.15,
+    basePhi: 2.55,
+    baseGama: -0.05,
   },
   jewel26: {
     name: "jewel26",
@@ -73,13 +73,32 @@ let jewelsList = {
   },
 };
 
+let showhandscreen = document.getElementById("showhandscreen");
+let outputCanvasElement = document.getElementsByClassName("output_canvas")[0];
+let usermanual = document.getElementById("usermanual");
+let arToogleContainer = document.getElementById("ar-toggle-container");
+let desktopViewAR = document.getElementById("desktop-viewar");
+let mobileViewAR = document.getElementById("mobile-viewar");
+
 function setJewellery(value) {
   facingMode = sessionStorage.getItem("facingMode") || "user";
   sessionStorage.setItem("facingMode", facingMode);
-
-  sessionStorage.setItem("selectedJewel", value);
+  sessionStorage.setItem("selectedJewel", value || "bangle4_gen");
 
   location.href = "/tryon.html";
+}
+
+function changeJewellery(newJewel) {
+  const lastJewel = sessionStorage.getItem("selectedJewel");
+  if (lastJewel === newJewel) return;
+
+  // const params = new URL(window.location.href).searchParams;
+  sessionStorage.setItem("selectedJewel", newJewel);
+  selectedJewel = newJewel || "bangle4_gen";
+  console.log(selectedJewel);
+  showhandscreen.style.display = "none";
+  loadGsplat();
+  resetMeshForVR();
 }
 
 function gotoHome() {
@@ -117,13 +136,6 @@ function showJewel() {
   gRayMarchScene.children[0].material.uniforms.showingJewel.value = 1;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
-
-let showhandscreen = document.getElementById("showhandscreen");
-let outputCanvasElement = document.getElementsByClassName("output_canvas")[0];
-let usermanual = document.getElementById("usermanual");
-let arToogleContainer = document.getElementById("ar-toggle-container");
-let desktopViewAR = document.getElementById("desktop-viewar");
-let mobileViewAR = document.getElementById("mobile-viewar");
 
 function hideHandScreen() {
   showhandscreen.style.display = "none";
