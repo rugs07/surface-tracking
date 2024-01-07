@@ -28,6 +28,8 @@ let browserName = "";
 let jewelType = "";
 let rawBaseTheta = 0;
 let baseTheta = 0;
+let baseThetaAR = 0;
+let baseThetaVR = 0;
 let basePhi = 0;
 let baseGama = 0;
 let selectedJewel = "";
@@ -39,6 +41,8 @@ let scaleMul = 0.5;
 let isLoading = false;
 let loadPercentage = "0";
 let glamCanvas = null;
+let cameraFar = 100;
+let cameraNear = 0.1;
 
 /**
  * The timestamp of the last frame to be rendered, used to track performance.

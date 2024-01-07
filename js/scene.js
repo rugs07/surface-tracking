@@ -384,24 +384,24 @@ function initFromParameters() {
   loadScene(dirUrl, canvasWidth, canvasHeight);
 }
 
-function changeJewellery(newJewel) {
-  const lastJewel = sessionStorage.getItem("selectedJewel");
-  if (lastJewel === newJewel) return;
+// function changeJewellery(newJewel) {
+//   const lastJewel = sessionStorage.getItem("selectedJewel");
+//   if (lastJewel === newJewel) return;
 
-  // const params = new URL(window.location.href).searchParams;
-  sessionStorage.setItem("selectedJewel", newJewel);
-  selectedJewel = newJewel || "flowerbangle";
-  dirUrl = "results/" + selectedJewel + "/" + resolution;
+//   // const params = new URL(window.location.href).searchParams;
+//   sessionStorage.setItem("selectedJewel", newJewel);
+//   selectedJewel = newJewel || "flowerbangle";
+//   dirUrl = "results/" + selectedJewel + "/" + resolution;
 
-  let deviceWidth = document.documentElement.clientWidth;
-  let deviceHeight = document.documentElement.clientHeight;
+//   let deviceWidth = document.documentElement.clientWidth;
+//   let deviceHeight = document.documentElement.clientHeight;
 
-  let canvasHeight = deviceHeight;
-  let canvasWidth = Math.max(deviceWidth, deviceHeight);
+//   let canvasHeight = deviceHeight;
+//   let canvasWidth = Math.max(deviceWidth, deviceHeight);
 
-  showLoading();
-  loadScene(dirUrl, canvasWidth, canvasHeight);
-}
+//   showLoading();
+//   loadScene(dirUrl, canvasWidth, canvasHeight);
+// }
 
 // To handle Camera-Controls events
 function handleEvents() {
@@ -767,4 +767,4 @@ window.THREE.Cache.clear();
 checkDevice();
 start();
 
-window.changeJewellery = changeJewellery;
+// window.changeJewellery = changeJewellery;

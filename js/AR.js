@@ -197,7 +197,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
   if (horizontalRotation) {
     // if (normYAngle > 90) normYAngle = 90;
     // else if (normYAngle < -90) normYAngle = -90;
-    rotateY(normYAngle);
+    rotateY(-normYAngle);
   }
   lastPinkyRef = newPinkyRef;
   lastIndexRef = newIndexRef;
@@ -218,8 +218,8 @@ function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
     // Normalize the angle to the range of -180 to 180 degrees
     let normXAngle = normalizeAngle(xAngle);
 
-    if (normXAngle < -17) normXAngle = -17;
-    if (normXAngle > 17) normXAngle = 17;
+    if (normXAngle < -20) normXAngle = -20;
+    if (normXAngle > 20) normXAngle = 20;
     // if (jewelType === "ring") {
     //   if (normXAngle >= 0 && normXAngle <= 10) normXAngle = 0;
     // }
@@ -561,7 +561,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   } else if (jewelType === "ring") {
     if (isDirectionalRing) {
       getZAngleAndRotate(points[13], points[14], canX, canY);
-      // getXAngleAndRotate(points[13], points[14], ZRAngle);
+      getXAngleAndRotate(points[13], points[14], ZRAngle);
     } else {
       if (
         (handLabel === "Right" && facingMode !== "environment") ||
@@ -601,6 +601,10 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
 
   let smoothenSize = smoothResizing(dist * resizeMul);
   scaleMul = smoothenSize * 0.5;
+
+  const baseNear = jewelType === "bangle" ? -4.35 : -4.3;
+
+  cameraNear = baseNear + scaleMul * 0.01;
   // cameraControls.zoomTo(smoothenSize, false);
 
   if (resize && isArcball)

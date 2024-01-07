@@ -3,7 +3,8 @@ let jewelsList = {
     name: "jewel7",
     label: "Diamond Bracelet",
     type: "bangle",
-    baseTheta: 0.15,
+    baseThetaVR: 0.15,
+    baseThetaAR: -0.05,
     basePhi: 2.55,
     baseGama: -0.05,
   },
@@ -11,7 +12,8 @@ let jewelsList = {
     name: "bangle4_gen",
     label: "Flower Bangle",
     type: "bangle",
-    baseTheta: -0.05,
+    baseThetaVR: -0.15,
+    baseThetaAR: -0.05,
     basePhi: -0.6,
     baseGama: -1.55,
   },
@@ -19,7 +21,8 @@ let jewelsList = {
     name: "laxmi",
     label: "Laxmi Bangle",
     type: "bangle",
-    baseTheta: -0.05,
+    baseThetaVR: -0.15,
+    baseThetaAR: -0.05,
     basePhi: -0.6,
     baseGama: -1.55,
   },
@@ -27,7 +30,8 @@ let jewelsList = {
     name: "jewel12",
     label: "Triveni Bangle",
     type: "bangle",
-    baseTheta: 0.15,
+    baseThetaVR: 0.15,
+    baseThetaAR: -0.05,
     basePhi: 2.55,
     baseGama: -1.55,
   },
@@ -35,7 +39,8 @@ let jewelsList = {
     name: "jewel3",
     label: "Queen's Ring",
     type: "ring",
-    baseTheta: 0.15,
+    baseThetaVR: 0.15,
+    baseThetaAR: 0,
     basePhi: 2.55,
     baseGama: -0.05,
   },
@@ -43,7 +48,8 @@ let jewelsList = {
     name: "jewel26",
     label: "Flower Ring",
     type: "ring",
-    baseTheta: -0.05,
+    baseThetaVR: -0.05,
+    baseThetaAR: 0.1,
     basePhi: -0.6,
     baseGama: -1.5,
   },
@@ -51,7 +57,8 @@ let jewelsList = {
     name: "jewel34",
     label: "Patterned Ring",
     type: "ring",
-    baseTheta: -0.05,
+    baseThetaVR: -0.05,
+    baseThetaAR: 0,
     basePhi: -0.6,
     baseGama: -1.5,
   },
@@ -59,7 +66,8 @@ let jewelsList = {
     name: "jewel1",
     label: "Sunny Ring",
     type: "ring",
-    baseTheta: -0.05,
+    baseThetaVR: -0.05,
+    baseThetaAR: 0,
     basePhi: -0.6,
     baseGama: -1.5,
   },
@@ -67,8 +75,9 @@ let jewelsList = {
     name: "jewel15",
     label: "Red Eye Ring",
     type: "ring",
-    baseTheta: -0.05,
-    basePhi: -0.6,
+    baseThetaVR: -0.05,
+    baseThetaAR: 0,
+    basePhi: -0.75,
     baseGama: -1.5,
   },
 };
@@ -97,7 +106,8 @@ function changeJewellery(newJewel) {
   selectedJewel = newJewel || "bangle4_gen";
   showLoading();
   loadGsplat();
-  resetMeshForVR();
+  setJewelParams();
+  resetMeshForAR();
 }
 
 function gotoHome() {
@@ -145,9 +155,10 @@ function setJewelParams() {
   const selectedJewelDetails = jewelsList[selectedJewel];
 
   jewelType = selectedJewelDetails.type || "ring";
-  baseTheta = selectedJewelDetails.baseTheta || 0.25;
-  basePhi = selectedJewelDetails.basePhi || 2.5;
-  baseGama = selectedJewelDetails.baseGama || 2.5;
+  baseThetaVR = selectedJewelDetails.baseThetaVR || 0.15;
+  baseThetaAR = selectedJewelDetails.baseThetaAR || -0.05;
+  basePhi = selectedJewelDetails.basePhi || 2.55;
+  baseGama = selectedJewelDetails.baseGama || -0.05;
 
   let updateNote = document.getElementById("updatenote");
   updateNote.innerText = selectedJewelDetails.label;
@@ -160,19 +171,24 @@ const fullscreen = (mode = true, el = "body") =>
     : document.exitFullscreen();
 
 function resetMeshForAR() {
+  baseTheta = baseThetaAR;
   scaleMul = 0.5;
   XRDelta = 0;
   YRDelta = 0;
   ZRAngle = 0;
+  cameraFar = -1.5;
   gsplatCanvas.style.transform = "none";
 }
 
 function resetMeshForVR() {
   setJewelParams();
+  baseTheta = baseThetaVR;
   scaleMul = 0.75;
   XRDelta = 0;
   YRDelta = 0;
   ZRAngle = 0;
+  cameraFar = 100;
+  cameraNear = 0.1;
   resetGlamCanvas();
 }
 

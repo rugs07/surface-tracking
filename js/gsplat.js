@@ -70,6 +70,10 @@ async function loadGsplat() {
     // scaleFactor to be applied inn all directions
     const scaling = new SPLAT.Vector3(scaleMul, scaleMul, scaleMul);
     splat.scale = scaling;
+    // To cut the back part of jewel
+    camera._data._near = cameraNear;
+    camera._data._far = cameraFar;
+    camera._data._updateProjectionMatrix();
 
     controls.update();
     renderer.render(scene, camera);
