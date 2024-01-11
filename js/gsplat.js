@@ -11,7 +11,7 @@ const controls = new SPLAT.OrbitControls(camera, canvas);
 
 async function loadGsplat() {
   // const query = new URLSearchParams(window.location.search);
-  // const model = query.get("id") ?? "jewel7";
+  // const model = query.get("id") ?? "jewel7_lr";
   const model = sessionStorage.getItem("selectedJewel");
 
   const url =

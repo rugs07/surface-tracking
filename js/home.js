@@ -12,7 +12,7 @@ const jewels = [
         {
           id: 1,
           label: "trivenibangle",
-          name: "Triveni Bangle",
+          name: "Blossom Bangle",
           price: "35,650",
         },
       ],
@@ -21,7 +21,7 @@ const jewels = [
       {
         id: 1,
         label: "patternedring",
-        name: "Patterned Ring",
+        name: "Heart Ring",
         price: "24,225",
       },
       { id: 1, label: "trinetraring", name: "Trinetra Ring", price: "24,225" },
