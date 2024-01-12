@@ -588,7 +588,7 @@ async function toggleVideo() {
     noSleep.disable();
 
     // gsplatCanvas.style.background = "#eee";
-    viewSpaceContainer.style.background = "#eee";
+    // viewSpaceContainer.style.background = "#eee";
 
     const arToogleContainer = document.getElementById("ar-toggle-container");
     arToogleContainer.style.display = "flex";

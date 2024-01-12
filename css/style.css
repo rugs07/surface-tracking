@@ -381,7 +381,12 @@ button:hover {
   overflow: hidden;
   margin: 0 auto;
   padding: 0;
-  background: #eee;
+  background-image: url('../assets/bg/12_b33.jpg');
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background: linear-gradient(to bottom, #fcf2f3, #b77d79); */
+  /* background: #111; */
   /* border-radius: 5px; */
 }
 
@@ -529,6 +534,7 @@ button:hover {
   margin: 0;
   margin-top: 20px;
   font-weight: 400;
+  color: #ccc;
 }
 
 #viewspacecontainer {
