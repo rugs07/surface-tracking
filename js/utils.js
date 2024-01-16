@@ -1,72 +1,64 @@
 let jewelsList = {
-  jewel7_lr: {
-    name: "jewel7_lr",
-    label: "Diamond Bracelet",
-    type: "bangle",
-    baseThetaVR: 0.15,
-    baseThetaAR: -0.05,
-    basePhi: 0.,
-    baseGama: -0.,
-  },
   b4_gen3: {
     name: "b4_gen3",
     label: "Flower Bangle",
     type: "bangle",
-    baseThetaVR: -0.15,
+    baseThetaVR: -0.005,
+    basePhiVR: -3.5,
+    baseGamaVR: -1.6,
     baseThetaAR: -0.05,
-    basePhi: -0.6,
-    baseGama: -1.55,
+    basePhi: -3.5,
+    baseGama: -1.6,
   },
   laxmi_exp: {
     name: "laxmi_exp",
     label: "Laxmi Bangle",
     type: "bangle",
-    baseThetaVR: -0.15,
+    baseThetaVR: -0.05,
+    basePhiVR: -0.1,
+    baseGamaVR: -1.58,
     baseThetaAR: -0.05,
-    basePhi: -0.6,
-    baseGama: -1.55,
+    basePhi: -0.1,
+    baseGama: -1.58,
   },
-  grt_11_single: {
-    name: "grt_11_single",
-    label: "Blossom Bangle",
+  // grt_11_single: {
+  //   name: "grt_11_single",
+  //   label: "Blossom Bangle",
+  //   type: "bangle",
+  //   baseThetaVR: -0.03,
+  //   baseThetaAR: -0.05,
+  //   basePhi: 0.5,
+  //   baseGama: -1.58,
+  // },
+  jewel7_lr: {
+    name: "jewel7_lr",
+    label: "Diamond Bracelet",
     type: "bangle",
-    baseThetaVR: 0.15,
+    baseThetaVR: -0.02,
+    basePhiVR: 0.,
+    baseGamaVR: 0.,
     baseThetaAR: -0.05,
-    basePhi: 2.55,
-    baseGama: -1.55,
+    basePhi: 0.,
+    baseGama: 0.,
   },
-  jewel3: {
-    name: "jewel3",
+  jewel3_lr: {
+    name: "jewel3_lr",
     label: "Queen's Ring",
     type: "ring",
-    baseThetaVR: 0.15,
+    baseThetaVR: -0.1,
+    basePhiVR: 0,
+    baseGamaVR: -0.05,
     baseThetaAR: 0,
-    basePhi: 2.55,
+    basePhi: 0,
     baseGama: -0.05,
-  },
-  jewel26_lr: {
-    name: "jewel26_lr",
-    label: "Flower Ring",
-    type: "ring",
-    baseThetaVR: -0.05,
-    baseThetaAR: 0.1,
-    basePhi: -0.6,
-    baseGama: -1.5,
   },
   jewel21_lr: {
     name: "jewel21_lr",
     label: "Heart Ring",
     type: "ring",
-    baseThetaVR: -0.05,
-    baseThetaAR: 0,
-    basePhi: -0.6,
-    baseGama: -1.5,
-  },
-  jewel1_lr: {
-    name: "jewel1_lr",
-    label: "Sunny Ring",
-    type: "ring",
-    baseThetaVR: -0.05,
+    baseThetaVR: -0.35,
+    basePhiVR: -1.2,
+    baseGamaVR: -1.5 + 1.57,
     baseThetaAR: 0,
     basePhi: -0.6,
     baseGama: -1.5,
@@ -75,9 +67,33 @@ let jewelsList = {
     name: "jewel25_lr",
     label: "Red Eye Ring",
     type: "ring",
-    baseThetaVR: -0.05,
+    baseThetaVR: -0.25,
+    basePhiVR: -1.4,
+    baseGamaVR: -1.5 + 1.57,
     baseThetaAR: 0,
     basePhi: -0.75,
+    baseGama: -1.5,
+  },
+  jewel1_lr: {
+    name: "jewel1_lr",
+    label: "Sunny Ring",
+    type: "ring",
+    baseThetaVR: -0.45,
+    basePhiVR: -1.2,
+    baseGamaVR: -1.5 + 1.57,
+    baseThetaAR: 0,
+    basePhi: -0.6,
+    baseGama: -1.5,
+  },
+  jewel26_lr: {
+    name: "jewel26_lr",
+    label: "Flower Ring",
+    type: "ring",
+    baseThetaVR: -0.45,
+    basePhiVR: -1.2,
+    baseGamaVR: -1.5 + 1.57,
+    baseThetaAR: 0.1,
+    basePhi: -0.6,
     baseGama: -1.5,
   },
 };
@@ -157,8 +173,10 @@ function setJewelParams() {
   jewelType = selectedJewelDetails.type || "ring";
   baseThetaVR = selectedJewelDetails.baseThetaVR || 0.15;
   baseThetaAR = selectedJewelDetails.baseThetaAR || -0.05;
-  basePhi = selectedJewelDetails.basePhi || 0;
-  baseGama = selectedJewelDetails.baseGama || -0;
+  basePhiVR = selectedJewelDetails.basePhiVR || 0;
+  basePhiAR = selectedJewelDetails.basePhiAR || 0;
+  baseGamaVR = selectedJewelDetails.baseGamaVR || -0;
+  baseGamaAR = selectedJewelDetails.baseGamaAR || -0;
 
   let updateNote = document.getElementById("updatenote");
   updateNote.innerText = selectedJewelDetails.label;
@@ -172,6 +190,8 @@ const fullscreen = (mode = true, el = "body") =>
 
 function resetMeshForAR() {
   baseTheta = baseThetaAR;
+  basePhi = basePhiAR;
+  baseGama = baseGamaAR;
   scaleMul = 0.5;
   XRDelta = 0;
   YRDelta = 0;
@@ -183,6 +203,8 @@ function resetMeshForAR() {
 function resetMeshForVR() {
   setJewelParams();
   baseTheta = baseThetaVR;
+  basePhi = basePhiVR;
+  baseGama = baseGamaVR;
   scaleMul = 0.75;
   XRDelta = 0;
   YRDelta = 0;

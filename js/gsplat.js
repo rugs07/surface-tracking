@@ -9,6 +9,37 @@ const scene = new SPLAT.Scene();
 const camera = new SPLAT.Camera();
 const controls = new SPLAT.OrbitControls(camera, canvas);
 
+controls.minAngle = 10;
+controls.maxAngle = 50;
+controls.minZoom = 3;
+controls.maxZoom = 20;
+// console.log(controls);
+
+
+// Add autorotate function to the controls instance
+// controls.autorotateSpeed = 1.0;
+// controls.isAutorotating = false;
+
+// controls.autorotate = function () {
+//     this.isAutorotating = true;
+
+//     const animate = () => {
+//         if (this.isAutorotating) {
+//             this.desiredAlpha += this.autorotateSpeed;
+//             this.update();
+//             requestAnimationFrame(animate);
+//         }
+//     };
+
+//     animate();
+// };
+
+// controls.stopAutorotate = function () {
+//     this.isAutorotating = false;
+// };
+
+// controls.autorotate();
+
 async function loadGsplat() {
   // const query = new URLSearchParams(window.location.search);
   // const model = query.get("id") ?? "jewel7_lr";
@@ -53,12 +84,32 @@ async function loadGsplat() {
   // splat.applyRotation();
   // splat.applyScale();
 
+  // // update projection matrix for our case
+  // camera._data._updateProjectionMatrix = () => {
+  //   // prettier-ignore
+  //   camera._data._projectionMatrix = new SPLAT.Matrix4(
+  //       2 * camera._data.fx / camera._data.width, 0, 0, 0,
+  //       0, -2 * camera._data.fy / camera._data.height, 0, 0,
+  //       0, 0, 0.1*((camera._data.far * camera._data.near) / (camera._data.far - camera._data.near)), 0,
+  //       0, 0, 0.5*(camera._data.far + camera._data.near) / (camera._data.far - camera._data.near), 1
+  //   );
+
+  //   camera._data._viewProj = camera._data.projectionMatrix.multiply(camera._data.viewMatrix);
+  // };
+
+  var autorotateSpeed = 0, phiMin = -1, phiMax = 3;
+
   const frame = () => {
     // adding radians of x-rotation, y-rotation, z-rotation
+    // autorotateSpeed += 0.005;
+    autorotateSpeed += 0.00;
+    // autorotateSpeed = Math.min(Math.max(autorotateSpeed, phiMin), phiMax);
+
+
     const rotation = new SPLAT.Vector3(
       baseTheta + XRDelta,
-      basePhi + YRDelta,
-      baseGama
+      basePhi + YRDelta + autorotateSpeed,
+      baseGama //+ 3.14/2//ZRDelta
     );
     splat.rotation = SPLAT.Quaternion.FromEuler(rotation);
 
@@ -71,9 +122,11 @@ async function loadGsplat() {
     const scaling = new SPLAT.Vector3(scaleMul, scaleMul, scaleMul);
     splat.scale = scaling;
     // To cut the back part of jewel
-    camera._data._near = cameraNear;
-    camera._data._far = cameraFar;
+    camera._data._near = 0.1; //cameraNear;
+    camera._data._far = 100; //cameraFar;
+    
     camera._data._updateProjectionMatrix();
+    console.log((camera._data.far * camera._data.near) / (camera._data.far - camera._data.near));
 
     controls.update();
     renderer.render(scene, camera);
