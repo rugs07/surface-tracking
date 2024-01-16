@@ -2,6 +2,10 @@
  * The a global dictionary containing scene parameters.
  * @type {?Object}
  */
+
+let autorotate = false;
+let autorotateSpeed = 0.002;
+
 let gSceneParams = null;
 let varX = 2;
 let varY = 2;

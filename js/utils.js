@@ -7,8 +7,8 @@ let jewelsList = {
     basePhiVR: -3.5,
     baseGamaVR: -1.6,
     baseThetaAR: -0.05,
-    basePhi: -3.5,
-    baseGama: -1.6,
+    basePhiAR: -0.6,
+    baseGamaAR: -1.55,
   },
   laxmi_exp: {
     name: "laxmi_exp",
@@ -18,8 +18,8 @@ let jewelsList = {
     basePhiVR: -0.1,
     baseGamaVR: -1.58,
     baseThetaAR: -0.05,
-    basePhi: -0.1,
-    baseGama: -1.58,
+    basePhiAR: -0.6,
+    baseGamaAR: -1.55,
   },
   // grt_11_single: {
   //   name: "grt_11_single",
@@ -38,8 +38,8 @@ let jewelsList = {
     basePhiVR: 0.,
     baseGamaVR: 0.,
     baseThetaAR: -0.05,
-    basePhi: 0.,
-    baseGama: 0.,
+    basePhiAR: 0.,
+    baseGamaAR: 0.,
   },
   jewel3_lr: {
     name: "jewel3_lr",
@@ -49,8 +49,8 @@ let jewelsList = {
     basePhiVR: 0,
     baseGamaVR: -0.05,
     baseThetaAR: 0,
-    basePhi: 0,
-    baseGama: -0.05,
+    basePhiAR: 0,
+    baseGamaAR: -0.05,
   },
   jewel21_lr: {
     name: "jewel21_lr",
@@ -60,8 +60,8 @@ let jewelsList = {
     basePhiVR: -1.2,
     baseGamaVR: -1.5 + 1.57,
     baseThetaAR: 0,
-    basePhi: -0.6,
-    baseGama: -1.5,
+    basePhiAR: -0.6,
+    baseGamaAR: -1.5,
   },
   jewel25_lr: {
     name: "jewel25_lr",
@@ -71,8 +71,8 @@ let jewelsList = {
     basePhiVR: -1.4,
     baseGamaVR: -1.5 + 1.57,
     baseThetaAR: 0,
-    basePhi: -0.75,
-    baseGama: -1.5,
+    basePhiAR: -0.75,
+    baseGamaAR: -1.5,
   },
   jewel1_lr: {
     name: "jewel1_lr",
@@ -82,8 +82,8 @@ let jewelsList = {
     basePhiVR: -1.2,
     baseGamaVR: -1.5 + 1.57,
     baseThetaAR: 0,
-    basePhi: -0.6,
-    baseGama: -1.5,
+    basePhiAR: -0.6,
+    baseGamaAR: -1.5,
   },
   jewel26_lr: {
     name: "jewel26_lr",
@@ -93,8 +93,8 @@ let jewelsList = {
     basePhiVR: -1.2,
     baseGamaVR: -1.5 + 1.57,
     baseThetaAR: 0.1,
-    basePhi: -0.6,
-    baseGama: -1.5,
+    basePhiAR: -0.6,
+    baseGamaAR: -1.5,
   },
 };
 
@@ -192,6 +192,7 @@ function resetMeshForAR() {
   baseTheta = baseThetaAR;
   basePhi = basePhiAR;
   baseGama = baseGamaAR;
+  autorotate = false;
   scaleMul = 0.5;
   XRDelta = 0;
   YRDelta = 0;
@@ -205,6 +206,7 @@ function resetMeshForVR() {
   baseTheta = baseThetaVR;
   basePhi = basePhiVR;
   baseGama = baseGamaVR;
+  autorotate = true;
   scaleMul = 0.75;
   XRDelta = 0;
   YRDelta = 0;

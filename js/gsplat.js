@@ -15,31 +15,6 @@ controls.minZoom = 3;
 controls.maxZoom = 20;
 // console.log(controls);
 
-
-// Add autorotate function to the controls instance
-// controls.autorotateSpeed = 1.0;
-// controls.isAutorotating = false;
-
-// controls.autorotate = function () {
-//     this.isAutorotating = true;
-
-//     const animate = () => {
-//         if (this.isAutorotating) {
-//             this.desiredAlpha += this.autorotateSpeed;
-//             this.update();
-//             requestAnimationFrame(animate);
-//         }
-//     };
-
-//     animate();
-// };
-
-// controls.stopAutorotate = function () {
-//     this.isAutorotating = false;
-// };
-
-// controls.autorotate();
-
 async function loadGsplat() {
   // const query = new URLSearchParams(window.location.search);
   // const model = query.get("id") ?? "jewel7_lr";
@@ -97,19 +72,20 @@ async function loadGsplat() {
   //   camera._data._viewProj = camera._data.projectionMatrix.multiply(camera._data.viewMatrix);
   // };
 
-  var autorotateSpeed = 0, phiMin = -1, phiMax = 3;
+  var autorotateAngle = 0;
+  // const autoRotatePhiMin = -1, autoRotatePhiMax = 3;
 
   const frame = () => {
+
+    // Autorotate in VR Showcase
+    autorotateAngle = (autorotate) ? autorotateAngle + autorotateSpeed : 0;
+    // autorotateSpeed = Math.min(Math.max(autorotateSpeed, autoRotatePhiMin), autoRotatePhiMax);
+
     // adding radians of x-rotation, y-rotation, z-rotation
-    // autorotateSpeed += 0.005;
-    autorotateSpeed += 0.00;
-    // autorotateSpeed = Math.min(Math.max(autorotateSpeed, phiMin), phiMax);
-
-
     const rotation = new SPLAT.Vector3(
       baseTheta + XRDelta,
-      basePhi + YRDelta + autorotateSpeed,
-      baseGama //+ 3.14/2//ZRDelta
+      basePhi + YRDelta + autorotateAngle,
+      baseGama
     );
     splat.rotation = SPLAT.Quaternion.FromEuler(rotation);
 
@@ -122,11 +98,11 @@ async function loadGsplat() {
     const scaling = new SPLAT.Vector3(scaleMul, scaleMul, scaleMul);
     splat.scale = scaling;
     // To cut the back part of jewel
-    camera._data._near = 0.1; //cameraNear;
-    camera._data._far = 100; //cameraFar;
+    camera._data._near = cameraNear;
+    camera._data._far = cameraFar;
     
     camera._data._updateProjectionMatrix();
-    console.log((camera._data.far * camera._data.near) / (camera._data.far - camera._data.near));
+    // console.log((camera._data.far * camera._data.near) / (camera._data.far - camera._data.near));
 
     controls.update();
     renderer.render(scene, camera);
