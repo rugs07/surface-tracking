@@ -9,9 +9,10 @@ const scene = new SPLAT.Scene();
 const camera = new SPLAT.Camera();
 const controls = new SPLAT.OrbitControls(camera, canvas);
 
+// Put below in variables.js
 controls.minAngle = 10;
 controls.maxAngle = 50;
-controls.minZoom = 3;
+controls.minZoom = 3.5;
 controls.maxZoom = 20;
 // console.log(controls);
 
