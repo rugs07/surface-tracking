@@ -341,12 +341,13 @@ button:hover {
   align-items: center;
   justify-content: center;
   width: 100%;
-  z-index: 20;
+  /* z-index: 20; */
   gap: 10px;
   position: absolute;
   top: 10px;
   left: 0;
   margin: 15px auto;
+ 
   /* display: none; */
 }
 
@@ -381,13 +382,14 @@ button:hover {
   overflow: hidden;
   margin: 0 auto;
   padding: 0;
-  background-image: url('../assets/bg/12_b33.jpg');
+  /* background-image: url('../assets/bg/12_b33.jpg'); */
   background-size: cover; 
   background-position: center;
   background-repeat: no-repeat;
-  /* background: linear-gradient(to bottom, #fcf2f3, #b77d79); */
+  background: linear-gradient(to bottom, #fcf2f3, #b77d79);
   /* background: #111; */
   /* border-radius: 5px; */
+ 
 }
 
 #error {

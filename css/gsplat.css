@@ -14,6 +14,22 @@
   height: 100%; */
   background: transparent !important;
 }
+.gsplatNavContainer{
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  gap: 10%;
+  padding: 1%;
+  width: 100%;
+}
+.audioImg{
+  cursor: pointer !important;
+
+}
+.backImg{
+  cursor: pointer !important;
+}
+
 
 dialog {
   width: 100%;

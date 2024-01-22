@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link rel="stylesheet" type="text/css" href="css/gsplat.css" />
     <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js></script>
+    <script type="module" src="./js/gsplatButtonfun/gsplatBackgroundfun.js" ></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/kalmanjs@1.1.0/lib/kalman.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js" 
       integrity="sha512-DSzvYfxJWRi3E6vfcGQfL5CqOlApxYrrdqRP3hRCnoiZ0oM6+ccYjbtdzQFUrAOI/ehKk0VKFuKs5GseGPkVjQ==" 
@@ -50,7 +51,7 @@
           </dialog>
         </div> -->
   
-        <div class="ar-toggle-container" id="ar-toggle-container">
+        <div class="ar-toggle-container" id="ar-toggle-container" >
           <!-- <button class="desktop-viewar" id="desktop-viewar" onclick="showManual()">Try On</button> -->
           <h2 id="updatenote">Welcome to JAR4U</h2>
         </div>
@@ -63,7 +64,21 @@
           <p class="progresstext">Crafting artwork of stars</p>
         </div>
   
-        <canvas id="gsplatCanvas"></canvas>
+        <div class="gsplatMainContainer">
+          <div class="gsplatNavContainer">
+          <div class="gsplatLogoDiv">
+            <span>Shubh Silver</span>
+          </div>
+          <div class="gsplatButtonDiv">
+          <span class="gsplatSoundEffect"><img class="audioImg" width="30px" src="./assets/audio-off-svgrepo-com.svg" /></span>
+          <span class="gsplatBackgroundEffect"><img class="backImg" width="30px" src="./assets/moon-svgrepo-com.svg" /></span>
+          </div>
+          </div>
+          <canvas id="gsplatCanvas"></canvas>
+        </div>
+        <audio class="audioElement" controls>
+          <source src="./assets/audion.mp3" type="audio/mp3">
+        </audio>
       </div>
       <div id="usermanual">
         <h3 class="trytitle">Try on with 3 simple steps !</h3>
