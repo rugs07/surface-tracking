@@ -14,20 +14,21 @@
   height: 100%; */
   background: transparent !important;
 }
-.gsplatNavContainer{
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  gap: 10%;
-  padding: 1%;
-  width: 100%;
-}
+
 .audioImg{
   cursor: pointer !important;
-
+  vertical-align: middle;
+  filter: invert(0.4);
+  margin: 5px;
 }
+/* .gsplatSoundEffect{
+  width: 100px;
+} */
 .backImg{
   cursor: pointer !important;
+  vertical-align: middle;
+  filter: invert(0.4);
+  margin: 5px;
 }
 
 

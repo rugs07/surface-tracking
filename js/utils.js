@@ -40,6 +40,7 @@ let jewelsList = {
     baseThetaAR: -0.05,
     basePhiAR: 0.,
     baseGamaAR: 0.,
+    lightBackground: "radial-gradient(#333,#000)",
   },
   jewel3_lr: {
     name: "jewel3_lr",
@@ -51,6 +52,7 @@ let jewelsList = {
     baseThetaAR: 0,
     basePhiAR: 0,
     baseGamaAR: -0.05,
+    lightBackground: "radial-gradient(#333,#000)",
   },
   jewel21_lr: {
     name: "jewel21_lr",
@@ -84,6 +86,7 @@ let jewelsList = {
     baseThetaAR: 0,
     basePhiAR: -0.6,
     baseGamaAR: -1.5,
+    lightBackground: "radial-gradient(#333,#000)",
   },
   jewel26_lr: {
     name: "jewel26_lr",
@@ -121,8 +124,8 @@ function changeJewellery(newJewel) {
   sessionStorage.setItem("selectedJewel", newJewel);
   selectedJewel = newJewel || "b4_gen3";
   showLoading();
-  loadGsplat();
   setJewelParams();
+  loadGsplat();
   resetMeshForAR();
 }
 

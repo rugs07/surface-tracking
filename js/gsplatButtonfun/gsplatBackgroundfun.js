@@ -5,7 +5,7 @@ let audioElement = document.querySelector(".audioElement");
 let AudioImage=document.querySelector(".audioImg");
 soundButton.addEventListener("click", toggleAudio);
 audioElement.style.display="none";
-let audio = false;
+let audio = true;
 
 function toggleAudio() {
     audio = !audio;
@@ -26,15 +26,16 @@ let backImg = document.querySelector(".backImg");
 
 BackgroundEffect.addEventListener("click", backgroundApply);
 
-let background = true;
+let background = false;
+const model = sessionStorage.getItem("selectedJewel");
 
 function backgroundApply() {
     background = !background;
     if (background) {
-        viewContainer.style.background = "linear-gradient(to right, #1a1a1a, #444444)";
+        viewContainer.style.background = "#000";
         backImg.src = "./assets/sun-svgrepo-com (1).svg";
     } else {
-        viewContainer.style.background = "linear-gradient(to bottom, #fcf2f3, #b77d79)";
+        viewContainer.style.background = jewelsList[model].lightBackground || defaultLightBg;
         backImg.src = "./assets/moon-svgrepo-com.svg";
     }
 }

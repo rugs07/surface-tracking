@@ -5,6 +5,7 @@
 
 let autorotate = false;
 let autorotateSpeed = 0.002;
+let defaultLightBg = "radial-gradient(#fcf2f3,#dfc0bf)";
 
 let gSceneParams = null;
 let varX = 2;

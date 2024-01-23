@@ -54,6 +54,11 @@
         <div class="ar-toggle-container" id="ar-toggle-container" >
           <!-- <button class="desktop-viewar" id="desktop-viewar" onclick="showManual()">Try On</button> -->
           <h2 id="updatenote">Welcome to JAR4U</h2>
+          <div class="gsplatButtonDiv">
+            <span class="gsplatSoundEffect"><img class="audioImg" width="25px" src="./assets/audio-svgrepo-com.svg" /></span>
+            <span class="gsplatBackgroundEffect"><img class="backImg" width="28px" src="./assets/moon-svgrepo-com.svg" /></span>
+          </div>
+
         </div>
 
         <div id="Loading">
@@ -63,20 +68,8 @@
           <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="--value: 0"></div>            
           <p class="progresstext">Crafting artwork of stars</p>
         </div>
-  
-        <div class="gsplatMainContainer">
-          <div class="gsplatNavContainer">
-          <div class="gsplatLogoDiv">
-            <span>Shubh Silver</span>
-          </div>
-          <div class="gsplatButtonDiv">
-          <span class="gsplatSoundEffect"><img class="audioImg" width="30px" src="./assets/audio-off-svgrepo-com.svg" /></span>
-          <span class="gsplatBackgroundEffect"><img class="backImg" width="30px" src="./assets/moon-svgrepo-com.svg" /></span>
-          </div>
-          </div>
-          <canvas id="gsplatCanvas"></canvas>
-        </div>
-        <audio class="audioElement" controls>
+        <canvas id="gsplatCanvas"></canvas>
+        <audio class="audioElement" controls autoplay>
           <source src="./assets/audion.mp3" type="audio/mp3">
         </audio>
       </div>
@@ -222,8 +215,6 @@
       <!-- <button id="mobile-viewar" onclick="showManual()">Try On</button> -->
     </div>
   </div>
-
-    <!-- <script src="https://unpkg.com/three@0.135.0/build/three.js"></script> -->
     <script src="js/variables.js"></script>
     <script src="js/utils.js"></script>
     <script type="module" src="js/mediapipe.js"></script>

@@ -382,11 +382,13 @@ button:hover {
   overflow: hidden;
   margin: 0 auto;
   padding: 0;
-  /* background-image: url('../assets/bg/12_b33.jpg'); */
+  background: none;
+  /* background-image: url('../assets/bg/12_b33.jpg');
   background-size: cover; 
   background-position: center;
-  background-repeat: no-repeat;
-  background: linear-gradient(to bottom, #fcf2f3, #b77d79);
+  background-repeat: no-repeat; */
+  /* background: radial-gradient(#fcf2f3,#dfc0bf); */
+  /* background: linear-gradient(to bottom, #fcf2f3, #b77d79); */
   /* background: #111; */
   /* border-radius: 5px; */
  
