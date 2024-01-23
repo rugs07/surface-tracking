@@ -9,6 +9,7 @@ let jewelsList = {
     baseThetaAR: -0.05,
     basePhiAR: -0.6,
     baseGamaAR: -1.55,
+    scaleMulObjVR: 1.5,
   },
   laxmi_exp: {
     name: "laxmi_exp",
@@ -20,6 +21,7 @@ let jewelsList = {
     baseThetaAR: -0.05,
     basePhiAR: -0.6,
     baseGamaAR: -1.55,
+    scaleMulObjVR: 1.5,
   },
   // grt_11_single: {
   //   name: "grt_11_single",
@@ -64,6 +66,7 @@ let jewelsList = {
     baseThetaAR: 0,
     basePhiAR: -0.6,
     baseGamaAR: -1.5,
+    lightBackground: "radial-gradient(#333,#000)",
   },
   jewel25_lr: {
     name: "jewel25_lr",
@@ -180,6 +183,7 @@ function setJewelParams() {
   basePhiAR = selectedJewelDetails.basePhiAR || 0;
   baseGamaVR = selectedJewelDetails.baseGamaVR || -0;
   baseGamaAR = selectedJewelDetails.baseGamaAR || -0;
+  scaleMulObjVR = selectedJewelDetails.scaleMulObjVR || 1;
 
   let updateNote = document.getElementById("updatenote");
   updateNote.innerText = selectedJewelDetails.label;
@@ -210,7 +214,7 @@ function resetMeshForVR() {
   basePhi = basePhiVR;
   baseGama = baseGamaVR;
   autorotate = true;
-  scaleMul = 0.75;
+  scaleMul = 0.5 * scaleMulObjVR;
   XRDelta = 0;
   YRDelta = 0;
   ZRAngle = 0;
