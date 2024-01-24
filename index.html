@@ -1,62 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>JAR4U | Demo</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.png" />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <div class="main-container">
-      <div class="title-container" onclick="gotoHome()">
-        <img src="assets/logo.png" class="logoimg" />
-        <h2 class="sitename">3D Try-On for Jewellery</h2>
-      </div>
-      <div class="side-errors" id="side-errors"></div>
-      <div class="j4container" id="j4container">
-        <!-- <h3 class="type-label">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>JAR4U | Demo</title>
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ2ZNVHL');</script>
+  <!-- End Google Tag Manager -->
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ2ZNVHL" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <div class="main-container">
+    <div class="title-container" onclick="gotoHome()">
+      <img src="assets/logo.png" class="logoimg" />
+      <h2 class="sitename">3D Try-On for Jewellery</h2>
+    </div>
+    <div class="side-errors" id="side-errors"></div>
+    <div class="j4container" id="j4container">
+      <!-- <h3 class="type-label">
           Bangles <span class="items-text">(2 Items)</span>
         </h3> -->
-        <div class="jrow home-row" id="jewels_row">
-          <div
-            class="jewel-container home-jewel"
-            onclick="setJewellery('b4_gen3')"
-          >
-            <img src="assets/flowerban.png" class="jewelimg" />
-            <div class="selectarea">
-              <button type="button">Flower Bangle</button>
-            </div>
+      <div class="jrow home-row" id="jewels_row">
+        <div class="jewel-container home-jewel" onclick="setJewellery('b4_gen3')">
+          <img src="assets/flowerban.png" class="jewelimg" />
+          <div class="selectarea">
+            <button type="button">Flower Bangle</button>
           </div>
-          <div
-            class="jewel-container home-jewel"
-            onclick="setJewellery('laxmi_exp')"
-          >
-            <img src="assets/laxmi.png" class="jewelimg" />
-            <div class="selectarea">
-              <button type="button">Laxmi Bangle</button>
-            </div>
+        </div>
+        <div class="jewel-container home-jewel" onclick="setJewellery('laxmi_exp')">
+          <img src="assets/laxmi.png" class="jewelimg" />
+          <div class="selectarea">
+            <button type="button">Laxmi Bangle</button>
           </div>
-          <div
-            class="jewel-container home-jewel"
-            onclick="setJewellery('jewel7_lr')"
-          >
-            <img src="assets/diamondbracelet.png" class="jewelimg" />
-            <div class="selectarea">
-              <button type="button">Diamond Bracelet</button>
-            </div>
+        </div>
+        <div class="jewel-container home-jewel" onclick="setJewellery('jewel7_lr')">
+          <img src="assets/diamondbracelet.png" class="jewelimg" />
+          <div class="selectarea">
+            <button type="button">Diamond Bracelet</button>
           </div>
-          <div
-            class="jewel-container home-jewel"
-            onclick="setJewellery('jewel3_lr')"
-          >
-            <img src="assets/queen.png" class="jewelimg" />
-            <div class="selectarea">
-              <button type="button">Queen's Ring</button>
-            </div>
+        </div>
+        <div class="jewel-container home-jewel" onclick="setJewellery('jewel3_lr')">
+          <img src="assets/queen.png" class="jewelimg" />
+          <div class="selectarea">
+            <button type="button">Queen's Ring</button>
           </div>
-          <!-- <div
+        </div>
+        <!-- <div
             class="jewel-container home-jewel"
             onclick="setJewellery('grt_11_single')"
           >
@@ -65,51 +69,40 @@
               <button type="button">Blossom Bangle</button>
             </div>
           </div> -->
-        </div>
-        <div class="jrow home-row" id="jewels_row">
-          <div
-            class="jewel-container home-jewel"
-            onclick="setJewellery('jewel21_lr')"
-          >
-            <img src="assets/heart.png" class="jewelimg" />
-            <div class="selectarea">
-              <button type="button">Heart Ring</button>
-            </div>
-          </div>
-          <div
-            class="jewel-container home-jewel"
-            onclick="setJewellery('jewel25_lr')"
-          >
-            <img src="assets/redeye.png" class="jewelimg" />
-            <div class="selectarea">
-              <button type="button">Red Eye Ring</button>
-            </div>
-          </div>
-          <div
-            class="jewel-container home-jewel"
-            onclick="setJewellery('jewel1_lr')"
-          >
-            <img src="assets/sunny.png" class="jewelimg" />
-            <div class="selectarea">
-              <button type="button">Sunny Ring</button>
-            </div>
-          </div>
-          <div
-            class="jewel-container home-jewel"
-            onclick="setJewellery('jewel26_lr')"
-          >
-            <img src="assets/flower.png" class="jewelimg" />
-            <div class="selectarea">
-              <button type="button">Flower Ring</button>
-            </div>
+      </div>
+      <div class="jrow home-row" id="jewels_row">
+        <div class="jewel-container home-jewel" onclick="setJewellery('jewel21_lr')">
+          <img src="assets/heart.png" class="jewelimg" />
+          <div class="selectarea">
+            <button type="button">Heart Ring</button>
           </div>
         </div>
-        <!-- <h3 class="type-label">
+        <div class="jewel-container home-jewel" onclick="setJewellery('jewel25_lr')">
+          <img src="assets/redeye.png" class="jewelimg" />
+          <div class="selectarea">
+            <button type="button">Red Eye Ring</button>
+          </div>
+        </div>
+        <div class="jewel-container home-jewel" onclick="setJewellery('jewel1_lr')">
+          <img src="assets/sunny.png" class="jewelimg" />
+          <div class="selectarea">
+            <button type="button">Sunny Ring</button>
+          </div>
+        </div>
+        <div class="jewel-container home-jewel" onclick="setJewellery('jewel26_lr')">
+          <img src="assets/flower.png" class="jewelimg" />
+          <div class="selectarea">
+            <button type="button">Flower Ring</button>
+          </div>
+        </div>
+      </div>
+      <!-- <h3 class="type-label">
           Rings <span class="items-text">(2 Items)</span>
         </h3> -->
-      </div>
     </div>
-    <script src="js/utils.js"></script>
-    <!-- <script src="js/home.js"></script> -->
-  </body>
+  </div>
+  <script src="js/utils.js"></script>
+  <!-- <script src="js/home.js"></script> -->
+</body>
+
 </html>
