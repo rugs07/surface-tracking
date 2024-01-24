@@ -92,8 +92,8 @@ function rotateY(angle) {
     (handLabel === "Right" && facingMode !== "environment") ||
     (handLabel === "Left" && facingMode === "environment")
   )
-    YRDelta = THREE.MathUtils.degToRad(YRAngle - 90);
-  else YRDelta = THREE.MathUtils.degToRad(YRAngle + 90);
+    YRDelta = THREE.MathUtils.degToRad(90-YRAngle);
+  else YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle);
 }
 
 // To normalize angles between 0 to 360 deg
@@ -602,9 +602,12 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   let smoothenSize = smoothResizing(dist * resizeMul);
   scaleMul = smoothenSize * 0.5;
 
-  const baseNear = jewelType === "bangle" ? -4.35 : -4.3;
+  // const baseNear = jewelType === "bangle" ? -4.35 : -4.3;
+  // cameraNear = baseNear + scaleMul * 0.01;
 
-  cameraNear = baseNear + scaleMul * 0.01;
+  const baseFar = jewelType === "bangle" ? 5 : 5.1;
+  cameraFar = baseFar + scaleMul * 0.01;
+
   // cameraControls.zoomTo(smoothenSize, false);
 
   if (resize && isArcball)
