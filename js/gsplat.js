@@ -27,8 +27,10 @@ async function loadGsplat() {
     sessionStorage.setItem("selectedJewel", "jewel7_lr");
   }
   const model = sessionStorage.getItem("selectedJewel");
-  console.log("True bg", jewelsList[model].lightBackground, defaultLightBg);
-  viewContainer.style.background = jewelsList[model].lightBackground || defaultLightBg;
+  // if Vr is enabled
+  if (!isVideo) {
+    viewContainer.style.background = jewelsList[model].lightBackground || defaultLightBg;
+  }
 
   const url =
     "https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/" +
