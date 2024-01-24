@@ -1,33 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>JAR4U | Demo</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.css" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css" crossorigin="anonymous">
-    <script src="js/extras/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js" crossorigin="anonymous"></script>
-    <script src="js/extras/hands.js" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="css/loader.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <link rel="stylesheet" type="text/css" href="css/gsplat.css" />
-    <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js></script>
-    <script type="module" src="./js/gsplatButtonfun/gsplatBackgroundfun.js" ></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/kalmanjs@1.1.0/lib/kalman.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js" 
-      integrity="sha512-DSzvYfxJWRi3E6vfcGQfL5CqOlApxYrrdqRP3hRCnoiZ0oM6+ccYjbtdzQFUrAOI/ehKk0VKFuKs5GseGPkVjQ==" 
-      crossorigin="anonymous" referrerpolicy="no-referrer">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>JAR4U | Demo</title>
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.css" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css" crossorigin="anonymous">
+  <script src="js/extras/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.3/control_utils_3d.js"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js"
+    crossorigin="anonymous"></script>
+  <script src="js/extras/hands.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" type="text/css" href="css/loader.css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="stylesheet" type="text/css" href="css/gsplat.css" />
+  <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js></script>
+  <script type="module" src="./js/gsplatButtonfun/gsplatBackgroundfun.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/kalmanjs@1.1.0/lib/kalman.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js"
+    integrity="sha512-DSzvYfxJWRi3E6vfcGQfL5CqOlApxYrrdqRP3hRCnoiZ0oM6+ccYjbtdzQFUrAOI/ehKk0VKFuKs5GseGPkVjQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  </head>
-  <body>
-    <div class="main-container">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NWWDGFM958"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-NWWDGFM958');
+  </script>
+</head>
+
+<body>
+  <div class="main-container">
     <div class="title-container tryon-title" id="tryon-title" onclick="gotoHome()">
       <img src="assets/logo.png" class="logoimg" />
       <h2 class="sitename">3D Try-On for Jewellery</h2>
@@ -50,13 +68,15 @@
             <progress max="100" id="progress-indicator"></progress>
           </dialog>
         </div> -->
-  
-        <div class="ar-toggle-container" id="ar-toggle-container" >
+
+        <div class="ar-toggle-container" id="ar-toggle-container">
           <!-- <button class="desktop-viewar" id="desktop-viewar" onclick="showManual()">Try On</button> -->
           <h2 id="updatenote">Welcome to JAR4U</h2>
           <div class="gsplatButtonDiv">
-            <span class="gsplatSoundEffect"><img class="audioImg" width="25px" src="./assets/audio-svgrepo-com.svg" /></span>
-            <span class="gsplatBackgroundEffect"><img class="backImg" width="28px" src="./assets/moon-svgrepo-com.svg" /></span>
+            <span class="gsplatSoundEffect"><img class="audioImg" width="25px"
+                src="./assets/audio-svgrepo-com.svg" /></span>
+            <span class="gsplatBackgroundEffect"><img class="backImg" width="28px"
+                src="./assets/moon-svgrepo-com.svg" /></span>
           </div>
 
         </div>
@@ -65,7 +85,7 @@
           <p id="funorfact">Tip: For best AR experience, make sure that no major light source is behind you.</p>
         </div>
         <div id="loading-container">
-          <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="--value: 0"></div>            
+          <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="--value: 0"></div>
           <p class="progresstext">Crafting artwork of stars</p>
         </div>
         <canvas id="gsplatCanvas"></canvas>
@@ -77,17 +97,17 @@
         <h3 class="trytitle">Try on with 3 simple steps !</h3>
         <div class="allsteps">
           <div class="step">
-            <img src="" class="stepimg" id="step1img"/>
+            <img src="" class="stepimg" id="step1img" />
             <p class="steptext">
               Place your hand vertically in front of camera
             </p>
           </div>
           <div class="step">
-            <img src="" class="stepimg" id="step2img"/>
+            <img src="" class="stepimg" id="step2img" />
             <p class="steptext">Set the jewellery on your hand correctly</p>
           </div>
           <div class="step">
-            <img src="assets/banglestep3.gif" class="stepimg" id="step3img"/>
+            <img src="assets/banglestep3.gif" class="stepimg" id="step3img" />
             <p class="steptext">Try it on freely to view all its details</p>
           </div>
         </div>
@@ -102,7 +122,7 @@
         </h4>
         <div class="allsteps">
           <div class="errorstep">
-            <img src="assets/no-camerafeed.png" class="errorimg" id="step1img"/>
+            <img src="assets/no-camerafeed.png" class="errorimg" id="step1img" />
           </div>
         </div>
         <button class="centerbtn" type="button" id="retrycambtn" onclick="showManual()">
@@ -119,17 +139,13 @@
           </button>
         </div>
         <div class="rowar">
-            <div
-              class="jewel-container ar-jewel"
-              onclick="changeJewellery('jewel7_lr')"
-              id="jewel7_lr"
-            >
-              <img src="assets/diamondbracelet.png" class="jewelimg" />
-              <div class="selectarea">
-                <button type="button">Diamond Bracelet</button>
-              </div>
+          <div class="jewel-container ar-jewel" onclick="changeJewellery('jewel7_lr')" id="jewel7_lr">
+            <img src="assets/diamondbracelet.png" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Diamond Bracelet</button>
             </div>
-            <!-- <div
+          </div>
+          <!-- <div
               class="jewel-container ar-jewel"
               onclick="changeJewellery('grt_11_single')"
               id="grt_11_single"
@@ -139,86 +155,59 @@
                 <button type="button">Blossom Bangle</button>
               </div>
             </div> -->
-            <div
-              class="jewel-container ar-jewel"
-              onclick="changeJewellery('b4_gen3')"
-              id="b4_gen3"
-            >
-              <img src="assets/flowerban.png" class="jewelimg" />
-              <div class="selectarea">
-                <button type="button">Flower Bangle</button>
-              </div>
+          <div class="jewel-container ar-jewel" onclick="changeJewellery('b4_gen3')" id="b4_gen3">
+            <img src="assets/flowerban.png" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Flower Bangle</button>
             </div>
-            <div
-              class="jewel-container ar-jewel"
-              onclick="changeJewellery('laxmi_exp')"
-              id="laxmi_exp"
-            >
-              <img src="assets/laxmi.png" class="jewelimg" />
-              <div class="selectarea">
-                <button type="button">Laxmi Bangle</button>
-              </div>
+          </div>
+          <div class="jewel-container ar-jewel" onclick="changeJewellery('laxmi_exp')" id="laxmi_exp">
+            <img src="assets/laxmi.png" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Laxmi Bangle</button>
             </div>
-            <div
-              class="jewel-container ar-jewel"
-              onclick="changeJewellery('jewel3_lr')"
-              id="jewel3_lr"
-            >
-              <img src="assets/queen.png" class="jewelimg" />
-              <div class="selectarea">
-                <button type="button">Queen's Ring</button>
-              </div>
+          </div>
+          <div class="jewel-container ar-jewel" onclick="changeJewellery('jewel3_lr')" id="jewel3_lr">
+            <img src="assets/queen.png" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Queen's Ring</button>
             </div>
-            <div
-              class="jewel-container ar-jewel"
-              onclick="changeJewellery('jewel26_lr')"
-              id="jewel26_lr"
-            >
-              <img src="assets/flower.png" class="jewelimg" />
-              <div class="selectarea">
-                <button type="button">Flower Ring</button>
-              </div>
+          </div>
+          <div class="jewel-container ar-jewel" onclick="changeJewellery('jewel26_lr')" id="jewel26_lr">
+            <img src="assets/flower.png" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Flower Ring</button>
             </div>
-            <div
-              class="jewel-container ar-jewel"
-              onclick="changeJewellery('jewel21_lr')"
-              id="jewel21_lr"
-            >
-              <img src="assets/heart.png" class="jewelimg" />
-              <div class="selectarea">
-                <button type="button">Heart Ring</button>
-              </div>
+          </div>
+          <div class="jewel-container ar-jewel" onclick="changeJewellery('jewel21_lr')" id="jewel21_lr">
+            <img src="assets/heart.png" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Heart Ring</button>
             </div>
-            <div
-              class="jewel-container ar-jewel"
-              onclick="changeJewellery('jewel1_lr')"
-              id="jewel1_lr"
-            >
-              <img src="assets/sunny.png" class="jewelimg" />
-              <div class="selectarea">
-                <button type="button">Sunny Ring</button>
-              </div>
+          </div>
+          <div class="jewel-container ar-jewel" onclick="changeJewellery('jewel1_lr')" id="jewel1_lr">
+            <img src="assets/sunny.png" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Sunny Ring</button>
             </div>
-            <div
-              class="jewel-container ar-jewel"
-              onclick="changeJewellery('jewel25_lr')"
-              id="jewel25_lr"
-            >
-              <img src="assets/redeye.png" class="jewelimg" />
-              <div class="selectarea">
-                <button type="button">Red Eye Ring</button>
-              </div>
+          </div>
+          <div class="jewel-container ar-jewel" onclick="changeJewellery('jewel25_lr')" id="jewel25_lr">
+            <img src="assets/redeye.png" class="jewelimg" />
+            <div class="selectarea">
+              <button type="button">Red Eye Ring</button>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="ar-bottom-container mobile-viewer" id="ar-bottom-container">
+        <!-- <button id="mobile-viewar" onclick="showManual()">Try On</button> -->
       </div>
     </div>
-    <div class="ar-bottom-container mobile-viewer" id="ar-bottom-container">
-      <!-- <button id="mobile-viewar" onclick="showManual()">Try On</button> -->
-    </div>
-  </div>
     <script src="js/variables.js"></script>
     <script src="js/utils.js"></script>
     <script type="module" src="js/mediapipe.js"></script>
-    <script type="module" src="js/gsplat.js" ></script>
+    <script type="module" src="js/gsplat.js"></script>
     <script src="js/AR.js"></script>
-  </body>
+</body>
+
 </html>
