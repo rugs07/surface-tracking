@@ -538,7 +538,10 @@ button:hover {
   margin: 0;
   margin-top: 20px;
   font-weight: 400;
-  color: #ccc;
+  background: var(--gradientColor);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* color: #ccc; */
 }
 
 #viewspacecontainer {
