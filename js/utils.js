@@ -521,14 +521,15 @@ function updateLoadingProgress(percentage) {
   const updateInterval = 5000; // 5 seconds
 
   if (
-    !currentMessage ||
-    !currentFunFact ||
+    !currentMessage 
+    ||
+    // !currentFunFact ||
     timeSinceLastUpdate > updateInterval
   ) {
     updateMessageAndFunFact();
   }
 
-  funOrFact.innerHTML = currentFunFact;
+  // funOrFact.innerHTML = currentFunFact;
 
   const loadingContainer = document.getElementById("loading-container");
   loadingContainer.innerHTML = `
