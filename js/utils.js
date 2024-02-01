@@ -133,7 +133,7 @@ function changeJewellery(newJewel) {
 }
 
 function gotoHome() {
-  location.href = `/`;
+  location.href = `https://www.jar4u.com/`;
 }
 
 function applyRingTrans() {
