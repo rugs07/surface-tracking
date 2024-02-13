@@ -102,6 +102,54 @@ let jewelsList = {
     basePhiAR: -0.6,
     baseGamaAR: -1.5,
   },
+  pots: {
+    name: "pots",
+    label: "Ancient Pots",
+    type: "handicraft",
+    baseThetaVR: 0,
+    basePhiVR: 0,
+    baseGamaVR: 0,
+    baseThetaAR: 0,
+    basePhiAR: 0,
+    baseGamaAR: 0,
+    lightBackground: "radial-gradient(#000,#000)"
+  },
+  swan: {
+    name: "swan",
+    label: "Lively Swans",
+    type: "handicraft",
+    baseThetaVR: 0.1,
+    basePhiVR: -0.5,
+    baseGamaVR: 0.1,
+    baseThetaAR: 0,
+    basePhiAR: 0,
+    baseGamaAR: 0,
+    lightBackground: "radial-gradient(#000,#000)"
+  },
+  natraj: {
+    name: "natraj",
+    label: "Natraj",
+    type: "handicraft",
+    baseThetaVR: 0,
+    basePhiVR: 0,
+    baseGamaVR: 0,
+    baseThetaAR: 0,
+    basePhiAR: 0,
+    baseGamaAR: 0,
+    lightBackground: "radial-gradient(#333,#000)"
+  },
+  table_1: {
+    name: "table_1",
+    label: "Luxe Table",
+    type: "handicraft",
+    baseThetaVR: 0,
+    basePhiVR: 0,
+    baseGamaVR: 0,
+    baseThetaAR: 0,
+    basePhiAR: 0,
+    baseGamaAR: 0,
+    lightBackground: "radial-gradient(#333,#000)"
+  },
 };
 
 let showhandscreen = document.getElementById("showhandscreen");
