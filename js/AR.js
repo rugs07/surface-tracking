@@ -176,6 +176,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
     }
   }
 
+
   if (enableSmoothing) {
     let diff = normYAngle - YRAngle;
     yArr.push(diff); // Insert new value at the end
@@ -213,7 +214,7 @@ function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
     const dz = newRefOfMid.z - wrist.z;
 
     let xAngle = Math.atan2(dy, dz);
-    xAngle = THREE.MathUtils.radToDeg(xAngle) + 90;
+    xAngle = THREE.MathUtils.radToDeg(xAngle) + 91;
 
     // Normalize the angle to the range of -180 to 180 degrees
     let normXAngle = normalizeAngle(xAngle);
@@ -453,7 +454,7 @@ function calculateWristSize(points, YRAngle, ZRAngle, foldedHand) {
     wristSize *= mapRange(foldResize, 0, 1, 1, 0.5);
   } else {
     const mulVal = mapRange(YTAdd, 0, 1, 1, 1.25);
-    wristSize *= mulVal * 1.75;
+    wristSize *= mulVal * 1.6;
 
     wristSize *= mapRange(foldResize, 0, 1, 1, 0.65);
   }
@@ -502,6 +503,7 @@ function smoothResizing(wristSize) {
   return wristSize;
 }
 
+
 //function to use mediapipe hand prediction data for translation and rotation
 function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   let wrist = points[0];
@@ -524,7 +526,20 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
 
   let stayPoint = null;
   if (jewelType === "bangle") {
-    stayPoint = wrist;
+    if(handLabel === "Left"){
+    stayPoint = {
+      x: wrist.x - 0.015 , // Adjust the x-coordinate to move slightly to the side
+      y: wrist.y + 0.02, // Adjust the y-coordinate to move slightly below
+      z: wrist.z // Keep the z-coordinate the same
+    };
+  }
+  else if(handLabel=== "Right"){
+    stayPoint = {
+      x: wrist.x , // Adjust the x-coordinate to move slightly to the side
+      y: wrist.y + 0.02, // Adjust the y-coordinate to move slightly below
+      z: wrist.z // Keep the z-coordinate the same
+    };
+  }
   } else if (jewelType === "ring") {
     stayPoint = ringPos;
   }
@@ -584,8 +599,8 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   let resizeMul;
 
   if (jewelType === "bangle") {
-    if (isMobile || isIOS) resizeMul = window_scale * 3.5;
-    else resizeMul = window_scale * 2;
+    if (isMobile || isIOS) resizeMul = window_scale * 3;
+    else resizeMul = window_scale * 1.5;
 
     if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
   } else if (jewelType === "ring") {

@@ -122,7 +122,7 @@ const controls = window;
 const noSleep = new NoSleep();
 
 let viewARButton = isMobile || isIOS ? mobileViewAR : desktopViewAR;
-
+console.log(viewARButton)
 viewARButton.addEventListener(
   "click",
   function enableNoSleep() {

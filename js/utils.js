@@ -254,6 +254,7 @@ function resetMeshForAR() {
   ZRAngle = 0;
   cameraFar = -1.5;
   gsplatCanvas.style.transform = "none";
+  
 }
 
 function resetMeshForVR() {

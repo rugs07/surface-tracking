@@ -10,11 +10,11 @@ let audio = true;
 function toggleAudio() {
     audio = !audio;
     if (audio) {
-        audioElement.play();
-        AudioImage.src="./assets/audio-svgrepo-com.svg"
-    } else {
         audioElement.pause();
         AudioImage.src="./assets/audio-off-svgrepo-com.svg"
+    } else {
+        audioElement.play();
+        AudioImage.src="./assets/audio-svgrepo-com.svg"
     }
 }
 //sun-svgrepo-com (1)
