@@ -22,15 +22,8 @@ async function loadGsplat() {
   // const query = new URLSearchParams(window.location.search);
   // const model = query.get("id") ?? "jewel7_lr";
   const model = sessionStorage.getItem("selectedJewel");
-  // const jewel = jewelsList[model];
-
-  // // Set a default background if lightBackground is not specified
-  // const background = jewel.lightBackground || defaultLightBg;
-  // console.log("True bg", background);
-
-  // // Set the background
-  // viewContainer.style.background = background;
-  // commented this code to hide the background on switching the jewels while VR is on
+  // console.log("True bg", jewelsList[model].lightBackground, defaultLightBg);
+  // viewContainer.style.background = jewelsList[model].lightBackground || defaultLightBg;
 
   const url =
     "https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/" +
