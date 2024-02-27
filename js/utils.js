@@ -76,7 +76,7 @@ let jewelsList = {
     basePhiVR: -1.4,
     baseGamaVR: -1.5 + 1.57,
     baseThetaAR: 0,
-    basePhiAR: -0.75,
+    basePhiAR: 1.75,
     baseGamaAR: -1.5,
   },
   jewel1_lr: {
@@ -252,7 +252,8 @@ function resetMeshForAR() {
   XRDelta = 0;
   YRDelta = 0;
   ZRAngle = 0;
-  cameraFar = -1.5;
+  // cameraFar = -1.5;
+  cameraNear = 0.1;
   gsplatCanvas.style.transform = "none";
   
 }

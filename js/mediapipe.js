@@ -582,6 +582,10 @@ async function toggleVideo() {
     // resetRingTrans();
     resetMeshForVR();
     viewSpaceContainer.style.display = "inline-block";
+    // reset bg to jewels default
+    let model = sessionStorage.getItem("selectedJewel");
+    viewSpaceContainer.style.background = jewelsList[model].lightBackground || defaultLightBg;
+
     outputCanvasElement.style.display = "none";
     showhandscreen.style.display = "none";
     usermanual.style.display = "none";

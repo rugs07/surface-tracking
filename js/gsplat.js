@@ -1,4 +1,6 @@
-import * as SPLAT from "https://cdn.jsdelivr.net/npm/gsplat@latest";
+// import * as SPLAT from "https://cdn.jsdelivr.net/npm/gsplat@latest";
+import * as SPLAT from "./gsplat_j4u/index.js";
+
 
 const canvas = document.getElementById("gsplatCanvas");
 const progressDialog = document.getElementById("progress-dialog");
@@ -21,9 +23,14 @@ let viewContainer = document.querySelector("#viewspacecontainer");
 async function loadGsplat() {
   // const query = new URLSearchParams(window.location.search);
   // const model = query.get("id") ?? "jewel7_lr";
+  if (sessionStorage.getItem("selectedJewel") == null ){
+    sessionStorage.setItem("selectedJewel", "jewel7_lr");
+  }
   const model = sessionStorage.getItem("selectedJewel");
-  // console.log("True bg", jewelsList[model].lightBackground, defaultLightBg);
-  // viewContainer.style.background = jewelsList[model].lightBackground || defaultLightBg;
+  // if Vr is enabled
+  if (!isVideo) {
+    viewContainer.style.background = jewelsList[model].lightBackground || defaultLightBg;
+  }
 
   const url =
     "https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/" +
