@@ -3,12 +3,12 @@ let jewelsList = {
     name: "b4_gen3",
     label: "Flower Bangle",
     type: "bangle",
-    baseThetaVR: -0.005,
-    basePhiVR: -3.5,
-    baseGamaVR: -1.6,
-    baseThetaAR: -0.05,
-    basePhiAR: -0.6,
-    baseGamaAR: -1.55,
+    baseThetaVR: -0.005, //var1
+    basePhiVR: -3.5, //var2
+    baseGamaVR: -1.6, //var3
+    baseThetaAR: 0.55, //var4
+    basePhiAR: -0.6, //var5
+    baseGamaAR: -1.55, //var6
     scaleMulObjVR: 1.5,
   },
   laxmi_exp: {
@@ -18,7 +18,7 @@ let jewelsList = {
     baseThetaVR: -0.05,
     basePhiVR: -0.1,
     baseGamaVR: -1.58,
-    baseThetaAR: -0.05,
+    baseThetaAR: 0.55,
     basePhiAR: -0.6,
     baseGamaAR: -1.55,
     scaleMulObjVR: 1.5,
@@ -39,9 +39,9 @@ let jewelsList = {
     baseThetaVR: -0.02,
     basePhiVR: -1.1,
     baseGamaVR: 0.,
-    baseThetaAR: -0.05,
-    basePhiAR: 0.,
-    baseGamaAR: 0.,
+    baseThetaAR: -0.38,
+    basePhiAR: -3.7,
+    baseGamaAR: 0.0,
     lightBackground: "radial-gradient(#333,#000)",
   },
   jewel3_lr: {
@@ -51,9 +51,9 @@ let jewelsList = {
     baseThetaVR: -0.1,
     basePhiVR: -1.1,
     baseGamaVR: -0.05,
-    baseThetaAR: 0,
-    basePhiAR: 0,
-    baseGamaAR: -0.05,
+    baseThetaAR: -0.25, 
+    basePhiAR: 2.5,
+    baseGamaAR: 0.05,
     lightBackground: "radial-gradient(#333,#000)",
   },
   jewel21_lr: {
@@ -63,9 +63,9 @@ let jewelsList = {
     baseThetaVR: -0.35,
     basePhiVR: -1.2,
     baseGamaVR: -1.5 + 1.57,
-    baseThetaAR: 0,
-    basePhiAR: -0.6,
-    baseGamaAR: -1.5,
+    baseThetaAR: -0.29,
+    basePhiAR: 2.6,
+    baseGamaAR: -1.6,
     lightBackground: "radial-gradient(#333,#000)",
   },
   jewel25_lr: {
@@ -75,8 +75,8 @@ let jewelsList = {
     baseThetaVR: -0.25,
     basePhiVR: -1.4,
     baseGamaVR: -1.5 + 1.57,
-    baseThetaAR: 0,
-    basePhiAR: 1.75,
+    baseThetaAR: -0.25,
+    basePhiAR: 2.3,
     baseGamaAR: -1.5,
   },
   jewel1_lr: {
@@ -86,9 +86,9 @@ let jewelsList = {
     baseThetaVR: -0.45,
     basePhiVR: -1.2,
     baseGamaVR: -1.5 + 1.57,
-    baseThetaAR: 0,
-    basePhiAR: -0.6,
-    baseGamaAR: -1.5,
+    baseThetaAR: -0.25,
+    basePhiAR: 2.6,
+    baseGamaAR: -1.7,
     lightBackground: "radial-gradient(#333,#000)",
   },
   jewel26_lr: {
@@ -98,9 +98,9 @@ let jewelsList = {
     baseThetaVR: -0.45,
     basePhiVR: -1.2,
     baseGamaVR: -1.5 + 1.57,
-    baseThetaAR: 0.1,
-    basePhiAR: -0.6,
-    baseGamaAR: -1.5,
+    baseThetaAR: -0.7,
+    basePhiAR: 2.6,
+    baseGamaAR: 1.7,
   },
   pots: {
     name: "pots",
@@ -255,7 +255,6 @@ function resetMeshForAR() {
   // cameraFar = -1.5;
   cameraNear = 0.1;
   gsplatCanvas.style.transform = "none";
-  
 }
 
 function resetMeshForVR() {
