@@ -140,7 +140,7 @@ function convertRingTransRange(value) {
   const oldMin = -20;
   const oldMax = 20;
   const newMin = 20;
-  const newMax = 60;
+  const newMax = 55;
   return ((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin;
 }
 
@@ -165,7 +165,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
   if (jewelType === "ring" && enableRingTransparency) {
     let transparencyZone = [-20, 20];
     if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
-      ringTrans = 1.35;
+      ringTrans = 1.3;
       // applyRingTrans();
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
@@ -214,13 +214,13 @@ function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
     const dz = newRefOfMid.z - wrist.z;
 
     let xAngle = Math.atan2(dy, dz);
-    xAngle = THREE.MathUtils.radToDeg(xAngle) + 91;
+    xAngle = THREE.MathUtils.radToDeg(xAngle) + 90;
 
     // Normalize the angle to the range of -180 to 180 degrees
     let normXAngle = normalizeAngle(xAngle);
 
-    if (normXAngle < -20) normXAngle = -20;
-    if (normXAngle > 20) normXAngle = 20;
+    if (normXAngle < -10) normXAngle = -10;
+    if (normXAngle > 10) normXAngle = 10;
     // if (jewelType === "ring") {
     //   if (normXAngle >= 0 && normXAngle <= 10) normXAngle = 0;
     // }
@@ -601,7 +601,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   if (jewelType === "bangle") {
     if (isMobile || isIOS) {
        resizeMul = window_scale * 3;
-       if(isPalmFacing) resizeMul *=2.65;
+       if(isPalmFacing) resizeMul *=0.77;
     }
     else {
       if(isPalmFacing) resizeMul = window_scale* 1.52;

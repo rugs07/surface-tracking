@@ -109,11 +109,14 @@ async function loadGsplat() {
     camera._data._updateProjectionMatrix();
     // console.log((camera._data.far * camera._data.near) / (camera._data.far - camera._data.near));
 
-    controls.update();
+    if(!isVideo){
+      controls.update();
+    }
     renderer.render(scene, camera);
 
     requestAnimationFrame(frame);
   };
+  
 
   handleResize();
   window.addEventListener("resize", handleResize);
