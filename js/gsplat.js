@@ -1,7 +1,6 @@
 // import * as SPLAT from "https://cdn.jsdelivr.net/npm/gsplat@latest";
 import * as SPLAT from "./gsplat_j4u/index.js";
 
-
 const canvas = document.getElementById("gsplatCanvas");
 const progressDialog = document.getElementById("progress-dialog");
 const progressIndicator = document.getElementById("progress-indicator");
