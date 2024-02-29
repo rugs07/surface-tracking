@@ -601,7 +601,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   if (jewelType === "bangle") {
     if (isMobile || isIOS) {
        resizeMul = window_scale * 3;
-       if(isPalmFacing) resizeMul *=0.77;
+       if(isPalmFacing) resizeMul *=0.71;
     }
     else {
       if(isPalmFacing) resizeMul = window_scale* 1.52;
