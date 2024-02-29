@@ -5,8 +5,8 @@ let jewelsList = {
     name: "b4_gen3",
     label: "Flower Bangle",
     type: "bangle",
-    baseThetaVR: -0.005, //var1
-    basePhiVR: -3.5, //var2
+    baseThetaVR: 0.015, //var1
+    basePhiVR: -3.55, //var2
     baseGamaVR: -1.6, //var3
     baseThetaAR: -0.05, //var4
     basePhiAR: -0.6, //var5
@@ -77,7 +77,7 @@ let jewelsList = {
     baseThetaVR: -0.25,
     basePhiVR: -1.4,
     baseGamaVR: -1.5 + 1.57,
-    baseThetaAR: 0,
+    baseThetaAR: -0.05,
     basePhiAR: 1.715,
     baseGamaAR: -1.5,
   },
