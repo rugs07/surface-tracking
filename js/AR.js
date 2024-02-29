@@ -445,7 +445,7 @@ function calculateWristSize(points, YRAngle, ZRAngle, foldedHand) {
   let foldResize =
     YTAdd *
     Math.abs(Math.cos(THREE.MathUtils.degToRad(YRAngle))) *
-    (1 - foldedHand / 19);
+    (1 - foldedHand / 20);
 
   if (isMobile || isIOS) {
     const mulVal = mapRange(YTAdd, 0, 1, 1, 1.1);
@@ -456,7 +456,7 @@ function calculateWristSize(points, YRAngle, ZRAngle, foldedHand) {
     const mulVal = mapRange(YTAdd, 0, 1, 1, 1.25);
     wristSize *= mulVal * 1.6;
 
-    wristSize *= mapRange(foldResize, 0, 1, 1, 0.6);
+    wristSize *= mapRange(foldResize, 0, 1, 1, 0.65);
   }
 
   lastSize = wristSize;
