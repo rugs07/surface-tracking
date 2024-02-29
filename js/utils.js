@@ -8,7 +8,7 @@ let jewelsList = {
     baseThetaVR: -0.005, //var1
     basePhiVR: -3.5, //var2
     baseGamaVR: -1.6, //var3
-    baseThetaAR: -0.11, //var4
+    baseThetaAR: -0.05, //var4
     basePhiAR: -0.6, //var5
     baseGamaAR: -1.55, //var6
     scaleMulObjVR: 1.5,
