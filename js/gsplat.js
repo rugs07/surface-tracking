@@ -136,3 +136,4 @@ loadGsplat();
 resetMeshForVR();
 
 window.loadGsplat = loadGsplat;
+export {controls};

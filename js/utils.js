@@ -1,3 +1,5 @@
+// import { controls } from "./gsplat";
+
 let jewelsList = {
   b4_gen3: {
     name: "b4_gen3",
@@ -6,7 +8,7 @@ let jewelsList = {
     baseThetaVR: -0.005, //var1
     basePhiVR: -3.5, //var2
     baseGamaVR: -1.6, //var3
-    baseThetaAR: 0.55, //var4
+    baseThetaAR: -0.08, //var4
     basePhiAR: -0.6, //var5
     baseGamaAR: -1.55, //var6
     scaleMulObjVR: 1.5,
@@ -39,8 +41,8 @@ let jewelsList = {
     baseThetaVR: -0.02,
     basePhiVR: -1.1,
     baseGamaVR: 0.,
-    baseThetaAR: -0.38,
-    basePhiAR: -3.7,
+    baseThetaAR: -0.05,
+    basePhiAR: 0,
     baseGamaAR: 0.0,
     lightBackground: "radial-gradient(#333,#000)",
   },
@@ -48,12 +50,12 @@ let jewelsList = {
     name: "jewel3_lr",
     label: "Queen's Ring",
     type: "ring",
-    baseThetaVR: -0.1,
+    baseThetaVR: -0.08,
     basePhiVR: -1.1,
-    baseGamaVR: -0.05,
-    baseThetaAR: -0.25, 
-    basePhiAR: 2.5,
-    baseGamaAR: 0.05,
+    baseGamaVR: -0.07,
+    baseThetaAR: 0.005,
+    basePhiAR: 2.57,
+    baseGamaAR: -0.05,
     lightBackground: "radial-gradient(#333,#000)",
   },
   jewel21_lr: {
@@ -63,9 +65,9 @@ let jewelsList = {
     baseThetaVR: -0.35,
     basePhiVR: -1.2,
     baseGamaVR: -1.5 + 1.57,
-    baseThetaAR: -0.29,
+    baseThetaAR: -0.1,
     basePhiAR: 2.6,
-    baseGamaAR: -1.6,
+    baseGamaAR: -1.5,
     lightBackground: "radial-gradient(#333,#000)",
   },
   jewel25_lr: {
@@ -76,7 +78,7 @@ let jewelsList = {
     basePhiVR: -1.4,
     baseGamaVR: -1.5 + 1.57,
     baseThetaAR: 0,
-    basePhiAR: 1.85,
+    basePhiAR: 1.715,
     baseGamaAR: -1.5,
   },
   jewel1_lr: {
@@ -98,8 +100,8 @@ let jewelsList = {
     baseThetaVR: -0.45,
     basePhiVR: -1.2,
     baseGamaVR: -1.5 + 1.57,
-    baseThetaAR: -0.7,
-    basePhiAR: 2.6,
+    baseThetaAR: -0.06,
+    basePhiAR: 2.75,
     baseGamaAR: 1.7,
   },
   pots: {
@@ -255,6 +257,8 @@ function resetMeshForAR() {
   // cameraFar = -1.5;
   cameraNear = 0.1;
   gsplatCanvas.style.transform = "none";
+  
+
 }
 
 function resetMeshForVR() {
