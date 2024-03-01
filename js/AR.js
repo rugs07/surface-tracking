@@ -524,6 +524,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     z: (points[13].z + points[14].z) / 2.0,
   };
 
+  console.log(wrist);
   let stayPoint = null;
   if (jewelType === "bangle") {
     if(handLabel === "Left"){
@@ -537,12 +538,32 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     stayPoint = {
       x: wrist.x , // Adjust the x-coordinate to move slightly to the side
       y: wrist.y + 0.02, // Adjust the y-coordinate to move slightly below
-      z: wrist.z // Keep the z-coordinate the same
+      z: wrist.z, // Keep the z-coordinate the same
     };
   }
-  } else if (jewelType === "ring") {
+  } 
+  else if (jewelType === "ring") {
     stayPoint = ringPos;
   }
+  if(horizontalRotation){
+    if(jewelType === "bangle"){
+      if(handLabel === "Left"){
+        stayPoint = {
+          x: wrist.x , // Adjust the x-coordinate to move slightly to the side
+          y: wrist.y , // Adjust the y-coordinate to move slightly below
+          z: wrist.z // Keep the z-coordinate the same
+        };
+      }
+      else if(handLabel=== "Right"){
+        stayPoint = {
+          x: wrist.x , // Adjust the x-coordinate to move slightly to the side
+          y: wrist.y, // Adjust the y-coordinate to move slightly below
+          z: wrist.z , // Keep the z-coordinate the same
+        };
+      }
+    }
+  }
+  console.log(stayPoint);
 
   let foldedHand = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
 
@@ -601,7 +622,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   if (jewelType === "bangle") {
     if (isMobile || isIOS) {
        resizeMul = window_scale * 3;
-       if(isPalmFacing) resizeMul *=0.73;
+       if(isPalmFacing) resizeMul *=0.75;
     }
     else {
       if(isPalmFacing) resizeMul = window_scale* 1.52;

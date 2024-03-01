@@ -1,5 +1,6 @@
 // import { controls } from "./gsplat";
-
+// import { OrbitControls} from "./gsplat.js";
+// const controls = new OrbitControls(camera, canvas);
 let jewelsList = {
   b4_gen3: {
     name: "b4_gen3",
@@ -246,6 +247,8 @@ const fullscreen = (mode = true, el = "body") =>
     : document.exitFullscreen();
 
 function resetMeshForAR() {
+  console.log(window.controls);
+  console.log("resetting mesh for AR");
   baseTheta = baseThetaAR;
   basePhi = basePhiAR;
   baseGama = baseGamaAR;
@@ -257,11 +260,15 @@ function resetMeshForAR() {
   // cameraFar = -1.5;
   cameraNear = 0.1;
   gsplatCanvas.style.transform = "none";
+  // window.controls.reset();
+  console.log(controls);
+  console.log(controls.alpha);
   
-
 }
 
 function resetMeshForVR() {
+  console.log(window.controls);
+  // console.log(controls.desiredAlpha);
   setJewelParams();
   baseTheta = baseThetaVR;
   basePhi = basePhiVR;

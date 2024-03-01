@@ -8,7 +8,24 @@ const progressIndicator = document.getElementById("progress-indicator");
 const renderer = new SPLAT.WebGLRenderer(canvas);
 const scene = new SPLAT.Scene();
 const camera = new SPLAT.Camera();
-const controls = new SPLAT.OrbitControls(camera, canvas);
+window.controls = new SPLAT.OrbitControls(camera, canvas);
+console.log(controls);
+
+// function resetAR() {
+//   controls.desiredAlpha = 0.5;
+//   controls.desiredBeta = 0.5;
+//   controls.desiredradius = 5;
+// }
+
+// class OrbitControls {
+//   resetToDefault() {
+//       this.desiredAlpha = 0.5;
+//       this.desiredBeta = 0.5;
+//       this.desiredRadius = 5;
+//       // Reset other properties as needed
+//   }
+// }
+
 
 // Put below in variables.js
 controls.minAngle = 10;
@@ -123,7 +140,6 @@ async function loadGsplat() {
     requestAnimationFrame(frame);
   };
   
-
   handleResize();
   window.addEventListener("resize", handleResize);
 
@@ -136,4 +152,3 @@ loadGsplat();
 resetMeshForVR();
 
 window.loadGsplat = loadGsplat;
-export {controls};
