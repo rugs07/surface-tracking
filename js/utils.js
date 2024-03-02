@@ -262,7 +262,7 @@ function resetMeshForAR() {
   gsplatCanvas.style.transform = "none";
   // window.controls.reset();
   console.log(controls);
-  console.log(controls.alpha);
+  // console.log(controls.alpha);
   
 }
 

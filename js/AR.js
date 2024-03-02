@@ -200,6 +200,11 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
     // else if (normYAngle < -90) normYAngle = -90;
     rotateY(-normYAngle);
   }
+ else if(verticalRotation){
+     if (normYAngle > 90) normYAngle = 90;
+    else if (normYAngle < -90) normYAngle = -90;
+    rotateY(-normYAngle)
+  }
   lastPinkyRef = newPinkyRef;
   lastIndexRef = newIndexRef;
 }
@@ -524,7 +529,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     z: (points[13].z + points[14].z) / 2.0,
   };
 
-  console.log(wrist);
+  // console.log(wrist);s
   let stayPoint = null;
   if (jewelType === "bangle") {
     if(handLabel === "Left"){
@@ -563,7 +568,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
       }
     }
   }
-  console.log(stayPoint);
+  // console.log(stayPoint);
 
   let foldedHand = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
 
@@ -622,7 +627,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   if (jewelType === "bangle") {
     if (isMobile || isIOS) {
        resizeMul = window_scale * 3;
-       if(isPalmFacing) resizeMul *=0.75;
+       if(isPalmFacing) resizeMul *=0.7;
     }
     else {
       if(isPalmFacing) resizeMul = window_scale* 1.52;
