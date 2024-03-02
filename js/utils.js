@@ -247,7 +247,6 @@ const fullscreen = (mode = true, el = "body") =>
     : document.exitFullscreen();
 
 function resetMeshForAR() {
-  console.log(window.controls);
   console.log("resetting mesh for AR");
   baseTheta = baseThetaAR;
   basePhi = basePhiAR;
@@ -260,10 +259,7 @@ function resetMeshForAR() {
   // cameraFar = -1.5;
   cameraNear = 0.1;
   gsplatCanvas.style.transform = "none";
-  // window.controls.reset();
   console.log(controls);
-  // console.log(controls.alpha);
-  
 }
 
 function resetMeshForVR() {

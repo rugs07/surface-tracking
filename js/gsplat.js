@@ -11,6 +11,10 @@ const camera = new SPLAT.Camera();
 window.controls = new SPLAT.OrbitControls(camera, canvas);
 console.log(controls);
 
+// resetZoom: (defaultRadius = 5) => {
+//   desiredRadius = defaultRadius;
+//   // Optionally, reset other related variables here if needed
+// }
 // function resetAR() {
 //   controls.desiredAlpha = 0.5;
 //   controls.desiredBeta = 0.5;

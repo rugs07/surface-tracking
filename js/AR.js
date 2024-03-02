@@ -571,6 +571,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   // console.log(stayPoint);
 
   let foldedHand = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
+  console.log(foldedHand);
 
   let window_scale, canX, canY;
   if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
@@ -623,9 +624,31 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   const dist = calculateWristSize(points, YRAngle, ZRAngle, foldedHand);
 
   let resizeMul;
+  // console.log(isPalmFacing);
+  function calculateScaleAdjustment(foldedHand, isPalmFacing) {
+    let scaleAdjustment = 1.0;
 
-  if (jewelType === "bangle") {
-    // My code
+    if (isPalmFacing) {
+        scaleAdjustment = 1.05;
+    }
+
+    // Adjust scale based on the folded hand angle
+    // This threshold and adjustment factor might need to be tuned based on testing
+    const foldedHandThreshold = 6; // Example threshold for considering the hand as "folded"
+    if (foldedHand>=3 && foldedHand <= foldedHandThreshold) {
+        // Increase scale to prevent the bangle from becoming too short
+        scaleAdjustment *= 1.175;
+    }
+    else if(foldedHand<3 && foldedHand > foldedHandThreshold){
+      scaleAdjustment = 1;
+    }
+    return scaleAdjustment;
+}
+
+ let scaleAdjustment = calculateScaleAdjustment(foldedHand, isPalmFacing);
+
+if (jewelType === "bangle") {
+  // My code
     // if (isMobile || isIOS) {
     //    resizeMul = window_scale * 3;
     //    if(isPalmFacing) resizeMul *=0.7;
@@ -639,22 +662,23 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     // My code
 
     //previous code
-    if (isMobile || isIOS) resizeMul = window_scale * 3.0;
-    // else resizeMul = window_scale * 2.5;
-    else resizeMul = window_scale * 1.5;
+    if (isMobile || isIOS) {
+        resizeMul = window_scale * 3.0 * scaleAdjustment;
+    } else {
+        resizeMul = window_scale * 1.5 * scaleAdjustment;
+    }
 
     if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
-
-  } else if (jewelType === "ring") {
+} else if (jewelType === "ring") {
     if (isMobile || isIOS) {
-      resizeMul = window_scale * 1.2;
-      if (isPalmFacing) resizeMul *= 0.9;
-    } else resizeMul = window_scale * 0.75;
+        resizeMul = window_scale * 1.2 * scaleAdjustment;
+        if (isPalmFacing) resizeMul *= 0.9;
+    } else resizeMul = window_scale * 0.75 * scaleAdjustment;
 
     if (selectedJewel === "floralring") {
-      resizeMul *= 0.9;
+        resizeMul *= 0.9;
     }
-  }
+}
 
   let smoothenSize = smoothResizing(dist * resizeMul);
   scaleMul = smoothenSize * 0.5;

@@ -2782,6 +2782,7 @@ class G {
       W = 0
     const h = {}
     let s = !1
+    
     F.addEventListener('objectChanged', () => {
       if (s) return
       const Q = F.rotation.toEuler()
@@ -2971,6 +2972,9 @@ class G {
       U.addEventListener('touchmove', Y),
       this.update()
   }
+//   resetZoom() {
+//     this.a = 5; // Reset desiredRadius to default value or a specific value as needed
+// }
 }
 class X {
   constructor(A, Q) {
