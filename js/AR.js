@@ -625,14 +625,23 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   let resizeMul;
 
   if (jewelType === "bangle") {
-    if (isMobile || isIOS) {
-       resizeMul = window_scale * 3;
-       if(isPalmFacing) resizeMul *=0.7;
-    }
-    else {
-      if(isPalmFacing) resizeMul = window_scale* 1.52;
-      else resizeMul = window_scale * 1.5;
-    }
+    // My code
+    // if (isMobile || isIOS) {
+    //    resizeMul = window_scale * 3;
+    //    if(isPalmFacing) resizeMul *=0.7;
+    // }
+    // else {
+    //   if(isPalmFacing) resizeMul = window_scale* 1.52;
+    //   else resizeMul = window_scale * 1.5;
+    // }
+
+    // if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
+    // My code
+
+    //previous code
+    if (isMobile || isIOS) resizeMul = window_scale * 3.0;
+    // else resizeMul = window_scale * 2.5;
+    else resizeMul = window_scale * 1.5;
 
     if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
 
