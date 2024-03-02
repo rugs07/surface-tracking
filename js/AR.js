@@ -637,7 +637,12 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     const foldedHandThreshold = 6; // Example threshold for considering the hand as "folded"
     if (foldedHand>=3 && foldedHand <= foldedHandThreshold) {
         // Increase scale to prevent the bangle from becoming too short
-        scaleAdjustment *= 1.175;
+        if(isMobile || isIOS){
+          scaleAdjustment *= 1.1;
+        }
+        else{
+        scaleAdjustment *= 1.15;
+        }
     }
     else if(foldedHand<3 && foldedHand > foldedHandThreshold){
       scaleAdjustment = 1;
