@@ -602,50 +602,57 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   //backhand open - 17, backhand closed - (0-1), fronthand open - (16-17) , fronthand closed = (4-7)
 
   let window_scale, canX, canY;
-  if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
-    // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
-    canX = stayPoint.x * windowWidth - windowWidth / 2;
-    window_scale = windowWidth / sourceImage.width;
-    canY =
-      stayPoint.y * (sourceImage.height * window_scale) -
-      (sourceImage.height * window_scale) / 2;
-  } else {
-    // Image is wider than the canvas, so we crop left & right & scale as per best fit of height
-    canY = stayPoint.y * windowHeight - windowHeight / 2;
-    window_scale = windowHeight / sourceImage.height;
-    canX =
-      stayPoint.x * (sourceImage.width * window_scale) -
-      (sourceImage.width * window_scale) / 2;
-  }
 
-  // new code
-  // const referenceWidth = 1920;
-  // const referenceHeight = 1080;
-
-  //   // Calculate current screen's aspect ratio
-  //   const currentAspectRatio = windowWidth / windowHeight;
-  //   const referenceAspectRatio = referenceWidth / referenceHeight;
-
-  //   // Normalize window_scale based on the reference size
-  //   // This aims to keep the bangle's size consistent across different devices
-  //   let normalizedScale = Math.sqrt((windowWidth * windowHeight) / (referenceWidth * referenceHeight));
-
-  //   // Adjust window_scale based on aspect ratio differences
-  //   if (currentAspectRatio > referenceAspectRatio) {
-  //      canY = stayPoint.y * windowHeight - windowHeight / 2;
-  //   window_scale = windowHeight / sourceImage.height * normalizedScale;
-  //   canX =
-  //     stayPoint.x * (sourceImage.width * window_scale) -
-  //     (sourceImage.width * window_scale) / 2;
-  //   } else {
-  //       canX = stayPoint.x * windowWidth - windowWidth / 2;
-  //   window_scale = windowWidth / sourceImage.width * normalizedScale;
+  console.log("SourceImage height : ",sourceImage.height);
+  console.log("SourceImage width : ",sourceImage.width);
+  //old code
+  // if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
+  //   // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
+  //   canX = stayPoint.x * windowWidth - windowWidth / 2;
+  //   // if(window.navigator.userAgent.includes("Firefox")){
+  //   //   window_scale = (windowWidth/sourceImage.width) * 1.75;
+  //   // }
+  //   window_scale = windowWidth / sourceImage.width;
   //   canY =
   //     stayPoint.y * (sourceImage.height * window_scale) -
   //     (sourceImage.height * window_scale) / 2;
-  //   } // working good for other devices but for windows bangle size is little bit smaller
+  // } else {
+  //   // Image is wider than the canvas, so we crop left & right & scale as per best fit of height
+  //   canY = stayPoint.y * windowHeight - windowHeight / 2;
+  //   window_scale = windowHeight / sourceImage.height;
+  //   canX =
+  //     stayPoint.x * (sourceImage.width * window_scale) -
+  //     (sourceImage.width * window_scale) / 2;
+  // }
 
+  // new code
+  const referenceWidth = 1920;
+  const referenceHeight = 1080;
 
+    // Calculate current screen's aspect ratio
+    const currentAspectRatio = windowWidth / windowHeight;
+    const referenceAspectRatio = referenceWidth / referenceHeight;
+
+    // Normalize window_scale based on the reference size
+    // This aims to keep the bangle's size consistent across different devices
+    let normalizedScale = Math.sqrt((windowWidth * windowHeight) / (referenceWidth * referenceHeight));
+
+    // Adjust window_scale based on aspect ratio differences
+    if (currentAspectRatio > referenceAspectRatio) {
+       canY = stayPoint.y * windowHeight - windowHeight / 2;
+    window_scale = windowHeight / sourceImage.height * normalizedScale;
+    canX =
+      stayPoint.x * (sourceImage.width * window_scale) -
+      (sourceImage.width * window_scale) / 2;
+    } else {
+        canX = stayPoint.x * windowWidth - windowWidth / 2;
+    window_scale = windowWidth / sourceImage.width * normalizedScale;
+    canY =
+      stayPoint.y * (sourceImage.height * window_scale) -
+      (sourceImage.height * window_scale) / 2;
+    } // working good for other devices but for windows bangle size is little bit smaller
+
+    console.log(window_scale)
 
   // console.log(sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
   // rotation & translation (getZAngleAndRotate also translates)
