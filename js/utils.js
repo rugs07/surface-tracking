@@ -271,7 +271,7 @@ function resetMeshForAR() {
 }
 
 function resetMeshForVR() {
-  console.log(window.controls);
+  console.log(controls);
   // console.log(controls.desiredAlpha);
   setJewelParams();
   baseTheta = baseThetaVR;

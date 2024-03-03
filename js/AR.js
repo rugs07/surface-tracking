@@ -92,7 +92,7 @@ function rotateY(angle) {
     (handLabel === "Right" && facingMode !== "environment") ||
     (handLabel === "Left" && facingMode === "environment")
   )
-    YRDelta = THREE.MathUtils.degToRad(90-YRAngle);
+    YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
   else YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle);
 }
 
@@ -176,7 +176,6 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
     }
   }
 
-
   if (enableSmoothing) {
     let diff = normYAngle - YRAngle;
     yArr.push(diff); // Insert new value at the end
@@ -199,11 +198,10 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
     // if (normYAngle > 90) normYAngle = 90;
     // else if (normYAngle < -90) normYAngle = -90;
     rotateY(-normYAngle);
-  }
- else if(verticalRotation){
-     if (normYAngle > 90) normYAngle = 90;
+  } else if (verticalRotation) {
+    if (normYAngle > 90) normYAngle = 90;
     else if (normYAngle < -90) normYAngle = -90;
-    rotateY(-normYAngle)
+    rotateY(-normYAngle);
   }
   lastPinkyRef = newPinkyRef;
   lastIndexRef = newIndexRef;
@@ -508,7 +506,6 @@ function smoothResizing(wristSize) {
   return wristSize;
 }
 
-
 //function to use mediapipe hand prediction data for translation and rotation
 function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   let wrist = points[0];
@@ -532,38 +529,35 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   // console.log(wrist);s
   let stayPoint = null;
   if (jewelType === "bangle") {
-    if(handLabel === "Left"){
-    stayPoint = {
-      x: wrist.x - 0.015 , // Adjust the x-coordinate to move slightly to the side
-      y: wrist.y + 0.02, // Adjust the y-coordinate to move slightly below
-      z: wrist.z // Keep the z-coordinate the same
-    };
-  }
-  else if(handLabel=== "Right"){
-    stayPoint = {
-      x: wrist.x , // Adjust the x-coordinate to move slightly to the side
-      y: wrist.y + 0.02, // Adjust the y-coordinate to move slightly below
-      z: wrist.z, // Keep the z-coordinate the same
-    };
-  }
-  } 
-  else if (jewelType === "ring") {
+    if (handLabel === "Left") {
+      stayPoint = {
+        x: wrist.x - 0.015, // Adjust the x-coordinate to move slightly to the side
+        y: wrist.y + 0.02, // Adjust the y-coordinate to move slightly below
+        z: wrist.z, // Keep the z-coordinate the same
+      };
+    } else if (handLabel === "Right") {
+      stayPoint = {
+        x: wrist.x, // Adjust the x-coordinate to move slightly to the side
+        y: wrist.y + 0.02, // Adjust the y-coordinate to move slightly below
+        z: wrist.z, // Keep the z-coordinate the same
+      };
+    }
+  } else if (jewelType === "ring") {
     stayPoint = ringPos;
   }
-  if(horizontalRotation){
-    if(jewelType === "bangle"){
-      if(handLabel === "Left"){
+  if (horizontalRotation) {
+    if (jewelType === "bangle") {
+      if (handLabel === "Left") {
         stayPoint = {
-          x: wrist.x , // Adjust the x-coordinate to move slightly to the side
-          y: wrist.y , // Adjust the y-coordinate to move slightly below
-          z: wrist.z // Keep the z-coordinate the same
-        };
-      }
-      else if(handLabel=== "Right"){
-        stayPoint = {
-          x: wrist.x , // Adjust the x-coordinate to move slightly to the side
+          x: wrist.x, // Adjust the x-coordinate to move slightly to the side
           y: wrist.y, // Adjust the y-coordinate to move slightly below
-          z: wrist.z , // Keep the z-coordinate the same
+          z: wrist.z, // Keep the z-coordinate the same
+        };
+      } else if (handLabel === "Right") {
+        stayPoint = {
+          x: wrist.x, // Adjust the x-coordinate to move slightly to the side
+          y: wrist.y, // Adjust the y-coordinate to move slightly below
+          z: wrist.z, // Keep the z-coordinate the same
         };
       }
     }
@@ -571,7 +565,8 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   // console.log(stayPoint);
 
   let foldedHand = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
-  console.log(foldedHand);
+  // console.log(foldedHand); // check foldedhand value
+  //backhand open - 17, backhand closed - (0-1), fronthand open - (16-17) , fronthand closed = (4-7)
 
   let window_scale, canX, canY;
   if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
@@ -590,10 +585,37 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
       (sourceImage.width * window_scale) / 2;
   }
 
+  // new code
+  // const referenceWidth = 1920;
+  // const referenceHeight = 1080;
+
+  //   // Calculate current screen's aspect ratio
+  //   const currentAspectRatio = windowWidth / windowHeight;
+  //   const referenceAspectRatio = referenceWidth / referenceHeight;
+
+  //   // Normalize window_scale based on the reference size
+  //   // This aims to keep the bangle's size consistent across different devices
+  //   let normalizedScale = Math.sqrt((windowWidth * windowHeight) / (referenceWidth * referenceHeight));
+
+  //   // Adjust window_scale based on aspect ratio differences
+  //   if (currentAspectRatio > referenceAspectRatio) {
+  //      canY = stayPoint.y * windowHeight - windowHeight / 2;
+  //   window_scale = windowHeight / sourceImage.height * normalizedScale;
+  //   canX =
+  //     stayPoint.x * (sourceImage.width * window_scale) -
+  //     (sourceImage.width * window_scale) / 2;
+  //   } else {
+  //       canX = stayPoint.x * windowWidth - windowWidth / 2;
+  //   window_scale = windowWidth / sourceImage.width * normalizedScale;
+  //   canY =
+  //     stayPoint.y * (sourceImage.height * window_scale) -
+  //     (sourceImage.height * window_scale) / 2;
+  //   } // working good for other devices but for windows bangle size is little bit smaller
+
+
+
   // console.log(sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
-
   // rotation & translation (getZAngleAndRotate also translates)
-
   totalTransX = canX;
   totalTransY = canY;
   if (jewelType === "bangle") {
@@ -633,53 +655,56 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     const closedHandThreshold = { backhand: 1, fronthand: 4 }; // Average for closed hand states
 
     // Adjust scale based on the folded hand angle and device type
-    if (foldedHand >= closedHandThreshold.fronthand && foldedHand <= openHandThreshold) {
-        // Hand is partially closed or in a natural state
-        if (isMobile || isIOS) {
-            scaleAdjustment = 1.05; // Slightly larger adjustment for mobile devices
-        } else {
-            scaleAdjustment = 1; // Smaller adjustment for laptops/desktops
-        }
+    if (
+      foldedHand >= closedHandThreshold.fronthand &&
+      foldedHand <= openHandThreshold
+    ) {
+      // Hand is partially closed or in a natural state
+      if (isMobile || isIOS) {
+        scaleAdjustment = 1.05; // Slightly larger adjustment for mobile devices
+      } else {
+        scaleAdjustment = 1; // Smaller adjustment for laptops/desktops
+      }
     } else if (foldedHand < closedHandThreshold.backhand) {
-        // Hand is very closed
-        scaleAdjustment = isPalmFacing ? 1.0 : 1.05; // Minor adjustment unless palm is facing, then no change
+      // Hand is very closed
+      scaleAdjustment = isPalmFacing ? 1.0 : 1.05; // Minor adjustment unless palm is facing, then no change
     }
 
     // No adjustment needed for fully open hand beyond openHandThreshold
     // as scaleAdjustment remains 1.0
 
     return scaleAdjustment;
-}
+  }
 
-//previous code
-// function calculateScaleAdjustment(foldedHand, isPalmFacing) {
-//   let scaleAdjustment = 1.0;
+  //previous code
+  // function calculateScaleAdjustment(foldedHand, isPalmFacing) {
+  //   let scaleAdjustment = 1.0;
 
-//   if (isPalmFacing) {
-//       scaleAdjustment = 1.05;
-//   }
+  //   if (isPalmFacing) {
+  //       scaleAdjustment = 1.05;
+  //   }
 
-//   // Adjust scale based on the folded hand angle
-//   // This threshold and adjustment factor might need to be tuned based on testing
-//   const foldedHandThreshold = 6; // Example threshold for considering the hand as "folded"
-//   if (foldedHand>=3 && foldedHand <= foldedHandThreshold) {
-//       // Increase scale to prevent the bangle from becoming too short
-//       if(isMobile || isIOS){
-//         scaleAdjustment *= 1.1;
-//       }
-//       else{
-//       scaleAdjustment *= 1.15;
-//       }
-//   }
-//   else if(foldedHand<3 && foldedHand > foldedHandThreshold){
-//     scaleAdjustment = 1;
-//   }
-// previous code
+  //   // Adjust scale based on the folded hand angle
+  //   // This threshold and adjustment factor might need to be tuned based on testing
+  //   const foldedHandThreshold = 6; // Example threshold for considering the hand as "folded"
+  //   if (foldedHand>=3 && foldedHand <= foldedHandThreshold) {
+  //       // Increase scale to prevent the bangle from becoming too short
+  //       if(isMobile || isIOS){
+  //         scaleAdjustment *= 1.1;
+  //       }
+  //       else{
+  //       scaleAdjustment *= 1.15;
+  //       }
+  //   }
+  //   else if(foldedHand<3 && foldedHand > foldedHandThreshold){
+  //     scaleAdjustment = 1;
+  //   }
+  // previous code
 
- let scaleAdjustment = calculateScaleAdjustment(foldedHand, isPalmFacing);
+  let scaleAdjustment = calculateScaleAdjustment(foldedHand, isPalmFacing);
 
-if (jewelType === "bangle") {
-  // My code
+  if (jewelType === "bangle") {
+    // My code
     // if (isMobile || isIOS) {
     //    resizeMul = window_scale * 3;
     //    if(isPalmFacing) resizeMul *=0.7;
@@ -694,23 +719,27 @@ if (jewelType === "bangle") {
 
     //previous code
     if (isMobile || isIOS) {
-        resizeMul = window_scale * 3.0 * scaleAdjustment;
+      resizeMul = window_scale * 3.0 * scaleAdjustment;
     } else {
-        resizeMul = window_scale * 1.5 * scaleAdjustment;
+      resizeMul = window_scale * 1.5 * scaleAdjustment;
     }
 
     if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
-} else if (jewelType === "ring") {
-  let visibilityFactor = (handLabel === "Right" && !isPalmFacing) || (handLabel === "Left" && !isPalmFacing) ? 0.9 : 1.0;
+  } else if (jewelType === "ring") {
+    let visibilityFactor =
+      (handLabel === "Right" && !isPalmFacing) ||
+      (handLabel === "Left" && isPalmFacing)
+        ? 0.9
+        : 1.0;
     if (isMobile || isIOS) {
-        resizeMul = window_scale * 1.2 * scaleAdjustment * visibilityFactor;
-        // if (isPalmFacing) resizeMul *= 0.9;
+      resizeMul = window_scale * 1.2 * scaleAdjustment * visibilityFactor;
+      // if (isPalmFacing) resizeMul *= 0.9;
     } else resizeMul = window_scale * 0.75 * scaleAdjustment * visibilityFactor;
 
     if (selectedJewel === "floralring") {
-        resizeMul *= 0.9;
+      resizeMul *= 0.9;
     }
-}
+  }
 
   let smoothenSize = smoothResizing(dist * resizeMul);
   scaleMul = smoothenSize * 0.5;
