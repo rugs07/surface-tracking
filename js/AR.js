@@ -176,34 +176,55 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
     }
   }
 
-  function calculateWeightedAverage(values, weights) {
-    let weightedSum = values.reduce((acc, val, i) => acc + val * weights[i], 0);
-    let weightSum = weights.reduce((acc, val) => acc + val, 0);
-    return weightedSum / weightSum;
-}
-
-if (enableSmoothing) {
+  // previous code
+  if (enableSmoothing) {
     let diff = normYAngle - YRAngle;
     yArr.push(diff); // Insert new value at the end
 
-    // Define weights for the weighted average calculation
-    const weights = [1, 2, 3]; // Example weights, adjust based on preference
+    if (yArr.length > 3) {
+      yArr.shift(); // Remove first index value
 
-    if (yArr.length > weights.length) {
-        yArr.shift(); // Ensure yArr doesn't grow indefinitely
+      // Check if all 5 values are either positive or negative
+      var allSameSign = yArr.every(function (value) {
+        return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
+      });
+
+      if (!allSameSign) {
+        normYAngle = YRAngle;
+      }
     }
+  }
 
-    if (yArr.length === weights.length) {
-        // Calculate weighted average difference
-        let weightedDiff = calculateWeightedAverage(yArr, weights);
 
-        // Apply the weighted difference to adjust YRAngle smoothly
-        YRAngle += weightedDiff;
+  //advanced code with new method
+//   function calculateWeightedAverage(values, weights) {
+//     let weightedSum = values.reduce((acc, val, i) => acc + val * weights[i], 0);
+//     let weightSum = weights.reduce((acc, val) => acc + val, 0);
+//     return weightedSum / weightSum;
+// }
 
-        // Clear the array to start fresh for the next set of frames
-        yArr = [];
-    }
-}
+// if (enableSmoothing) {
+//     let diff = normYAngle - YRAngle;
+//     yArr.push(diff); // Insert new value at the end
+
+//     // Define weights for the weighted average calculation
+//     const weights = [1, 2, 3]; // Example weights, adjust based on preference
+
+//     if (yArr.length > weights.length) {
+//         yArr.shift(); // Ensure yArr doesn't grow indefinitely
+//     }
+
+//     if (yArr.length === weights.length) {
+//         // Calculate weighted average difference
+//         let weightedDiff = calculateWeightedAverage(yArr, weights);
+
+//         // Apply the weighted difference to adjust YRAngle smoothly
+//         YRAngle += weightedDiff;
+
+//         // Clear the array to start fresh for the next set of frames
+//         yArr = [];
+//     }
+// }
 
 
   if (horizontalRotation) {
