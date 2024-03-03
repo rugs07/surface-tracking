@@ -1,6 +1,3 @@
-// import { controls } from "./gsplat";
-// import { OrbitControls} from "./gsplat.js";
-// const controls = new OrbitControls(camera, canvas);
 let jewelsList = {
   b4_gen3: {
     name: "b4_gen3",
@@ -154,6 +151,17 @@ let jewelsList = {
     lightBackground: "radial-gradient(#333,#000)"
   },
 };
+
+// function updateJewelParam(jewelId, param, value) {
+//   // Check if the specified jewel exists in the jewelsList
+//   if (jewelsList[jewelId]) {
+//       // Update the specified parameter for the jewel
+//       jewelsList[jewelId][param] = parseFloat(value);
+
+//       // Update the output display to reflect the new value
+//       document.getElementById(param + 'Output').textContent = value;
+//   }
+// }
 
 let showhandscreen = document.getElementById("showhandscreen");
 let outputCanvasElement = document.getElementsByClassName("output_canvas")[0];

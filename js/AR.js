@@ -630,15 +630,15 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
 
     // Define thresholds based on the observed folded hand angles
     const openHandThreshold = 16; // Average between backhand and fronthand open
-    const closedHandThreshold = { backhand: 1, fronthand: 5.5 }; // Average for closed hand states
+    const closedHandThreshold = { backhand: 1, fronthand: 4 }; // Average for closed hand states
 
     // Adjust scale based on the folded hand angle and device type
     if (foldedHand >= closedHandThreshold.fronthand && foldedHand <= openHandThreshold) {
         // Hand is partially closed or in a natural state
         if (isMobile || isIOS) {
-            scaleAdjustment = 1.1; // Slightly larger adjustment for mobile devices
+            scaleAdjustment = 1.05; // Slightly larger adjustment for mobile devices
         } else {
-            scaleAdjustment = 1.05; // Smaller adjustment for laptops/desktops
+            scaleAdjustment = 1; // Smaller adjustment for laptops/desktops
         }
     } else if (foldedHand < closedHandThreshold.backhand) {
         // Hand is very closed
@@ -651,6 +651,30 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     return scaleAdjustment;
 }
 
+//previous code
+// function calculateScaleAdjustment(foldedHand, isPalmFacing) {
+//   let scaleAdjustment = 1.0;
+
+//   if (isPalmFacing) {
+//       scaleAdjustment = 1.05;
+//   }
+
+//   // Adjust scale based on the folded hand angle
+//   // This threshold and adjustment factor might need to be tuned based on testing
+//   const foldedHandThreshold = 6; // Example threshold for considering the hand as "folded"
+//   if (foldedHand>=3 && foldedHand <= foldedHandThreshold) {
+//       // Increase scale to prevent the bangle from becoming too short
+//       if(isMobile || isIOS){
+//         scaleAdjustment *= 1.1;
+//       }
+//       else{
+//       scaleAdjustment *= 1.15;
+//       }
+//   }
+//   else if(foldedHand<3 && foldedHand > foldedHandThreshold){
+//     scaleAdjustment = 1;
+//   }
+// previous code
 
  let scaleAdjustment = calculateScaleAdjustment(foldedHand, isPalmFacing);
 
@@ -677,10 +701,11 @@ if (jewelType === "bangle") {
 
     if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
 } else if (jewelType === "ring") {
+  let visibilityFactor = (handLabel === "Right" && !isPalmFacing) || (handLabel === "Left" && !isPalmFacing) ? 0.9 : 1.0;
     if (isMobile || isIOS) {
-        resizeMul = window_scale * 1.2 * scaleAdjustment;
-        if (isPalmFacing) resizeMul *= 0.9;
-    } else resizeMul = window_scale * 0.75 * scaleAdjustment;
+        resizeMul = window_scale * 1.2 * scaleAdjustment * visibilityFactor;
+        // if (isPalmFacing) resizeMul *= 0.9;
+    } else resizeMul = window_scale * 0.75 * scaleAdjustment * visibilityFactor;
 
     if (selectedJewel === "floralring") {
         resizeMul *= 0.9;
