@@ -4,7 +4,7 @@ import * as SPLAT from "./gsplat_j4u/index.js";
 const canvas = document.getElementById("gsplatCanvas");
 const progressDialog = document.getElementById("progress-dialog");
 const progressIndicator = document.getElementById("progress-indicator");
-canvas.style.touchAction = 'none';
+// canvas.style.touchAction = 'none';
 
 
 const renderer = new SPLAT.WebGLRenderer(canvas);
