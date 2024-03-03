@@ -628,27 +628,29 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   function calculateScaleAdjustment(foldedHand, isPalmFacing) {
     let scaleAdjustment = 1.0;
 
-    if (isPalmFacing) {
-        scaleAdjustment = 1.05;
+    // Define thresholds based on the observed folded hand angles
+    const openHandThreshold = 16; // Average between backhand and fronthand open
+    const closedHandThreshold = { backhand: 1, fronthand: 5.5 }; // Average for closed hand states
+
+    // Adjust scale based on the folded hand angle and device type
+    if (foldedHand >= closedHandThreshold.fronthand && foldedHand <= openHandThreshold) {
+        // Hand is partially closed or in a natural state
+        if (isMobile || isIOS) {
+            scaleAdjustment = 1.1; // Slightly larger adjustment for mobile devices
+        } else {
+            scaleAdjustment = 1.05; // Smaller adjustment for laptops/desktops
+        }
+    } else if (foldedHand < closedHandThreshold.backhand) {
+        // Hand is very closed
+        scaleAdjustment = isPalmFacing ? 1.0 : 1.05; // Minor adjustment unless palm is facing, then no change
     }
 
-    // Adjust scale based on the folded hand angle
-    // This threshold and adjustment factor might need to be tuned based on testing
-    const foldedHandThreshold = 6; // Example threshold for considering the hand as "folded"
-    if (foldedHand>=3 && foldedHand <= foldedHandThreshold) {
-        // Increase scale to prevent the bangle from becoming too short
-        if(isMobile || isIOS){
-          scaleAdjustment *= 1.1;
-        }
-        else{
-        scaleAdjustment *= 1.15;
-        }
-    }
-    else if(foldedHand<3 && foldedHand > foldedHandThreshold){
-      scaleAdjustment = 1;
-    }
+    // No adjustment needed for fully open hand beyond openHandThreshold
+    // as scaleAdjustment remains 1.0
+
     return scaleAdjustment;
 }
+
 
  let scaleAdjustment = calculateScaleAdjustment(foldedHand, isPalmFacing);
 
