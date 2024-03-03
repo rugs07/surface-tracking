@@ -53,6 +53,7 @@ let loadPercentage = "0";
 let glamCanvas = null;
 let cameraFar = 100;
 let cameraNear = 0.1;
+let isMultiTouch = false;
 
 /**
  * The timestamp of the last frame to be rendered, used to track performance.

@@ -14,19 +14,26 @@ window.controls = new SPLAT.OrbitControls(camera, canvas);
 
 canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
 canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
 
 // Define the touch handlers
 function handleTouchStart(event) {
-    if (event.touches.length > 1) {
-        event.preventDefault(); // Prevents default action for multi-touch
-    }
+  // Update isMultiTouch based on the number of touches
+  isMultiTouch = event.touches.length > 1;
 }
 
 function handleTouchMove(event) {
-    if (event.touches.length > 1) {
-        event.preventDefault(); // Prevents default action for multi-touch
-    }
+  if (isMultiTouch) {
+      // Prevent default behavior only if a multi-touch gesture is detected
+      event.preventDefault();
+  }
 }
+
+function handleTouchEnd(event) {
+  // Reset isMultiTouch when touches end
+  isMultiTouch = event.touches.length > 1;
+}
+
 
 // console.log(controls);
 
