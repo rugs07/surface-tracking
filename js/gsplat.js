@@ -9,7 +9,24 @@ const renderer = new SPLAT.WebGLRenderer(canvas);
 const scene = new SPLAT.Scene();
 const camera = new SPLAT.Camera();
 window.controls = new SPLAT.OrbitControls(camera, canvas);
-console.log(controls);
+
+canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+// Define the touch handlers
+function handleTouchStart(event) {
+    if (event.touches.length > 1) {
+        event.preventDefault(); // Prevents default action for multi-touch
+    }
+}
+
+function handleTouchMove(event) {
+    if (event.touches.length > 1) {
+        event.preventDefault(); // Prevents default action for multi-touch
+    }
+}
+
+// console.log(controls);
 
 // resetZoom: (defaultRadius = 5) => {
 //   desiredRadius = defaultRadius;
