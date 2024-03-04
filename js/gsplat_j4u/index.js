@@ -2864,7 +2864,7 @@ class G {
             (C = 0)
         else if (2 === A.touches.length) {
           ;(i = !1),
-            (g = !1),
+            (g = !0),
             (c = (A.touches[0].clientX + A.touches[1].clientX) / 2),
             (W = (A.touches[0].clientY + A.touches[1].clientY) / 2)
           const Q = A.touches[0].clientX - A.touches[1].clientX,
