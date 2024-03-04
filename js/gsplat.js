@@ -4,40 +4,13 @@ import * as SPLAT from "./gsplat_j4u/index.js";
 const canvas = document.getElementById("gsplatCanvas");
 const progressDialog = document.getElementById("progress-dialog");
 const progressIndicator = document.getElementById("progress-indicator");
-// canvas.style.touchAction = 'none';
-
 
 const renderer = new SPLAT.WebGLRenderer(canvas);
 const scene = new SPLAT.Scene();
 const camera = new SPLAT.Camera();
 window.controls = new SPLAT.OrbitControls(camera, canvas);
-
-
-//2 finger code to stop it
-// canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
-// canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
-// canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
-
-// // Define the touch handlers
-// function handleTouchStart(event) {
-//   // Update isMultiTouch based on the number of touches
-//   isMultiTouch = event.touches.length > 1;
-// }
-
-// function handleTouchMove(event) {
-//   if (isMultiTouch) {
-//       // Prevent default behavior only if a multi-touch gesture is detected
-//       event.preventDefault();
-//   }
-// }
-
-// function handleTouchEnd(event) {
-//   // Reset isMultiTouch when touches end
-//   isMultiTouch = event.touches.length > 1;
-// }
-
-
 // console.log(controls);
+
 
 // resetZoom: (defaultRadius = 5) => {
 //   desiredRadius = defaultRadius;
