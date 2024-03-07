@@ -41,7 +41,7 @@ const smoothLandmarks = (results, onResults) => {
     frames.push(results);
   }
 
-  if (frameSets.length === 4) {
+  if (frameSets.length === 8) {
     // This loop will run 33 times to make an average of each joint
     for (let i = 0; i < 21; i++) {
       // Making an array of each joint coordinates
