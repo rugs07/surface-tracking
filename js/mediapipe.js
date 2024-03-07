@@ -276,21 +276,19 @@ function onResults(results) {
   let canvasWidth = document.documentElement.clientWidth;
   let canvasHeight = document.documentElement.clientHeight;
 
-
-  if(isMobile){
-    
-    let deviceWidthTemp = document.documentElement.clientWidth;
-    let deviceHeightTemp = document.documentElement.clientHeight;
-    // canvasWidth=Math.max(outputCanvasElement.width,outputCanvasElement.height); // phone width become maximum not working this
-    canvasWidth = Math.max(deviceHeightTemp,deviceWidthTemp);
-  };
-  
   // Calculate the aspect ratios of the canvas and the image.
   const canvasAspectRatio = canvasWidth / canvasHeight;
 
   // Set the canvas size to match the available space.
   outputCanvasElement.width = canvasWidth;
   outputCanvasElement.height = canvasHeight;
+  
+  if(isMobile){
+    let deviceWidthTemp = document.documentElement.clientWidth;
+    let deviceHeightTemp = document.documentElement.clientHeight;
+    // canvasWidth=Math.max(outputCanvasElement.width,outputCanvasElement.height); // phone width become maximum not working this
+    canvasWidth = Math.max(deviceHeightTemp,deviceWidthTemp);
+  };
   
   // Save & clear the canvas.
   canvasCtx.save();
