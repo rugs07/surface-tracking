@@ -5,7 +5,7 @@ let audioElement = document.querySelector(".audioElement");
 let AudioImage=document.querySelector(".audioImg");
 soundButton.addEventListener("click", toggleAudio);
 audioElement.style.display="none";
-let audio = true;
+let audio = false;
 
 function toggleAudio() {
     audio = !audio;
