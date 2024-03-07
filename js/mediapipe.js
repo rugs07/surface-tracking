@@ -283,6 +283,10 @@ function onResults(results) {
   outputCanvasElement.width = canvasWidth;
   outputCanvasElement.height = canvasHeight;
 
+  if(isMobile){
+  canvasWidth=Math.max(outputCanvasElement.width,outputCanvasElement.height);
+  };
+  
   // Save & clear the canvas.
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
