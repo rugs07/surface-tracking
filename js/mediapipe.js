@@ -283,13 +283,6 @@ function onResults(results) {
   outputCanvasElement.width = canvasWidth;
   outputCanvasElement.height = canvasHeight;
   
-  if(isMobile){
-    let deviceWidthTemp = document.documentElement.clientWidth;
-    let deviceHeightTemp = document.documentElement.clientHeight;
-    // canvasWidth=Math.max(outputCanvasElement.width,outputCanvasElement.height); // phone width become maximum not working this
-    canvasWidth = Math.max(deviceHeightTemp,deviceWidthTemp);
-  };
-  
   // Save & clear the canvas.
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
