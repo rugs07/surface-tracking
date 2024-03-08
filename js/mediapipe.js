@@ -34,6 +34,12 @@ const smoothFrame = [];
  * @returns {Object}
  */
 let frames = [];
+
+// function delayfunction(framelength){
+//   return new Promise(resolve => setTimeout(resolve,framelength * 125)); // delay time
+// } // function for delay
+
+
 const smoothLandmarks = (results, onResults) => {
   // Pushing frame at the end of frameSet array
   if (results.multiHandLandmarks[0]) {
@@ -74,7 +80,12 @@ const smoothLandmarks = (results, onResults) => {
     // Removing the first frame from frameSet
     frameSets.shift();
     frames.shift();
+  
   }
+  // console.log("Delay starting")
+  // await delayfunction(frameSets.length);
+  // console.log(frames);
+  // console.log("Delay done")
 
   // after the first 8 frames, we have averaged coordinates, so now updating the poseLandmarks with averaged coordinates
   if (smoothFrame.length > 0) {
@@ -84,7 +95,7 @@ const smoothLandmarks = (results, onResults) => {
   return onResults
     ? onResults(frames[frames.length - 1])
     : frames[frames.length - 1];
-};
+}; 
 
 /**************************************************************************************************************
  * ************************************************************************************************************
