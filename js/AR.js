@@ -250,7 +250,7 @@ function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
     const dz = newRefOfMid.z - wrist.z;
 
     let xAngle = Math.atan2(dy, dz);
-    xAngle = THREE.MathUtils.radToDeg(xAngle) + 90;
+    xAngle = THREE.MathUtils.radToDeg(xAngle) + 80;
 
     // Normalize the angle to the range of -180 to 180 degrees
     let normXAngle = normalizeAngle(xAngle);
