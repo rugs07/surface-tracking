@@ -2,19 +2,19 @@
 //This is for Audio 
 let soundButton = document.querySelector(".gsplatSoundEffect");
 let audioElement = document.querySelector(".audioElement");
-let AudioImage=document.querySelector(".audioImg");
+let AudioImage = document.querySelector(".audioImg");
 soundButton.addEventListener("click", toggleAudio);
-audioElement.style.display="none";
-let audio = false;
+audioElement.style.display = "none";
+let audio = true; // Set audio to true to indicate it's initially off
 
 function toggleAudio() {
-    audio = !audio;
-    if (audio) {
-        audioElement.pause();
-        AudioImage.src="./assets/audio-off-svgrepo-com.svg"
+    audio = !audio; // Toggle the audio state
+    if (!audio) { // If audio is now false (meaning it should be playing)
+        audioElement.play(); // Play the audio
+        AudioImage.src = "./assets/audio-svgrepo-com.svg"; // Change icon to 'audio on'
     } else {
-        audioElement.play();
-        AudioImage.src="./assets/audio-svgrepo-com.svg"
+        audioElement.pause(); // Pause the audio
+        AudioImage.src = "./assets/audio-off-svgrepo-com.svg"; // Change icon to 'audio off'
     }
 }
 //sun-svgrepo-com (1)
