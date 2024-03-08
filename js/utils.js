@@ -220,7 +220,6 @@ function hideJewel() {
   gRayMarchScene.children[0].material.uniforms.showingJewel.value = 0;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
-
 function showJewel() {
   showingJewel = 1;
   gRayMarchScene.children[0].material.uniforms.showingJewel.value = 1;

@@ -603,8 +603,8 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
 
   let window_scale, canX, canY;
 
-  console.log("SourceImage height : ",sourceImage.height);
-  console.log("SourceImage width : ",sourceImage.width);
+  // console.log("SourceImage height : ",sourceImage.height);
+  // console.log("SourceImage width : ",sourceImage.width);
   //old code
   if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
     // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width

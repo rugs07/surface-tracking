@@ -35,8 +35,8 @@ const smoothFrame = [];
  */
 let frames = [];
 
-// function delayfunction(framelength){
-//   return new Promise(resolve => setTimeout(resolve,framelength * 125)); // delay time
+// async function delayfunction(n){
+//   return new Promise(resolve => setTimeout(resolve,n)); // delay time
 // } // function for delay
 
 
@@ -218,11 +218,14 @@ function cropAndDrawImage(
   let bottomCrop = 0;
 
   if (canvasAspectRatio > sourceAspectRatio) {
+    // console.log("taller")
     // Image is taller than the canvas, so we crop the top and bottom.
     topCrop = (sourceHeight - sourceWidth / canvasAspectRatio) / 2;
     bottomCrop = topCrop;
     // crop = bottomCrop;
   } else {
+    // console.log("wider")
+
     // Image is wider than the canvas, so we crop left and right.
     leftCrop = (sourceWidth - sourceHeight * canvasAspectRatio) / 2;
     rightCrop = leftCrop;
@@ -286,14 +289,12 @@ function onResults(results) {
   // Get the dimensions of the available space for the canvas.
   let canvasWidth = document.documentElement.clientWidth;
   let canvasHeight = document.documentElement.clientHeight;
-
+  console.log(canvasWidth,canvasHeight)
   // Calculate the aspect ratios of the canvas and the image.
   const canvasAspectRatio = canvasWidth / canvasHeight;
-
   // Set the canvas size to match the available space.
   outputCanvasElement.width = canvasWidth;
   outputCanvasElement.height = canvasHeight;
-  
   // Save & clear the canvas.
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -307,7 +308,6 @@ function onResults(results) {
     // console.log("amenitytech_log_003 after", results.multiHandLandmarks[0][0]);
   }
   cropAndDrawImage(results, canvasAspectRatio, canvasWidth, canvasHeight);
-
   if (getStartedBtn.disabled) {
     getStartedBtn.disabled = false;
     getStartedBtn.onclick = startSession;
@@ -379,7 +379,7 @@ function onResults(results) {
       showhandscreen.style.display = "none";
       viewSpaceContainer.style.display = "inline-block";
       if (!showingJewel) {
-        showJewel();
+          showJewel();
       }
       translateRotateMesh(
         results.multiHandLandmarks[0],
@@ -395,6 +395,8 @@ function onResults(results) {
     //   frameCount = 0;
     // }
   }
+  // await delayfunction(100)
+
 
   // if (results.multiHandLandmarks && results.multiHandedness) {
   //   for (let index = 0; index < results.multiHandLandmarks.length; index++) {
