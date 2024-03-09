@@ -68,30 +68,30 @@ const smoothLandmarks = (results, onResults) => {
 
   // Adjust the smoothing based on velocity
   let smoothingLength = 8; // Default
-  if (velocity > 0.02) { // High velocity threshold
+  if (velocity > 0.04) { // High velocity threshold
     smoothingLength = 4;
-  } else if (velocity > 0.01) { // Moderate velocity threshold
+  } else if (velocity > 0.02) { // Moderate velocity threshold
     smoothingLength = 6;
   }
 
   if (frameSets.length >= smoothingLength) {
     for (let i = 0; i < 21; i++) {
-      let x = frameSets.map((a) => a[i].x)
-      let y = frameSets.map((a) => a[i].y)
-      let z = frameSets.map((a) => a[i].z)
-      let visibility = frameSets.map((a) => a[i].visibility)
+      let x = frameSets.map((a) => a[i].x).slice(-smoothingLength);
+      let y = frameSets.map((a) => a[i].y).slice(-smoothingLength);
+      let z = frameSets.map((a) => a[i].z).slice(-smoothingLength);
+      let visibility = frameSets.map((a) => a[i].visibility).slice(-smoothingLength);
 
-      // Sorting the array into ascending order
-      x = x.sort((a, b) => a - b);
-      y = y.sort((a, b) => a - b);
-      z = z.sort((a, b) => a - b);
-      visibility = visibility.sort((a, b) => a - b);
+      // // Sorting the array into ascending order
+      // x = x.sort((a, b) => a - b);
+      // y = y.sort((a, b) => a - b);
+      // z = z.sort((a, b) => a - b);
+      // visibility = visibility.sort((a, b) => a - b);
 
-      // Dropping 2 min and 2 max coordinates
-      x = x.slice(2, 6);
-      y = y.slice(2, 6);
-      z = z.slice(2, 6);
-      visibility = visibility.slice(2, 6);
+      // // Dropping 2 min and 2 max coordinates
+      // x = x.slice(2, 6);
+      // y = y.slice(2, 6);
+      // z = z.slice(2, 6);
+      // visibility = visibility.slice(2, 6);
 
       // Calculate average without sorting and slicing for dropped values
       smoothFrame[i] = {
