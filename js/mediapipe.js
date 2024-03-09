@@ -39,36 +39,49 @@ let frames = [];
 //   return new Promise(resolve => setTimeout(resolve,n)); // delay time
 // } // function for delay
 
+const referenceLandmarkIndex = 0; // Adjust this index as needed
 
+// Function to calculate velocity between two frames
+const calculateVelocity = (currentFrame, previousFrame) => {
+  if (!previousFrame) return 0;
+  const dx = currentFrame.x - previousFrame.x;
+  const dy = currentFrame.y - previousFrame.y;
+  const dz = currentFrame.z - previousFrame.z;
+  return Math.sqrt(dx * dx + dy * dy + dz * dz);
+};
+
+//dynamic smoothning logic
 const smoothLandmarks = (results, onResults) => {
-  // Pushing frame at the end of frameSet array
   if (results.multiHandLandmarks[0]) {
     frameSets.push(results.multiHandLandmarks[0]);
     frames.push(results);
   }
 
-  if (frameSets.length === 8) {
-    // This loop will run 33 times to make an average of each joint
+  // Calculate velocity based on the movement of the reference landmark
+  let velocity = 0;
+  if (frameSets.length > 1) {
+    const currentFrame = frameSets[frameSets.length - 1][referenceLandmarkIndex];
+    const previousFrame = frameSets[frameSets.length - 2][referenceLandmarkIndex];
+    velocity = calculateVelocity(currentFrame, previousFrame);
+    console.log(velocity);
+  }
+
+  // Adjust the smoothing based on velocity
+  let smoothingLength = 8; // Default
+  if (velocity > 0.03) { // High velocity threshold
+    smoothingLength = 4;
+  } else if (velocity > 0.015) { // Moderate velocity threshold
+    smoothingLength = 6;
+  }
+
+  if (frameSets.length >= smoothingLength) {
     for (let i = 0; i < 21; i++) {
-      // Making an array of each joint coordinates
-      let x = frameSets.map((a) => a[i].x);
-      let y = frameSets.map((a) => a[i].y);
-      let z = frameSets.map((a) => a[i].z);
-      let visibility = frameSets.map((a) => a[i].visibility);
+      let x = frameSets.map((a) => a[i].x).slice(-smoothingLength);
+      let y = frameSets.map((a) => a[i].y).slice(-smoothingLength);
+      let z = frameSets.map((a) => a[i].z).slice(-smoothingLength);
+      let visibility = frameSets.map((a) => a[i].visibility).slice(-smoothingLength);
 
-      // Sorting the array into ascending order
-      x = x.sort((a, b) => a - b);
-      y = y.sort((a, b) => a - b);
-      z = z.sort((a, b) => a - b);
-      visibility = visibility.sort((a, b) => a - b);
-
-      // Dropping 2 min and 2 max coordinates
-      x = x.slice(2, 6);
-      y = y.slice(2, 6);
-      z = z.slice(2, 6);
-      visibility = visibility.slice(2, 6);
-
-      // Making the average of the 4 remaining coordinates
+      // Calculate average without sorting and slicing for dropped values
       smoothFrame[i] = {
         x: x.reduce((a, b) => a + b, 0) / x.length,
         y: y.reduce((a, b) => a + b, 0) / y.length,
@@ -77,26 +90,19 @@ const smoothLandmarks = (results, onResults) => {
       };
     }
 
-    // Removing the first frame from frameSet
-    frameSets.shift();
-    frames.shift();
-  
+    // Adjust frameSets length based on the current velocity smoothing requirement
+    while (frameSets.length > smoothingLength) {
+      frameSets.shift();
+      frames.shift();
+    }
   }
-  // console.log("Delay starting")
-  // await delayfunction(frameSets.length);
-  // console.log(frames);
-  // console.log("Delay done")
 
-  // after the first 8 frames, we have averaged coordinates, so now updating the poseLandmarks with averaged coordinates
   if (smoothFrame.length > 0) {
     results.multiHandLandmarks[0] = smoothFrame;
   }
 
-  return onResults
-    ? onResults(frames[frames.length - 1])
-    : frames[frames.length - 1];
-}; 
-
+  return onResults ? onResults(frames[frames.length - 1]) : frames[frames.length - 1];
+};
 /**************************************************************************************************************
  * ************************************************************************************************************
  */
@@ -289,7 +295,7 @@ function onResults(results) {
   // Get the dimensions of the available space for the canvas.
   let canvasWidth = document.documentElement.clientWidth;
   let canvasHeight = document.documentElement.clientHeight;
-  console.log(canvasWidth,canvasHeight)
+  // console.log(canvasWidth,canvasHeight)
   // Calculate the aspect ratios of the canvas and the image.
   const canvasAspectRatio = canvasWidth / canvasHeight;
   // Set the canvas size to match the available space.
@@ -307,6 +313,7 @@ function onResults(results) {
     results = smoothLandmarks(results);
     // console.log("amenitytech_log_003 after", results.multiHandLandmarks[0][0]);
   }
+  
   cropAndDrawImage(results, canvasAspectRatio, canvasWidth, canvasHeight);
   if (getStartedBtn.disabled) {
     getStartedBtn.disabled = false;
@@ -314,7 +321,8 @@ function onResults(results) {
     getStartedBtn.classList.remove("disabledbtn");
     getStartedBtn.innerText = "Get Started";
   }
-
+  
+  // await delayfunction(0.1);
   if (isVideo) {
     // const currentTime = window.performance.now();
     const handDetected =

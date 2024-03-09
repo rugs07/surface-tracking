@@ -83,6 +83,34 @@ async function loadGsplat() {
     renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
+
+  //new code
+  // const handleResize = () => {
+  //   let canvasWidth = window.innerWidth;
+  //   let canvasHeight = window.innerHeight;
+  
+  //   // Adjust the canvas size
+  //   outputCanvasElement.width = canvasWidth;
+  //   outputCanvasElement.height = canvasHeight;
+  //   canvas.width = canvasWidth;
+  //   canvas.height = canvasHeight;
+  
+  //   // Recalculate and adjust aspect ratio
+  //   const aspectRatio = canvasWidth / canvasHeight;
+  
+  //   // Depending on your AR rendering logic, adjust the bangle rendering here
+  //   // This might involve recalculating positions, scales, etc., based on the new aspect ratio
+  //   // Ensure the full bangle is visible and properly oriented
+
+  //   // If using WebGL or similar for rendering, you might need to adjust the camera or viewport
+  //   renderer.setSize(canvasWidth, canvasHeight);
+  //   // Additionally, adjust the camera aspect ratio if your rendering relies on it
+  //   // camera.aspect = aspectRatio;
+  //   // camera.updateProjectionMatrix();
+  
+  //   // Redraw or update the scene with the new dimensions and aspect ratio
+  // };
+  
   // baseTheta = 0.25;
   rawBaseTheta = baseTheta;
   // basePhi = 2.5;
