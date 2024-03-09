@@ -76,10 +76,22 @@ const smoothLandmarks = (results, onResults) => {
 
   if (frameSets.length >= smoothingLength) {
     for (let i = 0; i < 21; i++) {
-      let x = frameSets.map((a) => a[i].x).slice(-smoothingLength);
-      let y = frameSets.map((a) => a[i].y).slice(-smoothingLength);
-      let z = frameSets.map((a) => a[i].z).slice(-smoothingLength);
-      let visibility = frameSets.map((a) => a[i].visibility).slice(-smoothingLength);
+      let x = frameSets.map((a) => a[i].x)
+      let y = frameSets.map((a) => a[i].y)
+      let z = frameSets.map((a) => a[i].z)
+      let visibility = frameSets.map((a) => a[i].visibility)
+
+      // Sorting the array into ascending order
+      x = x.sort((a, b) => a - b);
+      y = y.sort((a, b) => a - b);
+      z = z.sort((a, b) => a - b);
+      visibility = visibility.sort((a, b) => a - b);
+
+      // Dropping 2 min and 2 max coordinates
+      x = x.slice(2, 6);
+      y = y.slice(2, 6);
+      z = z.slice(2, 6);
+      visibility = visibility.slice(2, 6);
 
       // Calculate average without sorting and slicing for dropped values
       smoothFrame[i] = {
