@@ -68,9 +68,9 @@ const smoothLandmarks = (results, onResults) => {
 
   // Adjust the smoothing based on velocity
   let smoothingLength = 8; // Default
-  if (velocity > 0.03) { // High velocity threshold
+  if (velocity > 0.02) { // High velocity threshold
     smoothingLength = 4;
-  } else if (velocity > 0.015) { // Moderate velocity threshold
+  } else if (velocity > 0.01) { // Moderate velocity threshold
     smoothingLength = 6;
   }
 
