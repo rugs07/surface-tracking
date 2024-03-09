@@ -40,81 +40,149 @@ let frames = [];
 // } // function for delay
 
 const referenceLandmarkIndex = 0; // Adjust this index as needed
+//old code
+// // Function to calculate velocity between two frames
+// const calculateVelocity = (currentFrame, previousFrame) => {
+//   if (!previousFrame) return 0;
+//   const dx = currentFrame.x - previousFrame.x;
+//   const dy = currentFrame.y - previousFrame.y;
+//   const dz = currentFrame.z - previousFrame.z;
+//   return Math.sqrt(dx * dx + dy * dy + dz * dz);
+// };
 
-// Function to calculate velocity between two frames
+// //dynamic smoothning logic
+// const smoothLandmarks = (results, onResults) => {
+//   if (results.multiHandLandmarks[0]) {
+//     frameSets.push(results.multiHandLandmarks[0]);
+//     frames.push(results);
+//   }
+
+//   // Calculate velocity based on the movement of the reference landmark
+//   let velocity = 0;
+//   if (frameSets.length > 1) {
+//     const currentFrame = frameSets[frameSets.length - 1][referenceLandmarkIndex];
+//     const previousFrame = frameSets[frameSets.length - 2][referenceLandmarkIndex];
+//     velocity = calculateVelocity(currentFrame, previousFrame);
+//     console.log(velocity);
+//   }
+
+//   // Adjust the smoothing based on velocity
+//   let smoothingLength = 8; // Default
+//   if (velocity > 0.04) { // High velocity threshold
+//     smoothingLength = 4;
+//   } else if (velocity > 0.015) { // Moderate velocity threshold
+//     smoothingLength = 6;
+//   }
+
+//   if (frameSets.length >= smoothingLength) {
+//     for (let i = 0; i < 21; i++) {
+//       let x = frameSets.map((a) => a[i].x).slice(-smoothingLength);
+//       let y = frameSets.map((a) => a[i].y).slice(-smoothingLength);
+//       let z = frameSets.map((a) => a[i].z).slice(-smoothingLength);
+//       let visibility = frameSets.map((a) => a[i].visibility).slice(-smoothingLength);
+
+//       // // Sorting the array into ascending order
+//       // x = x.sort((a, b) => a - b);
+//       // y = y.sort((a, b) => a - b);
+//       // z = z.sort((a, b) => a - b);
+//       // visibility = visibility.sort((a, b) => a - b);
+
+//       // // Dropping 2 min and 2 max coordinates
+//       // x = x.slice(2, 6);
+//       // y = y.slice(2, 6);
+//       // z = z.slice(2, 6);
+//       // visibility = visibility.slice(2, 6);
+
+//       // Calculate average without sorting and slicing for dropped values
+//       smoothFrame[i] = {
+//         x: x.reduce((a, b) => a + b, 0) / x.length,
+//         y: y.reduce((a, b) => a + b, 0) / y.length,
+//         z: z.reduce((a, b) => a + b, 0) / z.length,
+//         visibility: visibility.reduce((a, b) => a + b, 0) / visibility.length,
+//       };
+//     }
+
+//     // Adjust frameSets length based on the current velocity smoothing requirement
+//     while (frameSets.length > smoothingLength) {
+//       frameSets.shift();
+//       frames.shift();
+//     }
+//   }
+
+//   if (smoothFrame.length > 0) {
+//     results.multiHandLandmarks[0] = smoothFrame;
+//   }
+
+//   return onResults ? onResults(frames[frames.length - 1]) : frames[frames.length - 1];
+// };
+//old code
+
+
+
+//new code
+//pushing for testing
+let prevFrame = null; // Store the previous frame for velocity calculation
+
+// Adjust this function to calculate the overall velocity of the hand movement
 const calculateVelocity = (currentFrame, previousFrame) => {
   if (!previousFrame) return 0;
-  const dx = currentFrame.x - previousFrame.x;
-  const dy = currentFrame.y - previousFrame.y;
-  const dz = currentFrame.z - previousFrame.z;
-  return Math.sqrt(dx * dx + dy * dy + dz * dz);
+  let totalVelocity = 0;
+  for (let i = 0; i < currentFrame.length; i++) {
+    const dx = currentFrame[i].x - previousFrame[i].x;
+    const dy = currentFrame[i].y - previousFrame[i].y;
+    const dz = currentFrame[i].z - previousFrame[i].z;
+    totalVelocity += Math.sqrt(dx * dx + dy * dy + dz * dz);
+  }
+  return totalVelocity / currentFrame.length; // Average velocity across all points
 };
 
-//dynamic smoothning logic
+// Update your existing smoothLandmarks function
 const smoothLandmarks = (results, onResults) => {
   if (results.multiHandLandmarks[0]) {
     frameSets.push(results.multiHandLandmarks[0]);
     frames.push(results);
   }
 
-  // Calculate velocity based on the movement of the reference landmark
   let velocity = 0;
-  if (frameSets.length > 1) {
-    const currentFrame = frameSets[frameSets.length - 1][referenceLandmarkIndex];
-    const previousFrame = frameSets[frameSets.length - 2][referenceLandmarkIndex];
-    velocity = calculateVelocity(currentFrame, previousFrame);
-    console.log(velocity);
+  if (frameSets.length > 1 && prevFrame) {
+    velocity = calculateVelocity(frameSets[frameSets.length - 1], prevFrame);
+    console.log('Velocity:', velocity);
   }
 
   // Adjust the smoothing based on velocity
-  let smoothingLength = 8; // Default
-  if (velocity > 0.04) { // High velocity threshold
-    smoothingLength = 4;
-  } else if (velocity > 0.015) { // Moderate velocity threshold
-    smoothingLength = 6;
+  let effectiveLength = frameSets.length;
+  if (velocity > 0.04) { // High velocity
+    effectiveLength = Math.min(effectiveLength, 4);
+  } else if (velocity > 0.015) { // Moderate velocity
+    effectiveLength = Math.min(effectiveLength, 6);
   }
 
-  if (frameSets.length >= smoothingLength) {
-    for (let i = 0; i < 21; i++) {
-      let x = frameSets.map((a) => a[i].x).slice(-smoothingLength);
-      let y = frameSets.map((a) => a[i].y).slice(-smoothingLength);
-      let z = frameSets.map((a) => a[i].z).slice(-smoothingLength);
-      let visibility = frameSets.map((a) => a[i].visibility).slice(-smoothingLength);
+  if (effectiveLength >= 4) { // Ensure there's enough data for smoothing
+    const smoothedLandmarks = frameSets.slice(-effectiveLength).reduce((acc, frame, _, src) => {
+      return frame.map((point, index) => {
+        acc[index] = acc[index] || { x: 0, y: 0, z: 0, visibility: 0 };
+        acc[index].x += point.x / src.length;
+        acc[index].y += point.y / src.length;
+        acc[index].z += point.z / src.length;
+        acc[index].visibility += point.visibility / src.length;
+        return acc[index];
+      });
+    }, []);
 
-      // // Sorting the array into ascending order
-      // x = x.sort((a, b) => a - b);
-      // y = y.sort((a, b) => a - b);
-      // z = z.sort((a, b) => a - b);
-      // visibility = visibility.sort((a, b) => a - b);
-
-      // // Dropping 2 min and 2 max coordinates
-      // x = x.slice(2, 6);
-      // y = y.slice(2, 6);
-      // z = z.slice(2, 6);
-      // visibility = visibility.slice(2, 6);
-
-      // Calculate average without sorting and slicing for dropped values
-      smoothFrame[i] = {
-        x: x.reduce((a, b) => a + b, 0) / x.length,
-        y: y.reduce((a, b) => a + b, 0) / y.length,
-        z: z.reduce((a, b) => a + b, 0) / z.length,
-        visibility: visibility.reduce((a, b) => a + b, 0) / visibility.length,
-      };
-    }
-
-    // Adjust frameSets length based on the current velocity smoothing requirement
-    while (frameSets.length > smoothingLength) {
-      frameSets.shift();
-      frames.shift();
-    }
+    // Apply the smoothed landmarks to the most recent result
+    results.multiHandLandmarks[0] = smoothedLandmarks;
+    prevFrame = frameSets[frameSets.length - 1]; // Update prevFrame for the next iteration
   }
 
-  if (smoothFrame.length > 0) {
-    results.multiHandLandmarks[0] = smoothFrame;
+  // Keep the buffer size managed
+  if (frameSets.length > 8) {
+    frameSets.shift();
+    frames.shift();
   }
 
   return onResults ? onResults(frames[frames.length - 1]) : frames[frames.length - 1];
 };
+// new code
 /**************************************************************************************************************
  * ************************************************************************************************************
  */
