@@ -151,11 +151,29 @@ const smoothLandmarks = (results, onResults) => {
 
   // Adjust the smoothing based on velocity
   let effectiveLength = frameSets.length;
+  if(isMobile){
+    if (velocity > 0.04) { // High velocity
+      effectiveLength = Math.min(effectiveLength, 4);
+    } else if (velocity > 0.015) { // Moderate velocity
+      effectiveLength = Math.min(effectiveLength, 6);
+    }
+    else if(velocity <= 0.0045){
+      effectiveLength = 10;
+    }
+    else{
+      effectiveLength = 8;
+    }
+  }
+  else{
   if (velocity > 0.04) { // High velocity
     effectiveLength = Math.min(effectiveLength, 4);
   } else if (velocity > 0.015) { // Moderate velocity
     effectiveLength = Math.min(effectiveLength, 6);
   }
+  else if(velocity <= 0.015){
+    effectiveLength = 8;
+  }
+}
 
   if (effectiveLength >= 4) { // Ensure there's enough data for smoothing
     const smoothedLandmarks = frameSets.slice(-effectiveLength).reduce((acc, frame, _, src) => {
@@ -175,7 +193,7 @@ const smoothLandmarks = (results, onResults) => {
   }
 
   // Keep the buffer size managed
-  if (frameSets.length > 8) {
+  if (frameSets.length >= 8) {
     frameSets.shift();
     frames.shift();
   }
