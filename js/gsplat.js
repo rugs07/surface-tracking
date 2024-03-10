@@ -79,9 +79,35 @@ async function loadGsplat() {
   // scene.removeObject(splat);
   // scene.addObject(splat);
 
+  // const handleResize = () => {
+  //   renderer.setSize(window.innerWidth, window.innerHeight);
+  // };
+
   const handleResize = () => {
+    // let canvasWidth = window.innerWidth;
+    // let canvasHeight = window.innerHeight;
+  
+    // if(isVideo){
+    //   if (window.innerWidth < 440) {
+    //     // Define fixed dimensions for the canvas here
+    //     // These dimensions could be based on the initial load or a preferred fixed size
+    //     // Example: fixed size for portrait orientation
+    //     canvasWidth = 440*2; // Set this based on your requirements
+    //     canvasHeight = 760; // Adjust height accordingly
+        
+    //   }
+    // }
+    //   // Remove any applied styles when not in fixed size mode
+    // // Set the canvas size
+    // outputCanvasElement.width = canvasWidth;
+    // outputCanvasElement.height = canvasHeight;
+  
+    // Update WebGL renderer size
     renderer.setSize(window.innerWidth, window.innerHeight);
-  };
+  }
+
+  console.log(window.innerWidth);
+  console.log(window.innerHeight);
 
 
   //new code
@@ -175,6 +201,7 @@ async function loadGsplat() {
   
   handleResize();
   window.addEventListener("resize", handleResize);
+  window.addEventListener('orientationchange', handleResize);
 
   requestAnimationFrame(frame);
 }

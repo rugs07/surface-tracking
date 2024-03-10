@@ -18,7 +18,7 @@ const desktopViewAR = document.getElementById("desktop-viewar");
 const mobileViewAR = document.getElementById("mobile-viewar");
 
 let width = document.documentElement.clientWidth,
-  height = document.documentElement.clientHeight;
+ height = document.documentElement.clientHeight;
 
 width = height;
 /**************************************************************************************************************
@@ -152,6 +152,7 @@ const smoothLandmarks = (results, onResults) => {
   // Adjust the smoothing based on velocity
   let effectiveLength = frameSets.length;
   if(isMobile){
+    if(jewelType === "bangle"){
     if (velocity > 0.04) { // High velocity
       effectiveLength = Math.min(effectiveLength, 4);
     } else if (velocity > 0.015) { // Moderate velocity
@@ -161,7 +162,18 @@ const smoothLandmarks = (results, onResults) => {
       effectiveLength = 10;
     }
     else{
-      effectiveLength = 8;
+      effectiveLength = 8; 
+      }
+    }
+    else{// for other than bangles
+      if (velocity > 0.04) { // High velocity
+        effectiveLength = Math.min(effectiveLength, 4);
+      } else if (velocity > 0.015) { // Moderate velocity
+        effectiveLength = Math.min(effectiveLength, 6);
+      }
+      else if(velocity <= 0.015){
+        effectiveLength = 8;
+      }
     }
   }
   else{
@@ -399,6 +411,12 @@ function onResults(results) {
   // Set the canvas size to match the available space.
   outputCanvasElement.width = canvasWidth;
   outputCanvasElement.height = canvasHeight;
+
+  console.log(outputCanvasElement.width)
+  console.log(outputCanvasElement.height)
+  console.log(canvasWidth);
+  console.log(canvasHeight);
+  console.log(canvasCtx);
   // Save & clear the canvas.
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -629,7 +647,7 @@ const setupCamera = () => {
     width: width,
     height: height,
   });
-
+  
   // clearing previous mediastream if exist before new start
   camera?.g?.getTracks().forEach((track) => {
     track.stop();
@@ -641,8 +659,10 @@ async function toggleVideo() {
   if (!isVideo) {
     updateNote.innerText = "Starting video...";
     outputCanvasElement.style.display = "block";
+    console.log("Setting up camera");
 
     setupCamera();
+    console.log(controlsElement); // This should show the element, not null
 
     if (!isIOS) camera?.start();
     else {
