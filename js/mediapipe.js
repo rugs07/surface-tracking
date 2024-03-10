@@ -301,10 +301,11 @@ const controlsElement = document.getElementsByClassName("control-panel")[0];
 
 // We'll add this to our control panel later, but we'll save it here so we can
 // call tick() each time the graph runs.
-let fpsControl = null;
+let fpsControl;
 if (isIOS) {
   fpsControl = new controls.FPS();
 }
+console.log(fpsControl);
 let frameCount = 0;
 function cropAndDrawImage(
   results,
@@ -401,7 +402,7 @@ function onResults(results) {
   //   return; // Skip rendering for the first 4 frames
   // }
   // Update the frame rate.
-  if (isIOS) fpsControl.tick();
+  if (isIOS && fpsControl) fpsControl.tick();
   // Get the dimensions of the available space for the canvas.
   let canvasWidth = document.documentElement.clientWidth;
   let canvasHeight = document.documentElement.clientHeight;
@@ -564,18 +565,18 @@ hands.setOptions({
 hands.onResults(onResults);
 
 const startCamera = () => {
-  // Present a control panel through which the user can manipulate the solution
-  // options.
-  new controls.ControlPanel(controlsElement).add([
-    // new controls.StaticText({ title: "MediaPipe Hands" }),
-    fpsControl,
-    // new controls.Toggle({ title: "Selfie Mode", field: "selfieMode" }),
-    new controls.SourcePicker({
-      onFrame: async (input, size) => {
-        await hands.send({ image: input });
-      },
-    }),
-    // new controls.Slider({
+  // Dynamically construct the array of controls based on conditions
+  let controlOptions = [
+      // Conditionally add fpsControl if it's initialized
+      ...(fpsControl ? [fpsControl] : []),
+      new controls.SourcePicker({
+          onFrame: async (input, size) => {
+              await hands.send({ image: input });
+          },
+      }),
+      // Add other controls here as needed
+  ];
+  // new controls.Slider({
     //   title: "Max Number of Hands",
     //   field: "maxNumHands",
     //   range: [1, 4],
@@ -598,8 +599,11 @@ const startCamera = () => {
     //   range: [0, 1],
     //   step: 0.01,
     // }),
-  ]);
+
+  // Present a control panel through which the user can manipulate the solution options
+  new controls.ControlPanel(controlsElement).add(controlOptions);
 };
+
 
 const switchFacingMode = () => {
   if (facingMode === "environment") {
