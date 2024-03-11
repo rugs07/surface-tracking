@@ -267,6 +267,7 @@ function resetMeshForAR() {
   cameraNear = 0.1;
   gsplatCanvas.style.transform = "none";
   console.log(controls);
+  renderer.setSize(window.innerWidth*2, window.innerHeight);
 }
 
 function resetMeshForVR() {
@@ -283,6 +284,7 @@ function resetMeshForVR() {
   ZRAngle = 0;
   cameraFar = 100;
   cameraNear = 0.1;
+  renderer.setSize(window.innerWidth, window.innerHeight);
   resetGlamCanvas();
 }
 

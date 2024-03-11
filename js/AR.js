@@ -110,15 +110,18 @@ function normalizeAngle(angle) {
   return angle;
 }
 
-function rotateZ(angle, canX, canY) {
-  // cameraControls.setFocalOffset(canX, canY, 0.0, false);
 
+function rotateZ(angle, canX, canY) {
+  let canP = 0;
+  // cameraControls.setFocalOffset(canX, canY, 0.0, false);
+  let adjustmentFactor = window.innerWidth * 0.5;
   let transform = null;
   if (!translation) transform = "rotateZ(" + angle + "deg)";
   else
+    canP = canX - adjustmentFactor;
     transform =
       "translate3d(" +
-      canX +
+      canP +
       "px, " +
       canY +
       "px, " +
@@ -127,15 +130,19 @@ function rotateZ(angle, canX, canY) {
       angle +
       "deg)";
 
+
   gsplatCanvas.style.transform = transform;
 
   ZRAngle = angle;
   XTrans = canX;
   YTrans = canY;
+  console.log(canX);
+  console.log(canY);
+  console.log(canP);
+  // if(canX === canP) console.log("set")
 
   // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
 }
-
 function convertRingTransRange(value) {
   const oldMin = -20;
   const oldMax = 20;

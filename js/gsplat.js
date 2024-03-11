@@ -5,7 +5,7 @@ const canvas = document.getElementById("gsplatCanvas");
 const progressDialog = document.getElementById("progress-dialog");
 const progressIndicator = document.getElementById("progress-indicator");
 
-const renderer = new SPLAT.WebGLRenderer(canvas);
+window.renderer = new SPLAT.WebGLRenderer(canvas);
 const scene = new SPLAT.Scene();
 const camera = new SPLAT.Camera();
 window.controls = new SPLAT.OrbitControls(camera, canvas);
@@ -86,7 +86,6 @@ async function loadGsplat() {
   const handleResize = () => {
     // let canvasWidth = window.innerWidth;
     // let canvasHeight = window.innerHeight;
-  
     // if(isVideo){
     //   if (window.innerWidth < 440) {
     //     // Define fixed dimensions for the canvas here
@@ -103,7 +102,10 @@ async function loadGsplat() {
     // outputCanvasElement.height = canvasHeight;
   
     // Update WebGL renderer size
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    if(isVideo){
+      renderer.setSize(window.innerWidth*2, window.innerHeight);
+    }
+    console.log(window.innerWidth);
   }
 
   console.log(window.innerWidth);
@@ -205,6 +207,8 @@ async function loadGsplat() {
 
   requestAnimationFrame(frame);
 }
+
+renderer.setSize(window.innerWidth, window.innerHeight);
 
 window.THREE.Cache.clear();
 checkDevice();

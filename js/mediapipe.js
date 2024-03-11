@@ -158,21 +158,16 @@ const smoothLandmarks = (results, onResults) => {
     } else if (velocity > 0.015) { // Moderate velocity
       effectiveLength = Math.min(effectiveLength, 6);
     }
-    else if(velocity <= 0.0045){
-      effectiveLength = 10;
-    }
-    else{
-      effectiveLength = 8; 
+    else if(velocity <= 0.015){
+      effectiveLength = Math.min(effectiveLength, 8);
       }
     }
     else{// for other than bangles
-      if (velocity > 0.04) { // High velocity
+      if (velocity > 0.015) { // Moderate velocity
         effectiveLength = Math.min(effectiveLength, 4);
-      } else if (velocity > 0.015) { // Moderate velocity
-        effectiveLength = Math.min(effectiveLength, 6);
       }
       else if(velocity <= 0.015){
-        effectiveLength = 8;
+        effectiveLength = 6;
       }
     }
   }
