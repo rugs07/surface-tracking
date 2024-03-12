@@ -411,7 +411,7 @@ function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
 
     // normZAngle *= 0.85;
     if (isMobile || isIOS) {
-      if (jewelType === "bangle") normZAngle *= 0.85;
+      if (jewelType === "bangle") normZAngle *=1;
     }
     console.log(normZAngle);
 
