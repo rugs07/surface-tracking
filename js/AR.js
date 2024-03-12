@@ -566,38 +566,42 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
 
   // console.log(wrist);s
   let stayPoint = null;
+  if(verticalRotation){
   if (jewelType === "bangle") {
     if (handLabel === "Left") {
       stayPoint = {
-        x: wrist.x - 0.015, // Adjust the x-coordinate to move slightly to the side
-        y: wrist.y + 0.02, // Adjust the y-coordinate to move slightly below
+        x: wrist.x - 0.01, // Adjust the x-coordinate to move slightly to the side
+        y: wrist.y + 0.025, // Adjust the y-coordinate to move slightly below
         z: wrist.z, // Keep the z-coordinate the same
       };
     } else if (handLabel === "Right") {
       stayPoint = {
         x: wrist.x, // Adjust the x-coordinate to move slightly to the side
-        y: wrist.y + 0.02, // Adjust the y-coordinate to move slightly below
+        y: wrist.y + 0.025, // Adjust the y-coordinate to move slightly below
         z: wrist.z, // Keep the z-coordinate the same
       };
     }
   } else if (jewelType === "ring") {
     stayPoint = ringPos;
   }
+}
   if (horizontalRotation) {
     if (jewelType === "bangle") {
       if (handLabel === "Left") {
         stayPoint = {
-          x: wrist.x, // Adjust the x-coordinate to move slightly to the side
+          x: wrist.x - 0.01, // Adjust the x-coordinate to move slightly to the side
           y: wrist.y, // Adjust the y-coordinate to move slightly below
           z: wrist.z, // Keep the z-coordinate the same
         };
       } else if (handLabel === "Right") {
         stayPoint = {
-          x: wrist.x, // Adjust the x-coordinate to move slightly to the side
+          x: wrist.x + 0.01, // Adjust the x-coordinate to move slightly to the side
           y: wrist.y, // Adjust the y-coordinate to move slightly below
           z: wrist.z, // Keep the z-coordinate the same
         };
       }
+    } else if (jewelType === "ring") {
+      stayPoint = ringPos;
     }
   }
   // console.log(stayPoint);
