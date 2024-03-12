@@ -408,11 +408,11 @@ function onResults(results) {
   outputCanvasElement.width = canvasWidth;
   outputCanvasElement.height = canvasHeight;
 
-  console.log(outputCanvasElement.width)
-  console.log(outputCanvasElement.height)
-  console.log(canvasWidth);
-  console.log(canvasHeight);
-  console.log(canvasCtx);
+  // console.log(outputCanvasElement.width)
+  // console.log(outputCanvasElement.height)
+  // console.log(canvasWidth);
+  // console.log(canvasHeight);
+  // console.log(canvasCtx);
   // Save & clear the canvas.
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);

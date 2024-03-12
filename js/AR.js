@@ -794,8 +794,12 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   // const baseNear = jewelType === "bangle" ? -4.35 : -4.3;
   // cameraNear = baseNear + scaleMul * 0.01;
 
-  const baseFar = jewelType === "bangle" ? 5 : 5.1;
+  const baseFar = jewelType === "bangle" ? 5 : 5.048;
   cameraFar = baseFar + scaleMul * 0.01;
+
+  // console.log(cameraFar);
+  // console.log(cameraNear);
+  // console.log(scaleMul)
 
   // cameraControls.zoomTo(smoothenSize, false);
 
