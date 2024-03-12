@@ -110,26 +110,23 @@ function normalizeAngle(angle) {
   return angle;
 }
 
-
 function rotateZ(angle, canX, canY) {
   let canP = 0;
   // cameraControls.setFocalOffset(canX, canY, 0.0, false);
   let adjustmentFactor = window.innerWidth * 0.5;
   let transform = null;
   if (!translation) transform = "rotateZ(" + angle + "deg)";
-  else
-    canP = canX - adjustmentFactor;
-    transform =
-      "translate3d(" +
-      canP +
-      "px, " +
-      canY +
-      "px, " +
-      0 +
-      "px) rotateZ(" +
-      angle +
-      "deg)";
-
+  else canP = canX - adjustmentFactor;
+  transform =
+    "translate3d(" +
+    canP +
+    "px, " +
+    canY +
+    "px, " +
+    0 +
+    "px) rotateZ(" +
+    angle +
+    "deg)";
 
   gsplatCanvas.style.transform = transform;
 
@@ -169,7 +166,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
 
   let normYAngle = normalizeAngle(yAngle);
 
-  if (jewelType === "ring" && enableRingTransparency) {
+  if (jewelType === "ring" && enableRingTransparency ) {
     let transparencyZone = [-20, 20];
     if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
       ringTrans = 1.3;
@@ -181,6 +178,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
       else normYAngle -= 0.5;
       // resetRingTrans();
     }
+    console.log(normYAngle)
   }
 
   // previous code
@@ -202,37 +200,35 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
     }
   }
 
-
   //advanced code with new method
-//   function calculateWeightedAverage(values, weights) {
-//     let weightedSum = values.reduce((acc, val, i) => acc + val * weights[i], 0);
-//     let weightSum = weights.reduce((acc, val) => acc + val, 0);
-//     return weightedSum / weightSum;
-// }
+  //   function calculateWeightedAverage(values, weights) {
+  //     let weightedSum = values.reduce((acc, val, i) => acc + val * weights[i], 0);
+  //     let weightSum = weights.reduce((acc, val) => acc + val, 0);
+  //     return weightedSum / weightSum;
+  // }
 
-// if (enableSmoothing) {
-//     let diff = normYAngle - YRAngle;
-//     yArr.push(diff); // Insert new value at the end
+  // if (enableSmoothing) {
+  //     let diff = normYAngle - YRAngle;
+  //     yArr.push(diff); // Insert new value at the end
 
-//     // Define weights for the weighted average calculation
-//     const weights = [1, 2, 3]; // Example weights, adjust based on preference
+  //     // Define weights for the weighted average calculation
+  //     const weights = [1, 2, 3]; // Example weights, adjust based on preference
 
-//     if (yArr.length > weights.length) {
-//         yArr.shift(); // Ensure yArr doesn't grow indefinitely
-//     }
+  //     if (yArr.length > weights.length) {
+  //         yArr.shift(); // Ensure yArr doesn't grow indefinitely
+  //     }
 
-//     if (yArr.length === weights.length) {
-//         // Calculate weighted average difference
-//         let weightedDiff = calculateWeightedAverage(yArr, weights);
+  //     if (yArr.length === weights.length) {
+  //         // Calculate weighted average difference
+  //         let weightedDiff = calculateWeightedAverage(yArr, weights);
 
-//         // Apply the weighted difference to adjust YRAngle smoothly
-//         YRAngle += weightedDiff;
+  //         // Apply the weighted difference to adjust YRAngle smoothly
+  //         YRAngle += weightedDiff;
 
-//         // Clear the array to start fresh for the next set of frames
-//         yArr = [];
-//     }
-// }
-
+  //         // Clear the array to start fresh for the next set of frames
+  //         yArr = [];
+  //     }
+  // }
 
   if (horizontalRotation) {
     // if (normYAngle > 90) normYAngle = 90;
@@ -378,6 +374,7 @@ function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
           normZAngle = ZRAngle;
         }
       }
+      console.log(normZAngle);
 
       const XDiff = XTrans - canX;
 
@@ -414,8 +411,9 @@ function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
 
     // normZAngle *= 0.85;
     if (isMobile || isIOS) {
-      if (jewelType === "bangle") normZAngle *= 0.9;
+      if (jewelType === "bangle") normZAngle *= 0.85;
     }
+    console.log(normZAngle);
 
     rotateZ(normZAngle, canX, canY);
   }
@@ -659,7 +657,7 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   //     (sourceImage.height * window_scale) / 2;
   //   } // working good for other devices but for windows bangle size is little bit smaller
 
-    console.log(window_scale)
+  console.log(window_scale);
 
   // console.log(sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
   // rotation & translation (getZAngleAndRotate also translates)
@@ -791,7 +789,8 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   let smoothenSize = smoothResizing(dist * resizeMul);
   scaleMul = smoothenSize * 0.5;
 
-  // const baseNear = jewelType === "bangle" ? -4.35 : -4.3;
+  // Use if required
+  // const baseNear = jewelType === "bangle" ? 0.093 : 0.0975;
   // cameraNear = baseNear + scaleMul * 0.01;
 
   const baseFar = jewelType === "bangle" ? 5 : 5.018;
