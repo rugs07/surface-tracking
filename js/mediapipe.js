@@ -146,7 +146,6 @@ const smoothLandmarks = (results, onResults) => {
   let velocity = 0;
   if (frameSets.length > 1 && prevFrame) {
     velocity = calculateVelocity(frameSets[frameSets.length - 1], prevFrame);
-    console.log('Velocity:', velocity);
   }
 
   // Adjust the smoothing based on velocity
@@ -300,7 +299,6 @@ let fpsControl;
 if (isIOS) {
   fpsControl = new controls.FPS();
 }
-console.log(fpsControl);
 let frameCount = 0;
 function cropAndDrawImage(
   results,
@@ -330,13 +328,11 @@ function cropAndDrawImage(
   let bottomCrop = 0;
 
   if (canvasAspectRatio > sourceAspectRatio) {
-    // console.log("taller")
     // Image is taller than the canvas, so we crop the top and bottom.
     topCrop = (sourceHeight - sourceWidth / canvasAspectRatio) / 2;
     bottomCrop = topCrop;
     // crop = bottomCrop;
   } else {
-    // console.log("wider")
 
     // Image is wider than the canvas, so we crop left and right.
     leftCrop = (sourceWidth - sourceHeight * canvasAspectRatio) / 2;
@@ -661,7 +657,6 @@ async function toggleVideo() {
     console.log("Setting up camera");
 
     setupCamera();
-    console.log(controlsElement); // This should show the element, not null
 
     if (!isIOS) camera?.start();
     else {

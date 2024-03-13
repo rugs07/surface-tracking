@@ -133,18 +133,13 @@ function rotateZ(angle, canX, canY) {
   ZRAngle = angle;
   XTrans = canX;
   YTrans = canY;
-  console.log(canX);
-  console.log(canY);
-  console.log(canP);
-  // if(canX === canP) console.log("set")
-
   // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
 }
 function convertRingTransRange(value) {
-  const oldMin = -30;
-  const oldMax = 30;
-  const newMin = 30;
-  const newMax = 70;
+  const oldMin = -25;
+  const oldMax = 25;
+  const newMin = 25;
+  const newMax = 65;
   return ((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin;
 }
 
@@ -168,10 +163,12 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
 
   const baseNear = 0.0975;
   if (jewelType === "ring" && enableRingTransparency) {
-    let transparencyZone = [-30, 30];
+    let transparencyZone = [-25, 25];
     if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
       cameraNear = 4.9525;
-      console.log(cameraNear);
+      // if(selectedJewel === "jewel26_lr"){
+      //   cameraNear = 4.92
+      // } // for flowerring
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
     } else {
@@ -179,7 +176,6 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
       // else normYAngle -= 0.5;
       cameraNear = baseNear + scaleMul * 0.01;
     }
-    console.log(normYAngle);
   }
 
   // previous code
@@ -375,8 +371,6 @@ function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
           normZAngle = ZRAngle;
         }
       }
-      console.log(normZAngle);
-
       const XDiff = XTrans - canX;
 
       xtArr.push(XDiff); // Insert new value at the end
@@ -414,7 +408,6 @@ function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
     if (isMobile || isIOS) {
       if (jewelType === "bangle") normZAngle *=1;
     }
-    console.log(normZAngle);
 
     rotateZ(normZAngle, canX, canY);
   }

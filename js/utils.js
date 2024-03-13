@@ -266,12 +266,10 @@ function resetMeshForAR() {
   // cameraFar = -1.5;
   // cameraNear = 0.1;
   gsplatCanvas.style.transform = "none";
-  console.log(controls);
   renderer.setSize(window.innerWidth*2, window.innerHeight);
 }
 
 function resetMeshForVR() {
-  console.log(controls);
   // console.log(controls.desiredAlpha);
   setJewelParams();
   baseTheta = baseThetaVR;
@@ -690,7 +688,6 @@ function copyText(text) {
 
 function addError(errorObj, index, arr) {
   const { error, msg1, msg2, instructions, imgsrc, tryagain } = errorObj;
-  console.log(error);
   const sideErrors = document.getElementById("side-errors");
 
   let errorBox = document.createElement("div");
@@ -895,8 +892,6 @@ function isRendererUnsupported() {
 
     unMaskedInfo.renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
     unMaskedInfo.vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
-
-    console.log(unMaskedInfo);
 
     if (
       !(isMobile || isIOS) &&
