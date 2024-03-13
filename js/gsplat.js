@@ -189,6 +189,7 @@ async function loadGsplat() {
     // To cut the back part of jewel
     camera._data._near = cameraNear;
     camera._data._far = cameraFar;
+    console.log(cameraFar,cameraNear);
     
     camera._data._updateProjectionMatrix();
     // console.log((camera._data.far * camera._data.near) / (camera._data.far - camera._data.near));

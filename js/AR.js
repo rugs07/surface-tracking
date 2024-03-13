@@ -141,10 +141,10 @@ function rotateZ(angle, canX, canY) {
   // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
 }
 function convertRingTransRange(value) {
-  const oldMin = -20;
-  const oldMax = 20;
-  const newMin = 20;
-  const newMax = 60;
+  const oldMin = -30;
+  const oldMax = 30;
+  const newMin = 30;
+  const newMax = 70;
   return ((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin;
 }
 
@@ -166,20 +166,20 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
 
   let normYAngle = normalizeAngle(yAngle);
 
+  const baseNear = 0.0975;
   if (jewelType === "ring" && enableRingTransparency) {
-    let transparencyZone = [-20, 20];
+    let transparencyZone = [-30, 30];
     if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
-      ringTrans = 1.35;
-      // applyRingTrans();
+      cameraNear = 4.950;
+      console.log(cameraNear);
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
     } else {
-      if (normYAngle > 0) normYAngle += 0.5;
-      else normYAngle -= 0.5;
-      // resetRingTrans();
+      // if (normYAngle > 0) normYAngle += 0.5;
+      // else normYAngle -= 0.5;
+      cameraNear = baseNear + scaleMul * 0.01;
     }
-    console.log(normYAngle)
-    console.log(gRayMarchScene);
+    console.log(normYAngle);
   }
 
   // previous code
@@ -801,6 +801,11 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
   // const baseNear = jewelType === "bangle" ? 0.093 : 0.0975;
   // cameraNear = baseNear + scaleMul * 0.01;
 
+  if(jewelType === "bangle"){
+    const baseNear = 0.093;
+    cameraNear = baseNear + scaleMul * 0.01;
+  }
+  
   const baseFar = jewelType === "bangle" ? 5 : 5.018;
   cameraFar = baseFar + scaleMul * 0.01;
 
