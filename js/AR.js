@@ -170,7 +170,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
   if (jewelType === "ring" && enableRingTransparency) {
     let transparencyZone = [-30, 30];
     if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
-      cameraNear = 4.950;
+      cameraNear = 4.9525;
       console.log(cameraNear);
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
