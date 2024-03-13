@@ -770,10 +770,8 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     if (isMobile || isIOS) {
       resizeMul = window_scale * 3.0 * scaleAdjustment;
       if(handLabel === "Right" && isPalmFacing || handLabel=== "Left" && !isPalmFacing){
-        resizeMul*= 0.9;
+        resizeMul*= 0.925;
       }
-      console.log(resizeMul);
-      console.log(isPalmFacing);
     } else {
       resizeMul = window_scale * 1.5 * scaleAdjustment;
     }
