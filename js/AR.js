@@ -144,7 +144,7 @@ function convertRingTransRange(value) {
   const oldMin = -20;
   const oldMax = 20;
   const newMin = 20;
-  const newMax = 55;
+  const newMax = 60;
   return ((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin;
 }
 
@@ -166,10 +166,10 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
 
   let normYAngle = normalizeAngle(yAngle);
 
-  if (jewelType === "ring" && enableRingTransparency ) {
+  if (jewelType === "ring" && enableRingTransparency) {
     let transparencyZone = [-20, 20];
     if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
-      ringTrans = 1.3;
+      ringTrans = 1.35;
       // applyRingTrans();
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
@@ -179,6 +179,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
       // resetRingTrans();
     }
     console.log(normYAngle)
+    console.log(gRayMarchScene);
   }
 
   // previous code

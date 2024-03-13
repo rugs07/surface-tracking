@@ -200,6 +200,13 @@ function applyRingTrans() {
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
 
+// function applyringTransGsplat(transVar){
+//   if(splat && splat.material){
+//     splat.material.uniforms.transVar.value = transVar;
+//   }
+//   renderer.render(scene,camera);
+// }
+
 function applyTransVar() {
   gRayMarchScene.children[0].material.uniforms.transVar.value = transVar;
   gRenderer.render(gRayMarchScene, gBlitCamera);
