@@ -76,7 +76,7 @@ let jewelsList = {
     basePhiVR: -1.4,
     baseGamaVR: -1.5 + 1.57,
     baseThetaAR: -0.05,
-    basePhiAR: 1.715,
+    basePhiAR: 1.995,
     baseGamaAR: -1.5,
   },
   jewel1_lr: {
@@ -99,7 +99,7 @@ let jewelsList = {
     basePhiVR: -1.2,
     baseGamaVR: -1.5 + 1.57,
     baseThetaAR: -0.06,
-    basePhiAR: 2.75,
+    basePhiAR: 2.55,
     baseGamaAR: 1.7,
   },
   pots: {
