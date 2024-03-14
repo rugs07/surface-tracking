@@ -204,10 +204,23 @@ async function loadGsplat() {
 }
 
 renderer.setSize(window.innerWidth, window.innerHeight);
+function handleClick() {
+  camera.position = new SPLAT.Vector3(2.1036774620197414, -2.397127693021015, -3.8507557646703496);
+  //  { x: -0.2397127693021015, y: -0.2397127693021015, z: -0.06120871905481365, w: 0.9387912809451863 }
+  camera.rotation = new SPLAT.Quaternion(-0.2397127693021015, -0.2397127693021015, -0.06120871905481365, 0.9387912809451863);
+}
+
+// _position
+// : 
+// A {x: 2.1036774620197414, y: -2.397127693021015, z: -3.8507557646703496}
+// _rotation
+// : 
+// Q {x: -0.2397127693021015, y: -0.2397127693021015, z: -0.06120871905481365, w: 0.9387912809451863}
 
 window.THREE.Cache.clear();
 checkDevice();
 loadGsplat();
 resetMeshForVR();
+window.addEventListener('click', handleClick)
 
 window.loadGsplat = loadGsplat;
