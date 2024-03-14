@@ -170,7 +170,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
       if(selectedJewel === "jewel26_lr"){
         cameraNear = 4.925;
         if(isMobile || isIOS){
-          cameraNear+= phonethreshold;
+          cameraNear+= phonethreshold + 0.005;;
         }
       } // for flowerring
       if(selectedJewel === "jewel1_lr"){
@@ -182,13 +182,13 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
       if(selectedJewel === "jewel25_lr"){
         cameraNear = 4.915;
         if(isMobile || isIOS){
-          cameraNear+= phonethreshold;
+          cameraNear+= phonethreshold + 0.015;
         }
       } // for red eye ring
       if(selectedJewel === "jewel21_lr"){
         cameraNear = 4.935;
         if(isMobile || isIOS){
-          cameraNear+= phonethreshold;
+          cameraNear+= phonethreshold + 0.01;
         }
       } // for Heart ring
       if(selectedJewel === "jewel3_lr"){
@@ -197,6 +197,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
           cameraNear+= phonethreshold;
         }
       } // for Queen's Ring
+      
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
     } else {
