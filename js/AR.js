@@ -197,7 +197,7 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
           cameraNear+= phonethreshold;
         }
       } // for Queen's Ring
-      
+
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
     } else {
@@ -279,7 +279,7 @@ function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
     const dz = newRefOfMid.z - wrist.z;
 
     let xAngle = Math.atan2(dy, dz);
-    xAngle = THREE.MathUtils.radToDeg(xAngle) + 82;
+    xAngle = THREE.MathUtils.radToDeg(xAngle) + 65;
 
     // Normalize the angle to the range of -180 to 180 degrees
     let normXAngle = normalizeAngle(xAngle);
@@ -589,18 +589,19 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
 
   // console.log(wrist);s
   let stayPoint = null;
+  console.log(wrist, "before setting");
   if(verticalRotation){
   if (jewelType === "bangle") {
     if (handLabel === "Left") {
       stayPoint = {
         x: wrist.x - 0.01, // Adjust the x-coordinate to move slightly to the side
-        y: wrist.y + 0.025, // Adjust the y-coordinate to move slightly below
+        y: wrist.y + 0.035, // Adjust the y-coordinate to move slightly below
         z: wrist.z, // Keep the z-coordinate the same
       };
     } else if (handLabel === "Right") {
       stayPoint = {
         x: wrist.x, // Adjust the x-coordinate to move slightly to the side
-        y: wrist.y + 0.025, // Adjust the y-coordinate to move slightly below
+        y: wrist.y + 0.035, // Adjust the y-coordinate to move slightly below
         z: wrist.z, // Keep the z-coordinate the same
       };
     }
@@ -612,13 +613,13 @@ function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     if (jewelType === "bangle") {
       if (handLabel === "Left") {
         stayPoint = {
-          x: wrist.x - 0.01, // Adjust the x-coordinate to move slightly to the side
+          x: wrist.x - 0.015, // Adjust the x-coordinate to move slightly to the side
           y: wrist.y, // Adjust the y-coordinate to move slightly below
           z: wrist.z, // Keep the z-coordinate the same
         };
       } else if (handLabel === "Right") {
         stayPoint = {
-          x: wrist.x + 0.01, // Adjust the x-coordinate to move slightly to the side
+          x: wrist.x + 0.015, // Adjust the x-coordinate to move slightly to the side
           y: wrist.y, // Adjust the y-coordinate to move slightly below
           z: wrist.z, // Keep the z-coordinate the same
         };
