@@ -166,9 +166,21 @@ function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
     let transparencyZone = [-25, 25];
     if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
       cameraNear = 4.9525;
-      // if(selectedJewel === "jewel26_lr"){
-      //   cameraNear = 4.92
-      // } // for flowerring
+      if(selectedJewel === "jewel26_lr"){
+        cameraNear = 4.925
+      } // for flowerring
+      if(selectedJewel === "jewel1_lr"){
+        cameraNear = 4.93
+      } // for sunny ring
+      if(selectedJewel === "jewel25_lr"){
+        cameraNear = 4.915
+      } // for red eye ring
+      if(selectedJewel === "jewel21_lr"){
+        cameraNear = 4.935
+      } // for Heart ring
+      if(selectedJewel === "jewel3_lr"){
+        cameraNear = 4.94
+      } // for Queen's Ring
       // converting angles to new range -20 to 20 -> 20 - 60 for transparency
       normYAngle = convertRingTransRange(normYAngle);
     } else {
