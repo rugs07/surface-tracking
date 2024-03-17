@@ -617,7 +617,10 @@ function mobileAndTabletCheck() {
         a.substr(0, 4)
       )
     )
-      check = true;
+    check = true;
+    else if(navigator.userAgent.includes("OnePlus")){
+      check  = true;
+    }
   })(navigator.userAgent || navigator.vendor || window.opera);
   return check;
 }
