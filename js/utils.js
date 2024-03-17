@@ -389,7 +389,7 @@ function showManual() {
 
   retrycamscreen.style.display = "none";
   usermanual.style.display = "flex";
-
+  resetCamera();
   toggleVideo();
 }
 

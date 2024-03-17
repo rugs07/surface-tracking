@@ -317,7 +317,7 @@ function cropAndDrawImage(
   //    Crop_len = (w - (h*canvasAspectRatio)) /2
   //    Cropped image width [0+crop_len, w-crop_len]
 
-  console.log(results);
+  // console.log(results);
   const sourceImage = results.image;
   const sourceWidth = sourceImage.width;
   const sourceHeight = sourceImage.height;

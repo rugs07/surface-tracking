@@ -203,6 +203,12 @@ async function loadGsplat() {
   requestAnimationFrame(frame);
 }
 
+function resetCamera() {
+  camera.position = new SPLAT.Vector3(2.1036774620197414, -2.397127693021015, -3.8507557646703496);
+  //  { x: -0.2397127693021015, y: -0.2397127693021015, z: -0.06120871905481365, w: 0.9387912809451863 }
+  camera.rotation = new SPLAT.Quaternion(-0.2397127693021015, -0.2397127693021015, -0.06120871905481365, 0.9387912809451863);
+}
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 window.THREE.Cache.clear();
 checkDevice();
@@ -226,3 +232,4 @@ resetMeshForVR();
 //working for laptop
 
 window.loadGsplat = loadGsplat;
+window.resetCamera = resetCamera;
