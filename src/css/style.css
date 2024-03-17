@@ -65,9 +65,9 @@ body {
   letter-spacing: 0.25px;
   word-spacing: 5px;
   line-height: 1.75rem;
-  background-color: #eee;
+  background-color: rgb(0, 0, 0);
 }
-
+/* 
 button {
   outline: none;
   min-width: 150px;
@@ -86,7 +86,13 @@ button {
   box-shadow: 0px 12px 36px rgba(0, 0, 0, 0.1);
   font-weight: 400;
   letter-spacing: 1.5px;
+  margin-top: 40px;
   /* word-spacing: 5px; */
+/* }  */
+
+span{
+  color: white;
+  margin-top: 44px;
 }
 
 button:hover {
@@ -316,10 +322,11 @@ button:hover {
   width: 200px;
   height: auto;
   padding-top: 10px;
+  filter: invert(100%);
 }
 
 .sitename {
-  background: var(--gradientLogo);
+  /* background: var(--gradientLogo); */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   padding: 12px 24px;
@@ -825,11 +832,15 @@ button:hover {
     word-spacing: 3px;
   }
 
-  button {
+  /* button {
     margin: 0px;
     padding: 10px 14px;
     font-size: 12px;
     min-width: 100px;
+  } */
+
+  span{
+      margin-top: 20px;
   }
 
   .primarybtn {
@@ -918,6 +929,7 @@ button:hover {
   .sitename {
     font-size: 18px;
     padding: 5px 15px;
+    color: white;
   }
 
   .viewer-container,
