@@ -350,12 +350,24 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   margin: -3px auto;
   cursor: pointer;
 }
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5px;
+}
 
 .logoimg {
-  width: 200px;
+  width: 130px;
   height: auto;
-  padding-top: 10px;
-  filter: invert(100%);
+  filter: drop-shadow(2px 4px 6px rgba(255, 255, 255, 0.5));
+}
+
+.logo-text {
+  font-size: 45px; 
+  margin-left: -5px; /* Creates space between the logo and text */
+  color: #fff; /* Adjust color as needed */
+  margin-bottom: 40px;
 }
 
 .sitename {
@@ -968,8 +980,23 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     margin-top: 3px;
   }
 
+  .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+  }
+  
   .logoimg {
-    width: 150px;
+    width: 100px;
+    height: auto;
+  }
+  
+  .logo-text {
+    font-size: 25px; 
+    margin-left: -10px; /* Creates space between the logo and text */
+    color: #fff; /* Adjust color as needed */
+    margin-bottom: 2px;
   }
 
   .sitename {
