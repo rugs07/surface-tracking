@@ -2,10 +2,7 @@ import React from 'react'
 import '../../css/style.css'
 
 const Home = () => {
-
-
     return (
-
         <div>
             <div className="main-container">
                 <div className="title-container" onClick="gotoHome()">
@@ -13,7 +10,7 @@ const Home = () => {
                         <img src="../../assets/logo1.png" className="logoimg" />
                         <span className="logo-text">Jar4u</span>
                     </div>
-                    <h2 className="sitename">3D Experiences that Uplift Sales</h2>
+                    <h2 className="sitename">Click to view Interactive version </h2>
                 </div>
                 <div className="side-errors" id="side-errors"></div>
                 {/* <div className="j4container" id="j4container">
