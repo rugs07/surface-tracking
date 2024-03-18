@@ -92,7 +92,7 @@ button {
 
 span{
   color: white;
-  margin-top: 44px;
+  margin-top: 52px;
 }
 
 button:hover {
@@ -177,7 +177,7 @@ button:hover {
 .glassmorph{
   z-index: 1000;
   margin: 2rem;
-background: rgba( 255, 255, 255, 0.5 );
+background: rgba( 255, 255, 255, 0 );
 box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
 backdrop-filter: blur( 20px );
 -webkit-backdrop-filter: blur( 20px );
@@ -185,14 +185,15 @@ border-radius: 10px;
 border: 1px solid rgba( 255, 255, 255, 0.18 );
 /* transition: 3ms ease-in-out 3ms;  */
  transition: transform ease 0.3s, box-shadow ease 0.2s;
+ width: 250px;
+ height: 250px;
 }
 
 .glassmorph:hover{
-  
-  box-shadow: 10px 10px 5px 0px rgba(71, 71, 71, 0.75);
--webkit-box-shadow: 10px 10px 5px 0px rgba(71, 71, 71, 0.75);
--moz-box-shadow: 10px 10px 5px 0px rgba(71, 71, 71, 0.75);
-
+  transform: translateY(-5px); /* Subtle lift */
+  box-shadow: 0 15px 45px rgba(255, 255, 255, 0.25); /* Lighter and more pronounced shadow */
+  background: rgba(3, 0, 0, 0.2); /* Slightly more opaque to enhance the hover effect */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Brighter border to match
 }
 
 .home-jewel {
@@ -872,7 +873,8 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   } */
 
   span{
-      margin-top: 20px;
+      margin-top: 10px;
+      font-size: 14px;
   }
 
   .primarybtn {
@@ -906,6 +908,14 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
    
    
   }
+  .glassmorph{
+    width: 45vw;
+    height: 50vw;
+    margin: 8px;
+    margin-left: 0;
+    padding: 5px;
+    overflow: hidden;
+  }
 
   .trytitle {
     font-size: 16px;
@@ -922,7 +932,8 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 
   .jewelimg {
     height: auto;
-    top: 15px;
+    align-items: center;
+    justify-content: center;
   }
 
   .selectarea {
