@@ -170,7 +170,7 @@ let arToogleContainer = document.getElementById("ar-toggle-container");
 let desktopViewAR = document.getElementById("desktop-viewar");
 let mobileViewAR = document.getElementById("mobile-viewar");
 
-function setJewellery(value) {
+export const setJewellery = (value) => {
   facingMode = sessionStorage.getItem("facingMode") || "user";
   sessionStorage.setItem("facingMode", facingMode);
   sessionStorage.setItem("selectedJewel", value || "b4_gen3");
@@ -178,7 +178,7 @@ function setJewellery(value) {
   location.href = "/tryon.html";
 }
 
-function changeJewellery(newJewel) {
+export const  changeJewellery = (newJewel) => {
   const lastJewel = sessionStorage.getItem("selectedJewel");
   if (lastJewel === newJewel) return;
 
@@ -191,7 +191,7 @@ function changeJewellery(newJewel) {
   resetMeshForAR();
 }
 
-function gotoHome() {
+export const gotoHome = () => {
   location.href = `https://www.jar4u.com/`;
 }
 
@@ -215,22 +215,22 @@ function resetRingTrans() {
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
 
-function hideJewel() {
+export const hideJewel = () => {
   showingJewel = 0;
   gRayMarchScene.children[0].material.uniforms.showingJewel.value = 0;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
-function showJewel() {
+export const showJewel = () => {
   showingJewel = 1;
   gRayMarchScene.children[0].material.uniforms.showingJewel.value = 1;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
 
-function hideHandScreen() {
+export const hideHandScreen = () => {
   showhandscreen.style.display = "none";
 }
 
-function setJewelParams() {
+export const setJewelParams = () => {
   selectedJewel = sessionStorage.getItem("selectedJewel") || "jewel7_lr";
   const selectedJewelDetails = jewelsList[selectedJewel];
 
@@ -253,7 +253,7 @@ const fullscreen = (mode = true, el = "body") =>
     ? document.querySelector(el).requestFullscreen()
     : document.exitFullscreen();
 
-function resetMeshForAR() {
+  export const resetMeshForAR = () => {
   console.log("resetting mesh for AR");
   baseTheta = baseThetaAR;
   basePhi = basePhiAR;
@@ -269,7 +269,7 @@ function resetMeshForAR() {
   renderer.setSize(window.innerWidth*2, window.innerHeight);
 }
 
-function resetMeshForVR() {
+export const resetMeshForVR = () => {
   // console.log(controls.desiredAlpha);
   setJewelParams();
   baseTheta = baseThetaVR;
@@ -286,7 +286,7 @@ function resetMeshForVR() {
   resetGlamCanvas();
 }
 
-function resetGlamCanvas() {
+export const resetGlamCanvas = () => {
   let deviceWidth = document.documentElement.clientWidth;
   let deviceHeight = document.documentElement.clientHeight;
   let canvasWidth = Math.max(deviceWidth, deviceHeight);
@@ -321,7 +321,7 @@ function resetGlamCanvas() {
   }
 }
 
-function resetMesh() {
+export const resetMesh = () => {
   scaleMul = 0.5;
   const gsplatCanvas = document.getElementById("gsplatCanvas");
   ZRAngle = 0;
@@ -329,7 +329,7 @@ function resetMesh() {
   hideJewel();
 }
 
-function mapRange(value, oldMin, oldMax, newMin, newMax) {
+export const mapRange = (value, oldMin, oldMax, newMin, newMax) => {
   const oldRange = oldMax - oldMin;
   const newRange = newMax - newMin;
   const newValue = ((value - oldMin) * newRange) / oldRange + newMin;
@@ -337,7 +337,7 @@ function mapRange(value, oldMin, oldMax, newMin, newMax) {
 }
 
 // Define a function to calculate the angle at the middle point of three 3D landmarks
-function calculateAngleAtMiddle(landmark1, landmark2, landmark3) {
+export const calculateAngleAtMiddle = (landmark1, landmark2, landmark3) => {
   // Calculate vectors between landmarks
   const vector1 = [
     landmark1.x - landmark2.x,
@@ -374,11 +374,11 @@ function calculateAngleAtMiddle(landmark1, landmark2, landmark3) {
   return Math.trunc(angleInDegrees / 10);
 }
 
-function startSession() {
+export const startSession = () => {
   usermanual.style.display = "none";
 }
 
-function showManual() {
+export const showManual = () => {
   let step1img = document.getElementById("step1img");
   let step2img = document.getElementById("step2img");
   let step3img = document.getElementById("step3img");
@@ -397,7 +397,7 @@ function showManual() {
  * Reports an error to the user by populating the error div with text.
  * @param {string} text
  */
-function error(text) {
+export const error = (text) => {
   const e = document.getElementById("error");
   e.textContent = text;
   e.style.display = "block";
@@ -409,7 +409,7 @@ function error(text) {
  * @param {string} classname
  * @return {!HTMLElement}
  */
-function create(what, classname) {
+export const create = (what, classname) => {
   const e = /** @type {!HTMLElement} */ (document.createElement(what));
   if (classname) {
     e.className = classname;
@@ -423,7 +423,7 @@ function create(what, classname) {
  * @param {number} min
  * @return {string}
  */
-function digits(i, min) {
+export const digits = (i, min) => {
   const s = "" + i;
   if (s.length >= min) {
     return s;
@@ -438,7 +438,7 @@ function digits(i, min) {
  * @param {number} width
  * @param {number} height
  */
-function setDims(element, width, height) {
+export const setDims = (element, width, height) => {
   element.style.width = width.toFixed(2) + "px";
   element.style.height = height.toFixed(2) + "px";
 }
@@ -446,7 +446,7 @@ function setDims(element, width, height) {
 /**
  * Adds event listeners to UI.
  */
-function addHandlers() {
+export const addHandlers = () => {
   const view = document.querySelector(".view");
   view.addEventListener("keypress", function (e) {
     if (e.keyCode === 32 || e.key === " " || e.key === "Spacebar") {
@@ -471,7 +471,7 @@ function addHandlers() {
 /**
  * Hides the Loading prompt.
  */
-function hideLoading() {
+export const hideLoading = () => {
   const gsplatCanvas = document.getElementById("gsplatCanvas");
   let loading = document.getElementById("Loading");
   loading.style.display = "none";
@@ -495,7 +495,7 @@ function hideLoading() {
   isLoading = false;
 }
 
-function showLoading() {
+export const showLoading = () => {
   isLoading = true;
   const gsplatCanvas = document.getElementById("gsplatCanvas");
   let loading = document.getElementById("Loading");
@@ -529,11 +529,11 @@ let currentMessage = null;
 let currentFunFact = null;
 let lastUpdate = Date.now();
 
-function getRandomItem(array) {
+export const getRandomItem = (array) => {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-function updateMessageAndFunFact() {
+export const updateMessageAndFunFact = () => {
   const loadingMessages = [
     "Polishing precious jewels",
     "Stringing precious pearls",
@@ -565,7 +565,7 @@ function updateMessageAndFunFact() {
   lastUpdate = Date.now();
 }
 
-function updateLoadingProgress(percentage) {
+export const updateLoadingProgress = (percentage) => {
   let funOrFact = document.getElementById("funorfact");
 
   // let loadPercentage =
@@ -606,7 +606,7 @@ function updateLoadingProgress(percentage) {
   }
 }
 
-function mobileAndTabletCheck() {
+export const mobileAndTabletCheck = () => {
   let check = false;
   (function (a) {
     if (
@@ -625,7 +625,7 @@ function mobileAndTabletCheck() {
   return check;
 }
 
-function iOSCheck() {
+export const iOSCheck = () => {
   return (
     [
       "iPad Simulator",
@@ -640,7 +640,7 @@ function iOSCheck() {
   );
 }
 
-function getBrowserName() {
+export const getBrowserName = () => {
   if (
     typeof window === "undefined" ||
     typeof window.navigator === "undefined"
@@ -676,7 +676,7 @@ function getBrowserName() {
   }
 }
 
-function checkDevice() {
+export const checkDevice = () => {
   isMobile = mobileAndTabletCheck();
   console.log("isMobile", isMobile);
   isIOS = iOSCheck();
@@ -685,7 +685,7 @@ function checkDevice() {
   console.log(browserName);
 }
 
-function copyText(text) {
+export const copyText = (text) => {
   navigator.clipboard.writeText("chrome://flags/#use-angle");
 }
 
@@ -769,7 +769,7 @@ function addError(errorObj, index, arr) {
   }
 }
 
-function showErrors(errors) {
+export const showErrors = (errors) => {
   const j4container = document.getElementById("j4container");
   const titleContainer = document.getElementById("tryon-title");
   const arToggleContainer = document.getElementById("ar-toggle-container");
@@ -788,7 +788,7 @@ function showErrors(errors) {
   sideErrors.style.display = "flex";
 }
 
-function generateQR(user_input) {
+export const generateQR = (user_input) => {
   let qr_container = document.querySelector(".qr-code-container");
   qr_container.style.display = "flex";
 
@@ -834,7 +834,7 @@ function generateQR(user_input) {
  * powerful enough. Otherwise displays a warning.
  * @return {boolean}
  */
-function isRendererUnsupported() {
+export const isRendererUnsupported = () => {
   let gl = document.getElementsByTagName("canvas")[1].getContext("webgl2");
   // console.log("renderer-webgl-context", gl);
 
