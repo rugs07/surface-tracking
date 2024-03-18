@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -20,178 +20,18 @@
   <!-- End Google Tag Manager -->
 </head>
 
-<body>
+<body style="background-color:black">
+  <div id="root"></div>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ2ZNVHL" height="0" width="0"
       style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <div class="main-container">
-    <div class="title-container" onclick="gotoHome()">
-      <div class="logo-container">
-        <img src="../assets/logo1.png" class="logoimg" />
-        <span class="logo-text">Jar4u</span>
-      </div>
-      <h2 class="sitename">3D Experiences that Uplift Sales</h2>
-    </div>
-    <div class="side-errors" id="side-errors"></div>
-    <div class="j4container" id="j4container">
-      <!-- <h3 class="type-label">
-          Bangles <span class="items-text">(2 Items)</span>
-        </h3> -->
-
-      <!-- <div class="parameter-adjustment-container">
-          <label for="baseThetaVRSlider">Base Theta VR:</label>
-          <input type="range" id="baseThetaVRSlider" min="-1" max="1" step="0.01" oninput="updateJewelParam('b4_gen3', 'baseThetaVR', this.value)">
-          <output id="baseThetaVROutput">0</output>
-      </div>   -->
-      <div class="jrow home-row" id="jewels_row"> <!--Slider -->
-        
-        <div class="glassmorph">
-          <div class="jewel-container home-jewel" onclick="setJewellery('b4_gen3')">
-            <img src="assets/Bangle_new.png" class="jewelimg" />
-            <div class="selectarea">
-              <!-- <button type="button">Flower Bangle</button> -->
-              <span>Flower Bangle</span>
-            </div>
-          </div>
-        </div>
-        <div class="glassmorph">
-          <div class="jewel-container home-jewel" onclick="setJewellery('laxmi_exp')">
-            <img src="assets/laxmi1-bg.png" class="jewelimg" />
-            <div class="selectarea">
-              <!-- <button type="button">Laxmi Bangle</button> -->
-              <span>Laxmi Bangle</span>
-            </div>
-          </div>
-        </div>
-        <div class="glassmorph">
-
-          <div class="jewel-container home-jewel" onclick="setJewellery('jewel7_lr')">
-            <a href="https://prod.jar4u.com/?id=jewel7_lr">
-              <img src="assets/diamondbracelet22-bg.png" class="jewelimg" />
-              <div class="selectarea">
-                <!-- <button type="button">Diamond Bracelet</button> -->
-                <span>Bracelet</span>
-              </div>
-          </div>
-        </div>
-        </a>
-        <div class="glassmorph">
-
-          <div class="jewel-container home-jewel" onclick="setJewellery('jewel3_lr')">
-            <img src="assets/Queen1-bg.png" class="jewelimg" />
-            <div class="selectarea">
-              <!-- <button type="button">Queen's Ring</button> -->
-              <span>Queen's Ring</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Other items -->
-      <div class="jrow home-row" id="jewels_row">
-        <div class="glassmorph">
-
-          <a href=" https://prod.jar4u.com/?id=pots">
-            <div class="jewel-container home-jewel">
-              <img src="assets/pots-bg.png" class="jewelimg" />
-              <div class="selectarea">
-                <!-- <button type="button">Ancient Pots</button> -->
-                <span>Ancient Pots</span>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="glassmorph">
-
-          <div class="jewel-container home-jewel" onclick="setJewellery('swan')">
-            <a href="https://prod.jar4u.com/?id=swan">
-              <img src="assets/swan-bg.png" class="jewelimg" />
-              <div class="selectarea">
-                <!-- <button type="button">Lively Swans</button> -->
-                <span>Lively Swans</span>
-              </div>
-          </div>
-          </a>
-        </div>
-
-        <div class="glassmorph">
-
-          <div class="jewel-container home-jewel"> <!-- onclick="setJewellery('natraj')"> -->
-            <a href="https://prod.jar4u.com/?id=natraj">
-              <img src="assets/natraj-bg.png" class="jewelimg" />
-              <div class="selectarea">
-                <!-- <button type="button">Natraj</button> -->
-                <span>Natraj</span>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="glassmorph">
-
-          <div class="jewel-container home-jewel" onclick="setJewellery('table_1')">
-            <a href="https://prod.jar4u.com/?id=table_1">
-              <img src="assets/table_1-bg.png" class="jewelimg" />
-              <div class="selectarea">
-                <!-- <button type="button">Luxe Table</button> -->
-                <span>Luxe Table</span>
-              </div>
-          </div>
-          </a>
-        </div>
-
-        <!-- Rings -->
-        <div class="jrow home-row" id="jewels_row">
-          <div class="glassmorph">
-
-            <div class="jewel-container home-jewel" onclick="setJewellery('jewel21_lr')">
-              <img src="assets/heart1-bg.png" class="jewelimg" />
-              <div class="selectarea">
-                <!-- <button type="button">Heart Ring</button> -->
-                <span>Heart Ring</span>
-              </div>
-            </div>
-          </div>
-          <div class="glassmorph">
-
-            <div class="jewel-container home-jewel" onclick="setJewellery('jewel25_lr')">
-              <img src="assets/redeye1-bg.png" class="jewelimg" />
-              <div class="selectarea">
-                <!-- <button type="button">Red Eye Ring</button> -->
-                <span>Red Eye Ring</span>
-              </div>
-            </div>
-
-          </div>
-          <div class="glassmorph">
-
-
-            <div class="jewel-container home-jewel" onclick="setJewellery('jewel1_lr')">
-              <img src="assets/sunny1-bg.png" class="jewelimg" />
-              <div class="selectarea">
-                <!-- <button type="button">Sunny Ring</button> -->
-                <span>Sunny Ring</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="glassmorph">
-
-
-            <div class="jewel-container home-jewel" onclick="setJewellery('jewel26_lr')">
-              <img src="assets/flower1-bg.png" class="jewelimg" />
-              <div class="selectarea">
-                <!-- <button type="button">Flower Ring</button> -->
-                <span>Flower Ring</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <script src="js/utils.js"></script>
-    <!-- <script src="js/home.js"></script> -->
+ <script type="module" src="/src/main.jsx"></script>
+  <script src="js/utils.js"></script>
+  <!-- <script src="js/home.js"></script> -->
 </body>
 
 </html>
+
+
+
