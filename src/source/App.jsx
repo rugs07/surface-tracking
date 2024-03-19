@@ -5,8 +5,8 @@ import VR from './Components/VR'
 const App = () => {
   return (
     <>
-      <Home />
-      {/* <VR /> */}
+      {/* <Home /> */}
+      <VR />
     </>
 
 
