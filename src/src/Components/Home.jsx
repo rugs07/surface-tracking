@@ -1,7 +1,14 @@
 import React from 'react'
 import '../../css/style.css'
+import { useNavigate } from 'react-router';
+
 
 const Home = () => {
+
+    const navigate= useNavigate();
+    const handleRedirect = () => {
+        navigate("/VR");
+    }
     return (
         <div>
             <div className="main-container">
@@ -26,7 +33,7 @@ const Home = () => {
                 <div className="jrow home-row" id="jewels_row">
 
                     <div className="glassmorph">
-                        <div className="jewel-container home-jewel" onClick="setJewellery('b4_gen3')">
+                        <div className="jewel-container home-jewel" onClick={handleRedirect}>
                             <img src="assets/Bangle_new.png" className="jewelimg" />
                             <div className="selectarea">
                                 {/* <!-- <button type="button">Flower Bangle</button> --> */}
