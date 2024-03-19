@@ -92,7 +92,7 @@ button {
 
 span{
   color: white;
-  margin-top: 57px;
+  margin-top: 52px;
 }
 
 button:hover {
@@ -381,7 +381,6 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   text-underline-position: above;
   /* margin-left: 60px; */
   width: 100%;
-  align-items: center;
   text-align: center;
 }
 
@@ -886,7 +885,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   } */
 
   span{
-      margin-top: 15px;
+      margin-top: 10px;
       font-size: 14px;
   }
 
