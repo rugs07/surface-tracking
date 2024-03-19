@@ -1,11 +1,11 @@
-import React from 'react'
-import Home from './Components/Home'
+import { useState } from 'react'
+import './App.css'
 
-const App = () => {
+function App() {
   return (
-
-    <Home />
-
+    <>
+      
+    </>
   )
 }
 
