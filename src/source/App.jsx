@@ -1,12 +1,20 @@
-import { useState } from 'react'
-import './App.css'
-
-function App() {
+import React from 'react'
+import Home from './Components/Home'
+import {
+  BrowserRouter,
+  Routes, // instead of "Switch"
+  Route,
+  useNavigate,
+} from "react-router-dom";
+const App = () => {
   return (
-    <>
-      
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
+
   )
 }
-
-export default App
+//app.jsx
+export default App;
