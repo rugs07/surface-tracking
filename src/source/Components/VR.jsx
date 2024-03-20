@@ -5,12 +5,7 @@ import '../../css/gsplat.css'
 const VR = () => {
     const canvasRef = useRef(null); // To reference the canvas DOM element
     const viewSpaceContainerRef = useRef(null);
-    // const canvas = canvasRef.current
-    // const context = canvas.getContext('3d')
-    // //Our first draw
-    // context.fillStyle = '#000000'
-    // context.fillRect(0, 0, context.canvas.width, context.canvas.height)
-
+    
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel"));
     useEffect(() => {
         // Ensure SPLAT libraries and canvas are available
@@ -21,23 +16,22 @@ const VR = () => {
         const camera = new SPLAT.Camera();
         const renderer = new SPLAT.WebGLRenderer(canvasRef.current); // Use the canvas reference here
         const controls = new SPLAT.OrbitControls(camera, renderer.canvas);
-
-
+        
         controls.minAngle = 10;
         controls.maxAngle = 50;
         controls.minZoom = 4;
         controls.maxZoom = 20;
-
+        
         const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
-
+        
         SPLAT.Loader.LoadAsync(url, scene, () => { })
-            .then(() => {
-                const frame = () => {
-                    controls.update();
-                    renderer.render(scene, camera);
-                    requestAnimationFrame(frame);
-                };
-
+        .then(() => {
+            const frame = () => {
+                controls.update();
+                renderer.render(scene, camera);
+                requestAnimationFrame(frame);
+            };
+            
                 requestAnimationFrame(frame);
             });
 
