@@ -17,10 +17,14 @@ const Home = () => {
     window.location.href = url;
   };
 
+   const gotoHome = () => {
+    window.location.href = `https://www.jar4u.com/`;
+  }
+
   return (
     <div>
       <div className="main-container">
-        <div className="title-container" onClick="gotoHome()">
+        <div className="title-container" onClick={gotoHome}>
           <div className="logo-container">
             <img src="../../assets/logo1.png" className="logoimg" />
             <span className="logo-text">Jar4u</span>

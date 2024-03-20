@@ -34,7 +34,7 @@ const VR = () => {
                     const nextProgress = progress + 50; // Increment progress
                     setLoadingProgress(nextProgress);
                     mockLoad(nextProgress); // Recursively call mockLoad
-                }, 20); // Adjust delay to control speed of progress bar
+                }, 20); 
             }
         };
 
