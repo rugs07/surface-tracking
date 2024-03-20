@@ -1,9 +1,19 @@
 import React from 'react'
 import '../../css/style.css'
+import { useNavigate } from 'react-router-dom'
+import { useJewels } from '../context/JewelsContext'
 
 const Home = () => {
-    return (
+    const navigate = useNavigate();
+    const {jewelsList} = useJewels();
 
+    const handleClick = (jewelId) => {
+        const selectedJewel = jewelsList[jewelId];
+        sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
+        navigate('/VR');
+      };
+
+    return ( 
         <div>
             <div className="main-container">
                 <div className="title-container" onClick="gotoHome()">
@@ -27,7 +37,7 @@ const Home = () => {
                 <div className="jrow home-row" id="jewels_row">
 
                     <div className="glassmorph">
-                        <div className="jewel-container home-jewel" onClick="setJewellery('b4_gen3')">
+                        <div className="jewel-container home-jewel" onClick={() => {handleClick("b4_gen3")}}>
                             <img src="assets/Bangle_new.png" className="jewelimg" />
                             <div className="selectarea">
                                 {/* <!-- <button type="button">Flower Bangle</button> --> */}
@@ -36,7 +46,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div className="glassmorph">
-                        <div className="jewel-container home-jewel" onClick="setJewellery('laxmi_exp')">
+                        <div className="jewel-container home-jewel"onClick={() => {handleClick("laxmi_exp")}}>
                             <img src="assets/laxmi1-bg.png" className="jewelimg" />
                             <div className="selectarea">
                                 {/* <!-- <button type="button">Laxmi Bangle</button> --> */}
