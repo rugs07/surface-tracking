@@ -56,7 +56,7 @@ const Home = () => {
                     </div>
                     <div className="glassmorph">
 
-                        <div className="jewel-container home-jewel" onClick="setJewellery('jewel7_lr')">
+                        <div className="jewel-container home-jewel" onClick="setJewellery('jewel7_lr">
                             <a href="https://prod.jar4u.com/?id=jewel7_lr">
                                 <img src="assets/diamondbracelet22-bg.png" className="jewelimg" />
                                 <div className="selectarea">

@@ -9,29 +9,51 @@
   font-family: sans-serif;
 }
 
+.tryon-button{
+  font-size: 1.3rem;
+  padding: 1rem;
+  margin-right: 3rem;
+
+  width: 10rem;
+  border-radius: 5rem;
+    background-image: linear-gradient(to left, #000000, #ffffff);
+    /* box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.75); */
+}
+
 #gsplatCanvas {
   /* width: 100vw;
   height: 100vh; */
   /* width: 100%;
   height: 100%; */
   background: transparent !important;
+  height: 100%;
+  width: 100%;
+  
 }
 
 .audioImg{
   cursor: pointer !important;
   vertical-align: middle;
   filter: invert(0.4);
-  margin: 5px;
+  /* margin: 5px; */
+   margin-left: 3rem;
+  /* padding: 1rem; */
+   /* filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%); */
 }
 /* .gsplatSoundEffect{
   width: 100px;
 } */
 .backImg{
+  /* padding: 1rem; */
   cursor: pointer !important;
   vertical-align: middle;
   filter: invert(0.4);
   margin: 5px;
+  margin-left: 1rem;
+   /* filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%); */
+ 
 }
+
 
 
 dialog {

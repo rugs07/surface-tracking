@@ -1,14 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import * as SPLAT from "gsplat";
+import '../../css/gsplat.css'
 
 const VR = () => {
     const canvasRef = useRef(null); // To reference the canvas DOM element
     const viewSpaceContainerRef = useRef(null);
+    // const canvas = canvasRef.current
+    // const context = canvas.getContext('3d')
+    // //Our first draw
+    // context.fillStyle = '#000000'
+    // context.fillRect(0, 0, context.canvas.width, context.canvas.height)
 
+    const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel"));
     useEffect(() => {
         // Ensure SPLAT libraries and canvas are available
         if (!SPLAT || !canvasRef.current) return;
-        const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel"));
         if (!selectedJewel) return;
 
         const scene = new SPLAT.Scene();
@@ -35,6 +41,7 @@ const VR = () => {
                 requestAnimationFrame(frame);
             });
 
+
         // Cleanup function to stop the animation frame when the component unmounts
         return () => {
             if (renderer) renderer.dispose();
@@ -48,18 +55,20 @@ const VR = () => {
         // </div>
         <div ref={viewSpaceContainerRef} id="viewspacecontainer">
             <div className="ar-toggle-container" id="ar-toggle-container">
-                <button className="desktop-viewar" id="desktop-viewar">Try On</button>
-                <h2 id="updatenote">Welcome to JAR4U</h2>
+                <button className="tryon-button" id="desktop-viewar">Try On</button>
+                <h2 id="updatenote">{selectedJewel.label}</h2>
                 <div className="gsplatButtonDiv">
                     <span className="gsplatSoundEffect">
                         <img className="audioImg" width="25px" src="./assets/audio-off-svgrepo-com.svg" />
+                        {/* <img className="audioImg" width="25px" src="./assets/audio-off-svgrepo-com.svg" style={{ filter: 'invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)' }} /> */}
                     </span>
                     <span className="gsplatBackgroundEffect">
                         <img className="backImg" width="28px" src="./assets/moon-svgrepo-com.svg" />
+                        {/* <img className="backImg" width="28px" src="./assets/moon-svgrepo-com.svg" style={{ filter: 'invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)' }} /> */}
                     </span>
                 </div>
             </div>
-            <div style={{ display: 'flex', alignItems: '', justifyContent: 'center',width:'100%',height:'100%' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '100%' }}>
                 <canvas ref={canvasRef} id="gsplatCanvas" ></canvas>
             </div>
             <audio className="audioElement">
