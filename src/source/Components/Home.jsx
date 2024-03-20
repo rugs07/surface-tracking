@@ -13,6 +13,10 @@ const Home = () => {
         navigate('/VR');
     };
 
+    const handleNavigate = (url) =>{
+        window.location.href = url;
+    }
+
     return (
         <div>
             <div className="main-container">
@@ -56,7 +60,7 @@ const Home = () => {
                     </div>
                     <div className="glassmorph">
 
-                        <div className="jewel-container home-jewel" onClick="setJewellery('jewel7_lr">
+                        <div className="jewel-container home-jewel" onClick={() => {handleNavigate('https://prod.jar4u.com/?id=jewel7_lr')}}>
                             <a href="https://prod.jar4u.com/?id=jewel7_lr">
                                 <img src="assets/diamondbracelet22-bg.png" className="jewelimg" />
                                 <div className="selectarea">
@@ -68,7 +72,7 @@ const Home = () => {
                     </div>
                     <div className="glassmorph">
 
-                        <div className="jewel-container home-jewel" onClick="setJewellery('jewel3_lr')">
+                        <div className="jewel-container home-jewel" onClick={() => { handleClick("jewel3_lr") }}>
                             <img src="assets/Queen1-bg.png" className="jewelimg" />
                             <div className="selectarea">
                                 {/* <!-- <button type="button">Queen's Ring</button> --> */}
@@ -81,33 +85,28 @@ const Home = () => {
                 {/* <!-- Other items --> */}
                 <div className="jrow home-row" id="jewels_row">
                     <div className="glassmorph">
-
-                        <a href=" https://prod.jar4u.com/?id=pots">
-                            <div className="jewel-container home-jewel">
+                            <div className="jewel-container home-jewel" onClick={() => handleNavigate('https://prod.jar4u.com/?id=pots')}>
                                 <img src="assets/pots-bg.png" className="jewelimg" />
                                 <div className="selectarea">
-                                    {/* <!-- <button type="button">Ancient Pots</button> --> */}
+                                    {/* <!-- <button type="Gbutton">Ancient Pots</button> --> */}
                                     <span>Ancient Pots</span>
                                 </div>
                             </div>
-                        </a>
                     </div>
                     <div className="glassmorph">
 
-                        <div className="jewel-container home-jewel" onClick="setJewellery('swan')">
-                            <a href="https://prod.jar4u.com/?id=swan">
+                        <div className="jewel-container home-jewel" onClick={() => {handleNavigate('https://prod.jar4u.com/?id=swan')}}>
                                 <img src="assets/swan-bg.png" className="jewelimg" />
                                 <div className="selectarea">
                                     {/* <!-- <button type="button">Lively Swans</button> --> */}
                                     <span>Lively Swans</span>
                                 </div>
-                            </a>
                         </div>
                     </div>
 
                     <div className="glassmorph">
 
-                        <div className="jewel-container home-jewel">
+                        <div className="jewel-container home-jewel" onClick={() => {handleNavigate('https://prod.jar4u.com/?id=natraj')}}>
                             <a href="https://prod.jar4u.com/?id=natraj">
                                 <img src="assets/natraj-bg.png" className="jewelimg" />
                                 <div className="selectarea">
@@ -119,7 +118,7 @@ const Home = () => {
                     </div>
                     <div className="glassmorph">
 
-                        <div className="jewel-container home-jewel" onClick="setJewellery('table_1')">
+                        <div className="jewel-container home-jewel" onClick={() => {handleNavigate('https://prod.jar4u.com/?id=natraj')}}>
                             <a href="https://prod.jar4u.com/?id=table_1">
                                 <img src="assets/table_1-bg.png" className="jewelimg" />
                                 <div className="selectarea">
@@ -134,7 +133,7 @@ const Home = () => {
                     <div className="jrow home-row" id="jewels_row">
                         <div className="glassmorph">
 
-                            <div className="jewel-container home-jewel" onClick="setJewellery('jewel21_lr')">
+                            <div className="jewel-container home-jewel" onClick={() => { handleClick("jewel21_lr") }}>
                                 <img src="assets/heart1-bg.png" className="jewelimg" />
                                 <div className="selectarea">
                                     {/* <!-- <button type="button">Heart Ring</button> --> */}
@@ -144,7 +143,7 @@ const Home = () => {
                         </div>
                         <div className="glassmorph">
 
-                            <div className="jewel-container home-jewel" onClick="setJewellery('jewel25_lr')">
+                            <div className="jewel-container home-jewel" onClick={() => { handleClick("jewel25_lr") }}>
                                 <img src="assets/redeye1-bg.png" className="jewelimg" />
                                 <div className="selectarea">
                                     {/* <!-- <button type="button">Red Eye Ring</button> --> */}
@@ -156,7 +155,7 @@ const Home = () => {
                         <div className="glassmorph">
 
 
-                            <div className="jewel-container home-jewel" onClick="setJewellery('jewel1_lr')">
+                            <div className="jewel-container home-jewel" onClick={() => { handleClick("jewel1_lr") }}>
                                 <img src="assets/sunny1-bg.png" className="jewelimg" />
                                 <div className="selectarea">
                                     {/* <!-- <button type="button">Sunny Ring</button> --> */}
@@ -168,7 +167,7 @@ const Home = () => {
                         <div className="glassmorph">
 
 
-                            <div className="jewel-container home-jewel" onClick="setJewellery('jewel26_lr')">
+                            <div className="jewel-container home-jewel" onClick={() => { handleClick("jewel26_lr") }}>
                                 <img src="assets/flower1-bg.png" className="jewelimg" />
                                 <div className="selectarea">
                                     {/* <button type="button">Flower Ring</button> --> */}
