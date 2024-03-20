@@ -1,11 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef,useState } from 'react';
 import * as SPLAT from "gsplat";
 import '../../css/gsplat.css'
+import '../../css/loader.css'
+import '../../css/style.css'
+
 
 const VR = () => {
     const canvasRef = useRef(null); // To reference the canvas DOM element
+    const [loadingProgress, setLoadingProgress] = useState(0); 
     const viewSpaceContainerRef = useRef(null);
-    
+
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel"));
     useEffect(() => {
         // Ensure SPLAT libraries and canvas are available
@@ -24,7 +28,19 @@ const VR = () => {
         
         const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
         
-        SPLAT.Loader.LoadAsync(url, scene, () => { })
+        const mockLoad = (progress) => {
+            if (progress < 100) {
+                setTimeout(() => {
+                    const nextProgress = progress + 50; // Increment progress
+                    setLoadingProgress(nextProgress);
+                    mockLoad(nextProgress); // Recursively call mockLoad
+                }, 20); // Adjust delay to control speed of progress bar
+            }
+        };
+
+        SPLAT.Loader.LoadAsync(url, scene, () => {
+            mockLoad(0);
+         })
         .then(() => {
             const frame = () => {
                 controls.update();
@@ -34,7 +50,6 @@ const VR = () => {
             
                 requestAnimationFrame(frame);
             });
-
 
         // Cleanup function to stop the animation frame when the component unmounts
         return () => {
@@ -48,6 +63,12 @@ const VR = () => {
         //     <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }}></canvas>
         // </div>
         <div ref={viewSpaceContainerRef} id="viewspacecontainer">
+            {loadingProgress < 100 && (
+                <div id="loading-container">
+                    <div role="progressbar" aria-valuenow={loadingProgress} aria-valuemin="0" aria-valuemax="100" style={{ '--value': loadingProgress }}></div>
+                    <p className="progresstext">Crafting artwork of stars</p>
+                </div>
+            )}
             <div className="ar-toggle-container" id="ar-toggle-container">
                 <button className="tryon-button" id="desktop-viewar">Try On</button>
                 <h2 id="updatenote">{selectedJewel.label}</h2>
