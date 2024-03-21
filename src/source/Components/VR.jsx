@@ -1,4 +1,4 @@
-import React, { useEffect, useRef,useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as SPLAT from "gsplat";
 import '../../css/gsplat.css'
 import '../../css/loader.css'
@@ -6,56 +6,64 @@ import '../../css/style.css'
 
 
 const VR = () => {
-    const canvasRef = useRef(null); // To reference the canvas DOM element
-    const [loadingProgress, setLoadingProgress] = useState(0); 
+    const canvasRef = useRef(null);
+    const [loadingProgress, setLoadingProgress] = useState(0);
+    const autorotateAngleRef = useRef(0); // Using useRef to persist the value without causing re-renders
     const viewSpaceContainerRef = useRef(null);
+    let autorotate = true; // Assuming you have a condition to enable/disable autorotation
+    const autorotateSpeed = 0.005; // Define the speed of autorotation
+    let splat; // This will hold your loaded 3D object
 
-    const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel"));
+    const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
+
     useEffect(() => {
-        // Ensure SPLAT libraries and canvas are available
-        if (!SPLAT || !canvasRef.current) return;
-        if (!selectedJewel) return;
+        if (!SPLAT || !canvasRef.current || !selectedJewel) return;
 
         const scene = new SPLAT.Scene();
         const camera = new SPLAT.Camera();
-        const renderer = new SPLAT.WebGLRenderer(canvasRef.current); // Use the canvas reference here
+        const renderer = new SPLAT.WebGLRenderer(canvasRef.current);
         const controls = new SPLAT.OrbitControls(camera, renderer.canvas);
-        
+
         controls.minAngle = 10;
         controls.maxAngle = 50;
         controls.minZoom = 4;
         controls.maxZoom = 20;
-        
-        const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
-        
-        const mockLoad = (progress) => {
-            if (progress < 100) {
-                setTimeout(() => {
-                    const nextProgress = progress + 50; // Increment progress
-                    setLoadingProgress(nextProgress);
-                    mockLoad(nextProgress); // Recursively call mockLoad
-                }, 20); 
-            }
-        };
 
-        SPLAT.Loader.LoadAsync(url, scene, () => {
-            mockLoad(0);
-         })
-        .then(() => {
+        const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
+
+        SPLAT.Loader.LoadAsync(url, scene, (progress) => {
+            setLoadingProgress(progress * 100);
+        }).then((loadedObject) => {
+            splat = loadedObject; // Assuming LoadAsync returns the loaded 3D object
+
             const frame = () => {
+                if (autorotate) {
+                    autorotateAngleRef.current += autorotateSpeed;
+
+                    // Assuming you have defined or imported baseTheta, basePhi, and baseGama somewhere
+                    const baseTheta = 0, basePhi = 0, baseGama = 0; // Example values, replace with actual ones
+                    const XRDelta = 0, YRDelta = 0; // Replace with actual values if needed
+
+                    const rotation = new SPLAT.Vector3(
+                        baseTheta + XRDelta,
+                        basePhi + YRDelta + autorotateAngleRef.current,
+                        baseGama
+                    );
+                    splat.rotation = SPLAT.Quaternion.FromEuler(rotation);
+                }
+
                 controls.update();
                 renderer.render(scene, camera);
                 requestAnimationFrame(frame);
             };
-            
-                requestAnimationFrame(frame);
-            });
 
-        // Cleanup function to stop the animation frame when the component unmounts
+            requestAnimationFrame(frame);
+        });
+
         return () => {
             if (renderer) renderer.dispose();
         };
-    }, []); // Empty dependency array means this effect runs once on mount
+    }, []); // Re-run the effect when selectedJewel changes
 
     return (
         // <div style={{ width: '100vw', height: '100vh' }}>
@@ -74,11 +82,11 @@ const VR = () => {
                 <h2 id="updatenote">{selectedJewel.label}</h2>
                 <div className="gsplatButtonDiv">
                     <span className="gsplatSoundEffect">
-                        <img className="audioImg" width="25px" src="./assets/audio-off-svgrepo-com.svg" />
+                        {/* <img className="audioImg" width="25px" src="./assets/audio-off-svgrepo-com.svg" /> */}
                         {/* <img className="audioImg" width="25px" src="./assets/audio-off-svgrepo-com.svg" style={{ filter: 'invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)' }} /> */}
                     </span>
                     <span className="gsplatBackgroundEffect">
-                        <img className="backImg" width="28px" src="./assets/moon-svgrepo-com.svg" />
+                        {/* <img className="backImg" width="28px" src="./assets/moon-svgrepo-com.svg" /> */}
                         {/* <img className="backImg" width="28px" src="./assets/moon-svgrepo-com.svg" style={{ filter: 'invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)' }} /> */}
                     </span>
                 </div>
