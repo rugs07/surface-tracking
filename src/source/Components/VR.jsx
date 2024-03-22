@@ -3,11 +3,12 @@ import * as SPLAT from "gsplat";
 import '../../css/gsplat.css'
 import '../../css/loader.css'
 import '../../css/style.css'
+import { hideLoading, updateLoadingProgress } from '../../js/utils';
 
 
 const VR = () => {
     const canvasRef = useRef(null);
-    const [loadingProgress, setLoadingProgress] = useState(0);
+    const [loadingProgress, setLoadingProgress] = useState(1);
     const autorotateAngleRef = useRef(0); // Using useRef to persist the value without causing re-renders
     const viewSpaceContainerRef = useRef(null);
     let autorotate = true; // Assuming you have a condition to enable/disable autorotation
@@ -32,9 +33,15 @@ const VR = () => {
         const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
         SPLAT.Loader.LoadAsync(url, scene, (progress) => {
+            updateLoadingProgress(progress * 100);
             setLoadingProgress(progress * 100);
+
         }).then((loadedObject) => {
-            splat = loadedObject; // Assuming LoadAsync returns the loaded 3D object
+            if (loadingProgress == 100) {
+                hideLoading()
+            }
+            splat = loadedObject;
+            // hideLoading()  // Assuming LoadAsync returns the loaded 3D object
 
             const frame = () => {
                 if (autorotate) {
@@ -63,7 +70,8 @@ const VR = () => {
         return () => {
             if (renderer) renderer.dispose();
         };
-    }, []); // Re-run the effect when selectedJewel changes
+    }, [selectedJewel, loadingProgress]);
+    console.log(loadingProgress)// Re-run the effect when selectedJewel changes
 
     return (
         // <div style={{ width: '100vw', height: '100vh' }}>
@@ -71,12 +79,14 @@ const VR = () => {
         //     <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }}></canvas>
         // </div>
         <div ref={viewSpaceContainerRef} id="viewspacecontainer">
-            {loadingProgress < 100 && (
-                <div id="loading-container">
+            {loadingProgress < 100 ? (
+                <div id="loading-container" >
                     <div role="progressbar" aria-valuenow={loadingProgress} aria-valuemin="0" aria-valuemax="100" style={{ '--value': loadingProgress }}></div>
                     <p className="progresstext">Crafting artwork of stars</p>
                 </div>
-            )}
+            )
+                : null
+            }
             <div className="ar-toggle-container" id="ar-toggle-container">
                 <button className="tryon-button" id="desktop-viewar">Try On</button>
                 <h2 id="updatenote">{selectedJewel.label}</h2>
