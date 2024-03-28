@@ -31,6 +31,13 @@ const VR = () => {
         controls.maxZoom = 20;
 
         const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
+        // fetch(url)
+        //     .then((response) => {
+        //         console.log(response.status)
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     })
 
         SPLAT.Loader.LoadAsync(url, scene, (progress) => {
             updateLoadingProgress(progress * 100);
@@ -70,7 +77,7 @@ const VR = () => {
         return () => {
             if (renderer) renderer.dispose();
         };
-    }, [selectedJewel, loadingProgress]);
+    }, [selectedJewel]);
     console.log(loadingProgress)// Re-run the effect when selectedJewel changes
 
     return (
