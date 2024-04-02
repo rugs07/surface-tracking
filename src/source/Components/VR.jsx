@@ -21,6 +21,7 @@ const VR = () => {
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
     console.log(canvasRef, "canvas ref")
 
+    url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
     useEffect(() => {
         if (!SPLAT || !canvasRef.current || !selectedJewel) return;
 
@@ -35,7 +36,6 @@ const VR = () => {
         controls.minZoom = 4;
         controls.maxZoom = 20;
 
-        url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
         //! https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/$b4_gen3/$b4_gen3.splat
         // fetch(url)
         //     .then((response) => {
@@ -121,7 +121,7 @@ const VR = () => {
                     <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} />
                     {/* <CameraControls rotate={[0.09,2,4.5]} /> */}
 
-                    <Splat src="https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/b4_gen3/b4_gen3.splat"
+                    <Splat src={url}
                         rotation={[0.09, 2, 4.5, 2]}
                     // position={[2.1036774620197414, -2.397127693021015, ]}
 
