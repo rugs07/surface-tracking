@@ -40,13 +40,13 @@ const VR = () => {
         //     })
 
         SPLAT.Loader.LoadAsync(url, scene, (progress) => {
-            updateLoadingProgress(progress * 100);
-            setLoadingProgress(progress * 100);
+            // updateLoadingProgress(progress * 100);
+            // setLoadingProgress(progress * 100);
 
         }).then((loadedObject) => {
-            if (loadingProgress == 100) {
-                hideLoading()
-            }
+            // if (loadingProgress == 100) {
+            //     hideLoading()
+            // }
             splat = loadedObject;
             // hideLoading()  // Assuming LoadAsync returns the loaded 3D object
 
@@ -86,14 +86,14 @@ const VR = () => {
         //     <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }}></canvas>
         // </div>
         <div ref={viewSpaceContainerRef} id="viewspacecontainer">
-            {loadingProgress < 100 ? (
+            {/* {loadingProgress < 100 ? (
                 <div id="loading-container" >
                     <div role="progressbar" aria-valuenow={loadingProgress} aria-valuemin="0" aria-valuemax="100" style={{ '--value': loadingProgress }}></div>
                     <p className="progresstext">Crafting artwork of stars</p>
                 </div>
             )
                 : null
-            }
+            } */}
             <div className="ar-toggle-container" id="ar-toggle-container">
                 <button className="tryon-button" id="desktop-viewar">Try On</button>
                 <h2 id="updatenote">{selectedJewel.label}</h2>

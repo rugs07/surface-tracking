@@ -1,5 +1,7 @@
 import React from "react";
 import "../../css/style.css";
+import "../../css/loader.css";
+import "../../css/gsplat.css";
 import { useNavigate } from "react-router-dom";
 import { useJewels } from "../context/JewelsContext";
 import flowerbangle from "../assets/Bangle_new.png";
