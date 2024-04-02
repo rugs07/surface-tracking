@@ -65,9 +65,9 @@ body {
   letter-spacing: 0.25px;
   word-spacing: 5px;
   line-height: 1.75rem;
-  background-color: rgb(0, 0, 0);
+  background-color: black;
 }
-/* 
+
 button {
   outline: none;
   min-width: 150px;
@@ -86,13 +86,12 @@ button {
   box-shadow: 0px 12px 36px rgba(0, 0, 0, 0.1);
   font-weight: 400;
   letter-spacing: 1.5px;
-  margin-top: 40px;
   /* word-spacing: 5px; */
-/* }  */
+}
 
 span{
   color: white;
-  margin-top: 52px;
+  margin-top: 55px;
 }
 
 button:hover {
@@ -170,10 +169,8 @@ button:hover {
   /* background-color: transparent; */
   transition: transform 0.5s, box-shadow 0.5s;
   cursor: pointer;
-   content: '';
-        /* background: inherit; */
- 
 }
+
 .glassmorph{
   z-index: 1000;
   margin: 2rem;
@@ -190,17 +187,15 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 
 .glassmorph:hover{
-  transform: translateY(-5px); /* Subtle lift */
+  transform: scale(1.05); /* Subtle lift */
   box-shadow: 0 15px 45px rgba(255, 255, 255, 0.25); /* Lighter and more pronounced shadow */
   background: rgba(3, 0, 0, 0.2); /* Slightly more opaque to enhance the hover effect */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Brighter border to match
+  border: 1px solid rgba(255, 255, 255, 0.3);  
 }
 
-.home-jewel {
-  /* border: 2px solid white; */
-  /* border-radius: 5px; */
-     
-}
+/* .home-jewel {
+  border: 2px solid #ddd;
+} */
 
 .home-jewel:hover {
   /* transform: scale(1.025) translate(0, -3px) perspective(0px); */
@@ -220,14 +215,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   top: 0;
   left: 0;
   width: 100%;
-  z-index: -1;
   height: 100%;
-/* position: absolute; */
-      
-  /* From https://css.glass */
-/* From https://css.glass */
-/* From https://css.glass */
-
 }
 
 .selectarea {
@@ -350,6 +338,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   margin: -3px auto;
   cursor: pointer;
 }
+
 .logo-container {
   display: flex;
   align-items: center;
@@ -371,7 +360,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 
 .sitename {
-  /* background: var(--gradientLogo);   */
+  /* background: var(--gradientLogo); */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   padding: 12px 24px;
@@ -382,6 +371,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   /* margin-left: 60px; */
   width: 100%;
   text-align: center;
+  margin-bottom: -20px;
 }
 
 .tryon-title {
@@ -877,16 +867,17 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     word-spacing: 3px;
   }
 
-  /* button {
-    margin: 0px;
-    padding: 10px 14px;
-    font-size: 12px;
-    min-width: 100px;
-  } */
+  button {
+      margin: 0px;
+      padding: 10px 14px;
+      font-size: 12px;
+      min-width: 100px;
+      margin-top: 14px;
+    }
 
   span{
-      margin-top: 10px;
-      font-size: 14px;
+    margin-top: 10px;
+    font-size: 14px;
   }
 
   .primarybtn {
@@ -916,25 +907,23 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     margin-left: 0;
     padding: 5px;
     overflow: hidden;
-    /* background: rgba(27, 0, 255, 0.39); */
-   
-   
   }
-  /* .glassmorph{
+
+  .glassmorph{
     width: 45vw;
     height: 50vw;
     margin: 8px;
     margin-left: 0;
     padding: 5px;
     overflow: hidden;
-  } */
+  }
 
   .trytitle {
     font-size: 16px;
   }
 
   .ar-jewel {
-    background-color: #fff;
+    background-color: black;
   }
 
   .loadimg {
@@ -944,8 +933,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 
   .jewelimg {
     height: auto;
-    align-items: center;
-    justify-content: center;
+    top: 15px;
   }
 
   .selectarea {
@@ -980,7 +968,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     margin-top: 3px;
   }
 
-  .logo-container {
+   .logo-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1002,7 +990,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   .sitename {
     font-size: 18px;
     padding: 5px 15px;
-    color: white;
+    margin-bottom: 1px;
   }
 
   .viewer-container,
@@ -1121,7 +1109,6 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 
   .desktop-viewar {
     display: none;
-
   }
 
   .ar-bottom-container {
