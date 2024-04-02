@@ -2,6 +2,19 @@ import React from "react";
 import "../../css/style.css";
 import { useNavigate } from "react-router-dom";
 import { useJewels } from "../context/JewelsContext";
+import flowerbangle from "../assets/Bangle_new.png";
+import laxmibangle from "../assets/laxmi1-bg.png";
+import diamond from "../assets/diamondbracelet22-bg.png";
+import queens from "../assets/Queen1-bg.png";
+import livelyswans from "../assets/swan-bg.png";
+import natraj from "../assets/natraj-bg.png";
+import table from "../assets/table_1-bg.png";
+import ancientpots from "../assets/pots-bg.png";
+import flowerring from "../assets/flower1-bg.png";
+import heart from "../assets/heart1-bg.png";
+import redeye from "../assets/redeye1-bg.png";
+import sunny from "../assets/sunny1-bg.png";
+import logo from "../assets/logo1.png";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -26,7 +39,7 @@ const Home = () => {
       <div className="main-container">
         <div className="title-container" onClick={gotoHome}>
           <div className="logo-container">
-            <img src="../../assets/logo1.png" className="logoimg" />
+            <img src={logo} className="logoimg" />
             <span className="logo-text">Jar4u</span>
           </div>
           <h2 className="sitename">3D Experiences that Uplift Sales</h2>
@@ -50,7 +63,7 @@ const Home = () => {
                 handleClick("b4_gen3");
               }}
             >
-              <img src="assets/Bangle_new.png" className="jewelimg" />
+              <img src={flowerbangle} className="jewelimg" />
               <div className="selectarea">
                 {/* <!-- <button type="button">Flower Bangle</button> --> */}
                 <span>Flower Bangle</span>
@@ -64,7 +77,7 @@ const Home = () => {
                 handleClick("laxmi_exp");
               }}
             >
-              <img src="assets/laxmi1-bg.png" className="jewelimg" />
+              <img src={laxmibangle} className="jewelimg" />
               <div className="selectarea">
                 {/* <!-- <button type="button">Laxmi Bangle</button> --> */}
                 <span>Laxmi Bangle</span>
@@ -79,7 +92,7 @@ const Home = () => {
               }}
             >
                 <img
-                  src="assets/diamondbracelet22-bg.png"
+                  src={diamond}
                   className="jewelimg"
                 />
                 <div className="selectarea">
@@ -95,7 +108,7 @@ const Home = () => {
                 handleClick("jewel3_lr");
               }}
             >
-              <img src="assets/Queen1-bg.png" className="jewelimg" />
+              <img src={queens} className="jewelimg" />
               <div className="selectarea">
                 {/* <!-- <button type="button">Queen's Ring</button> --> */}
                 <span>Queen's Ring</span>
@@ -111,7 +124,7 @@ const Home = () => {
               className="jewel-container home-jewel"
               onClick={() => handleNavigate("https://prod.jar4u.com/?id=pots")}
             >
-              <img src="assets/pots-bg.png" className="jewelimg" />
+              <img src={ancientpots} className="jewelimg" />
               <div className="selectarea">
                 {/* <!-- <button type="Gbutton">Ancient Pots</button> --> */}
                 <span>Ancient Pots</span>
@@ -125,7 +138,7 @@ const Home = () => {
                 handleNavigate("https://prod.jar4u.com/?id=swan");
               }}
             >
-              <img src="assets/swan-bg.png" className="jewelimg" />
+              <img src={livelyswans} className="jewelimg" />
               <div className="selectarea">
                 {/* <!-- <button type="button">Lively Swans</button> --> */}
                 <span>Lively Swans</span>
@@ -140,7 +153,7 @@ const Home = () => {
                 handleNavigate("https://prod.jar4u.com/?id=natraj");
               }}
             >
-                <img src="assets/natraj-bg.png" className="jewelimg" />
+                <img src={natraj} className="jewelimg" />
                 <div className="selectarea">
                   {/* <!-- <button type="button">Natraj</button> --> */}
                   <span>Natraj</span>
@@ -154,7 +167,7 @@ const Home = () => {
                 handleNavigate("https://prod.jar4u.com/?id=table_1");
               }}
             >
-              <img src="assets/table_1-bg.png" className="jewelimg" />
+              <img src={table} className="jewelimg" />
               <div className="selectarea">
                 {/* <!-- <button type="button">Luxe Table</button> --> */}
                 <span>Luxe Table</span>
@@ -171,7 +184,7 @@ const Home = () => {
                   handleClick("jewel21_lr");
                 }}
               >
-                <img src="assets/heart1-bg.png" className="jewelimg" />
+                <img src={heart} className="jewelimg" />
                 <div className="selectarea">
                   {/* <!-- <button type="button">Heart Ring</button> --> */}
                   <span>Heart Ring</span>
@@ -185,7 +198,7 @@ const Home = () => {
                   handleClick("jewel25_lr");
                 }}
               >
-                <img src="assets/redeye1-bg.png" className="jewelimg" />
+                <img src={redeye} className="jewelimg" />
                 <div className="selectarea">
                   {/* <!-- <button type="button">Red Eye Ring</button> --> */}
                   <span>Red Eye Ring</span>
@@ -199,7 +212,7 @@ const Home = () => {
                   handleClick("jewel1_lr");
                 }}
               >
-                <img src="assets/sunny1-bg.png" className="jewelimg" />
+                <img src={sunny} className="jewelimg" />
                 <div className="selectarea">
                   {/* <!-- <button type="button">Sunny Ring</button> --> */}
                   <span>Sunny Ring</span>
@@ -214,7 +227,7 @@ const Home = () => {
                   handleClick("jewel26_lr");
                 }}
               >
-                <img src="assets/flower1-bg.png" className="jewelimg" />
+                <img src={flowerring} className="jewelimg" />
                 <div className="selectarea">
                   {/* <button type="button">Flower Ring</button> --> */}
                   <span>Flower Ring</span>
