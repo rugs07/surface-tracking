@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as SPLAT from "gsplat";
+import { Canvas } from '@react-three/fiber';
+import { CameraControls, OrbitControls, PresentationControls, Splat } from '@react-three/drei';
 import '../../css/gsplat.css'
 import '../../css/loader.css'
 import '../../css/style.css'
@@ -13,9 +15,11 @@ const VR = () => {
     const viewSpaceContainerRef = useRef(null);
     let autorotate = true; // Assuming you have a condition to enable/disable autorotation
     const autorotateSpeed = 0.005; // Define the speed of autorotation
-    let splat; // This will hold your loaded 3D object
+    let splat;
+    let url; // This will hold your loaded 3D object
 
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
+    console.log(canvasRef, "canvas ref")
 
     useEffect(() => {
         if (!SPLAT || !canvasRef.current || !selectedJewel) return;
@@ -23,6 +27,7 @@ const VR = () => {
         const scene = new SPLAT.Scene();
         const camera = new SPLAT.Camera();
         const renderer = new SPLAT.WebGLRenderer(canvasRef.current);
+
         const controls = new SPLAT.OrbitControls(camera, renderer.canvas);
 
         controls.minAngle = 10;
@@ -30,7 +35,8 @@ const VR = () => {
         controls.minZoom = 4;
         controls.maxZoom = 20;
 
-        const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
+        url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
+        //! https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/$b4_gen3/$b4_gen3.splat
         // fetch(url)
         //     .then((response) => {
         //         console.log(response.status)
@@ -40,13 +46,13 @@ const VR = () => {
         //     })
 
         SPLAT.Loader.LoadAsync(url, scene, (progress) => {
-            // updateLoadingProgress(progress * 100);
-            // setLoadingProgress(progress * 100);
+            updateLoadingProgress(progress * 100);
+            setLoadingProgress(progress * 100);
 
         }).then((loadedObject) => {
-            // if (loadingProgress == 100) {
-            //     hideLoading()
-            // }
+            if (loadingProgress == 100) {
+                hideLoading()
+            }
             splat = loadedObject;
             // hideLoading()  // Assuming LoadAsync returns the loaded 3D object
 
@@ -109,7 +115,19 @@ const VR = () => {
                 </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '100%' }}>
-                <canvas ref={canvasRef} id="gsplatCanvas" ></canvas>
+                {/* <canvas ref={canvasRef} id="gsplatCanvas" ></canvas> */}
+                <Canvas >
+
+                    <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} />
+                    {/* <CameraControls rotate={[0.09,2,4.5]} /> */}
+
+                    <Splat src="https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/b4_gen3/b4_gen3.splat"
+                        rotation={[0.09, 2, 4.5, 2]}
+                    // position={[2.1036774620197414, -2.397127693021015, ]}
+
+                    />
+                    {/* </PresentationControls> */}
+                </Canvas>
             </div>
             <audio className="audioElement">
                 <source src="./assets/audion.mp3" type="audio/mp3" />
