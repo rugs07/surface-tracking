@@ -126,9 +126,9 @@ const VR = () => {
                     {/* </PresentationControls> */}
                 </Canvas>
             </div>
-            <audio className="audioElement">
+            {/* <audio className="audioElement">
                 <source src="./assets/audion.mp3" type="audio/mp3" />
-            </audio>
+            </audio> */}
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Holistic } from '@mediapipe/holistic';
+import { Holistic } from '@mediapipe/holistic/holistic.js';
 import { Camera } from '@mediapipe/camera_utils';
 import { drawConnectors } from '@mediapipe/drawing_utils';
 import { Canvas } from '@react-three/fiber';
