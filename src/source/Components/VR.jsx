@@ -6,9 +6,15 @@ import '../../css/gsplat.css'
 import '../../css/loader.css'
 import '../../css/style.css'
 import { hideLoading, updateLoadingProgress } from '../../js/utils';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 const VR = () => {
+    const navigate = useNavigate();
+    const handleclick = () => {
+        navigate('/MediaPipe');
+   }
+
     const canvasRef = useRef(null);
     const [loadingProgress, setLoadingProgress] = useState(1);
     const autorotateAngleRef = useRef(0); // Using useRef to persist the value without causing re-renders
@@ -92,7 +98,7 @@ const VR = () => {
                 : null
             } */}
             <div className="ar-toggle-container" id="ar-toggle-container">
-                <button className="tryon-button" id="desktop-viewar">Try On</button>
+                <button className="tryon-button" id="desktop-viewar" onClick={handleclick}>Try On</button>
                 <h2 id="updatenote">{selectedJewel.label}</h2>
                 <div className="gsplatButtonDiv">
                     <span className="gsplatSoundEffect">
