@@ -13,10 +13,10 @@
   font-size: 1.3rem;
   padding: 1rem;
   margin-right: 3rem;
-
+  z-index: 1000;
   width: 10rem;
   border-radius: 5rem;
-    background-image: linear-gradient(to left, #000000, #ffffff);
+  background-image: linear-gradient(to left, #000000, #ffffff);
     /* box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.75); */
 }
 

@@ -98,7 +98,7 @@ const VR = () => {
                 : null
             } */}
             <div className="ar-toggle-container" id="ar-toggle-container">
-                <button className="tryon-button" id="desktop-viewar" onClick={handleclick}>Try On</button>
+                <button className="tryon-button" id="desktop-viewar" onClick={handleclick}> Try On </button>
                 <h2 id="updatenote">{selectedJewel.label}</h2>
                 <div className="gsplatButtonDiv">
                     <span className="gsplatSoundEffect">
