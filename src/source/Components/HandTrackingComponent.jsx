@@ -2,12 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Holistic } from '@mediapipe/holistic';
 import { Camera } from '@mediapipe/camera_utils';
 import { drawConnectors } from '@mediapipe/drawing_utils';
+import { Canvas } from '@react-three/fiber';
+import { Splat, OrbitControls } from '@react-three/drei';
 
 const HandTrackingComponent = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const holisticRef = useRef(null);
     const [handPoints, setHandPoints] = useState([]);
+
+    const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
+    const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
     useEffect(() => {
         const holistic = new Holistic({
@@ -34,7 +39,7 @@ const HandTrackingComponent = () => {
             const landmarks = results.poseLandmarks;
             if (landmarks && landmarks.length > 0) {
                 setHandPoints(landmarks);
-                console.log(results); // Log the results here
+                console.log(results.rightHandLandmarks); // Log the results here
             }
         });
 
@@ -56,19 +61,12 @@ const HandTrackingComponent = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h1>Hand Tracking</h1>
             <div style={{ position: 'relative' }}>
-                <video
-                    ref={videoRef}
-                    style={{ width: '100%', maxWidth: '800px', display: 'block' }}
-                    autoPlay
-                    playsInline
-                    muted
-                ></video>
-                <canvas
-                    ref={canvasRef}
-                    style={{ position: 'absolute', top: 0, left: 0 }}
-                    width="800"
-                    height="600"
-                ></canvas>
+                <video ref={videoRef} style={{ width: '100%', maxWidth: '800px', display: 'block' }} autoPlay playsInline muted></video>
+                <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0 }} width="800" height="600"></canvas>
+                <Canvas style={{ width: '800px', height: '600px', position: 'absolute', top: 0, left: 0 }}>
+                    <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} />
+                    <Splat src={url} rotation={[0.09, 2, 4.5, 2]} />
+                </Canvas>
             </div>
         </div>
     );
