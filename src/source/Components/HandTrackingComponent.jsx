@@ -1,62 +1,54 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Hands } from '@mediapipe/hands';
+import { Holistic } from '@mediapipe/holistic';
+import { Camera } from '@mediapipe/camera_utils';
+import { drawConnectors } from '@mediapipe/drawing_utils';
 
 const HandTrackingComponent = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
-    const handsRef = useRef(null);
+    const holisticRef = useRef(null);
     const [handPoints, setHandPoints] = useState([]);
 
     useEffect(() => {
-        const hands = new Hands({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}` });
-        hands.setOptions({
-            maxNumHands: 1,
+        const holistic = new Holistic({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`,
+        });
+        holistic.setOptions({
+            selfieMode: false,
+            smoothLandmarks: true,
             minDetectionConfidence: 0.5,
             minTrackingConfidence: 0.5,
         });
-        handsRef.current = hands;
+        holisticRef.current = holistic;
 
-        const initializeMediaPipe = async () => {
-            await hands.initialize();
-            await hands.send({ image: videoRef.current });
-        };
+        const camera = new Camera(videoRef.current, {
+            onFrame: async () => {
+                await holistic.send({ image: videoRef.current });
+            },
+            width: 800,
+            height: 600,
+        });
+        camera.start();
 
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-                videoRef.current.srcObject = stream;
-                videoRef.current.addEventListener('loadeddata', () => {
-                    initializeMediaPipe();
-                });
-            }).catch((error) => {
-                console.error('Error accessing camera:', error);
-            });
-        }
-
-        hands.onResults((results) => {
-            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-                const landmarks = results.multiHandLandmarks[0];
+        holistic.onResults((results) => {
+            const landmarks = results.poseLandmarks;
+            if (landmarks && landmarks.length > 0) {
                 setHandPoints(landmarks);
-                console.log(results);
+                console.log(results); // Log the results here
             }
         });
-        
+
         return () => {
-            hands.close();
+            camera.stop();
+            holistic.close();
         };
     }, []);
-    
+
     useEffect(() => {
         if (canvasRef.current && handPoints.length > 0) {
             const ctx = canvasRef.current.getContext('2d');
             ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-            handPoints.forEach((point) => {
-                const x = point.x * canvasRef.current.width;
-                const y = point.y * canvasRef.current.height;
-                ctx.beginPath();
-                ctx.arc(x, y, 5, 0, 2 * Math.PI);
-                ctx.fillStyle = '#FF0000';
-                ctx.fill();
-            });
+            drawConnectors(ctx, handPoints, Holistic.POSE_CONNECTIONS, { color: '#FF0000' });
         }
     }, [handPoints]);
 
