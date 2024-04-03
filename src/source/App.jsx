@@ -4,6 +4,8 @@ import { BrowserRouter,Routes, Route, useNavigate } from "react-router-dom";
 import { JewelsProvider } from "./context/JewelsContext";
 
 import VR from "./Components/VR";
+import HandTrackingComponent from "./Components/HandTrackingComponent";
+
 const App = () => {
   return (
     <JewelsProvider>
@@ -11,6 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/VR" element={<VR />} /> 
+        <Route path="/MediaPipe" element={<HandTrackingComponent />} /> 
       </Routes>
     </BrowserRouter>
     </JewelsProvider>

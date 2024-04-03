@@ -36,15 +36,6 @@ const VR = () => {
         controls.minZoom = 4;
         controls.maxZoom = 20;
 
-        //! https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/$b4_gen3/$b4_gen3.splat
-        // fetch(url)
-        //     .then((response) => {
-        //         console.log(response.status)
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     })
-
         SPLAT.Loader.LoadAsync(url, scene, (progress) => {
             updateLoadingProgress(progress * 100);
             setLoadingProgress(progress * 100);
