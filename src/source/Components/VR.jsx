@@ -109,7 +109,7 @@ const VR = () => {
                 {/* <canvas ref={canvasRef} id="gsplatCanvas" ></canvas> */}
                 <Canvas >
 
-                    <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} />
+                    <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={2} />
                     {/* <CameraControls rotate={[0.09,2,4.5]} /> */}
 
                     <Splat src={url}
