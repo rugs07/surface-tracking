@@ -12,7 +12,7 @@ const HandTrackingComponent = () => {
     const [handPoints, setHandPoints] = useState([]);
 
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
-    const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
+    const url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
 
     useEffect(() => {
         const holistic = new Holistic({
