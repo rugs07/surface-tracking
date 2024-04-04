@@ -5,15 +5,17 @@ import { CameraControls, OrbitControls, PresentationControls, Splat } from '@rea
 import '../../css/gsplat.css'
 import '../../css/loader.css'
 import '../../css/style.css'
+import FPSStats from "react-fps-stats";
 import { hideLoading, updateLoadingProgress } from '../../js/utils';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 
 const VR = () => {
+
     const navigate = useNavigate();
     const handleclick = () => {
         navigate('/MediaPipe');
-   }
+    }
 
     const canvasRef = useRef(null);
     const [loadingProgress, setLoadingProgress] = useState(1);
@@ -28,6 +30,7 @@ const VR = () => {
     console.log(canvasRef, "canvas ref")
 
     url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
+    // url = 'https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat'
     useEffect(() => {
         if (!SPLAT || !canvasRef.current || !selectedJewel) return;
 
@@ -97,7 +100,9 @@ const VR = () => {
             )
                 : null
             } */}
+            {/* <div>{fpsControl}</div> */}
             <div className="ar-toggle-container" id="ar-toggle-container">
+                <FPSStats />
                 <button className="tryon-button" id="desktop-viewar" onClick={handleclick}> Try On </button>
                 <h2 id="updatenote">{selectedJewel.label}</h2>
                 <div className="gsplatButtonDiv">
