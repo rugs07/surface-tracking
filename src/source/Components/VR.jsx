@@ -102,9 +102,9 @@ const VR = () => {
             } */}
             {/* <div>{fpsControl}</div> */}
             <div className="ar-toggle-container" id="ar-toggle-container">
-            <div className='FPSStats'>
-                <FPSStats />
-            </div>
+                <div className='FPSStats'>
+                    <FPSStats />
+                </div>
                 <button className="tryon-button" id="desktop-viewar" onClick={handleclick}> Try On </button>
                 <h2 id="updatenote">{selectedJewel.label}</h2>
                 <div className="gsplatButtonDiv">
