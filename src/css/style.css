@@ -867,6 +867,10 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     word-spacing: 3px;
   }
 
+  .ar-toggle-container{
+    margin-top: 58px; 
+  }
+
   button {
       margin: 0px;
       padding: 10px 14px;
