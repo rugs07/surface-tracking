@@ -18,7 +18,7 @@ const desktopViewAR = document.getElementById("desktop-viewar");
 const mobileViewAR = document.getElementById("mobile-viewar");
 
 let width = document.documentElement.clientWidth,
- height = document.documentElement.clientHeight;
+  height = document.documentElement.clientHeight;
 
 width = height;
 /**************************************************************************************************************
@@ -150,36 +150,36 @@ const smoothLandmarks = (results, onResults) => {
 
   // Adjust the smoothing based on velocity
   let effectiveLength = frameSets.length;
-  if(isMobile){
-    if(jewelType === "bangle"){
+  if (isMobile) {
+    if (jewelType === "bangle") {
+      if (velocity > 0.04) { // High velocity
+        effectiveLength = Math.min(effectiveLength, 4);
+      } else if (velocity > 0.015) { // Moderate velocity
+        effectiveLength = Math.min(effectiveLength, 6);
+      }
+      else if (velocity <= 0.015) {
+        effectiveLength = Math.min(effectiveLength, 8);
+      }
+    }
+    else {// for other than bangles
+      if (velocity > 0.015) { // Moderate velocity
+        effectiveLength = Math.min(effectiveLength, 4);
+      }
+      else if (velocity <= 0.015) {
+        effectiveLength = 6;
+      }
+    }
+  }
+  else {
     if (velocity > 0.04) { // High velocity
       effectiveLength = Math.min(effectiveLength, 4);
     } else if (velocity > 0.015) { // Moderate velocity
       effectiveLength = Math.min(effectiveLength, 6);
     }
-    else if(velocity <= 0.015){
-      effectiveLength = Math.min(effectiveLength, 8);
-      }
-    }
-    else{// for other than bangles
-      if (velocity > 0.015) { // Moderate velocity
-        effectiveLength = Math.min(effectiveLength, 4);
-      }
-      else if(velocity <= 0.015){
-        effectiveLength = 6;
-      }
+    else if (velocity <= 0.015) {
+      effectiveLength = 8;
     }
   }
-  else{
-  if (velocity > 0.04) { // High velocity
-    effectiveLength = Math.min(effectiveLength, 4);
-  } else if (velocity > 0.015) { // Moderate velocity
-    effectiveLength = Math.min(effectiveLength, 6);
-  }
-  else if(velocity <= 0.015){
-    effectiveLength = 8;
-  }
-}
 
   if (effectiveLength >= 4) { // Ensure there's enough data for smoothing
     const smoothedLandmarks = frameSets.slice(-effectiveLength).reduce((acc, frame, _, src) => {
@@ -284,7 +284,7 @@ function testSupport(supportedDevices) {
   if (!isSupported) {
     console.log(
       `This demo, running on ${detectedDevice.client.name}/${detectedDevice.os.name}, ` +
-        `is not well supported at this time, continue at your own risk.`
+      `is not well supported at this time, continue at your own risk.`
     );
   }
 }
@@ -422,7 +422,7 @@ function onResults(results) {
     results = smoothLandmarks(results);
     // console.log("amenitytech_log_003 after", results.multiHandLandmarks[0][0]);
   }
-  
+
   cropAndDrawImage(results, canvasAspectRatio, canvasWidth, canvasHeight);
   if (getStartedBtn.disabled) {
     getStartedBtn.disabled = false;
@@ -430,7 +430,7 @@ function onResults(results) {
     getStartedBtn.classList.remove("disabledbtn");
     getStartedBtn.innerText = "Get Started";
   }
-  
+
   // await delayfunction(0.1);
   if (isVideo) {
     // const currentTime = window.performance.now();
@@ -496,7 +496,7 @@ function onResults(results) {
       showhandscreen.style.display = "none";
       viewSpaceContainer.style.display = "inline-block";
       if (!showingJewel) {
-          showJewel();
+        showJewel();
       }
       translateRotateMesh(
         results.multiHandLandmarks[0],
@@ -559,38 +559,38 @@ hands.onResults(onResults);
 const startCamera = () => {
   // Dynamically construct the array of controls based on conditions
   let controlOptions = [
-      // Conditionally add fpsControl if it's initialized
-      ...(fpsControl ? [fpsControl] : []),
-      new controls.SourcePicker({
-          onFrame: async (input, size) => {
-              await hands.send({ image: input });
-          },
-      }),
-      // Add other controls here as needed
+    // Conditionally add fpsControl if it's initialized
+    ...(fpsControl ? [fpsControl] : []),
+    new controls.SourcePicker({
+      onFrame: async (input, size) => {
+        await hands.send({ image: input });
+      },
+    }),
+    // Add other controls here as needed
   ];
   // new controls.Slider({
-    //   title: "Max Number of Hands",
-    //   field: "maxNumHands",
-    //   range: [1, 4],
-    //   step: 1,
-    // }),
-    // new controls.Slider({
-    //   title: "Model Complexity",
-    //   field: "modelComplexity",
-    //   discrete: ["Lite", "Full"],
-    // }),
-    // new controls.Slider({
-    //   title: "Min Detection Confidence",
-    //   field: "minDetectionConfidence",
-    //   range: [0, 1],
-    //   step: 0.01,
-    // }),
-    // new controls.Slider({
-    //   title: "Min Tracking Confidence",
-    //   field: "minTrackingConfidence",
-    //   range: [0, 1],
-    //   step: 0.01,
-    // }),
+  //   title: "Max Number of Hands",
+  //   field: "maxNumHands",
+  //   range: [1, 4],
+  //   step: 1,
+  // }),
+  // new controls.Slider({
+  //   title: "Model Complexity",
+  //   field: "modelComplexity",
+  //   discrete: ["Lite", "Full"],
+  // }),
+  // new controls.Slider({
+  //   title: "Min Detection Confidence",
+  //   field: "minDetectionConfidence",
+  //   range: [0, 1],
+  //   step: 0.01,
+  // }),
+  // new controls.Slider({
+  //   title: "Min Tracking Confidence",
+  //   field: "minTrackingConfidence",
+  //   range: [0, 1],
+  //   step: 0.01,
+  // }),
 
   // Present a control panel through which the user can manipulate the solution options
   new controls.ControlPanel(controlsElement).add(controlOptions);
@@ -643,7 +643,7 @@ const setupCamera = () => {
     width: width,
     height: height,
   });
-  
+
   // clearing previous mediastream if exist before new start
   camera?.g?.getTracks().forEach((track) => {
     track.stop();
