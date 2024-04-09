@@ -29,8 +29,8 @@ const VR = () => {
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
     console.log(canvasRef, "canvas ref")
 
-    // url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
-    url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
+    url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
+    // url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
     useEffect(() => {
         if (!SPLAT || !canvasRef.current || !selectedJewel) return;
 
@@ -102,9 +102,9 @@ const VR = () => {
             } */}
             {/* <div>{fpsControl}</div> */}
             <div className="ar-toggle-container" id="ar-toggle-container">
-            <div className='FPSStats'>
-                <FPSStats />
-            </div>
+                <div className='FPSStats'>
+                    <FPSStats />
+                </div>
                 <button className="tryon-button" id="desktop-viewar" onClick={handleclick}> Try On </button>
                 <h2 id="updatenote">{selectedJewel.label}</h2>
                 <div className="gsplatButtonDiv">

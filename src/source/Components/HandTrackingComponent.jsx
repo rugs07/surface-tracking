@@ -1,11 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
 import hand_landmarker_task from "../../models/hand_landmarker.task";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Splat } from "@react-three/drei";
 
 const HandTrackingComponent = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [handPresence, setHandPresence] = useState(null);
+    const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
+    console.log(canvasRef, "canvas ref")
+
+    const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
     useEffect(() => {
         let handLandmarker;
@@ -87,13 +93,17 @@ const HandTrackingComponent = () => {
     }, []);
 
     return (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h1>Is there a Hand? {handPresence ? "Yes" : "No"}</h1>
-            <div style={{ position: "relative" }}>
-                <video ref={videoRef} autoPlay playsInline ></video>
-                <canvas ref={canvasRef} style={{ backgroundColor: "black", width: "600px", height: "480px" }}></canvas>
+            <div style={{ position: 'relative', width: '600px', height: '480px', zIndex: '1000' }}>
+                <Canvas style={{ width: '100%', height: '100%' }}>
+                    <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} minZoom={5} />
+                    <Splat src={url} rotation={[0.09, 2, 4.5, 2]} />
+                </Canvas>
+                <video ref={videoRef} autoPlay playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: '-1000' }}></video>
             </div>
-        </>
+            <canvas ref={canvasRef} style={{ backgroundColor: "black", width: "600px", height: "480px" }}></canvas>
+        </div>
     );
 };
 
