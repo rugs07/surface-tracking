@@ -97,7 +97,7 @@ const HandTrackingComponent = () => {
             <h1>Is there a Hand? {handPresence ? "Yes" : "No"}</h1>
             <div style={{ position: 'relative', width: '600px', height: '480px', zIndex: '1000' }}>
                 <Canvas style={{ width: '100%', height: '100%' }}>
-                    <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} minZoom={5} />
+                    <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} />
                     <Splat src={url} rotation={[0.09, 2, 4.5, 2]} />
                 </Canvas>
                 <video ref={videoRef} autoPlay playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: '-1000' }}></video>
