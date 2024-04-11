@@ -591,12 +591,13 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   position: absolute;
   top: 0;
   /* left: 0; */
+
   text-align: left;
   z-index: 10;
   /* display: none; */
 }
 
-.usermanual,
+#usermanual,
 #retrycamscreen,
 .side-errors {
   position: absolute;
@@ -614,7 +615,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   /* color: #eb960e !important; */
   font-weight: 400;
   /* border: 2px solid #eee; */
-  display: none;
+  /* display: none; */
   width: 100%;
   height: 100%;
 }
