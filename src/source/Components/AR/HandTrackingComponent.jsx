@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
-import hand_landmarker_task from "../../models/hand_landmarker.task";
+import hand_landmarker_task from "../../../models/hand_landmarker.task";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Splat } from "@react-three/drei";
 
