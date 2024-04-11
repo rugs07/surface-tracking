@@ -4,7 +4,7 @@ import { BrowserRouter,Routes, Route, useNavigate } from "react-router-dom";
 import { JewelsProvider } from "./context/JewelsContext";
 
 import VR from "./Components/VR";
-import HandTrackingComponent from "./Components/HandTrackingComponent";
+import HandTrackingComponent from "./Components/AR/HandTrackingComponent";
 
 const App = () => {
   return (

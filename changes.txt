@@ -1,6 +1,0 @@
-1.  Resizing → such that it fits the wrist/finger well (in vertical & horizontal rotations) ==> Done 
-2.  Caching frames to match the delay due to averaging
-3.  Dynamic resizing of window: ensure that camera & canvas are scaled up & down in same ratio across devices & browsers (most cases are fine- found diff in one Pixel 7 & one iPhone)→ to test this open the ring XR & move it from end to end of screen in both horizontal & vertical position. If the resizing is correct, ring will always be in center of finger. Otherwise, it will be misplaced, like it may go between the fingers in horizontal hand position.
-4.  Front hand - back hand confused sometimes when too close to camera, once confused it stays that way till we take hand out of screen & bring back ==> Done
-5.  In no case the back part of the bangle should be visible (no show zone)- sometimes when switching hands frequently, we see it momentarily
-6.  Clipping→ When enable X-Rotation, show only the front part of the bangle, the back part should be clipped by depth so that it feels that it the back part is occluded by the hand

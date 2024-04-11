@@ -30,6 +30,7 @@ const VR = () => {
     console.log(canvasRef, "canvas ref")
 
     url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
+    
     // url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
     useEffect(() => {
         if (!SPLAT || !canvasRef.current || !selectedJewel) return;
