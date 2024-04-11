@@ -2,13 +2,13 @@ import React from "react";
 import step1img from '../../assets/banglestep1.jpg'
 import step2img from '../../assets/banglestep2.jpg'
 import step3img from '../../assets/banglestep3.gif'
-import '../../../css/style.css'
-import '../../../css/gsplat.css'
-import '../../../css/loader.css'
+import '../../css/style.css'
+import '../../css/gsplat.css'
+import '../../css/loader.css'
 
 const Hands = () => {
   return (
-    <div>
+    <>
       <div id="usermanual">
         <h3 className="trytitle">Try on with 3 simple steps !</h3>
         <div className="allsteps">
@@ -63,7 +63,8 @@ const Hands = () => {
           Try again
         </button>
       </div>
-    </div>
+    </>
+
   );
 };
 

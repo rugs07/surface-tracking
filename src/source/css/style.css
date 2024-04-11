@@ -596,7 +596,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   /* display: none; */
 }
 
-#usermanual,
+.usermanual,
 #retrycamscreen,
 .side-errors {
   position: absolute;

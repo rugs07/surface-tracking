@@ -1,7 +1,7 @@
 import React from "react";
-import "../../css/style.css";
-import "../../css/loader.css";
-import "../../css/gsplat.css";
+import "../css/style.css";
+import "../css/loader.css";
+import "../css/gsplat.css";
 import { useNavigate } from "react-router-dom";
 import { useJewels } from "../context/JewelsContext";
 import flowerbangle from "../assets/Bangle_new.png";
@@ -32,7 +32,7 @@ const Home = () => {
     window.location.href = url;
   };
 
-   const gotoHome = () => {
+  const gotoHome = () => {
     window.location.href = `https://www.jar4u.com/`;
   }
 
@@ -93,14 +93,14 @@ const Home = () => {
                 handleNavigate("https://prod.jar4u.com/?id=jewel7_lr");
               }}
             >
-                <img
-                  src={diamond}
-                  className="jewelimg"
-                />
-                <div className="selectarea">
-                  {/* <!-- <button type="button">Diamond Bracelet</button> --> */}
-                  <span>Bracelet</span>
-                </div>
+              <img
+                src={diamond}
+                className="jewelimg"
+              />
+              <div className="selectarea">
+                {/* <!-- <button type="button">Diamond Bracelet</button> --> */}
+                <span>Bracelet</span>
+              </div>
             </div>
           </div>
           <div className="glassmorph">
@@ -155,11 +155,11 @@ const Home = () => {
                 handleNavigate("https://prod.jar4u.com/?id=natraj");
               }}
             >
-                <img src={natraj} className="jewelimg" />
-                <div className="selectarea">
-                  {/* <!-- <button type="button">Natraj</button> --> */}
-                  <span>Natraj</span>
-                </div>
+              <img src={natraj} className="jewelimg" />
+              <div className="selectarea">
+                {/* <!-- <button type="button">Natraj</button> --> */}
+                <span>Natraj</span>
+              </div>
             </div>
           </div>
           <div className="glassmorph">

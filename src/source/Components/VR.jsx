@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as SPLAT from "gsplat";
 import { Canvas } from '@react-three/fiber';
 import { CameraControls, OrbitControls, PresentationControls, Splat } from '@react-three/drei';
-import '../../css/gsplat.css'
-import '../../css/loader.css'
-import '../../css/style.css'
+import '../css/gsplat.css'
+import '../css/loader.css'
+import '../css/style.css'
 import FPSStats from "react-fps-stats";
 import { hideLoading, updateLoadingProgress } from '../../js/utils';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -30,7 +30,7 @@ const VR = () => {
     console.log(canvasRef, "canvas ref")
 
     url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
-    
+
     // url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
     useEffect(() => {
         if (!SPLAT || !canvasRef.current || !selectedJewel) return;
