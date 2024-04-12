@@ -14,7 +14,7 @@ const VR = () => {
 
     const navigate = useNavigate();
     const handleclick = () => {
-        navigate('/MediaPipe');
+        navigate('/Loading');
     }
 
     const canvasRef = useRef(null);

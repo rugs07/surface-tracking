@@ -5,10 +5,16 @@ import step3img from '../../assets/banglestep3.gif'
 import '../../css/style.css'
 // import '../../css/gsplat.css'
 // import '../../css/loader.css'
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Hands = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/Ar');
+  }
+
   return (
-    <div>
+    <div style={{}}>
       <div id="usermanual">
         <h3 className="trytitle">Try on with 3 simple steps !</h3>
         <div className="allsteps">
@@ -33,12 +39,14 @@ const Hands = () => {
           </div>
         </div>
         <button
-          className="centerbtn disabledbtn"
+          className="centerbtn "
           type="button"
           id="getstartedbtn"
-          disabled
+          onClick={handleClick}
+        // disabled
+
         >
-          Setting up
+          Get Started
         </button>
       </div>
       {/* <div id="retrycamscreen">
