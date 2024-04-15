@@ -4,15 +4,17 @@ import hand_landmarker_task from "../../../models/hand_landmarker.task";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Splat } from "@react-three/drei";
 import Hands from "../Loading-Screen/Hands";
+import { ARFunctions } from "../../context/ARContext";
 
 const HandTrackingComponent = () => {
     const videoRef = useRef(null);
+    const { rotateY } = ARFunctions()
     const canvasRef = useRef(null);
     const [handPresence, setHandPresence] = useState(null);
     const [cameraReady, setCameraReady] = useState(false)
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
     console.log(canvasRef, "canvas ref")
-
+    console.log(rotateY, 'logs');
     const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
     useEffect(() => {
