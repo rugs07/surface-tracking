@@ -10,7 +10,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 const Hands = () => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/Ar');
+    navigate('/AR');
   }
 
   return (

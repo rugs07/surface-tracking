@@ -4,17 +4,22 @@ import hand_landmarker_task from "../../../models/hand_landmarker.task";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Splat } from "@react-three/drei";
 import Hands from "../Loading-Screen/Hands";
+import { useVariables } from "../../context/variableContext";
+import { ARFunctions } from "../../context/ARContext";
 
 const HandTrackingComponent = () => {
+    const { resize, setResize } = useVariables()
+    const { rotateY } = ARFunctions()
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
+    const captureCanvasRef = useRef(null);
     const [handPresence, setHandPresence] = useState(null);
     const [cameraReady, setCameraReady] = useState(false)
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
     console.log(canvasRef, "canvas ref")
 
     const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
-
+    console.log(rotateY, 'logs');
     useEffect(() => {
         let handLandmarker;
         let animationFrameId;
@@ -63,15 +68,26 @@ const HandTrackingComponent = () => {
 
                 // Assuming detections.landmarks is an array of landmark objects
                 if (detections.landmarks) {
-                    drawLandmarks(detections.landmarks);
+                    // drawLandmarks(detections.landmarks);
                     console.log(123, detections.landmarks)
                 }
+
             }
             requestAnimationFrame(detectHands);
         };
 
         const startWebcam = async () => {
             try {
+                const captureCanvas = captureCanvasRef.current;
+                const captureContext = captureCanvas.getContext('2d');
+                captureCanvas.width = videoRef.current.width;
+                captureCanvas.height = videoRef.current.height;
+                captureContext.drawImage(videoRef.current, 0, 0, captureCanvas.width, captureCanvas.height);
+
+                // Get the frame source as a data URL
+                const frameSource = captureCanvas.toDataURL('image/jpeg');
+                console.log('Frame Source:', frameSource);
+
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 videoRef.current.srcObject = stream;
                 await initializeHandDetection();
@@ -111,6 +127,7 @@ const HandTrackingComponent = () => {
                 <video ref={videoRef} autoPlay playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: '-1000' }}></video>
             </div>
             {/* <canvas ref={canvasRef} style={{ backgroundColor: "black", width: "800px", height: "480px" }}></canvas> */}
+            <canvas ref={captureCanvasRef} style={{ backgroundColor: "black", width: "800px", height: "480px" }}></canvas>
         </div>
     );
 };
