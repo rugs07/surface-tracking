@@ -1,11 +1,20 @@
 // GlobalFunctionsContext.js
+import * as THREE from 'three';
 import React, { createContext, useContext } from 'react';
+import { useVariables } from './variableContext';
 
 // Create a context for your global functions
 const GlobalFunctionsContext = createContext();
 
 export const GlobalFunctionsProvider = ({ children }) => {
+    let zArr = [];
+    let rsArr = [];
+    let yArr = [];
+    let xtArr = [];
+    let ytArr = [];
     // Define your globally accessible functions
+    let { YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball } = useVariables()
+    // const { calculateAngleAtMiddle } = ARFunctions()
     function rotateX(angle) {
         if (isArcball) {
             var quaternion = new THREE.Quaternion().setFromAxisAngle(
@@ -57,14 +66,21 @@ export const GlobalFunctionsProvider = ({ children }) => {
         //   // );
         // }
 
-        YRAngle = angle;
+        angle = YRAngle;
 
         if (
             (handLabel === "Right" && facingMode !== "environment") ||
             (handLabel === "Left" && facingMode === "environment")
         )
             YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
-        else YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle);
+        else THREE.MathUtils.degToRad(-90 - YRAngle);
+    }
+
+    const mapRange = (value, oldMin, oldMax, newMin, newMax) => {
+        const oldRange = oldMax - oldMin;
+        const newRange = newMax - newMin;
+        const newValue = ((value - oldMin) * newRange) / oldRange + newMin;
+        return newValue;
     }
 
     // To normalize angles between 0 to 360 deg
@@ -236,8 +252,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
             else if (normYAngle < -90) normYAngle = -90;
             rotateY(-normYAngle);
         }
-        lastPinkyRef = newPinkyRef;
-        lastIndexRef = newIndexRef;
+        newPinkyRef = lastPinkyRef;
+        newIndexRef = lastIndexRef;
     }
 
     function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
@@ -286,7 +302,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             rotateX(normXAngle);
         }
 
-        lastRefOfMid = newRefOfMid;
+        newRefOfMid = lastRefOfMid;
     }
 
     function rotateVectorZ(vector, angle) {
@@ -412,7 +428,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             rotateZ(normZAngle, canX, canY);
         }
 
-        lastMidRef = newMidRef;
+        newMidRef = lastMidRef;
     }
 
     function getNormalizedXTSub(value) {
@@ -513,7 +529,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         // return wristSize;
     }
 
-    let lastSize = null;
+    let lastSize = null; mapRange
 
     function smoothResizing(wristSize) {
         if (enableSmoothing) {
@@ -540,10 +556,20 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     //function to use mediapipe hand prediction data for translation and rotation
     function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
+        if (!points || points.length === 0) {
+            // Handle the case where points is null or empty
+            return;
+        }
+
+        console.log(points, 'points');
+        console.log(handLabel, 'handlabel');
+        console.log(isPalmFacing, 'palm');
+        console.log(sourceImage, 'sourceImage');
         let wrist = points[0];
         let firstKnuckle = points[5];
         let thumbTip = points[4];
         let pinkyTip = points[20];
+        console.log(wrist.x, firstKnuckle, "trm logs");
         let pinkyKnuckle = {
             x: (points[17].x + points[18].x) / 2.0,
             y: (points[17].y + points[18].y) / 2.0,
@@ -558,7 +584,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
             z: (points[13].z + points[14].z) / 2.0,
         };
 
-        // console.log(wrist);s
+        // console.log(wrist);
+
         let stayPoint = null;
         // console.log(wrist, "before setting");
         if (verticalRotation) {
@@ -598,6 +625,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             } else if (jewelType === "ring") {
                 stayPoint = ringPos;
             }
+            console.log(stayPoint, stayPoint.y, stayPoint.z);
         }
         // console.log(stayPoint);
 
@@ -606,10 +634,13 @@ export const GlobalFunctionsProvider = ({ children }) => {
         //backhand open - 17, backhand closed - (0-1), fronthand open - (16-17) , fronthand closed = (4-7)
 
         let window_scale, canX, canY;
-
+        let windowWidth = document.documentElement.clientWidth;
+        let windowHeight = document.documentElement.clientHeight;
+        windowWidth = window.screen.width;
         console.log("SourceImage height : ", sourceImage.height);
         console.log("SourceImage width : ", sourceImage.width);
         //old code
+
         if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
             // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
             canX = stayPoint.x * windowWidth - windowWidth / 2;
@@ -660,8 +691,10 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
         // console.log(sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
         // rotation & translation (getZAngleAndRotate also translates)
-        totalTransX = canX;
-        totalTransY = canY;
+        // totalTransX = canX;
+        canX = totalTransX
+        canY = totalTransY
+        // totalTransY = canY;
         if (jewelType === "bangle") {
             getZAngleAndRotate(wrist, midPip, canX, canY);
             getXAngleAndRotate(wrist, midPip, ZRAngle);
@@ -789,7 +822,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         }
 
         let smoothenSize = smoothResizing(dist * resizeMul);
-        scaleMul = smoothenSize * 0.5;
+        // scaleMul = smoothenSize * 0.5;
 
         // Use if required
         // const baseNear = jewelType === "bangle" ? 0.093 : 0.0975;
@@ -813,6 +846,44 @@ export const GlobalFunctionsProvider = ({ children }) => {
             gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
     }
 
+    const calculateAngleAtMiddle = (landmark1, landmark2, landmark3) => {
+        // Calculate vectors between landmarks
+        const vector1 = [
+            landmark1.x - landmark2.x,
+            landmark1.y - landmark2.y,
+            landmark1.z - landmark2.z,
+        ];
+        const vector2 = [
+            landmark3.x - landmark2.x,
+            landmark3.y - landmark2.y,
+            landmark3.z - landmark2.z,
+        ];
+
+        // Calculate dot product of the two vectors
+        const dotProduct =
+            vector1[0] * vector2[0] + vector1[1] * vector2[1] + vector1[2] * vector2[2];
+
+        // Calculate magnitudes of the vectors
+        const magnitude1 = Math.sqrt(
+            vector1[0] * vector1[0] + vector1[1] * vector1[1] + vector1[2] * vector1[2]
+        );
+        const magnitude2 = Math.sqrt(
+            vector2[0] * vector2[0] + vector2[1] * vector2[1] + vector2[2] * vector2[2]
+        );
+
+        // Calculate the cosine of the angle using dot product and magnitudes
+        const cosAngle = dotProduct / (magnitude1 * magnitude2);
+
+        // Calculate the angle in radians
+        const angleInRadians = Math.acos(cosAngle);
+
+        // Convert the angle to degrees
+        const angleInDegrees = (angleInRadians * 180) / Math.PI;
+
+        return Math.trunc(angleInDegrees / 10);
+    }
+
+
 
     // Other globally accessible functions...
 
@@ -822,6 +893,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         rotateY,
         normalizeAngle,
         rotateZ,
+        mapRange,
         convertRingTransRange,
         getYAngleAndRotate,
         getXAngleAndRotate,
@@ -833,6 +905,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         manhattanDistance,
         calculateWristSize,
         smoothResizing,
+        calculateAngleAtMiddle,
         translateRotateMesh
 
 

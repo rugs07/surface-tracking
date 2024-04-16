@@ -2,19 +2,21 @@ import React, { useEffect, useRef, useState } from "react";
 import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
 import hand_landmarker_task from "../../../models/hand_landmarker.task";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Splat } from "@react-three/drei";
+import { AsciiRenderer, OrbitControls, Splat } from "@react-three/drei";
 import Hands from "../Loading-Screen/Hands";
 import { ARFunctions } from "../../context/ARContext";
 
 const HandTrackingComponent = () => {
     const videoRef = useRef(null);
-    const { rotateY } = ARFunctions()
+    const { translateRotateMesh } = ARFunctions()
     const canvasRef = useRef(null);
+    const [landmark, setLandmark] = useState()
     const [handPresence, setHandPresence] = useState(null);
     const [cameraReady, setCameraReady] = useState(false)
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
-    console.log(canvasRef, "canvas ref")
-    console.log(rotateY, 'logs');
+    let detections;
+    console.log(canvasRef.current, "canvas ref")
+    console.log(translateRotateMesh, 'logs');
     const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
     useEffect(() => {
@@ -40,10 +42,11 @@ const HandTrackingComponent = () => {
             }
         };
 
+
         const drawLandmarks = (landmarksArray) => {
             const canvas = canvasRef.current;
             const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearReact(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
 
             landmarksArray.forEach(landmarks => {
@@ -56,17 +59,30 @@ const HandTrackingComponent = () => {
                     ctx.fill();
                 });
             });
+
         };
+
 
         const detectHands = () => {
             if (videoRef.current && videoRef.current.readyState >= 2) {
-                const detections = handLandmarker.detectForVideo(videoRef.current, performance.now());
+                detections = handLandmarker.detectForVideo(videoRef.current, performance.now());
                 setHandPresence(detections.handednesses.length > 0);
 
-                // Assuming detections.landmarks is an array of landmark objects
-                if (detections.landmarks) {
-                    drawLandmarks(detections.landmarks);
+                // Check if detections.landmarks is not empty
+                if (detections.landmarks && detections.landmarks.length > 0) {
+                    // drawLandmarks(detections.landmarks);
+                    // setLandmark(detections.landmarks)
                     console.log(123, detections.landmarks)
+
+                    // Call translateRotateMesh only if landmarks are available
+                    try {
+
+                        translateRotateMesh(detections.landmarks[0], 'Right', true, canvasRef.current)
+                    } catch (error) {
+                        console.log(error)
+                    }
+                } else {
+                    console.log('No hand landmarks detected');
                 }
             }
             requestAnimationFrame(detectHands);
@@ -106,13 +122,14 @@ const HandTrackingComponent = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h1>Is there a Hand? {handPresence ? "Yes" : "No"}</h1>
             <div style={{ position: 'relative', width: '600px', height: '480px', zIndex: '1000' }}>
-                <Canvas>
-                    <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} />
-                    <Splat src={url} rotation={[0.09, 2, 4.5, 2]} />
+                <video ref={videoRef} autoPlay playsInline style={{ position: '', top: 0, left: 0, width: '100%', height: '100%', zIndex: '-1000' }}></video>
+                <Canvas ref={canvasRef}>
+                    <AsciiRenderer  />
+                    {/* <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} /> */}
+                    <Splat src={url} />
                 </Canvas>
-                <video ref={videoRef} autoPlay playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: '-1000' }}></video>
             </div>
-            <canvas ref={canvasRef} style={{ backgroundColor: "black", width: "800px", height: "480px" }}></canvas>
+            {/* <canvas ref={canvasRef} style={{ backgroundColor: "black", width: "800px", height: "480px" }}></canvas> */}
         </div>
     );
 };

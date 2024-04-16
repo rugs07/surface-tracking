@@ -29,7 +29,7 @@ export const VariableProvider = ({ children }) => {
     const [isMobile, setIsMobile] = useState(true);
     const [isIOS, setIsIOS] = useState(false);
     const [browserName, setBrowserName] = useState('');
-    const [jewelType, setJewelType] = useState('');
+    const [jewelType, setJewelType] = useState('bangle');
     const [rawBaseTheta, setRawBaseTheta] = useState(0);
     const [baseTheta, setBaseTheta] = useState(0);
     const [baseThetaVR, setBaseThetaVR] = useState(0);
@@ -246,7 +246,7 @@ export const VariableProvider = ({ children }) => {
         totalTransX,
         setTotalTransX,
         totalTransY,
-        setTotalTransY
+
     };
 
     return (
@@ -256,4 +256,4 @@ export const VariableProvider = ({ children }) => {
     );
 };
 
-export const useVariables = () =>useContext(VariableContext)
+export const useVariables = () => useContext(VariableContext)
