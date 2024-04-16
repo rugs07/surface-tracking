@@ -121,10 +121,10 @@ const HandTrackingComponent = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h1>Is there a Hand? {handPresence ? "Yes" : "No"}</h1>
+            <video ref={videoRef} autoPlay playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: '-1000' }}></video>
             <div style={{ position: 'relative', width: '600px', height: '480px', zIndex: '1000' }}>
-                <video ref={videoRef} autoPlay playsInline style={{ position: '', top: 0, left: 0, width: '100%', height: '100%', zIndex: '-1000' }}></video>
                 <Canvas ref={canvasRef}>
-                    <AsciiRenderer  />
+                    {/* <AsciiRenderer /> */}
                     {/* <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} /> */}
                     <Splat src={url} />
                 </Canvas>
