@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import { AsciiRenderer, OrbitControls, Splat } from "@react-three/drei";
 import Hands from "../Loading-Screen/Hands";
 import { ARFunctions } from "../../context/ARContext";
+import { useNavigate } from "react-router-dom";
 
 const HandTrackingComponent = () => {
     const videoRef = useRef(null);
@@ -18,6 +19,18 @@ const HandTrackingComponent = () => {
     console.log(canvasRef.current, "canvas ref")
     console.log(translateRotateMesh, 'logs');
     const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
+    const navigate = useNavigate();
+
+    const handleStopAR = () => {
+        // Stop the video stream
+        if (videoRef.current && videoRef.current.srcObject) {
+          videoRef.current.srcObject?.getTracks()?.forEach(track => track.stop());
+        }
+        setHandPresence(null);
+        setCameraReady(false);
+
+        navigate('/VR');
+      };
 
     useEffect(() => {
         let handLandmarker;
@@ -102,9 +115,8 @@ const HandTrackingComponent = () => {
         startWebcam();
         return () => {
             if (videoRef.current && videoRef.current.srcObject) {
-                videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-                setCameraReady(true)
-            }
+                videoRef.current.srcObject?.getTracks()?.forEach(track => track.stop());
+              }
             if (handLandmarker) {
                 handLandmarker.close();
             }
@@ -113,15 +125,12 @@ const HandTrackingComponent = () => {
             }
         };
     }, []);
-    console.log(cameraReady, 'cam');
 
-    // if (!cameraReady) {
-    //     return <Hands />
-    // }
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h1>Is there a Hand? {handPresence ? "Yes" : "No"}</h1>
-            <video ref={videoRef} autoPlay playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: '-1000' }}></video>
+            <button onClick={handleStopAR}>STOP AR</button>
+            <video ref={videoRef} autoPlay playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: '-1000' }}></video>
             <div style={{ position: 'relative', width: '600px', height: '480px', zIndex: '1000' }}>
                 <Canvas ref={canvasRef}>
                     {/* <AsciiRenderer /> */}
