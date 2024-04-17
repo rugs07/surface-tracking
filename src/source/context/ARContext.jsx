@@ -12,8 +12,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let yArr = [];
     let xtArr = [];
     let ytArr = [];
+    // const gsplatCanvas = document.getElementById("gsplatCanvas");
     // Define your globally accessible functions
-    let { YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball } = useVariables()
+    let { XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball } = useVariables()
     // const { calculateAngleAtMiddle } = ARFunctions()
     function rotateX(angle) {
         if (isArcball) {
@@ -114,7 +115,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             "px) rotateZ(" +
             angle +
             "deg)";
-
+        console.log(canP, canX, canY, "can's");
         gsplatCanvas.style.transform = transform;
 
         ZRAngle = angle;
@@ -428,7 +429,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             rotateZ(normZAngle, canX, canY);
         }
 
-        newMidRef = lastMidRef;
+        lastMidRef = newMidRef;
     }
 
     function getNormalizedXTSub(value) {
@@ -561,15 +562,15 @@ export const GlobalFunctionsProvider = ({ children }) => {
             return;
         }
 
-        console.log(points, 'points');
-        console.log(handLabel, 'handlabel');
-        console.log(isPalmFacing, 'palm');
-        console.log(sourceImage, 'sourceImage');
+        // console.log(points, 'points');
+        // console.log(handLabel, 'handlabel');
+        // console.log(isPalmFacing, 'palm');
+        // console.log(sourceImage, 'sourceImage');
         let wrist = points[0];
         let firstKnuckle = points[5];
         let thumbTip = points[4];
         let pinkyTip = points[20];
-        console.log(wrist.x, firstKnuckle, "trm logs");
+        // console.log(wrist.x, firstKnuckle, "trm logs");
         let pinkyKnuckle = {
             x: (points[17].x + points[18].x) / 2.0,
             y: (points[17].y + points[18].y) / 2.0,
@@ -625,7 +626,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             } else if (jewelType === "ring") {
                 stayPoint = ringPos;
             }
-            console.log(stayPoint, stayPoint.y, stayPoint.z);
+            // console.log(stayPoint, stayPoint.y, stayPoint.z);
         }
         // console.log(stayPoint);
 
@@ -641,6 +642,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         console.log("SourceImage width : ", sourceImage.width);
         //old code
 
+        console.log(windowWidth, stayPoint.x, 'win height');
         if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
             // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
             canX = stayPoint.x * windowWidth - windowWidth / 2;
@@ -651,6 +653,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             canY =
                 stayPoint.y * (sourceImage.height * window_scale) -
                 (sourceImage.height * window_scale) / 2;
+
         } else {
             // Image is wider than the canvas, so we crop left & right & scale as per best fit of height
             canY = stayPoint.y * windowHeight - windowHeight / 2;
@@ -692,11 +695,14 @@ export const GlobalFunctionsProvider = ({ children }) => {
         // console.log(sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
         // rotation & translation (getZAngleAndRotate also translates)
         // totalTransX = canX;
+        console.log(canX, 'canx');
+        console.log(canY, 'cany');
         canX = totalTransX
         canY = totalTransY
         // totalTransY = canY;
         if (jewelType === "bangle") {
             getZAngleAndRotate(wrist, midPip, canX, canY);
+            console.log('aryan')
             getXAngleAndRotate(wrist, midPip, ZRAngle);
             getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
         } else if (jewelType === "ring") {

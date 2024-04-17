@@ -15,8 +15,8 @@ const HandTrackingComponent = () => {
     const [cameraReady, setCameraReady] = useState(false)
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
     let detections;
-    console.log(canvasRef.current, "canvas ref")
-    console.log(translateRotateMesh, 'logs');
+    // console.log(canvasRef.current, "canvas ref")
+    // console.log(translateRotateMesh, 'logs');
     const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
     useEffect(() => {
@@ -72,7 +72,7 @@ const HandTrackingComponent = () => {
                 if (detections.landmarks && detections.landmarks.length > 0) {
                     // drawLandmarks(detections.landmarks);
                     // setLandmark(detections.landmarks)
-                    console.log(123, detections.landmarks)
+                    // console.log(123, detections.landmarks)
 
                     // Call translateRotateMesh only if landmarks are available
                     try {
@@ -113,7 +113,7 @@ const HandTrackingComponent = () => {
             }
         };
     }, []);
-    console.log(cameraReady, 'cam');
+    // console.log(cameraReady, 'cam');
 
     // if (!cameraReady) {
     //     return <Hands />
@@ -123,7 +123,7 @@ const HandTrackingComponent = () => {
             <h1>Is there a Hand? {handPresence ? "Yes" : "No"}</h1>
             <video ref={videoRef} autoPlay playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: '-1000' }}></video>
             <div style={{ position: 'relative', width: '600px', height: '480px', zIndex: '1000' }}>
-                <Canvas ref={canvasRef}>
+                <Canvas ref={canvasRef} id="gsplatCanvas">
                     {/* <AsciiRenderer /> */}
                     {/* <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} /> */}
                     <Splat src={url} />
