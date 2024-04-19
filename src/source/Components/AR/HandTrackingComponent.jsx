@@ -136,7 +136,10 @@ const HandTrackingComponent = () => {
                 <Canvas ref={canvasRef} id="gsplatCanvas">
                     {/* <AsciiRenderer /> */}
                     {/* <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} /> */}
-                    <Splat src={url} />
+                    <Splat src={url} 
+                        rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
+                        position={[0, 0, 0]}
+                    />
                 </Canvas>
             </div>
             {/* <canvas ref={canvasRef} style={{ backgroundColor: "black", width: "800px", height: "480px" }}></canvas> */}

@@ -28,13 +28,13 @@ const VR = () => {
 
     const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || '{}');
     console.log(canvasRef, "canvas ref")
-
+    
     url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
-
+    
     // url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
     useEffect(() => {
         if (!SPLAT || !canvasRef.current || !selectedJewel) return;
-
+    
         const scene = new SPLAT.Scene();
         const camera = new SPLAT.Camera();
         const renderer = new SPLAT.WebGLRenderer(canvasRef.current);
@@ -122,13 +122,13 @@ const VR = () => {
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '100%' }}>
                 {/* <canvas ref={canvasRef} id="gsplatCanvas" ></canvas> */}
                 <Canvas >
-
+                    
                     <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={2} />
                     {/* <CameraControls rotate={[0.09,2,4.5]} /> */}
 
                     <Splat src={url}
-                        rotation={[0.09, 2, 4.5, 2]}
-                    // position={[2.1036774620197414, -2.397127693021015, ]}
+                        rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
+                        position={[0, 0, 0]}
 
                     />
                     {/* </PresentationControls> */}
