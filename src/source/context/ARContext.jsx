@@ -99,6 +99,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     }
 
     function rotateZ(angle, canX, canY) {
+        console.log(canX, canY, 'canxandy');
         let canP = 0;
         // cameraControls.setFocalOffset(canX, canY, 0.0, false);
         let adjustmentFactor = window.innerWidth * 0.5;
@@ -697,8 +698,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
         // totalTransX = canX;
         console.log(canX, 'canx');
         console.log(canY, 'cany');
-        canX = totalTransX
-        canY = totalTransY
+         totalTransX=canX
+        totalTransY= canY
         // totalTransY = canY;
         if (jewelType === "bangle") {
             getZAngleAndRotate(wrist, midPip, canX, canY);

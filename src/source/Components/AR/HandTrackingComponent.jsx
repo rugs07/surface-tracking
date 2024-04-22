@@ -24,13 +24,13 @@ const HandTrackingComponent = () => {
     const handleStopAR = () => {
         // Stop the video stream
         if (videoRef.current && videoRef.current.srcObject) {
-          videoRef.current.srcObject?.getTracks()?.forEach(track => track.stop());
+            videoRef.current.srcObject?.getTracks()?.forEach(track => track.stop());
         }
         setHandPresence(null);
         setCameraReady(false);
 
         navigate('/VR');
-      };
+    };
 
     useEffect(() => {
         let handLandmarker;
@@ -116,7 +116,7 @@ const HandTrackingComponent = () => {
         return () => {
             if (videoRef.current && videoRef.current.srcObject) {
                 videoRef.current.srcObject?.getTracks()?.forEach(track => track.stop());
-              }
+            }
             if (handLandmarker) {
                 handLandmarker.close();
             }
@@ -136,7 +136,7 @@ const HandTrackingComponent = () => {
                 <Canvas ref={canvasRef} id="gsplatCanvas">
                     {/* <AsciiRenderer /> */}
                     {/* <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} /> */}
-                    <Splat src={url} 
+                    <Splat src={url}
                         rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
                         position={[0, 0, 0]}
                     />
