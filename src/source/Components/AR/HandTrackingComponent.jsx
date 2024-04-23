@@ -119,49 +119,46 @@ const HandTrackingComponent = () => {
 
     return (
         <div
-            style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", overflow: 'hidden' }}
         >
-            {(handPresence) ? (
+            <h1 style={{ position: "absolute", bottom: 0, left: 0 }}>
+                Is there a Hand? {handPresence ? "Yes" : "No"}
+            </h1>
+            <button style={{ position: "absolute", top: 10, right: 10 }} onClick={handleStopAR}>
+                STOP AR
+            </button>
 
-                <h1>hello jar4u</h1>
-            ) :
-                <div>
-                    <h1>Is there a Hand? {handPresence ? "Yes" : "No"}</h1>
-                    <button onClick={handleStopAR}>STOP AR</button>
-                    <video
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100vw",
-                            height: "100vh",
-                            zIndex: "-1000",
-                        }}
-                    ></video>
-                    <div
-                        style={{
-                            position: "relative",
-                            width: "600px",
-                            height: "480px",
-                            zIndex: "1000",
-                        }}
-                    >
-                        <Canvas ref={canvasRef} id="gsplatCanvas">
-                            {/* <AsciiRenderer /> */}
-                            {/* <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} /> */}
-                            <Splat
-                                src={url}
-                                rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
-                                position={[0, 0, 0]}
-                            />
-                        </Canvas>
-                    </div>
-                </div>
-
-            }
+            {!handPresence && <Showhandscreen />}
+            <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    zIndex: "-1000",
+                    objectFit: "cover",
+                }}
+            ></video>
+            <div
+                style={{
+                    position: "relative",
+                    width: "600px",
+                    height: "480px",
+                    zIndex: "1000",
+                }}
+            >
+                <Canvas ref={canvasRef} id="gsplatCanvas">
+                    <Splat
+                        src={url}
+                        rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
+                        position={[0, 0, 0]}
+                    />
+                </Canvas>
+            </div>
 
         </div>
     );

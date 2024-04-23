@@ -20,11 +20,10 @@ const Showhandscreen = () => {
     sessionStorage.setItem("selectedJewel", newJewel);
   };
 
-  return (
+return (
 
 
-    <div style={{
-     }} >
+    <div className='showHandScreen'>
       <div className="camerasection">
         <p>Place your hand vertically as shown below</p>
         <img src={hand} className="handimg" alt="Hand" />
