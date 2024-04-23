@@ -130,45 +130,50 @@ const HandTrackingComponent = () => {
       }
     };
   }, []);
-  
 
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-        <h1>Is there a Hand? {handPresence ? "Yes" : <Showhandscreen/>}</h1>
-      <button onClick={handleStopAR}>STOP AR</button>
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          zIndex: "-1000",
-        }}
-      ></video>
-      <div
-        style={{
-          position: "relative",
-          width: "600px",
-          height: "480px",
-          zIndex: "1000",
-        }}
-      >
-        <Canvas ref={canvasRef} id="gsplatCanvas">
-          {/* <AsciiRenderer /> */}
-          {/* <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} /> */}
-          <Splat
-            src={url}
-            rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
-            position={[0, 0, 0]}
-          />
-        </Canvas>
-      </div>
+      {handPresence === null || handPresence === false ? (
+        <Showhandscreen />
+      ) : (
+        <>
+          <h1>Is there a Hand? {handPresence ? "Yes" : "No"}</h1>
+          <button onClick={handleStopAR}>STOP AR</button>
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              zIndex: "-1000",
+            }}
+          ></video>
+          <div
+            style={{
+              position: "relative",
+              width: "600px",
+              height: "480px",
+              zIndex: "1000",
+            }}
+          >
+            <Canvas ref={canvasRef} id="gsplatCanvas">
+              {/* <AsciiRenderer /> */}
+              {/* <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={5} /> */}
+              <Splat
+                src={url}
+                rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
+                position={[0, 0, 0]}
+              />
+            </Canvas>
+          </div>
+        </>
+      )}
       {/* <canvas ref={canvasRef} style={{ backgroundColor: "black", width: "800px", height: "480px" }}></canvas> */}
     </div>
   );
