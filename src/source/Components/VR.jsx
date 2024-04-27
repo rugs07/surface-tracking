@@ -1,13 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState,Suspense } from 'react';
 import * as SPLAT from "gsplat";
 import { Canvas } from '@react-three/fiber';
-import { CameraControls, OrbitControls, PresentationControls, Splat } from '@react-three/drei';
+import { CameraControls, OrbitControls, PresentationControls, Splat,PerspectiveCamera } from '@react-three/drei';
 import '../css/gsplat.css'
 import '../css/loader.css'
 import '../css/style.css'
 import FPSStats from "react-fps-stats";
 import { hideLoading, updateLoadingProgress } from '../../js/utils';
 import { Navigate, useNavigate } from 'react-router-dom';
+
+function CarShow(){
+    return (
+        <>
+            <PerspectiveCamera makeDefault fov={70} position={[3,2,5]} />
+
+            <mesh>
+                <boxGeometry args={[1,1,1]} />
+                <meshBasicMaterial color={"red"} />
+            </mesh>
+        </>
+    );
+}
 
 
 const VR = () => {
@@ -121,8 +134,9 @@ const VR = () => {
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '100%' }}>
                 {/* <canvas ref={canvasRef} id="gsplatCanvas" ></canvas> */}
+                <Suspense fallback={null}>
                 <Canvas >
-                    
+                    {/* <CarShow /> */}
                     <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={2} />
                     {/* <CameraControls rotate={[0.09,2,4.5]} /> */}
 
@@ -133,6 +147,7 @@ const VR = () => {
                     />
                     {/* </PresentationControls> */}
                 </Canvas>
+                </Suspense>
             </div>
             {/* <audio className="audioElement">
                 <source src="./assets/audion.mp3" type="audio/mp3" />

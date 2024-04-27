@@ -40,33 +40,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         // );
     }
 
-    function rotateY(angle) {
-        // if (isArcball) {
-        //   var quaternion = new THREE.Quaternion().setFromAxisAngle(
-        //     new THREE.Vector3(0, 1, 0),
-        //     angle
-        //   );
-        //   gCamera.position.applyQuaternion(quaternion);
-        //   gCamera.up.applyQuaternion(quaternion);
-        //   gCamera.quaternion.multiplyQuaternions(quaternion, gCamera.quaternion);
-        // } else {
-        //   // cameraControls.rotate(angle, 0, false);
-        //   // Using Show zone to not show the part which was placed on for recording
-
-        //   let showZone = [-90, 90];
-        //   if (selectedJewel === "flowerbangle") showZone = [-60, 90];
-
-        //   if (angle > showZone[0] && angle < showZone[1]) {
-        //     // cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
-        //   }
-        //   // console.log(
-        //   //   "yangle",
-        //   //   angle.toFixed(2),
-        //   //   THREE.MathUtils.radToDeg(baseTheta).toFixed(2),
-        //   //   handLabel
-        //   // );
-        // }
-
+    function rotateY(angle) { 
         angle = YRAngle;
 
         if (
@@ -136,7 +110,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         // rotate vectors around y-axis by -zAngle
         let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
         let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
-
+        let transform = null;
         // the arctangent of the slope is the angle of the hand with respect to the x-axis
         let yAngle = -Math.atan2(
             rotatedNewPinkyRef.z - rotatedNewIndexRef.z,
@@ -215,35 +189,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
             }
         }
 
-        //advanced code with new method
-        //   function calculateWeightedAverage(values, weights) {
-        //     let weightedSum = values.reduce((acc, val, i) => acc + val * weights[i], 0);
-        //     let weightSum = weights.reduce((acc, val) => acc + val, 0);
-        //     return weightedSum / weightSum;
-        // }
-
-        // if (enableSmoothing) {
-        //     let diff = normYAngle - YRAngle;
-        //     yArr.push(diff); // Insert new value at the end
-
-        //     // Define weights for the weighted average calculation
-        //     const weights = [1, 2, 3]; // Example weights, adjust based on preference
-
-        //     if (yArr.length > weights.length) {
-        //         yArr.shift(); // Ensure yArr doesn't grow indefinitely
-        //     }
-
-        //     if (yArr.length === weights.length) {
-        //         // Calculate weighted average difference
-        //         let weightedDiff = calculateWeightedAverage(yArr, weights);
-
-        //         // Apply the weighted difference to adjust YRAngle smoothly
-        //         YRAngle += weightedDiff;
-
-        //         // Clear the array to start fresh for the next set of frames
-        //         yArr = [];
-        //     }
-        // }
 
         if (horizontalRotation) {
             // if (normYAngle > 90) normYAngle = 90;
@@ -256,9 +201,13 @@ export const GlobalFunctionsProvider = ({ children }) => {
         }
         newPinkyRef = lastPinkyRef;
         newIndexRef = lastIndexRef;
+
+        // gsplatCanvas.style.transform = 'inherit';
+        // gsplatCanvas.style.transform = `rotateY(${-normYAngle}deg) `;
     }
 
     function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
+        // const gsplatCanvas = document.getElementById('gsplatCanvas');
         if (lastRefOfMid) {
             // rotate vectors around y-axis by -zAngle
             newRefOfMid = rotateVectorZ(newRefOfMid, -zAngle);
@@ -275,32 +224,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
             if (normXAngle < -10) normXAngle = -10;
             if (normXAngle > 10) normXAngle = 10;
-            // if (jewelType === "ring") {
-            //   if (normXAngle >= 0 && normXAngle <= 10) normXAngle = 0;
-            // }
-
-            // if (enableSmoothing) {
-            //   // Calculate the angle difference between the current and the new angle
-            //   const angleDifference = XRAngle - normXAngle;
-            //   // console.log("z rot:", ZRAngle, angleDifference, zAngle, normXAngle);
-
-            //   xArr.push(angleDifference); // Insert new value at the end
-            //   if (xArr.length > 3) {
-            //     xArr.shift(); // Remove first index value
-            //     // Check if all 3 values are either positive or negative
-            //     var allSameSign = xArr.every(function (value) {
-            //       return (
-            //         (value >= 0 && angleDifference >= 0 && angleDifference <= 20) ||
-            //         (value < 0 && angleDifference < 0 && angleDifference >= -20)
-            //       );
-            //     });
-
-            //     if (!allSameSign) {
-            //       normXAngle = XRAngle;
-            //     }
-            //   }
-            // }
-
+            // gsplatCanvas.style.transform = `rotateX(${normXAngle}deg)`;
+            
+            xArr.shift(); // Remove first index value
             rotateX(normXAngle);
         }
 
@@ -320,42 +246,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
         return rotatedVector;
     }
-
-    // function rotateVectorY(vector, angle) {
-    //   angle = THREE.MathUtils.degToRad(angle); // if the angle is in degrees, convert it to radians
-
-    //   let sin = Math.sin(angle);
-    //   let cos = Math.cos(angle);
-
-    //   let rotatedVector = {};
-    //   rotatedVector.x = vector.x * cos - vector.z * sin;
-    //   rotatedVector.y = vector.y;
-    //   rotatedVector.z = vector.x * sin + vector.z * cos;
-
-    //   return rotatedVector;
-    // }
-
-    // function rotateVectorX(vector, angle) {
-    //   angle = THREE.MathUtils.degToRad(angle); // if the angle is in degrees, convert it to radians
-
-    //   let sin = Math.sin(angle);
-    //   let cos = Math.cos(angle);
-
-    //   let rotatedVector = {};
-    //   rotatedVector.x = vector.x;
-    //   rotatedVector.y = vector.y * cos - vector.z * sin;
-    //   rotatedVector.z = vector.y * sin + vector.z * cos;
-
-    //   return rotatedVector;
-    // }
-
-    // function limitAngleDifference(currentAngle, targetAngle, maxDifference) {
-    //   let angleDifference = targetAngle - currentAngle;
-    //   // Clamp the angle difference
-    //   angleDifference = Math.max(-maxDifference, Math.min(maxDifference, angleDifference));
-    //   let limitedAngle = currentAngle + angleDifference;
-    //   return limitedAngle;
-    // }
 
     function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
         if (lastMidRef) {
@@ -515,20 +405,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
         lastSize = wristSize;
         return wristSize;
 
-        // calculate wrist size as average distance between wrist and knuckles
-        // let wristSize = 0;
-        // let count = 0;
-        // for (let i = 0; i < 5; i++) {
-        //   if (points[i + 5].x == 0 && points[i + 5].y == 0 && points[i + 5].z == 0)
-        //     continue;
-        //   wristSize += manhattanDistance(points[0], points[i + 5]);
-        //   count++;
-        // }
-        // if (count === 0) {
-        //   throw new Error("No wrist points found");
-        // }
-        // wristSize /= count;
-        // return wristSize;
     }
 
     let lastSize = null; mapRange
@@ -627,9 +503,10 @@ export const GlobalFunctionsProvider = ({ children }) => {
             } else if (jewelType === "ring") {
                 stayPoint = ringPos;
             }
+            // gsplatCanvas.style.stayPoint = stayPoint
             // console.log(stayPoint, stayPoint.y, stayPoint.z);
         }
-        // console.log(stayPoint);
+        console.log(stayPoint);
 
         let foldedHand = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
         // console.log(foldedHand); // check foldedhand value
@@ -848,9 +725,12 @@ export const GlobalFunctionsProvider = ({ children }) => {
         // console.log(scaleMul)
 
         // cameraControls.zoomTo(smoothenSize, false);
+        // let transform = 'translate3d(10px, 20px, 0) rotateZ(45deg)'; 
+        // gsplatCanvas.style.transform = transform;
 
         if (resize && isArcball)
             gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
+
     }
 
     const calculateAngleAtMiddle = (landmark1, landmark2, landmark3) => {
@@ -914,9 +794,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
         smoothResizing,
         calculateAngleAtMiddle,
         translateRotateMesh
-
-
-        // Other functions...
     };
 
     return (

@@ -7,17 +7,24 @@ import Hands from "../Loading-Screen/Hands";
 import { ARFunctions } from "../../context/ARContext";
 import { useNavigate } from "react-router-dom";
 import Showhandscreen from "./Showhandscreen";
+import { useVariables } from "../../context/variableContext";
 
 const HandTrackingComponent = () => {
     const videoRef = useRef(null);
-    const { translateRotateMesh } = ARFunctions();
+    const { translateRotateMesh} = ARFunctions();
+    const {XRDelta,YRDelta} = useVariables();
     const canvasRef = useRef(null);
     const [landmark, setLandmark] = useState();
+    const [points,setPoints] = useState({ x: 0, y: 0, z: 0 });
+    const [rotateX,setRotateX] = useState(0);
+    const [rotateY,setRotateY] = useState(0);
     const [handPresence, setHandPresence] = useState();
     const selectedJewel = JSON.parse(
         sessionStorage.getItem("selectedJewel") || "{}"
     );
     let detections;
+    const gsplatCanvas = document.getElementById("gsplatCanvas"); 
+    // const points = detections.landmarks[0];
     // console.log(canvasRef.current, "canvas ref")
     // console.log(translateRotateMesh, 'logs');
     const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
@@ -53,8 +60,6 @@ const HandTrackingComponent = () => {
             }
         };
 
-
-
         const detectHands = () => {
             if (videoRef.current && videoRef.current.readyState >= 2) {
                 detections = handLandmarker.detectForVideo(
@@ -67,19 +72,25 @@ const HandTrackingComponent = () => {
                 if (detections.landmarks && detections.landmarks.length > 0) {
                     // drawLandmarks(detections.landmarks);
                     // setLandmark(detections.landmarks)
-                    // console.log(123, detections.landmarks)
+                    console.log(123, detections.landmarks)
+                    const newPoints = detections.landmarks[0][0];
+                    setPoints(newPoints);
+                    // setRotateX(prevRotateX => prevRotateX + 0.5);
+                    setRotateY(prevRotateY => prevRotateY + YRDelta);
+                        //use YRDelta here for rotation, take value from rotateY function and tell chatgpt how to do it 
+                    const canvaselement = gsplatCanvas;
 
                     // Call translateRotateMesh only if landmarks are available
-                    try {
+                        if (canvaselement) {
                         translateRotateMesh(
                             detections.landmarks[0],
                             "Right",
                             true,
                             canvasRef.current
-                        );
-                    } catch (error) {
-                        console.log(error);
-                    }
+                           );
+                        // //    getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle);
+                        }
+                    
                 } else {
                     console.log("No hand landmarks detected");
                 }
@@ -146,16 +157,18 @@ const HandTrackingComponent = () => {
             <div
                 style={{
                     position: "relative",
-                    width: "600px",
-                    height: "480px",
+                    width: "100vw",
+                    height: "100vh",
                     zIndex: "1000",
                 }}
             >
-                <Canvas ref={canvasRef} id="gsplatCanvas">
+                <Canvas ref={canvasRef} id="gsplatCanvas" >
                     <Splat
                         src={url}
-                        rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
-                        position={[0, 0, 0]}
+                        // rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
+                        rotation={[rotateX, rotateY, -0.5 * Math.PI]}
+                        // position={[points.x,-points.y*2,points.z]}
+                        // position={[0,0,0]}
                     />
                 </Canvas>
             </div>
