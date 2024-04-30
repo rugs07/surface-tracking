@@ -14,7 +14,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let ytArr = [];
     // const gsplatCanvas = document.getElementById("gsplatCanvas");
     // Define your globally accessible functions
-    let { XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball } = useVariables()
+    let { setXRDelta, setYRDelta, enableRingTransparency, XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball } = useVariables()
     // const { calculateAngleAtMiddle } = ARFunctions()
     function rotateX(angle) {
         if (isArcball) {
@@ -32,29 +32,72 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
         XRAngle = angle;
         XRDelta = THREE.MathUtils.degToRad(-XRAngle);
-
-        // console.log(
+        setXRDelta(XRDelta)
+        // (
         //   THREE.MathUtils.radToDeg(XRAngle),
         //   THREE.MathUtils.radToDeg(YRAngle),
         //   THREE.MathUtils.radToDeg(ZRAngle)
         // );
     }
 
-    function rotateY(angle) { 
-        angle = YRAngle;
+    function rotateY(angle) {
+        // if (isArcball) {
+        //   var quaternion = new THREE.Quaternion().setFromAxisAngle(
+        //     new THREE.Vector3(0, 1, 0),
+        //     angle
+        //   );
+        //   gCamera.position.applyQuaternion(quaternion);
+        //   gCamera.up.applyQuaternion(quaternion);
+        //   gCamera.quaternion.multiplyQuaternions(quaternion, gCamera.quaternion);
+        // } else {
+        //   // cameraControls.rotate(angle, 0, false);
+        //   // Using Show zone to not show the part which was placed on for recording
+
+        //   let showZone = [-90, 90];
+        //   if (selectedJewel === "flowerbangle") showZone = [-60, 90];
+
+        //   if (angle > showZone[0] && angle < showZone[1]) {
+        //     // cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
+        //   }
+        //   // (
+        //   //   "yangle",
+        //   //   angle.toFixed(2),
+        //   //   THREE.MathUtils.radToDeg(baseTheta).toFixed(2),
+        //   //   handLabel
+        //   // );
+        // }
+        console.log(1, angle);
+        YRAngle = angle;
+        console.log(2);
 
         if (
             (handLabel === "Right" && facingMode !== "environment") ||
             (handLabel === "Left" && facingMode === "environment")
-        )
+        ) {
+            console.log(3, handLabel, facingMode);
             YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
-        else THREE.MathUtils.degToRad(-90 - YRAngle);
+            console.log(4, YRDelta);
+        }
+        else {
+            console.log(5);
+            YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle)
+            console.log(6, YRDelta);
+        }
+        console.log(7);
+        gsplatCanvas.style.tranform = 'inherit';
+        console.log(YRDelta, 'yr delta ')
+        setYRDelta(YRDelta)
+        return YRDelta;
     }
 
     const mapRange = (value, oldMin, oldMax, newMin, newMax) => {
+        console.log(8);
         const oldRange = oldMax - oldMin;
+        console.log(9);
         const newRange = newMax - newMin;
+
         const newValue = ((value - oldMin) * newRange) / oldRange + newMin;
+
         return newValue;
     }
 
@@ -73,7 +116,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     }
 
     function rotateZ(angle, canX, canY) {
-        console.log(canX, canY, 'canxandy');
+        (canX, canY, 'canxandy');
         let canP = 0;
         // cameraControls.setFocalOffset(canX, canY, 0.0, false);
         let adjustmentFactor = window.innerWidth * 0.5;
@@ -90,7 +133,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             "px) rotateZ(" +
             angle +
             "deg)";
-        console.log(canP, canX, canY, "can's");
+        (transform, "can's");
         gsplatCanvas.style.transform = transform;
 
         ZRAngle = angle;
@@ -98,6 +141,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         YTrans = canY;
         // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
     }
+
     function convertRingTransRange(value) {
         const oldMin = -25;
         const oldMax = 25;
@@ -108,28 +152,42 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
         // rotate vectors around y-axis by -zAngle
+        console.log(10);
         let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
+        console.log(11);
         let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
-        let transform = null;
+        console.log(12);
         // the arctangent of the slope is the angle of the hand with respect to the x-axis
         let yAngle = -Math.atan2(
             rotatedNewPinkyRef.z - rotatedNewIndexRef.z,
-            rotatedNewPinkyRef.x - rotatedNewIndexRef.x
+            rotatedNewPinkyRef.x - rotatedNewIndexRef.x,
+            console.log(13)
         );
-        // make show zone from -90 to 90
+        // make show zone from -90 to 
+        console.log(14);
         yAngle = THREE.MathUtils.radToDeg(yAngle) - 90;
+        console.log(15);
         if (facingMode === "environment") {
+            console.log(16);
             yAngle += 180;
+            console.log(17);
         }
-
+        console.log(18);
         let normYAngle = normalizeAngle(yAngle);
+        console.log(19);
 
         const baseNear = 0.0975;
+        console.log(20);
         const phonethreshold = 0.015;
-        if (jewelType === "ring" && enableRingTransparency) {
+        console.log(21);
+        if (jewelType === "bangle" && enableRingTransparency) {
+            console.log(22);
             let transparencyZone = [-25, 25];
+            console.log(23);
             if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
+                console.log(24);
                 cameraNear = 4.9525;
+                console.log(25);
                 if (selectedJewel === "jewel26_lr") {
                     cameraNear = 4.925;
                     if (isMobile || isIOS) {
@@ -161,12 +219,16 @@ export const GlobalFunctionsProvider = ({ children }) => {
                     }
                 } // for Queen's Ring
 
-                // converting angles to new range -20 to 20 -> 20 - 60 for transparency
+                // converting angles to new range -20 to 20 -> 20 - 60 for transparency;
+                console.log(99);
                 normYAngle = convertRingTransRange(normYAngle);
+                console.log(100);
             } else {
                 // if (normYAngle > 0) normYAngle += 0.5;
                 // else normYAngle -= 0.5;
+                console.log(26);
                 cameraNear = baseNear + scaleMul * 0.01;
+                console.log(27);
             }
         }
 
@@ -193,17 +255,30 @@ export const GlobalFunctionsProvider = ({ children }) => {
         if (horizontalRotation) {
             // if (normYAngle > 90) normYAngle = 90;
             // else if (normYAngle < -90) normYAngle = -90;
+            console.log(50);
             rotateY(-normYAngle);
+            console.log(51, rotateY(-normYAngle));
         } else if (verticalRotation) {
-            if (normYAngle > 90) normYAngle = 90;
-            else if (normYAngle < -90) normYAngle = -90;
+            console.log(52);
+            if (normYAngle > 90) {
+                console.log(53);
+                normYAngle = 90
+                console.log(54);
+            }
+            else if (normYAngle < -90) {
+                console.log(55);
+                normYAngle = -90
+                console.log(56);
+            };
+            console.log(57);
             rotateY(-normYAngle);
+            console.log(58);
         }
+        console.log(59);
         newPinkyRef = lastPinkyRef;
+        console.log(60);
         newIndexRef = lastIndexRef;
-
-        // gsplatCanvas.style.transform = 'inherit';
-        // gsplatCanvas.style.transform = `rotateY(${-normYAngle}deg) `;
+        console.log(61);
     }
 
     function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
@@ -261,7 +336,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             if (enableSmoothing) {
                 // Calculate the angle difference between the current and the new angle
                 const angleDifference = ZRAngle - normZAngle;
-                // console.log("z rot:", ZRAngle, angleDifference, zAngle, normZAngle);
+                // ("z rot:", ZRAngle, angleDifference, zAngle, normZAngle);
 
                 zArr.push(angleDifference); // Insert new value at the end
 
@@ -380,7 +455,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         let wristSize = euclideanDistance(points[0], points[9]);
         // if (diff <= 0.1) {
         //     const newSize = kfResize.filter(wristSize);
-        //     console.log("origsize", wristSize, "filtered", newSize);
+        //     ("origsize", wristSize, "filtered", newSize);
         //     wristSize = newSize;
         // }
 
@@ -439,15 +514,15 @@ export const GlobalFunctionsProvider = ({ children }) => {
             return;
         }
 
-        // console.log(points, 'points');
-        // console.log(handLabel, 'handlabel');
-        // console.log(isPalmFacing, 'palm');
-        // console.log(sourceImage, 'sourceImage');
+        // (points, 'points');
+        // (handLabel, 'handlabel');
+        // (isPalmFacing, 'palm');
+        // (sourceImage, 'sourceImage');
         let wrist = points[0];
         let firstKnuckle = points[5];
         let thumbTip = points[4];
         let pinkyTip = points[20];
-        // console.log(wrist.x, firstKnuckle, "trm logs");
+        // (wrist.x, firstKnuckle, "trm logs");
         let pinkyKnuckle = {
             x: (points[17].x + points[18].x) / 2.0,
             y: (points[17].y + points[18].y) / 2.0,
@@ -462,22 +537,22 @@ export const GlobalFunctionsProvider = ({ children }) => {
             z: (points[13].z + points[14].z) / 2.0,
         };
 
-        // console.log(wrist);
+        // (wrist);
 
         let stayPoint = null;
-        // console.log(wrist, "before setting");
+        // (wrist, "before setting");
         if (verticalRotation) {
             if (jewelType === "bangle") {
                 if (handLabel === "Left") {
                     stayPoint = {
                         x: wrist.x - 0.01, // Adjust the x-coordinate to move slightly to the side
-                        y: wrist.y + 0.035, // Adjust the y-coordinate to move slightly below
+                        y: wrist.y + 1.035, // Adjust the y-coordinate to move slightly below
                         z: wrist.z, // Keep the z-coordinate the same
                     };
                 } else if (handLabel === "Right") {
                     stayPoint = {
                         x: wrist.x, // Adjust the x-coordinate to move slightly to the side
-                        y: wrist.y + 0.035, // Adjust the y-coordinate to move slightly below
+                        y: wrist.y + 100.035, // Adjust the y-coordinate to move slightly below
                         z: wrist.z, // Keep the z-coordinate the same
                     };
                 }
@@ -503,24 +578,23 @@ export const GlobalFunctionsProvider = ({ children }) => {
             } else if (jewelType === "ring") {
                 stayPoint = ringPos;
             }
-            // gsplatCanvas.style.stayPoint = stayPoint
-            // console.log(stayPoint, stayPoint.y, stayPoint.z);
+            // (stayPoint, stayPoint.y, stayPoint.z);
         }
-        console.log(stayPoint);
+        // (stayPoint);
 
         let foldedHand = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
-        // console.log(foldedHand); // check foldedhand value
+        // (foldedHand); // check foldedhand value
         //backhand open - 17, backhand closed - (0-1), fronthand open - (16-17) , fronthand closed = (4-7)
 
         let window_scale, canX, canY;
         let windowWidth = document.documentElement.clientWidth;
         let windowHeight = document.documentElement.clientHeight;
         windowWidth = window.screen.width;
-        console.log("SourceImage height : ", sourceImage.height);
-        console.log("SourceImage width : ", sourceImage.width);
+        ("SourceImage height : ", sourceImage.height);
+        ("SourceImage width : ", sourceImage.width);
         //old code
 
-        console.log(windowWidth, stayPoint.x, 'win height');
+        (windowWidth, stayPoint.x, 'win height');
         if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
             // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
             canX = stayPoint.x * windowWidth - windowWidth / 2;
@@ -541,46 +615,18 @@ export const GlobalFunctionsProvider = ({ children }) => {
                 (sourceImage.width * window_scale) / 2;
         }
 
-        // new code
-        // const referenceWidth = 1920;
-        // const referenceHeight = 1080;
 
-        //   // Calculate current screen's aspect ratio
-        //   const currentAspectRatio = windowWidth / windowHeight;
-        //   const referenceAspectRatio = referenceWidth / referenceHeight;
+        (window_scale);
 
-        //   // Normalize window_scale based on the reference size
-        //   // This aims to keep the bangle's size consistent across different devices
-        //   let normalizedScale = Math.sqrt((windowWidth * windowHeight) / (referenceWidth * referenceHeight));
-
-        //   // Adjust window_scale based on aspect ratio differences
-        //   if (currentAspectRatio > referenceAspectRatio) {
-        //      canY = stayPoint.y * windowHeight - windowHeight / 2;
-        //   window_scale = windowHeight / sourceImage.height * normalizedScale;
-        //   canX =
-        //     stayPoint.x * (sourceImage.width * window_scale) -
-        //     (sourceImage.width * window_scale) / 2;
-        //   } else {
-        //       canX = stayPoint.x * windowWidth - windowWidth / 2;
-        //   window_scale = windowWidth / sourceImage.width * normalizedScale;
-        //   canY =
-        //     stayPoint.y * (sourceImage.height * window_scale) -
-        //     (sourceImage.height * window_scale) / 2;
-        //   } // working good for other devices but for windows bangle size is little bit smaller
-
-        console.log(window_scale);
-
-        // console.log(sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
+        // (sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
         // rotation & translation (getZAngleAndRotate also translates)
         // totalTransX = canX;
-        console.log(canX, 'canx');
-        console.log(canY, 'cany');
-         totalTransX=canX
-        totalTransY= canY
+
+        totalTransX = canX
+        totalTransY = canY
         // totalTransY = canY;
         if (jewelType === "bangle") {
             getZAngleAndRotate(wrist, midPip, canX, canY);
-            console.log('aryan')
             getXAngleAndRotate(wrist, midPip, ZRAngle);
             getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
         } else if (jewelType === "ring") {
@@ -607,7 +653,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         const dist = calculateWristSize(points, YRAngle, ZRAngle, foldedHand);
 
         let resizeMul;
-        // console.log(isPalmFacing);
+        // (isPalmFacing);
         function calculateScaleAdjustment(foldedHand, isPalmFacing) {
             let scaleAdjustment = 1.0;
 
@@ -637,46 +683,11 @@ export const GlobalFunctionsProvider = ({ children }) => {
             return scaleAdjustment;
         }
 
-        //previous code
-        // function calculateScaleAdjustment(foldedHand, isPalmFacing) {
-        //   let scaleAdjustment = 1.0;
 
-        //   if (isPalmFacing) {
-        //       scaleAdjustment = 1.05;
-        //   }
-
-        //   // Adjust scale based on the folded hand angle
-        //   // This threshold and adjustment factor might need to be tuned based on testing
-        //   const foldedHandThreshold = 6; // Example threshold for considering the hand as "folded"
-        //   if (foldedHand>=3 && foldedHand <= foldedHandThreshold) {
-        //       // Increase scale to prevent the bangle from becoming too short
-        //       if(isMobile || isIOS){
-        //         scaleAdjustment *= 1.1;
-        //       }
-        //       else{
-        //       scaleAdjustment *= 1.15;
-        //       }
-        //   }
-        //   else if(foldedHand<3 && foldedHand > foldedHandThreshold){
-        //     scaleAdjustment = 1;
-        //   }
-        // previous code
 
         let scaleAdjustment = calculateScaleAdjustment(foldedHand, isPalmFacing);
 
         if (jewelType === "bangle") {
-            // My code
-            // if (isMobile || isIOS) {
-            //    resizeMul = window_scale * 3;
-            //    if(isPalmFacing) resizeMul *=0.7;
-            // }
-            // else {
-            //   if(isPalmFacing) resizeMul = window_scale* 1.52;
-            //   else resizeMul = window_scale * 1.5;
-            // }
-
-            // if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
-            // My code
 
             //previous code
             if (isMobile || isIOS) {
@@ -720,9 +731,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
         const baseFar = jewelType === "bangle" ? 5 : 5.018;
         cameraFar = baseFar + scaleMul * 0.01;
 
-        // console.log(cameraFar);
-        // console.log(cameraNear);
-        // console.log(scaleMul)
+        // (cameraFar);
+        // (cameraNear);
+        // (scaleMul)
 
         // cameraControls.zoomTo(smoothenSize, false);
         // let transform = 'translate3d(10px, 20px, 0) rotateZ(45deg)'; 
@@ -732,6 +743,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
             gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
 
     }
+
+
+
 
     const calculateAngleAtMiddle = (landmark1, landmark2, landmark3) => {
         // Calculate vectors between landmarks

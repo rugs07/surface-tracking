@@ -9,24 +9,21 @@ import { useNavigate } from "react-router-dom";
 import Showhandscreen from "./Showhandscreen";
 import { useVariables } from "../../context/variableContext";
 
+
 const HandTrackingComponent = () => {
     const videoRef = useRef(null);
-    const { translateRotateMesh} = ARFunctions();
-    const {XRDelta,YRDelta} = useVariables();
+    const { translateRotateMesh } = ARFunctions();
+    const { YRDelta, XRDelta } = useVariables()
     const canvasRef = useRef(null);
-    const [landmark, setLandmark] = useState();
-    const [points,setPoints] = useState({ x: 0, y: 0, z: 0 });
-    const [rotateX,setRotateX] = useState(0);
-    const [rotateY,setRotateY] = useState(0);
+    const [landmark, setLandmark] = useState([]);
     const [handPresence, setHandPresence] = useState();
     const selectedJewel = JSON.parse(
         sessionStorage.getItem("selectedJewel") || "{}"
     );
     let detections;
-    const gsplatCanvas = document.getElementById("gsplatCanvas"); 
-    // const points = detections.landmarks[0];
-    // console.log(canvasRef.current, "canvas ref")
-    // console.log(translateRotateMesh, 'logs');
+    console.log(YRDelta, XRDelta, 'tsm');
+    // (canvasRef.current, "canvas ref")
+    // (translateRotateMesh, 'logs');
     const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
     const navigate = useNavigate();
 
@@ -40,6 +37,8 @@ const HandTrackingComponent = () => {
         navigate("/VR");
     };
 
+
+    let wristPoints;
     useEffect(() => {
         let handLandmarker;
         let animationFrameId;
@@ -72,31 +71,35 @@ const HandTrackingComponent = () => {
                 if (detections.landmarks && detections.landmarks.length > 0) {
                     // drawLandmarks(detections.landmarks);
                     // setLandmark(detections.landmarks)
-                    console.log(123, detections.landmarks)
-                    const newPoints = detections.landmarks[0][0];
-                    setPoints(newPoints);
-                    // setRotateX(prevRotateX => prevRotateX + 0.5);
-                    setRotateY(prevRotateY => prevRotateY + YRDelta);
-                        //use YRDelta here for rotation, take value from rotateY function and tell chatgpt how to do it 
-                    const canvaselement = gsplatCanvas;
-
+                    // (123, detections.landmarks)
+                    setLandmark(detections.landmarks[0][0]);//!
                     // Call translateRotateMesh only if landmarks are available
-                        if (canvaselement) {
+                    try {
+
                         translateRotateMesh(
                             detections.landmarks[0],
                             "Right",
                             true,
                             canvasRef.current
-                           );
-                        // //    getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle);
-                        }
-                    
+                        );
+                        console.log(translateRotateMesh(
+                            detections.landmarks[0],
+                            "Right",
+                            true,
+                            canvasRef.current
+                        ), "trm func");
+                    } catch (error) {
+                        (error);
+                    }
                 } else {
-                    console.log("No hand landmarks detected");
+                    ("No hand landmarks detected");
                 }
             }
+            // 
+            console.log(wristPoints, 'handTracking points ');
             requestAnimationFrame(detectHands);
         };
+
 
         const startWebcam = async () => {
             try {
@@ -109,6 +112,7 @@ const HandTrackingComponent = () => {
                 console.error("Error accessing webcam:", error);
             }
         };
+
 
         startWebcam();
         return () => {
@@ -126,7 +130,7 @@ const HandTrackingComponent = () => {
         };
     }, []);
 
-    console.log(handPresence)
+
 
     return (
         <div
@@ -165,10 +169,9 @@ const HandTrackingComponent = () => {
                 <Canvas ref={canvasRef} id="gsplatCanvas" >
                     <Splat
                         src={url}
-                        // rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
-                        rotation={[rotateX, rotateY, -0.5 * Math.PI]}
-                        // position={[points.x,-points.y*2,points.z]}
-                        // position={[0,0,0]}
+                        rotation={[XRDelta, YRDelta, 0]}
+
+                    //position={[0, 0, 0]}
                     />
                 </Canvas>
             </div>
