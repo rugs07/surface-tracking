@@ -14,7 +14,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let ytArr = [];
     // const gsplatCanvas = document.getElementById("gsplatCanvas");
     // Define your globally accessible functions
-    let { setXRDelta, setYRDelta, enableRingTransparency, XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball } = useVariables()
+    let { setHandPointsX,
+        setHandPointsY,
+        setHandPointsZ, setWristZoom, XRAngle, XRDelta, setXRDelta, setYRDelta, enableRingTransparency, XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball } = useVariables()
     // const { calculateAngleAtMiddle } = ARFunctions()
     function rotateX(angle) {
         if (isArcball) {
@@ -44,7 +46,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         // if (isArcball) {
         //   var quaternion = new THREE.Quaternion().setFromAxisAngle(
         //     new THREE.Vector3(0, 1, 0),
-        //     angle
+        //     
         //   );
         //   gCamera.position.applyQuaternion(quaternion);
         //   gCamera.up.applyQuaternion(quaternion);
@@ -234,9 +236,10 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
         // previous code
         if (enableSmoothing) {
+            console.log("enablesmoothing");
             let diff = normYAngle - YRAngle;
             yArr.push(diff); // Insert new value at the end
-
+            console.log(diff, 'differ', yArr.length);
             if (yArr.length > 3) {
                 yArr.shift(); // Remove first index value
 
@@ -300,7 +303,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             if (normXAngle < -10) normXAngle = -10;
             if (normXAngle > 10) normXAngle = 10;
             // gsplatCanvas.style.transform = `rotateX(${normXAngle}deg)`;
-            
+
             xArr.shift(); // Remove first index value
             rotateX(normXAngle);
         }
@@ -334,12 +337,14 @@ export const GlobalFunctionsProvider = ({ children }) => {
             let normZAngle = normalizeAngle(zAngle);
 
             if (enableSmoothing) {
+                console.log(enableSmoothing, 'enabled');
                 // Calculate the angle difference between the current and the new angle
                 const angleDifference = ZRAngle - normZAngle;
+                console.log(angleDifference, 'angdiff');
                 // ("z rot:", ZRAngle, angleDifference, zAngle, normZAngle);
 
                 zArr.push(angleDifference); // Insert new value at the end
-
+                console.log(zArr, 'zarr');
                 if (zArr.length > 3) {
                     zArr.shift(); // Remove first index value
                     // Check if all 5 values are either positive or negative
@@ -355,6 +360,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
                     }
                 }
                 const XDiff = XTrans - canX;
+                console.log(XDiff, 'xdiff');
 
                 xtArr.push(XDiff); // Insert new value at the end
 
@@ -371,7 +377,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
                 }
 
                 const YDiff = YTrans - canY;
-
+                console.log(YDiff, 'y diff');
                 ytArr.push(YDiff); // Insert new value at the end
 
                 if (ytArr.length > 3) {
@@ -453,6 +459,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         // wristSize /= 2;
 
         let wristSize = euclideanDistance(points[0], points[9]);
+        console.log(wristSize, 'wristSize');
         // if (diff <= 0.1) {
         //     const newSize = kfResize.filter(wristSize);
         //     ("origsize", wristSize, "filtered", newSize);
@@ -478,6 +485,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
         }
 
         lastSize = wristSize;
+        // setWristZoom(wristSize)
+        console.log(wristSize, 'wristSize');
         return wristSize;
 
     }
@@ -578,7 +587,10 @@ export const GlobalFunctionsProvider = ({ children }) => {
             } else if (jewelType === "ring") {
                 stayPoint = ringPos;
             }
-            // (stayPoint, stayPoint.y, stayPoint.z);
+            console.log(stayPoint.x, stayPoint.y, stayPoint.z, 'stayPoints');
+            setHandPointsX(stayPoint.x)
+            setHandPointsY(stayPoint.y)
+            setHandPointsZ(stayPoint.z)
         }
         // (stayPoint);
 
@@ -717,6 +729,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         }
 
         let smoothenSize = smoothResizing(dist * resizeMul);
+        setWristZoom(smoothenSize)
         // scaleMul = smoothenSize * 0.5;
 
         // Use if required

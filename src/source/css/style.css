@@ -327,6 +327,8 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   font-size: 30px;
   padding: 10px;
   font-weight: 500;
+  z-index: 10;
+
 }
 
 .title-container {
@@ -988,6 +990,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     font-size: 20px;
     margin: 0;
     margin-top: 3px;
+   padding: 10px;
   }
 
    .logo-container {

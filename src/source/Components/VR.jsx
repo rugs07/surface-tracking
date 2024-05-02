@@ -127,15 +127,14 @@ const VR = () => {
                         {/* <img className="audioImg" width="25px" src="./assets/audio-off-svgrepo-com.svg" style={{ filter: 'invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)' }} /> */}
                     </span>
                     <span className="gsplatBackgroundEffect">
-                        {/* <img className="backImg" width="28px" src="./assets/moon-svgrepo-com.svg" /> */}
-                        {/* <img className="backImg" width="28px" src="./assets/moon-svgrepo-com.svg" style={{ filter: 'invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)' }} /> */}
+                      
                     </span>
                 </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '100%' }}>
                 {/* <canvas ref={canvasRef} id="gsplatCanvas" ></canvas> */}
                 <Suspense fallback={null}>
-                <Canvas >
+                    <Canvas shadows gl={{ localClippingEnabled: true }} camera={{ fov: 66, position: [0, 1.9, 5.5], near: 0.25, far: 16 }} >
                     {/* <CarShow /> */}
                     <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={2} />
                     {/* <CameraControls rotate={[0.09,2,4.5]} /> */}

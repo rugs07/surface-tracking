@@ -3,6 +3,9 @@ import React, { createContext, useContext, useState } from 'react';
 export const VariableContext = createContext();
 
 export const VariableProvider = ({ children }) => {
+    const [handPointsX, setHandPointsX] = useState(0);
+    const [handPointsY, setHandPointsY] = useState(0);
+    const [handPointsZ, setHandPointsZ] = useState(0);
     const [autorotate, setAutorotate] = useState(false);
     const [autorotateSpeed, setAutorotateSpeed] = useState(0.002);
     const [defaultLightBg, setDefaultLightBg] = useState('radial-gradient(#fcf2f3,#dfc0bf)');
@@ -21,11 +24,12 @@ export const VariableProvider = ({ children }) => {
     const [XRAngle, setXRAngle] = useState(0.0);
     const [YRAngle, setYRAngle] = useState(0.0);
     const [ZRAngle, setZRAngle] = useState(0.0);
+    const [wristZoom, setWristZoom] = useState()
     const [XTrans, setXTrans] = useState(0);
     const [YTrans, setYTrans] = useState(0);
-    const [XRDelta, setXRDelta] = useState(0.0);
-    const [YRDelta, setYRDelta] = useState(0.0);
-    const [ZRDelta, setZRDelta] = useState(0.0);
+    const [XRDelta, setXRDelta] = useState(0.1 * Math.PI);
+    const [YRDelta, setYRDelta] = useState(0.5 * Math.PI);
+    const [ZRDelta, setZRDelta] = useState(-0.5 * Math.PI);
     const [isMobile, setIsMobile] = useState(true);
     const [isIOS, setIsIOS] = useState(false);
     const [browserName, setBrowserName] = useState('');
@@ -42,7 +46,7 @@ export const VariableProvider = ({ children }) => {
     const [baseGamaAR, setBaseGamaAR] = useState(0);
     const [selectedJewel, setSelectedJewel] = useState('');
     const [resolution, setResolution] = useState(336);
-    const [handLabel, setHandLabel] = useState('');
+    const [handLabel, setHandLabel] = useState('Left');
     const [aspectRatio, setAspectRatio] = useState(1);
     const [crop, setCrop] = useState(1);
     const [scaleMul, setScaleMul] = useState(0.5);
@@ -70,7 +74,7 @@ export const VariableProvider = ({ children }) => {
     const [gBlitCamera, setGBlitCamera] = useState(null);
     const [isVideo, setIsVideo] = useState(false);
     const [camera, setCamera] = useState(null);
-    const [facingMode, setFacingMode] = useState('user');
+    const [facingMode, setFacingMode] = useState('environment');
     const [isDirectionalRing, setIsDirectionalRing] = useState(true);
     const [isArcball, setIsArcball] = useState(false);
     const [loadFeatures, setLoadFeatures] = useState(false);
@@ -246,6 +250,15 @@ export const VariableProvider = ({ children }) => {
         totalTransX,
         setTotalTransX,
         totalTransY,
+        setWristZoom,
+        wristZoom,
+        handPointsX,
+        handPointsY,
+        handPointsZ,
+        setHandPointsX,
+        setHandPointsY,
+        setHandPointsZ,
+
 
     };
 
