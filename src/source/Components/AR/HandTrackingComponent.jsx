@@ -14,7 +14,7 @@ const HandTrackingComponent = () => {
     const videoRef = useRef(null);
     let [points, setPoints] = useState({ x: 0, y: 0, z: 0 });
     const { translateRotateMesh } = ARFunctions();
-    const { YRDelta, XRDelta, ZRDelta, wristZoom, handPointsX, handPointsY, handPointsZ, cameraFarVar, cameraNearVar } = useVariables()
+    const { YRDelta, XRDelta, ZRDelta, wristZoom, handPointsX, handPointsY, handPointsZ, cameraFarVar, cameraNearVar, handLabel } = useVariables()
     const canvasRef = useRef(null);
     const [landmark, setLandmark] = useState([]);
     const [handPresence, setHandPresence] = useState();
@@ -25,12 +25,8 @@ const HandTrackingComponent = () => {
     let pointsX;
     let pointsY;
     let pointsZ
-    console.log(YRDelta, XRDelta, 'tsm');
-    // (canvasRef.current, "canvas ref")
-    console.log(handPointsX,
-        handPointsY,
-        handPointsZ, 'position');
-    console.log(cameraFarVar)
+   
+    // console.log(cameraFarVar)
     // (translateRotateMesh, 'logs');
     const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
     const navigate = useNavigate();
@@ -83,14 +79,14 @@ const HandTrackingComponent = () => {
                     pointsZ = detections.landmarks[0][0].z;
                     setPoints({ x: pointsX, y: pointsY, z: pointsZ });
 
-                    console.log(points, 'points');
+                    // console.log(points, 'points');
 
                     // Call translateRotateMesh only if landmarks are available
                     try {
 
                         translateRotateMesh(
                             detections.landmarks[0],
-                            "Right",
+                            handLabel,
                             true,
                             canvasRef.current
                         );
@@ -105,7 +101,7 @@ const HandTrackingComponent = () => {
                 }
             }
             // 
-            console.log(detections.landmarks, 'handTracking points ');
+            // console.log(detections.landmarks, 'handTracking points ');
             requestAnimationFrame(detectHands);
         };
 

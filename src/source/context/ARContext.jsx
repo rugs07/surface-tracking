@@ -68,35 +68,36 @@ export const GlobalFunctionsProvider = ({ children }) => {
         //   //   handLabel
         //   // );
         // }
-        console.log(1, angle);
+
         YRAngle = angle;
-        console.log(2);
+
 
         if (
             (handLabel === "Right" && facingMode !== "environment") ||
             (handLabel === "Left" && facingMode === "environment")
         ) {
-            console.log(3, handLabel, facingMode);
+
             YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
-            // console.log(4, YRDelta);
-            // console.log(YRAngle, 'YRDelta');
+            // //(4, YRDelta);
+            // //(YRAngle, 'YRDelta');
         }
         else {
-            console.log(5);
+
             YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle)
-            // console.log(6, YRDelta);
+            // //(6, YRDelta);
         }
-        console.log(7);
+
         setYRDelta(YRDelta)
         // gsplatCanvas.style.tranform = 'inherit';
-        console.log(YRDelta, 'yr delta ')
+        //(YRDelta, 'yr delta ')
+        // console.log(YRDelta, 'yrdelta');
         return YRDelta;
     }
 
     const mapRange = (value, oldMin, oldMax, newMin, newMax) => {
-        console.log(8);
+        // console.log(8);
         const oldRange = oldMax - oldMin;
-        console.log(9);
+        // console.log(9);
         const newRange = newMax - newMin;
 
         const newValue = ((value - oldMin) * newRange) / oldRange + newMin;
@@ -155,42 +156,42 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
         // rotate vectors around y-axis by -zAngle
-        console.log(10);
+        //(10);
         let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
-        console.log(11);
+        //(11);
         let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
-        console.log(12);
+        //(12);
         // the arctangent of the slope is the angle of the hand with respect to the x-axis
         let yAngle = -Math.atan2(
             rotatedNewPinkyRef.z - rotatedNewIndexRef.z,
             rotatedNewPinkyRef.x - rotatedNewIndexRef.x,
-            console.log(13)
+            //(13)
         );
         // make show zone from -90 to 
-        console.log(14);
+        //(14);
         yAngle = THREE.MathUtils.radToDeg(yAngle) - 90;
-        console.log(15);
+        //(15);
         if (facingMode === "environment") {
-            console.log(16);
+            //(16);
             yAngle += 180;
-            console.log(17);
+            //(17);
         }
-        console.log(18);
+        //(18);
         let normYAngle = normalizeAngle(yAngle);
-        console.log(19);
+        //(19);
 
         const baseNear = 0.0975;
-        console.log(20);
+        //(20);
         const phonethreshold = 0.015;
-        console.log(21);
+        //(21);
         if (jewelType === "bangle" && enableRingTransparency) {
-            console.log(22);
+            //(22);
             let transparencyZone = [-25, 25];
-            console.log(23);
+            //(23);
             if (normYAngle > transparencyZone[0] && normYAngle < transparencyZone[1]) {
-                console.log(24);
+                //(24);
                 cameraNear = 4.9525;
-                console.log(25);
+                //(25);
                 if (selectedJewel === "jewel26_lr") {
                     cameraNear = 4.925;
                     if (isMobile || isIOS) {
@@ -223,24 +224,24 @@ export const GlobalFunctionsProvider = ({ children }) => {
                 } // for Queen's Ring
 
                 // converting angles to new range -20 to 20 -> 20 - 60 for transparency;
-                console.log(99);
+                //(99);
                 normYAngle = convertRingTransRange(normYAngle);
-                console.log(100);
+                //(100);
             } else {
                 // if (normYAngle > 0) normYAngle += 0.5;
                 // else normYAngle -= 0.5;
-                console.log(26);
+                //(26);
                 cameraNear = baseNear + scaleMul * 0.01;
-                console.log(27);
+                //(27);
             }
         }
 
         // previous code
         if (enableSmoothing) {
-            console.log("enablesmoothing");
+            //("enablesmoothing");
             let diff = normYAngle - YRAngle;
             yArr.push(diff); // Insert new value at the end
-            console.log(diff, 'differ', yArr.length);
+            //(diff, 'differ', yArr.length);
             if (yArr.length > 3) {
                 yArr.shift(); // Remove first index value
 
@@ -259,30 +260,30 @@ export const GlobalFunctionsProvider = ({ children }) => {
         if (horizontalRotation) {
             // if (normYAngle > 90) normYAngle = 90;
             // else if (normYAngle < -90) normYAngle = -90;
-            console.log(50);
+            //(50);
             rotateY(-normYAngle);
-            console.log(51, rotateY(-normYAngle));
+            //(51, rotateY(-normYAngle));
         } else if (verticalRotation) {
-            console.log(52);
+            //(52);
             if (normYAngle > 90) {
-                console.log(53);
+                //(53);
                 normYAngle = 90
-                console.log(54);
+                //(54);
             }
             else if (normYAngle < -90) {
-                console.log(55);
+                //(55);
                 normYAngle = -90
-                console.log(56);
+                //(56);
             };
-            console.log(57);
+            //(57);
             rotateY(-normYAngle);
-            console.log(58);
+            //(58);
         }
-        console.log(59);
+        //(59);
         newPinkyRef = lastPinkyRef;
-        console.log(60);
+        //(60);
         newIndexRef = lastIndexRef;
-        console.log(61);
+        //(61);
     }
 
     function getXAngleAndRotate(wrist, newRefOfMid, zAngle) {
@@ -338,14 +339,14 @@ export const GlobalFunctionsProvider = ({ children }) => {
             let normZAngle = normalizeAngle(zAngle);
 
             if (enableSmoothing) {
-                console.log(enableSmoothing, 'enabled');
+                //(enableSmoothing, 'enabled');
                 // Calculate the angle difference between the current and the new angle
                 const angleDifference = ZRAngle - normZAngle;
-                console.log(angleDifference, 'angdiff');
+                //(angleDifference, 'angdiff');
                 // ("z rot:", ZRAngle, angleDifference, zAngle, normZAngle);
 
                 zArr.push(angleDifference); // Insert new value at the end
-                console.log(zArr, 'zarr');
+                //(zArr, 'zarr');
                 if (zArr.length > 3) {
                     zArr.shift(); // Remove first index value
                     // Check if all 5 values are either positive or negative
@@ -361,7 +362,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
                     }
                 }
                 const XDiff = XTrans - canX;
-                console.log(XDiff, 'xdiff');
+                //(XDiff, 'xdiff');
 
                 xtArr.push(XDiff); // Insert new value at the end
 
@@ -378,7 +379,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
                 }
 
                 const YDiff = YTrans - canY;
-                console.log(YDiff, 'y diff');
+                //(YDiff, 'y diff');
                 ytArr.push(YDiff); // Insert new value at the end
 
                 if (ytArr.length > 3) {
@@ -460,7 +461,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         // wristSize /= 2;
 
         let wristSize = euclideanDistance(points[0], points[9]);
-        console.log(wristSize, 'wristSize');
+        //(wristSize, 'wristSize');
         // if (diff <= 0.1) {
         //     const newSize = kfResize.filter(wristSize);
         //     ("origsize", wristSize, "filtered", newSize);
@@ -487,7 +488,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
         lastSize = wristSize;
         // setWristZoom(wristSize)
-        console.log(wristSize, 'wristSize');
+        //(wristSize, 'wristSize');
         return wristSize;
 
     }
@@ -588,7 +589,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             } else if (jewelType === "ring") {
                 stayPoint = ringPos;
             }
-            console.log(stayPoint.x, stayPoint.y, stayPoint.z, 'stayPoints');
+            //(stayPoint.x, stayPoint.y, stayPoint.z, 'stayPoints');
             setHandPointsX(stayPoint.x)
             setHandPointsY(stayPoint.y)
             setHandPointsZ(stayPoint.z)
@@ -746,7 +747,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         const baseFar = jewelType === "bangle" ? 4.5 : 5.018;
         cameraFar = baseFar + scaleMul * 0.01;
         setCameraFarVar(cameraFar);
-        console.log(cameraFar);
+        //(cameraFar);
 
         // (cameraFar);
         // (cameraNear);
