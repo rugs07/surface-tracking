@@ -4,8 +4,8 @@ export const VariableContext = createContext();
 
 export const VariableProvider = ({ children }) => {
     const [handPointsX, setHandPointsX] = useState(0);
-    const [cameraFarVar,setCameraFarVar] = useState(0);
-    const [cameraNearVar,setCameraNearVar] = useState(0);
+    const [cameraFarVar, setCameraFarVar] = useState(0);
+    const [cameraNearVar, setCameraNearVar] = useState(0);
     const [handPointsY, setHandPointsY] = useState(0);
     const [handPointsZ, setHandPointsZ] = useState(0);
     const [autorotate, setAutorotate] = useState(false);
@@ -76,7 +76,7 @@ export const VariableProvider = ({ children }) => {
     const [gBlitCamera, setGBlitCamera] = useState(null);
     const [isVideo, setIsVideo] = useState(false);
     const [camera, setCamera] = useState(null);
-    const [facingMode, setFacingMode] = useState('environment');
+    const [facingMode, setFacingMode] = useState('user');
     const [isDirectionalRing, setIsDirectionalRing] = useState(true);
     const [isArcball, setIsArcball] = useState(false);
     const [loadFeatures, setLoadFeatures] = useState(false);

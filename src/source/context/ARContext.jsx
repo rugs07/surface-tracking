@@ -16,7 +16,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     // Define your globally accessible functions
     let { setHandPointsX,
         setHandPointsY,
-        setHandPointsZ, setWristZoom, XRAngle, XRDelta, setXRDelta, setYRDelta, enableRingTransparency, XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball,setCameraFarVar,setCameraNearVar } = useVariables()
+        setHandPointsZ, setWristZoom, XRAngle, XRDelta, setXRDelta, setYRDelta, enableRingTransparency, XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball, setCameraFarVar, setCameraNearVar } = useVariables()
     // const { calculateAngleAtMiddle } = ARFunctions()
     function rotateX(angle) {
         if (isArcball) {
@@ -78,16 +78,16 @@ export const GlobalFunctionsProvider = ({ children }) => {
         ) {
             console.log(3, handLabel, facingMode);
             YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
-            console.log(4, YRDelta);
-            console.log(YRAngle, 'YRDelta');
-            setYRDelta(YRDelta)
+            // console.log(4, YRDelta);
+            // console.log(YRAngle, 'YRDelta');
         }
         else {
             console.log(5);
             YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle)
-            console.log(6, YRDelta);
+            // console.log(6, YRDelta);
         }
         console.log(7);
+        setYRDelta(YRDelta)
         // gsplatCanvas.style.tranform = 'inherit';
         console.log(YRDelta, 'yr delta ')
         return YRDelta;

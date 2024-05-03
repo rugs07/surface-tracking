@@ -14,7 +14,7 @@ const HandTrackingComponent = () => {
     const videoRef = useRef(null);
     let [points, setPoints] = useState({ x: 0, y: 0, z: 0 });
     const { translateRotateMesh } = ARFunctions();
-    const { YRDelta, XRDelta, ZRDelta, wristZoom, handPointsX, handPointsY, handPointsZ,cameraFarVar ,cameraNearVar} = useVariables()
+    const { YRDelta, XRDelta, ZRDelta, wristZoom, handPointsX, handPointsY, handPointsZ, cameraFarVar, cameraNearVar } = useVariables()
     const canvasRef = useRef(null);
     const [landmark, setLandmark] = useState([]);
     const [handPresence, setHandPresence] = useState();
@@ -30,7 +30,7 @@ const HandTrackingComponent = () => {
     console.log(handPointsX,
         handPointsY,
         handPointsZ, 'position');
-        console.log(cameraFarVar)
+    console.log(cameraFarVar)
     // (translateRotateMesh, 'logs');
     const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
     const navigate = useNavigate();
@@ -90,7 +90,7 @@ const HandTrackingComponent = () => {
 
                         translateRotateMesh(
                             detections.landmarks[0],
-                            "Left",
+                            "Right",
                             true,
                             canvasRef.current
                         );
@@ -197,7 +197,7 @@ const HandTrackingComponent = () => {
                         src={url}
                         rotation={[XRDelta, YRDelta, ZRDelta]}
                         scale={[wristZoom, wristZoom, wristZoom]}
-                        position={[ handPointsX, handPointsY, handPointsZ]}
+                        position={[handPointsX, handPointsY, handPointsZ]}
                     />
                 </Canvas>
 
