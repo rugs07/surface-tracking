@@ -14,7 +14,7 @@ const HandTrackingComponent = () => {
     const videoRef = useRef(null);
     let [points, setPoints] = useState({ x: 0, y: 0, z: 0 });
     const { translateRotateMesh } = ARFunctions();
-    const { YRDelta, XRDelta, ZRDelta, wristZoom, handPointsX, handPointsY, handPointsZ, } = useVariables()
+    const { YRDelta, XRDelta, ZRDelta, wristZoom, handPointsX, handPointsY, handPointsZ,cameraFarVar ,cameraNearVar} = useVariables()
     const canvasRef = useRef(null);
     const [landmark, setLandmark] = useState([]);
     const [handPresence, setHandPresence] = useState();
@@ -30,6 +30,7 @@ const HandTrackingComponent = () => {
     console.log(handPointsX,
         handPointsY,
         handPointsZ, 'position');
+        console.log(cameraFarVar)
     // (translateRotateMesh, 'logs');
     const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
     const navigate = useNavigate();
@@ -177,7 +178,7 @@ const HandTrackingComponent = () => {
                     bottom: 0,
                     width: "100%",
                     height: "100%",
-                    // zIndex: "-1000",
+                    zIndex: "-1000",
                     objectFit: "cover",
                 }}
             ></video>
@@ -190,7 +191,7 @@ const HandTrackingComponent = () => {
                 }}
             >
                 <FPSStats />
-                <Canvas id="gsplatCanvas" ref={canvasRef} shadows gl={{ localClippingEnabled: true }} camera={{ fov: 46, position: [0, 1.5, 4.5], near: 0.25, far: 4.75 }} >
+                <Canvas id="gsplatCanvas" ref={canvasRef} shadows gl={{ localClippingEnabled: true }} camera={{ fov: 46, position: [0, 1.5, 4.5], near: 0.093, far: cameraFarVar }} >
 
                     <Splat
                         src={url}

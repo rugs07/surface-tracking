@@ -16,7 +16,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     // Define your globally accessible functions
     let { setHandPointsX,
         setHandPointsY,
-        setHandPointsZ, setWristZoom, XRAngle, XRDelta, setXRDelta, setYRDelta, enableRingTransparency, XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball } = useVariables()
+        setHandPointsZ, setWristZoom, XRAngle, XRDelta, setXRDelta, setYRDelta, enableRingTransparency, XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball,setCameraFarVar,setCameraNearVar } = useVariables()
     // const { calculateAngleAtMiddle } = ARFunctions()
     function rotateX(angle) {
         if (isArcball) {
@@ -79,6 +79,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
             console.log(3, handLabel, facingMode);
             YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
             console.log(4, YRDelta);
+            console.log(YRAngle, 'YRDelta');
+            setYRDelta(YRDelta)
         }
         else {
             console.log(5);
@@ -86,9 +88,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
             console.log(6, YRDelta);
         }
         console.log(7);
-        gsplatCanvas.style.tranform = 'inherit';
+        // gsplatCanvas.style.tranform = 'inherit';
         console.log(YRDelta, 'yr delta ')
-        setYRDelta(YRDelta)
         return YRDelta;
     }
 
@@ -739,10 +740,13 @@ export const GlobalFunctionsProvider = ({ children }) => {
         if (jewelType === "bangle") {
             const baseNear = 0.093;
             cameraNear = baseNear + scaleMul * 0.01;
+            setCameraNearVar(cameraNear);
         }
 
-        const baseFar = jewelType === "bangle" ? 5 : 5.018;
+        const baseFar = jewelType === "bangle" ? 4.5 : 5.018;
         cameraFar = baseFar + scaleMul * 0.01;
+        setCameraFarVar(cameraFar);
+        console.log(cameraFar);
 
         // (cameraFar);
         // (cameraNear);

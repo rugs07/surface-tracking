@@ -4,6 +4,8 @@ export const VariableContext = createContext();
 
 export const VariableProvider = ({ children }) => {
     const [handPointsX, setHandPointsX] = useState(0);
+    const [cameraFarVar,setCameraFarVar] = useState(0);
+    const [cameraNearVar,setCameraNearVar] = useState(0);
     const [handPointsY, setHandPointsY] = useState(0);
     const [handPointsZ, setHandPointsZ] = useState(0);
     const [autorotate, setAutorotate] = useState(false);
@@ -258,7 +260,10 @@ export const VariableProvider = ({ children }) => {
         setHandPointsX,
         setHandPointsY,
         setHandPointsZ,
-
+        cameraFarVar,
+        setCameraFarVar,
+        cameraNearVar,
+        setCameraNearVar
 
     };
 
