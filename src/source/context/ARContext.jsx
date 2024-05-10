@@ -124,12 +124,13 @@ export const GlobalFunctionsProvider = ({ children }) => {
         let canP = 0;
         // cameraControls.setFocalOffset(canX, canY, 0.0, false);
         let adjustmentFactor = window.innerWidth * 0.5;
+        angle = -angle;
         let transform = null;
         if (!translation) transform = "rotateZ(" + angle + "deg)";
         else canP = canX - adjustmentFactor;
         transform =
             "translate3d(" +
-            canP +
+            canX +
             "px, " +
             canY +
             "px, " +
@@ -139,7 +140,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             "deg)";
         (transform, "can's");
         gsplatCanvas.style.transform = transform;
-
+        console.log(canX,'Canx');
         ZRAngle = angle;
         XTrans = canX;
         YTrans = canY;
@@ -611,7 +612,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         (windowWidth, stayPoint.x, 'win height');
         if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
             // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
-            canX = stayPoint.x * windowWidth - windowWidth / 2;
+            canX = (1-stayPoint.x) * windowWidth - windowWidth / 2;
             // if(window.navigator.userAgent.includes("Firefox")){
             //   window_scale = (windowWidth/sourceImage.width) * 1.75;
             // }

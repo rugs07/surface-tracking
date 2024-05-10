@@ -29,9 +29,9 @@ export const VariableProvider = ({ children }) => {
     const [wristZoom, setWristZoom] = useState()
     const [XTrans, setXTrans] = useState(0);
     const [YTrans, setYTrans] = useState(0);
-    const [XRDelta, setXRDelta] = useState(0.1 * Math.PI);
-    const [YRDelta, setYRDelta] = useState(0.5 * Math.PI);
-    const [ZRDelta, setZRDelta] = useState(-0.5 * Math.PI);
+    const [XRDelta, setXRDelta] = useState(0.015);
+    const [YRDelta, setYRDelta] = useState(-3.55);
+    const [ZRDelta, setZRDelta] = useState(1.6);
     const [isMobile, setIsMobile] = useState(true);
     const [isIOS, setIsIOS] = useState(false);
     const [browserName, setBrowserName] = useState('');
