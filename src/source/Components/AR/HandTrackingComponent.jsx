@@ -141,15 +141,7 @@ const HandTrackingComponent = () => {
   }, []);
 
   return (
-    <div>
-      {/* <h1 style={{ position: "absolute", bottom: 0, left: 0 }}>
-                Is there a Hand? {handPresence ? "Yes" : "No"}
-            </h1> */}
-      {/* <button style={{ position: "absolute", top: 10, right: 10 }} onClick={handleStopAR}>
-                STOP AR
-            </button> */}
-
-      {!handPresence && <Showhandscreen />}
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, overflow: "hidden" }}>
       {!handPresence && <Showhandscreen />}
       {!handPresence && (
         <button
@@ -158,7 +150,7 @@ const HandTrackingComponent = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            zIndex: "1001", // Ensure the button appears above the Showhandscreen
+            zIndex: "1001",
           }}
           onClick={handleStopAR}
         >
@@ -182,20 +174,7 @@ const HandTrackingComponent = () => {
           objectFit: "cover",
         }}
       ></video>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "150vw",
-          height: "150vh",
-          zIndex : "1000"
-        }}
-      >
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", justifyContent: "center", alignItems: "center" }}>
         <FPSStats />
         <Canvas
           id="gsplatCanvas"
@@ -208,18 +187,18 @@ const HandTrackingComponent = () => {
             near: 0.093,
             far: 4.75,
           }}
+          style={{ width: "100vw", height: "100vh" }}
         >
           <Splat
             src={url}
             rotation={[XRDelta, YRDelta, ZRDelta]}
-            // values to be added fromjewelcontext of basegamaAR and all
             scale={[wristZoom, wristZoom, wristZoom]}
             position={[0, 0, 0]}
           />
         </Canvas>
       </div>
     </div>
-  );
+  );  
 };
 
 export default HandTrackingComponent;
