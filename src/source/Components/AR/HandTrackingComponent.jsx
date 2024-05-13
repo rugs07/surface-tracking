@@ -24,6 +24,7 @@ const HandTrackingComponent = () => {
     cameraFarVar,
     cameraNearVar,
     handLabel,
+    setHandLabel,
   } = useVariables();
   const canvasRef = useRef(null);
   const [landmark, setLandmark] = useState([]);
@@ -82,15 +83,16 @@ const HandTrackingComponent = () => {
 
         // Check if detections.landmarks is not empty
         if (detections.landmarks && detections.landmarks.length > 0) {
-        //   pointsX = detections.landmarks[0][0].x;
-        //   pointsY = detections.landmarks[0][0].y;
-        //   pointsZ = detections.landmarks[0][0].z;
-        //   setPoints({ x: pointsX, y: pointsY, z: pointsZ });
+          //   pointsX = detections.landmarks[0][0].x;
+          //   pointsY = detections.landmarks[0][0].y;
+          //   pointsZ = detections.landmarks[0][0].z;
+          //   setPoints({ x: pointsX, y: pointsY, z: pointsZ });
 
           // console.log(points, 'points');
-
+          console.log(detections.handednesses[0][0].displayName, 'detecti9ons');
           // Call translateRotateMesh only if landmarks are available
           try {
+            setHandLabel(detections.handednesses[0][0].displayName,)
             translateRotateMesh(
               detections.landmarks[0],
               handLabel,
@@ -98,7 +100,7 @@ const HandTrackingComponent = () => {
               canvasRef.current
             );
 
-            console.log(detections.landmarks[0][0].x,'points');
+            console.log(detections.landmarks[0][0].x, 'points');
           } catch (error) {
             error;
           }
@@ -163,7 +165,7 @@ const HandTrackingComponent = () => {
         playsInline
         style={{
           position: "absolute",
-          transform: 'rotateY(180deg)',
+          // transform: 'rotateY(180deg)',
           top: 0,
           left: 0,
           right: 0,
@@ -198,7 +200,7 @@ const HandTrackingComponent = () => {
         </Canvas>
       </div>
     </div>
-  );  
+  );
 };
 
 export default HandTrackingComponent;

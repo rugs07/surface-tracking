@@ -35,7 +35,7 @@ export const VariableProvider = ({ children }) => {
     const [isMobile, setIsMobile] = useState(true);
     const [isIOS, setIsIOS] = useState(false);
     const [browserName, setBrowserName] = useState('');
-    const [jewelType, setJewelType] = useState('bangle');
+    const [jewelType, setJewelType] = useState("");
     const [rawBaseTheta, setRawBaseTheta] = useState(0);
     const [baseTheta, setBaseTheta] = useState(0);
     const [baseThetaVR, setBaseThetaVR] = useState(0);
@@ -48,7 +48,7 @@ export const VariableProvider = ({ children }) => {
     const [baseGamaAR, setBaseGamaAR] = useState(0);
     const [selectedJewel, setSelectedJewel] = useState('');
     const [resolution, setResolution] = useState(336);
-    const [handLabel, setHandLabel] = useState('Left');
+    const [handLabel, setHandLabel] = useState('');
     const [aspectRatio, setAspectRatio] = useState(1);
     const [crop, setCrop] = useState(1);
     const [scaleMul, setScaleMul] = useState(0.5);

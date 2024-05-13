@@ -17,13 +17,16 @@ import heart from "../assets/heart1-bg.png";
 import redeye from "../assets/redeye1-bg.png";
 import sunny from "../assets/sunny1-bg.png";
 import logo from "../assets/logo1.png";
+import { useVariables } from "../context/variableContext";
 
 const Home = () => {
   const navigate = useNavigate();
   const { jewelsList } = useJewels();
+  const { setJewelType } = useVariables();
 
   const handleClick = (jewelId) => {
     const selectedJewel = jewelsList[jewelId];
+    setJewelType(jewelsList[jewelId].type)
     sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
     navigate("/VR");
   };
@@ -80,7 +83,7 @@ const Home = () => {
               }}
             >
               <img src={laxmibangle} className="jewelimg" />
-              <div className="selectarea">
+              <div className="selectarea" >
                 {/* <!-- <button type="button">Laxmi Bangle</button> --> */}
                 <span>Laxmi Bangle</span>
               </div>

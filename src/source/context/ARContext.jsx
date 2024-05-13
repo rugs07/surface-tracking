@@ -14,7 +14,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let ytArr = [];
     // const gsplatCanvas = document.getElementById("gsplatCanvas");
     // Define your globally accessible functions
-    let { setHandPointsX,
+    let { isDirectionalRing, setHandPointsX,
         setHandPointsY,
         setHandPointsZ, setWristZoom, XRAngle, XRDelta, setXRDelta, setYRDelta, enableRingTransparency, XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball, setCameraFarVar, setCameraNearVar } = useVariables()
     // const { calculateAngleAtMiddle } = ARFunctions()
@@ -124,7 +124,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         let canP = 0;
         // cameraControls.setFocalOffset(canX, canY, 0.0, false);
         let adjustmentFactor = window.innerWidth * 0.5;
-        angle = -angle;
+        // angle = angle;
         let transform = null;
         if (!translation) transform = "rotateZ(" + angle + "deg)";
         else canP = canX - adjustmentFactor;
@@ -140,7 +140,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             "deg)";
         (transform, "can's");
         gsplatCanvas.style.transform = transform;
-        console.log(canX,'Canx');
+        console.log(canX, 'Canx');
         ZRAngle = angle;
         XTrans = canX;
         YTrans = canY;
@@ -594,6 +594,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
             setHandPointsX(stayPoint.x)
             setHandPointsY(stayPoint.y)
             setHandPointsZ(stayPoint.z)
+            console.log(ringPos, stayPoint, "points jewel");
         }
         // (stayPoint);
 
@@ -612,7 +613,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         (windowWidth, stayPoint.x, 'win height');
         if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
             // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
-            canX = (1-stayPoint.x) * windowWidth - windowWidth / 2;
+            canX = (1 - stayPoint.x) * windowWidth - windowWidth / 2;
             // if(window.navigator.userAgent.includes("Firefox")){
             //   window_scale = (windowWidth/sourceImage.width) * 1.75;
             // }
