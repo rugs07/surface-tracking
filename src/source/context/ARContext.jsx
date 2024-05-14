@@ -1,6 +1,6 @@
 // GlobalFunctionsContext.js
 import * as THREE from 'three';
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { useVariables } from './variableContext';
 
 // Create a context for your global functions
@@ -14,11 +14,12 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let ytArr = [];
     // const gsplatCanvas = document.getElementById("gsplatCanvas");
     // Define your globally accessible functions
-    let { isDirectionalRing, setHandPointsX,
+    let { setHandLabels, isDirectionalRing, setHandPointsX,
         setHandPointsY,
-        setHandPointsZ, setWristZoom, XRAngle, XRDelta, setXRDelta, setYRDelta, enableRingTransparency, XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabel, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball, setCameraFarVar, setCameraNearVar } = useVariables()
+        setHandPointsZ, setWristZoom, XRAngle, XRDelta, setXRDelta, setYRDelta, enableRingTransparency, XTrans, YTrans, translation, YRAngle, enableSmoothing, facingMode, verticalRotation, jewelType, horizontalRotation, totalTransX, totalTransY, lastMidRef, ZRAngle, lastRefOfMid, handLabels, YRDelta, lastPinkyRef, lastIndexRef, isMobile, selectedJewel, scaleMul, cameraNear, cameraFar, resize, isArcball, setCameraFarVar, setCameraNearVar } = useVariables()
     // const { calculateAngleAtMiddle } = ARFunctions()
     function rotateX(angle) {
+        console.log(handLabels, "starting");
         if (isArcball) {
             var quaternion = new THREE.Quaternion().setFromAxisAngle(
                 new THREE.Vector3(1, 0, 0),
@@ -43,6 +44,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     }
 
     function rotateY(angle) {
+        // setHandLabel(handLabel)
         // if (isArcball) {
         //   var quaternion = new THREE.Quaternion().setFromAxisAngle(
         //     new THREE.Vector3(0, 1, 0),
@@ -69,15 +71,16 @@ export const GlobalFunctionsProvider = ({ children }) => {
         //   // );
         // }
 
+        console.log(handLabels, facingMode);
         YRAngle = angle;
 
-
         if (
-            (handLabel === "Right" && facingMode !== "environment") ||
-            (handLabel === "Left" && facingMode === "environment")
+            (handLabels == "Right" && facingMode !== "environment") ||
+            (handLabels == "Left" && facingMode === "environment")
         ) {
 
             YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
+            console.log(YRDelta, "+");
             // //(4, YRDelta);
             // //(YRAngle, 'YRDelta');
         }
@@ -85,9 +88,10 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
             YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle)
             // //(6, YRDelta);
+            console.log(YRDelta, "-");
         }
 
-        setYRDelta(YRDelta)
+        setYRDelta(-YRDelta)
         // gsplatCanvas.style.tranform = 'inherit';
         //(YRDelta, 'yr delta ')
         // console.log(YRDelta, 'yrdelta');
@@ -124,7 +128,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         let canP = 0;
         // cameraControls.setFocalOffset(canX, canY, 0.0, false);
         let adjustmentFactor = window.innerWidth * 0.5;
-        // angle = angle;
+        // angle = -angle;
         let transform = null;
         if (!translation) transform = "rotateZ(" + angle + "deg)";
         else canP = canX - adjustmentFactor;
@@ -525,6 +529,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
             // Handle the case where points is null or empty
             return;
         }
+        setHandLabels(handLabel);
+        console.log(handLabel, "handlabel");
 
         // (points, 'points');
         // (handLabel, 'handlabel');
@@ -632,7 +638,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         }
 
 
-        (window_scale);
+        // (window_scale);
 
         // (sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
         // rotation & translation (getZAngleAndRotate also translates)
@@ -763,7 +769,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
             gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
 
     }
-
 
 
 

@@ -48,7 +48,7 @@ export const VariableProvider = ({ children }) => {
     const [baseGamaAR, setBaseGamaAR] = useState(0);
     const [selectedJewel, setSelectedJewel] = useState('');
     const [resolution, setResolution] = useState(336);
-    const [handLabel, setHandLabel] = useState('');
+    const [handLabels, setHandLabels] = useState("");
     const [aspectRatio, setAspectRatio] = useState(1);
     const [crop, setCrop] = useState(1);
     const [scaleMul, setScaleMul] = useState(0.5);
@@ -167,8 +167,8 @@ export const VariableProvider = ({ children }) => {
         setSelectedJewel,
         resolution,
         setResolution,
-        handLabel,
-        setHandLabel,
+        handLabels,
+        setHandLabels,
         aspectRatio,
         setAspectRatio,
         crop,

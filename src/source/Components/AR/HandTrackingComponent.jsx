@@ -23,8 +23,8 @@ const HandTrackingComponent = () => {
     handPointsZ,
     cameraFarVar,
     cameraNearVar,
-    handLabel,
-    setHandLabel,
+    handLabels,
+    setHandLabels,
   } = useVariables();
   const canvasRef = useRef(null);
   const [landmark, setLandmark] = useState([]);
@@ -41,6 +41,7 @@ const HandTrackingComponent = () => {
   // (translateRotateMesh, 'logs');
   const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
   const navigate = useNavigate();
+ 
 
   const handleStopAR = () => {
     // Stop the video stream
@@ -63,7 +64,7 @@ const HandTrackingComponent = () => {
           "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
         );
         handLandmarker = await HandLandmarker.createFromOptions(vision, {
-          baseOptions: { modelAssetPath: hand_landmarker_task },
+          baseOptions: { modelAssetPath: hand_landmarker_task, delegate: 'GPU' },
           numHands: 1,
           runningMode: "video",
         });
@@ -89,18 +90,18 @@ const HandTrackingComponent = () => {
           //   setPoints({ x: pointsX, y: pointsY, z: pointsZ });
 
           // console.log(points, 'points');
-          console.log(detections.handednesses[0][0].displayName, 'detecti9ons');
+          // console.log(handLabel, 'detecti9ons');
           // Call translateRotateMesh only if landmarks are available
           try {
-            setHandLabel(detections.handednesses[0][0].displayName,)
             translateRotateMesh(
               detections.landmarks[0],
-              handLabel,
-              true,
+              detections.handednesses[0][0].displayName,
+              false,
               canvasRef.current
             );
+            setHandLabels(detections.handednesses[0][0].displayName)
 
-            console.log(detections.landmarks[0][0].x, 'points');
+            // console.log(handLabel, 'hand label');
           } catch (error) {
             error;
           }
@@ -165,7 +166,7 @@ const HandTrackingComponent = () => {
         playsInline
         style={{
           position: "absolute",
-          // transform: 'rotateY(180deg)',
+          transform: 'rotateY(180deg)',
           top: 0,
           left: 0,
           right: 0,
@@ -176,8 +177,8 @@ const HandTrackingComponent = () => {
           objectFit: "cover",
         }}
       ></video>
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <FPSStats />
+      <FPSStats />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", justifyContent: "center", alignItems: "center", transform: 'rotateY(180deg)' }}>
         <Canvas
           id="gsplatCanvas"
           ref={canvasRef}

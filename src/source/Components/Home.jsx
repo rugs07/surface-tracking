@@ -22,13 +22,15 @@ import { useVariables } from "../context/variableContext";
 const Home = () => {
   const navigate = useNavigate();
   const { jewelsList } = useJewels();
-  const { setJewelType } = useVariables();
+  const { setJewelType, jewelType } = useVariables();
 
   const handleClick = (jewelId) => {
     const selectedJewel = jewelsList[jewelId];
     setJewelType(jewelsList[jewelId].type)
     sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
     navigate("/VR");
+
+    console.log(jewelsList[jewelId].type, 'jewelType');
   };
 
   const handleNavigate = (url) => {

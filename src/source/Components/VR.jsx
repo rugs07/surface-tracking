@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState, Suspense } from "react";
 import * as SPLAT from "gsplat";
 import { Canvas } from "@react-three/fiber";
 import {
-  CameraControls,
   OrbitControls,
-  PresentationControls,
+
   Splat,
   PerspectiveCamera,
+
 } from "@react-three/drei";
 import "../css/gsplat.css";
 import "../css/loader.css";
@@ -164,6 +164,7 @@ const VR = () => {
             gl={{ localClippingEnabled: true }}
             camera={{ fov: 86, position: [0, 1.9, 5.5], near: 0.25, far: 16 }}
           >
+
             {/* <CarShow /> */}
             <OrbitControls
               maxDistance={2.9}
@@ -174,13 +175,14 @@ const VR = () => {
 
             <Splat
               src={url}
-            //   rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
-              rotation={[0.015,-3.55,1.6]}
+              //   rotation={[0.1 * Math.PI, 0.5 * Math.PI, -0.5 * Math.PI]}
+              rotation={[0.015, -3.55, 1.6]}
               position={[0, 0, 0]}
             />
             {/* </PresentationControls> */}
           </Canvas>
         </Suspense>
+
       </div>
       {/* <audio className="audioElement">
                 <source src="./assets/audion.mp3" type="audio/mp3" />
