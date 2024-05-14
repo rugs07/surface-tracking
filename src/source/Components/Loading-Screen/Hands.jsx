@@ -14,16 +14,21 @@ const Hands = () => {
   useEffect(() => {
     async function fetchImages() {
       const selectedJewelKey = sessionStorage.getItem("selectedJewel") || "b4_gen3";
-      const jewelDetails = jewelsList[selectedJewelKey] || jewelsList['b4_gen3'];
+      // selectedJewelKey = JSON.parse(selectedJewelKey)
+      console.log(JSON.parse(selectedJewelKey), 'jewel key');
+      const jewelDetails = jewelsList[JSON.parse(selectedJewelKey).name] || jewelsList['b4_gen3'];
+      console.log(jewelDetails);
 
       const type = jewelDetails.type || 'bangle';  // Default to bangle if undefined
-      
+      console.log(type);
+
       try {
         const images = await Promise.all([
           import(`../../assets/${type}step1.jpg`),
           import(`../../assets/${type}step2.jpg`),
           import(`../../assets/${type}step3.gif`)
         ]);
+        console.log(images, 'images');
 
         setImagePaths({
           step1: images[0].default,
