@@ -166,7 +166,7 @@ const HandTrackingComponent = () => {
         playsInline
         style={{
           position: "absolute",
-          transform: 'rotateY(180deg)',
+          // transform: 'rotateY(180deg)',
           top: 0,
           left: 0,
           right: 0,
