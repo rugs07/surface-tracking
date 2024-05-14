@@ -8,6 +8,7 @@ import { ARFunctions } from "../../context/ARContext";
 import { useNavigate } from "react-router-dom";
 import Showhandscreen from "./Showhandscreen";
 import { useVariables } from "../../context/variableContext";
+import ErrorBoundary from "../Errorboundary/ErrorBoundary";
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
@@ -166,7 +167,7 @@ const HandTrackingComponent = () => {
         playsInline
         style={{
           position: "absolute",
-          // transform: 'rotateY(180deg)',
+          transform: 'rotateY(180deg)',
           top: 0,
           left: 0,
           right: 0,
@@ -179,6 +180,7 @@ const HandTrackingComponent = () => {
       ></video>
       <FPSStats />
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", justifyContent: "center", alignItems: "center", transform: 'rotateY(180deg)' }}>
+      <ErrorBoundary>
         <Canvas
           id="gsplatCanvas"
           ref={canvasRef}
@@ -199,6 +201,7 @@ const HandTrackingComponent = () => {
             position={[0, 0, 0]}
           />
         </Canvas>
+        </ErrorBoundary>
       </div>
     </div>
   );

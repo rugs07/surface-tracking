@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, Suspense } from "react";
 import * as SPLAT from "gsplat";
 import { Canvas } from "@react-three/fiber";
+import ErrorBoundary from "./Errorboundary/ErrorBoundary";
 import {
   OrbitControls,
 
@@ -158,7 +159,7 @@ const VR = () => {
         }}
       >
         {/* <canvas ref={canvasRef} id="gsplatCanvas" ></canvas> */}
-        <Suspense fallback={null}>
+        <ErrorBoundary>
           <Canvas
             shadows
             gl={{ localClippingEnabled: true }}
@@ -181,7 +182,7 @@ const VR = () => {
             />
             {/* </PresentationControls> */}
           </Canvas>
-        </Suspense>
+        </ErrorBoundary>
 
       </div>
       {/* <audio className="audioElement">
