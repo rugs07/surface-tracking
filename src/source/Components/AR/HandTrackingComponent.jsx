@@ -15,6 +15,7 @@ const HandTrackingComponent = () => {
   let [points, setPoints] = useState({ x: 0, y: 0, z: 0 });
   const { translateRotateMesh } = ARFunctions();
   const {
+    jewelType,
     YRDelta,
     XRDelta,
     ZRDelta,
@@ -42,7 +43,7 @@ const HandTrackingComponent = () => {
   // (translateRotateMesh, 'logs');
   const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
   const navigate = useNavigate();
- 
+
 
   const handleStopAR = () => {
     // Stop the video stream
@@ -53,6 +54,7 @@ const HandTrackingComponent = () => {
 
     navigate("/VR");
   };
+
 
   let wristPoints;
   useEffect(() => {
@@ -145,8 +147,8 @@ const HandTrackingComponent = () => {
   }, []);
 
   return (
-    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, overflow: "hidden" }}>
-      {!handPresence && <Showhandscreen />}
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, }}>
+      {!handPresence && <Showhandscreen typeJewel={jewelType} />}
       {!handPresence && (
         <button
           style={{
@@ -180,27 +182,27 @@ const HandTrackingComponent = () => {
       ></video>
       <FPSStats />
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", justifyContent: "center", alignItems: "center", transform: 'rotateY(180deg)' }}>
-      <ErrorBoundary>
-        <Canvas
-          id="gsplatCanvas"
-          ref={canvasRef}
-          shadows
-          gl={{ localClippingEnabled: true }}
-          camera={{
-            fov: 46,
-            position: [0, 1.5, 4.5],
-            near: 0.093,
-            far: 4.75,
-          }}
-          style={{ width: "100vw", height: "100vh" }}
-        >
-          <Splat
-            src={url}
-            rotation={[XRDelta, YRDelta, ZRDelta]}
-            scale={[wristZoom, wristZoom, wristZoom]}
-            position={[0, 0, 0]}
-          />
-        </Canvas>
+        <ErrorBoundary>
+          <Canvas
+            id="gsplatCanvas"
+            ref={canvasRef}
+            shadows
+            gl={{ localClippingEnabled: true }}
+            camera={{
+              fov: 46,
+              position: [0, 1.5, 4.5],
+              near: 0.093,
+              far: 4.75,
+            }}
+            style={{ width: "100vw", height: "100vh" }}
+          >
+            <Splat
+              src={url}
+              rotation={[XRDelta, YRDelta, ZRDelta]}
+              scale={[wristZoom, wristZoom, wristZoom]}
+              position={[0, 0, 0]}
+            />
+          </Canvas>
         </ErrorBoundary>
       </div>
     </div>

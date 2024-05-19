@@ -786,20 +786,31 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  width: 80%;
-  /* width: 100%; */
+  width: 85%;
   height: 100%;
 }
 
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+}
+
 .rowar {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 15%;
   min-width: 275px;
   height: 100%;
   overflow-x: hidden;
+  max-height: calc(4*250px);
   overflow-y: auto;
-  margin-left: auto;
-  display: block;
+  z-index: 10000;
+}
+.jewel-container {
+  flex: 0 0 250px; /* Prevents the jewel container from stretching */
+  margin-bottom: 10px; /* Space between items */
 }
 
 .rowar::-webkit-scrollbar {
@@ -1070,21 +1081,32 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   #showhandscreen {
     flex-direction: column;
   }
+  .container{
+    flex-direction: row;
+  }
 
   .camerasection {
     width: 100%;
-    height: 70%;
-    gap: 5px;
+    overflow: hidden;
+    /* height: 70%;
+    gap: 5px; */
   }
 
   .rowar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: 60vw;
+    flex-direction: row;
+    /* width: 100%; */
+    height: 250px; /* Adjust to the height of one jewel-container */
+    max-height: none;
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: hidden; 
+    margin-top: auto;
+    z-index: 10007;
+  }
+
+  .jewel-container {
+    /* flex: 0 0 calc(33.33% - 10px);  */
+    margin-bottom: 0; /* Remove bottom margin */
+    /* margin-right: 10px;  */
   }
 
   .rowar::-webkit-scrollbar-thumb {

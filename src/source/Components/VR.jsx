@@ -4,17 +4,17 @@ import { Canvas } from "@react-three/fiber";
 import ErrorBoundary from "./Errorboundary/ErrorBoundary";
 import {
   OrbitControls,
-
   Splat,
   PerspectiveCamera,
-
 } from "@react-three/drei";
+
 import "../css/gsplat.css";
 import "../css/loader.css";
 import "../css/style.css";
 import FPSStats from "react-fps-stats";
 import { hideLoading, updateLoadingProgress } from "../../js/utils";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useVariables } from "../context/variableContext";
 
 function CarShow() {
   return (
@@ -39,6 +39,7 @@ const VR = () => {
   const [loadingProgress, setLoadingProgress] = useState(1);
   const autorotateAngleRef = useRef(0); // Using useRef to persist the value without causing re-renders
   const viewSpaceContainerRef = useRef(null);
+  const {XRDelta,YRDelta,ZRDelta} = useVariables()
   let autorotate = true; // Assuming you have a condition to enable/disable autorotation
   const autorotateSpeed = 0.005; // Define the speed of autorotation
   let splat;

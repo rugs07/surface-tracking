@@ -9,18 +9,17 @@ const Hands = () => {
     step2: '',
     step3: ''
   });
+
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchImages() {
       const selectedJewelKey = sessionStorage.getItem("selectedJewel") || "b4_gen3";
-      // selectedJewelKey = JSON.parse(selectedJewelKey)
-      console.log(JSON.parse(selectedJewelKey), 'jewel key');
+   
       const jewelDetails = jewelsList[JSON.parse(selectedJewelKey).name] || jewelsList['b4_gen3'];
-      console.log(jewelDetails);
-
+     
       const type = jewelDetails.type || 'bangle';  // Default to bangle if undefined
-      console.log(type);
+     
 
       try {
         const images = await Promise.all([

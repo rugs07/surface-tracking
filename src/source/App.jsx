@@ -12,8 +12,8 @@ import Showhandscreen from "./Components/AR/Showhandscreen";
 const App = () => {
   return (
     <VariableProvider>
-      <GlobalFunctionsProvider>
-        <JewelsProvider>
+      <JewelsProvider>
+        <GlobalFunctionsProvider>
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -23,8 +23,8 @@ const App = () => {
               <Route path='/test' element={<Showhandscreen />} />
             </Routes>
           </BrowserRouter>
-        </JewelsProvider>
-      </GlobalFunctionsProvider>
+        </GlobalFunctionsProvider>
+      </JewelsProvider>
     </VariableProvider>
   );
 };
