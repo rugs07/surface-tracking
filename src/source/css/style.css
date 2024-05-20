@@ -1082,25 +1082,28 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     flex-direction: column;
   }
   .container{
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .camerasection {
     width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     /* height: 70%;
     gap: 5px; */
   }
 
   .rowar {
     flex-direction: row;
-    /* width: 100%; */
+    width: 100%;
     height: 250px; /* Adjust to the height of one jewel-container */
     max-height: none;
     overflow-x: auto;
     overflow-y: hidden; 
     margin-top: auto;
     z-index: 10007;
+    padding-bottom: 15rem;
   }
 
   .jewel-container {
@@ -1135,7 +1138,8 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 
   .handimg {
     height: 60%;
-    margin-right: 15px;
+    /* margin-right: 15px; */
+    padding-left: 4rem;
   }
 
   .switchbtn {

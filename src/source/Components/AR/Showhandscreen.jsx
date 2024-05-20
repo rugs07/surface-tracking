@@ -12,9 +12,11 @@ import redeye from '../../assets/redeye.png';
 import hand from '../../assets/hand.png';
 import { useJewels } from '../../context/JewelsContext';
 import { useVariables } from '../../context/variableContext';
+// import { GlobalFunctionsProvider } from '../../context/ARContext';
 
 const Showhandscreen = (typeJewel) => {
   const { jewelsList } = useJewels();
+  // const { setJewelParams } = GlobalFunctionsProvider()
 
   console.log(typeJewel, 'jewel type ');
   let jewelNameid;
@@ -39,6 +41,7 @@ const Showhandscreen = (typeJewel) => {
       return;
     }
     sessionStorage.setItem("selectedJewel", JSON.stringify({ name: jewelId }));
+    setJewelParams()
   };
 
   return (
