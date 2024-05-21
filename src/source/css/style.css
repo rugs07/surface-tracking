@@ -936,7 +936,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   }
 
   .jewel-container {
-    width: 45vw;
+    width: 40vw;
     height: 50vw;
     margin: 8px;
     margin-left: 0;
@@ -1097,18 +1097,20 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   .rowar {
     flex-direction: row;
     width: 100%;
-    height: 250px; /* Adjust to the height of one jewel-container */
-    max-height: none;
+    height: 250px;
     overflow-x: auto;
     overflow-y: hidden; 
-    margin-top: auto;
-    z-index: 10007;
-    padding-bottom: 15rem;
+    
+    padding-bottom: 1rem;
   }
 
   .jewel-container {
     /* flex: 0 0 calc(33.33% - 10px);  */
     margin-bottom: 0; /* Remove bottom margin */
+    width: 9rem;
+    
+    height: 9rem;
+    /* width: 12rem; */
     /* margin-right: 10px;  */
   }
 
@@ -1119,8 +1121,8 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   }
 
   .ar-jewel {
-    min-width: 45vw;
-    min-height: 40vw;
+    /* min-width: 40vw; */
+    /* min-height: 40vw; */
   }
 
   .ar-jewel:hover {
