@@ -937,7 +937,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 
   .jewel-container {
     width: 40vw;
-    height: 50vw;
+    height: 60vw;
     margin: 8px;
     margin-left: 0;
     padding: 5px;
@@ -1092,16 +1092,17 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     /* overflow: hidden; */
     /* height: 70%;
     gap: 5px; */
+    
   }
 
   .rowar {
     flex-direction: row;
     width: 100%;
-    height: 250px;
+    height: 350px;
     overflow-x: auto;
     overflow-y: hidden; 
     
-    padding-bottom: 1rem;
+    /* padding-bottom: 1rem; */
   }
 
   .jewel-container {
@@ -1109,7 +1110,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     margin-bottom: 0; /* Remove bottom margin */
     width: 9rem;
     
-    height: 9rem;
+    /* height: 9rem; */
     /* width: 12rem; */
     /* margin-right: 10px;  */
   }
