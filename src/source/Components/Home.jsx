@@ -4,18 +4,18 @@ import "../css/loader.css";
 import "../css/gsplat.css";
 import { useNavigate } from "react-router-dom";
 import { useJewels } from "../context/JewelsContext";
-import flowerbangle from "../assets/Bangle_new.png";
-import laxmibangle from "../assets/laxmi1-bg.png";
-import diamond from "../assets/diamondbracelet22-bg.png";
-import queens from "../assets/Queen1-bg.png";
-import livelyswans from "../assets/swan-bg.png";
-import natraj from "../assets/natraj-bg.png";
-import table from "../assets/table_1-bg.png";
-import ancientpots from "../assets/pots-bg.png";
-import flowerring from "../assets/flower1-bg.png";
-import heart from "../assets/heart1-bg.png";
-import redeye from "../assets/redeye1-bg.png";
-import sunny from "../assets/sunny1-bg.png";
+const flowerbangle = React.lazy(() => import("../assets/Bangle_new.png"));
+const laxmibangle = React.lazy(() => import("../assets/laxmi1-bg.png"));
+const diamond = React.lazy(() => import("../assets/diamondbracelet22-bg.png"));
+const queens = React.lazy(() => import("../assets/Queen1-bg.png"));
+const livelyswans = React.lazy(() => import("../assets/swan-bg.png"));
+const natraj = React.lazy(() => import("../assets/natraj-bg.png"));
+const table = React.lazy(() => import("../assets/table_1-bg.png"));
+const ancientpots = React.lazy(() => import("../assets/pots-bg.png"));
+const flowerring = React.lazy(() => import("../assets/flower1-bg.png"));
+const heart = React.lazy(() => import("../assets/heart1-bg.png"));
+const redeye = React.lazy(() => import("../assets/redeye1-bg.png"));
+const sunny = React.lazy(() => import("../assets/sunny1-bg.png"));
 import logo from "../assets/logo1.png";
 import { useVariables } from "../context/variableContext";
 
@@ -26,7 +26,7 @@ const Home = () => {
 
   const handleClick = (jewelId) => {
     const selectedJewel = jewelsList[jewelId];
-    setJewelType(jewelsList[jewelId].type);
+    setJewelType(jewelsList[jewelId].type)
     sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
     navigate("/VR");
 
@@ -181,63 +181,64 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* <!-- Rings --> */}
-        <div className="jrow home-row" id="jewels_row">
-          <div className="glassmorph">
-            <div
-              className="jewel-container home-jewel"
-              onClick={() => {
-                handleClick("jewel21_lr");
-              }}
-            >
-              <img src={heart} className="jewelimg" />
-              <div className="selectarea">
-                {/* <!-- <button type="button">Heart Ring</button> --> */}
-                <span>Heart Ring</span>
+          {/* <!-- Rings-- > */}
+          <div className="jrow home-row" id="jewels_row">
+            <div className="glassmorph">
+              <div
+                className="jewel-container home-jewel"
+                onClick={() => {
+                  handleClick("jewel21_lr");
+                }}
+              >
+                <img src={heart} className="jewelimg" />
+                <div className="selectarea">
+                  {/* <!-- <button type="button">Heart Ring</button> --> */}
+                  <span>Heart Ring</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="glassmorph">
-            <div
-              className="jewel-container home-jewel"
-              onClick={() => {
-                handleClick("jewel25_lr");
-              }}
-            >
-              <img src={redeye} className="jewelimg" />
-              <div className="selectarea">
-                {/* <!-- <button type="button">Red Eye Ring</button> --> */}
-                <span>Red Eye Ring</span>
+            <div className="glassmorph">
+              <div
+                className="jewel-container home-jewel"
+                onClick={() => {
+                  handleClick("jewel25_lr");
+                }}
+              >
+                <img src={redeye} className="jewelimg" />
+                <div className="selectarea">
+                  {/* <!-- <button type="button">Red Eye Ring</button> --> */}
+                  <span>Red Eye Ring</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="glassmorph">
-            <div
-              className="jewel-container home-jewel"
-              onClick={() => {
-                handleClick("jewel1_lr");
-              }}
-            >
-              <img src={sunny} className="jewelimg" />
-              <div className="selectarea">
-                {/* <!-- <button type="button">Sunny Ring</button> --> */}
-                <span>Sunny Ring</span>
+            <div className="glassmorph">
+              <div
+                className="jewel-container home-jewel"
+                onClick={() => {
+                  handleClick("jewel1_lr");
+                }}
+              >
+                <img src={sunny} className="jewelimg" />
+                <div className="selectarea">
+                  {/* <!-- <button type="button">Sunny Ring</button> --> */}
+                  <span>Sunny Ring</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="glassmorph">
-            <div
-              className="jewel-container home-jewel"
-              onClick={() => {
-                handleClick("jewel26_lr");
-              }}
-            >
-              <img src={flowerring} className="jewelimg" />
-              <div className="selectarea">
-                {/* <!-- <button type="button">Flower Ring</button> --> */}
-                <span>Flower Ring</span>
+
+            <div className="glassmorph">
+              <div
+                className="jewel-container home-jewel"
+                onClick={() => {
+                  handleClick("jewel26_lr");
+                }}
+              >
+                <img src={flowerring} className="jewelimg" />
+                <div className="selectarea">
+                  {/* <button type="button">Flower Ring</button> --> */}
+                  <span>Flower Ring</span>
+                </div>
               </div>
             </div>
           </div>
