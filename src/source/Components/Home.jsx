@@ -26,11 +26,9 @@ const Home = () => {
 
   const handleClick = (jewelId) => {
     const selectedJewel = jewelsList[jewelId];
-    setJewelType(jewelsList[jewelId].type)
+    setJewelType(jewelsList[jewelId].type);
     sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
     navigate("/VR");
-
-    console.log(jewelsList[jewelId].type, 'jewelType');
   };
 
   const handleNavigate = (url) => {
@@ -39,7 +37,7 @@ const Home = () => {
 
   const gotoHome = () => {
     window.location.href = `https://www.jar4u.com/`;
-  }
+  };
 
   return (
     <div>
@@ -85,7 +83,7 @@ const Home = () => {
               }}
             >
               <img src={laxmibangle} className="jewelimg" />
-              <div className="selectarea" >
+              <div className="selectarea">
                 {/* <!-- <button type="button">Laxmi Bangle</button> --> */}
                 <span>Laxmi Bangle</span>
               </div>
@@ -98,10 +96,7 @@ const Home = () => {
                 handleNavigate("https://prod.jar4u.com/?id=jewel7_lr");
               }}
             >
-              <img
-                src={diamond}
-                className="jewelimg"
-              />
+              <img src={diamond} className="jewelimg" />
               <div className="selectarea">
                 {/* <!-- <button type="button">Diamond Bracelet</button> --> */}
                 <span>Bracelet</span>

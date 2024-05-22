@@ -12,7 +12,9 @@ import "../css/loader.css";
 import "../css/style.css";
 
 const ErrorBoundary = lazy(() => import("./Errorboundary/ErrorBoundary"));
-const SplatComponent = lazy(() => import("@react-three/drei").then(module => ({ default: module.Splat })));
+const SplatComponent = lazy(() =>
+  import("@react-three/drei").then((module) => ({ default: module.Splat }))
+);
 
 function CarShow() {
   return (
@@ -42,7 +44,9 @@ const VR = () => {
   let splat;
   let url;
 
-  const selectedJewel = JSON.parse(sessionStorage.getItem("selectedJewel") || "{}");
+  const selectedJewel = JSON.parse(
+    sessionStorage.getItem("selectedJewel") || "{}"
+  );
 
   url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
@@ -106,7 +110,11 @@ const VR = () => {
         <div className="FPSStats">
           <FPSStats />
         </div>
-        <button className="tryon-button" id="desktop-viewar" onClick={handleclick}>
+        <button
+          className="tryon-button"
+          id="desktop-viewar"
+          onClick={handleclick}
+        >
           Try On
         </button>
         <h2 id="updatenote">{selectedJewel.label}</h2>
@@ -135,7 +143,11 @@ const VR = () => {
               gl={{ localClippingEnabled: true }}
               camera={{ fov: 86, position: [0, 1.9, 5.5], near: 0.25, far: 16 }}
             >
-              <OrbitControls maxDistance={2.9} autoRotate={true} autoRotateSpeed={2} />
+              <OrbitControls
+                maxDistance={2.9}
+                autoRotate={true}
+                autoRotateSpeed={2}
+              />
               <SplatComponent
                 src={url}
                 rotation={[0.015, -3.55, 1.6]}

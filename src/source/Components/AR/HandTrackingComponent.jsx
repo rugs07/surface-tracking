@@ -39,22 +39,17 @@ const HandTrackingComponent = () => {
   let pointsY;
   let pointsZ;
 
-  // console.log(cameraFarVar)
-  // (translateRotateMesh, 'logs');
   const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
   const navigate = useNavigate();
-
 
   const handleStopAR = () => {
     // Stop the video stream
     if (videoRef.current && videoRef.current.srcObject) {
       // videoRef.current.srcObject?.getTracks()?.forEach((track) => track.stop());
     }
-    // setHandPresence(null);
 
     navigate("/VR");
   };
-
 
   let wristPoints;
   useEffect(() => {
@@ -67,7 +62,10 @@ const HandTrackingComponent = () => {
           "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
         );
         handLandmarker = await HandLandmarker.createFromOptions(vision, {
-          baseOptions: { modelAssetPath: hand_landmarker_task, delegate: 'GPU' },
+          baseOptions: {
+            modelAssetPath: hand_landmarker_task,
+            delegate: "GPU",
+          },
           numHands: 1,
           runningMode: "video",
         });
@@ -85,16 +83,7 @@ const HandTrackingComponent = () => {
         );
         setHandPresence(detections.handednesses.length > 0);
 
-        // Check if detections.landmarks is not empty
         if (detections.landmarks && detections.landmarks.length > 0) {
-          //   pointsX = detections.landmarks[0][0].x;
-          //   pointsY = detections.landmarks[0][0].y;
-          //   pointsZ = detections.landmarks[0][0].z;
-          //   setPoints({ x: pointsX, y: pointsY, z: pointsZ });
-
-          // console.log(points, 'points');
-          // console.log(handLabel, 'detecti9ons');
-          // Call translateRotateMesh only if landmarks are available
           try {
             translateRotateMesh(
               detections.landmarks[0],
@@ -102,9 +91,7 @@ const HandTrackingComponent = () => {
               false,
               canvasRef.current
             );
-            setHandLabels(detections.handednesses[0][0].displayName)
-
-            // console.log(handLabel, 'hand label');
+            setHandLabels(detections.handednesses[0][0].displayName);
           } catch (error) {
             error;
           }
@@ -112,8 +99,6 @@ const HandTrackingComponent = () => {
           ("No hand landmarks detected");
         }
       }
-      //
-      // console.log(detections.landmarks, 'handTracking points ');
       requestAnimationFrame(detectHands);
     };
 
@@ -147,7 +132,7 @@ const HandTrackingComponent = () => {
   }, []);
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, }}>
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       {!handPresence && <Showhandscreen typeJewel={jewelType} />}
       {!handPresence && (
         <button
@@ -169,7 +154,7 @@ const HandTrackingComponent = () => {
         playsInline
         style={{
           position: "absolute",
-          transform: 'rotateY(180deg)',
+          transform: "rotateY(180deg)",
           top: 0,
           left: 0,
           right: 0,
@@ -181,7 +166,18 @@ const HandTrackingComponent = () => {
         }}
       ></video>
       <FPSStats />
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", justifyContent: "center", alignItems: "center", }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <ErrorBoundary>
           <Canvas
             id="gsplatCanvas"

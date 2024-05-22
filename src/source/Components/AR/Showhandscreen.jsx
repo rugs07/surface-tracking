@@ -18,26 +18,21 @@ const Showhandscreen = (typeJewel) => {
   const { jewelsList } = useJewels();
   // const { setJewelParams } = GlobalFunctionsProvider()
 
-  console.log(typeJewel, 'jewel type ');
   let jewelNameid;
 
   const lastJewel = sessionStorage.getItem("selectedJewel") || "{}";
-  console.log(lastJewel, 'jewelList');
 
   let jewelName = JSON.parse(lastJewel);
   let jewelId = jewelName['name'];
-  console.log(jewelId, 'jewelid');
   const jewelNames = Object.keys(jewelsList).reduce((acc, key) => {
     acc[key] = jewelsList[key].name;
     return acc;
   }, {});
-  // console.log(newJewel, 'new jewels');
   jewelNameid = jewelName['name'];
 
   const changeJewellery = (jewelId) => {
     alert(jewelId);
     if (lastJewel === jewelId) {
-      console.log(jewelId);
       return;
     }
     sessionStorage.setItem("selectedJewel", JSON.stringify({ name: jewelId }));
