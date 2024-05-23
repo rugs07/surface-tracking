@@ -1,4 +1,4 @@
-import React from "react";
+import React,{Suspense} from "react";
 import "../css/style.css";
 import "../css/loader.css";
 import "../css/gsplat.css";
@@ -50,6 +50,7 @@ const Home = () => {
           <h2 className="sitename">3D Experiences that Uplift Sales</h2>
         </div>
         <div className="side-errors" id="side-errors"></div>
+        <Suspense fallback={<div>Loading...</div>}>
         {/* <div className="j4container" id="j4container">
                     <!-- <h3 className="type-label">
               Bangles <span className="items-text">(2 Items)</span>
@@ -238,6 +239,7 @@ const Home = () => {
             </div>
           </div>
         </div>
+        </Suspense>
       </div>
     </div>
   );

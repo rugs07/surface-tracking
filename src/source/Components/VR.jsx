@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState, Suspense, lazy } from "react";
 import * as SPLAT from "gsplat";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import FPSStats from "react-fps-stats";
 import { hideLoading, updateLoadingProgress } from "../../js/utils";
 import { useNavigate } from "react-router-dom";
 import { useVariables } from "../context/variableContext";
+import qrcode from "../assets/qr-code.jpeg";
 
 import "../css/gsplat.css";
 import "../css/loader.css";
@@ -16,29 +17,14 @@ const SplatComponent = lazy(() =>
   import("@react-three/drei").then((module) => ({ default: module.Splat }))
 );
 
-function CarShow() {
-  return (
-    <>
-      <PerspectiveCamera makeDefault fov={70} position={[3, 2, 5]} />
-      <mesh>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshBasicMaterial color={"red"} />
-      </mesh>
-    </>
-  );
-}
-
 const VR = () => {
   const navigate = useNavigate();
-  const handleclick = () => {
-    navigate("/Loading");
-  };
-
   const canvasRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(1);
   const autorotateAngleRef = useRef(0);
   const viewSpaceContainerRef = useRef(null);
-  const { XRDelta, YRDelta, ZRDelta } = useVariables();
+  const { XRDelta, YRDelta, ZRDelta, jewelType } = useVariables();
   let autorotate = true;
   const autorotateSpeed = 0.005;
   let splat;
@@ -104,6 +90,20 @@ const VR = () => {
     };
   }, [selectedJewel]);
 
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleClick = () => {
+    if (window.innerWidth >= 768) {
+      setShowModal(true);
+    } else {
+      navigate("/Loading");
+    }
+  };
+
+  const scale = selectedJewel ? (jewelType === 'bangle' ? 0.8 : jewelType === 'ring' ? 0.5 : 1) : 1;
+
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">
       <div className="ar-toggle-container" id="ar-toggle-container">
@@ -113,7 +113,7 @@ const VR = () => {
         <button
           className="tryon-button"
           id="desktop-viewar"
-          onClick={handleclick}
+          onClick={handleClick}
         >
           Try On
         </button>
@@ -152,11 +152,25 @@ const VR = () => {
                 src={url}
                 rotation={[0.015, -3.55, 1.6]}
                 position={[0, 0, 0]}
+                scale={scale}
               />
             </Canvas>
           </ErrorBoundary>
         </Suspense>
       </div>
+      {showModal && (
+        <div className="modal-wrapper" onClick={handleModalClose}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content">
+              <span className="close" onClick={handleModalClose}>&times;</span>
+              <h1>"Try On Now!"</h1>
+              <p>Scan this QR code with your phone to virtually try on this item</p>
+              <img id="qrCodeImage" src={qrcode} alt="QR Code" />
+              <p>Or visit <span style={{ fontWeight: "bold", color: "black" }}>v2.jar4u.com</span> on your phone</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
