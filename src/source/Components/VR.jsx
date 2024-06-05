@@ -95,11 +95,9 @@ const VR = () => {
   };
 
   const handleClick = () => {
-    if (window.innerWidth >= 768) {
-      setShowModal(true);
-    } else {
+   
       navigate("/Loading");
-    }
+    
   };
 
   const scale = selectedJewel ? (jewelType === 'bangle' ? 0.8 : jewelType === 'ring' ? 0.5 : 1) : 1;
@@ -158,7 +156,7 @@ const VR = () => {
           </ErrorBoundary>
         </Suspense>
       </div>
-      {showModal && (
+      {/* {showModal && (
         <div className="modal-wrapper" onClick={handleModalClose}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-content">
@@ -170,7 +168,7 @@ const VR = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -89,6 +89,14 @@ button {
   /* word-spacing: 5px; */
 }
 
+.stopArBtn{
+  position: absolute;
+  top: 80%;
+  left: 44%;
+  transform: translate(-50%,-50%);
+  z-index: 1001;
+}
+
 span{
   color: white;
   margin-top: 55px;
@@ -849,6 +857,8 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   gap: 10px;
   width: 85%;
   height: 100%;
+  padding-top: 2rem;
+  color: white;
 }
 
 .container {
@@ -912,6 +922,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 
 .handimg {
   height: 70dvh;
+  justify-content: flex-end;
 }
 
 /* The main RIV view */
@@ -1165,6 +1176,14 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     overflow-y: hidden; 
     
     /* padding-bottom: 1rem; */
+  }
+
+  .stopArBtn{
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%,-50%);
+    z-index: 1001;
   }
 
   .jewel-container {

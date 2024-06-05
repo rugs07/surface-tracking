@@ -12,32 +12,52 @@ import redeye from '../../assets/redeye.png';
 import hand from '../../assets/hand.png';
 import { useJewels } from '../../context/JewelsContext';
 import { useVariables } from '../../context/variableContext';
-// import { GlobalFunctionsProvider } from '../../context/ARContext';
+import { ARFunctions } from '../../context/ARContext';
+import { useNavigate } from 'react-router-dom';
 
-const Showhandscreen = (typeJewel) => {
+
+const Showhandscreen = () => {
   const { jewelsList } = useJewels();
-  // const { setJewelParams } = GlobalFunctionsProvider()
-
-  let jewelNameid;
-
+  const { setJewelParams, setJewelType, jewelType, rowArType, setRowArType } = useVariables();
+  const { translateRotateMesh } = ARFunctions();
+  const navigate = useNavigate();
   const lastJewel = sessionStorage.getItem("selectedJewel") || "{}";
+  let animationFrameId;
 
+  
   let jewelName = JSON.parse(lastJewel);
-  let jewelId = jewelName['name'];
-  const jewelNames = Object.keys(jewelsList).reduce((acc, key) => {
-    acc[key] = jewelsList[key].name;
-    return acc;
-  }, {});
-  jewelNameid = jewelName['name'];
+
+  function changeJewel(type) {
+    setJewelType(type);
+  }
+  // requestAnimationFrame(changeJewel)
 
   const changeJewellery = (jewelId) => {
-    alert(jewelId);
-    if (lastJewel === jewelId) {
+    if (jewelName['name'] === jewelId) {
       return;
     }
-    sessionStorage.setItem("selectedJewel", JSON.stringify({ name: jewelId }));
-    setJewelParams()
+    const selectedJewel = jewelsList[jewelId];
+    changeJewel(jewelsList[jewelId].type)
+    sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
+    // window.location.reload();
   };
+
+  const changeToRing = (jewelId) => {
+    if (jewelName['name'] === jewelId) {
+      changeJewel("ring");
+
+      return;
+    }
+    const selectedJewel = jewelsList[jewelId];
+    changeJewel(jewelsList[jewelId].type);
+    sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
+    window.location.reload();
+  }
+
+
+  // if (animationFrameId) {
+  //   cancelAnimationFrame(animationFrameId);
+  // }
 
   return (
     <div className="container">
@@ -67,25 +87,25 @@ const Showhandscreen = (typeJewel) => {
         <div className="jewel-container ar-jewel" id="jewel26_lr" alt="">
           <img src={flowerring} className="jewelimg" alt="Flower Ring" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeJewellery("jewel26_lr")}>Flower Ring</button>
+            <button type="button" onClick={() => changeToRing("jewel26_lr")}>Flower Ring</button>
           </div>
         </div>
         <div className="jewel-container ar-jewel" id="jewel21_lr" alt="">
           <img src={heartring} className="jewelimg" alt="Heart Ring" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeJewellery("jewel21_lr")}>Heart Ring</button>
+            <button type="button" onClick={() => changeToRing("jewel21_lr")}>Heart Ring</button>
           </div>
         </div>
         <div className="jewel-container ar-jewel" id="jewel1_lr" alt="">
           <img src={sunnyring} className="jewelimg" alt="Sunny Ring" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeJewellery("jewel1_lr")}>Sunny Ring</button>
+            <button type="button" onClick={() => changeToRing("jewel1_lr")}>Sunny Ring</button>
           </div>
         </div>
         <div className="jewel-container ar-jewel" id="jewel25_lr" alt="">
           <img src={redeye} className="jewelimg" alt="Red Eye Ring" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeJewellery("jewel25_lr")}>Red Eye Ring</button>
+            <button type="button" onClick={() => changeToRing("jewel25_lr") && setJewelType("ring")}>Red Eye Ring</button>
           </div>
         </div>
       </div>

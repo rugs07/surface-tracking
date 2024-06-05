@@ -12,7 +12,6 @@ import ErrorBoundary from "../Errorboundary/ErrorBoundary";
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
-  let [points, setPoints] = useState({ x: 0, y: 0, z: 0 });
   const { translateRotateMesh } = ARFunctions();
   const {
     jewelType,
@@ -20,13 +19,8 @@ const HandTrackingComponent = () => {
     XRDelta,
     ZRDelta,
     wristZoom,
-    handPointsX,
-    handPointsY,
-    handPointsZ,
-    cameraFarVar,
-    cameraNearVar,
-    handLabels,
     setHandLabels,
+    rowArType
   } = useVariables();
   const canvasRef = useRef(null);
   const [landmark, setLandmark] = useState([]);
@@ -35,9 +29,7 @@ const HandTrackingComponent = () => {
     sessionStorage.getItem("selectedJewel") || "{}"
   );
   let detections;
-  let pointsX;
-  let pointsY;
-  let pointsZ;
+
 
   const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
   const navigate = useNavigate();
@@ -90,6 +82,7 @@ const HandTrackingComponent = () => {
               detections.handednesses[0][0].displayName,
               false,
               canvasRef.current
+
             );
             setHandLabels(detections.handednesses[0][0].displayName);
           } catch (error) {
@@ -111,22 +104,28 @@ const HandTrackingComponent = () => {
         // videoRef.current.style.transform = 'scaleX(-1)';
         await initializeHandDetection();
       } catch (error) {
+        alert('Error accessing web cam')
         console.error("Error accessing webcam:", error);
       }
     };
 
     startWebcam();
     return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.srcObject
-          ?.getTracks()
-          ?.forEach((track) => track.stop());
-      }
-      if (handLandmarker) {
-        handLandmarker.close();
-      }
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+      try {
+
+        if (videoRef.current && videoRef.current.srcObject) {
+          videoRef.current.srcObject
+            ?.getTracks()
+            ?.forEach((track) => track.stop());
+        }
+        if (handLandmarker) {
+          handLandmarker.close();
+        }
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+      } catch (error) {
+        alert('Camera not available');
       }
     };
   }, []);
@@ -136,13 +135,7 @@ const HandTrackingComponent = () => {
       {!handPresence && <Showhandscreen typeJewel={jewelType} />}
       {!handPresence && (
         <button
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: "1001",
-          }}
+          className="stopArBtn"
           onClick={handleStopAR}
         >
           STOP AR

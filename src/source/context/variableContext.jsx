@@ -69,6 +69,7 @@ export const VariableProvider = ({ children }) => {
     const [clock, setClock] = useState(null);
     const [currThetha, setCurrThetha] = useState(0);
     const [currPhi, setCurrPhi] = useState(0);
+    const [rowArType, setRowArType] = useState("")
     // const [gDisplayMode, setGDisplayMode] = useState(DisplayModeType.DISPLAY_DIFFUSE);
     const [gNumTextures, setGNumTextures] = useState(0);
     const [gRenderer, setGRenderer] = useState(null);
@@ -89,7 +90,7 @@ export const VariableProvider = ({ children }) => {
     const [lastIndexRef, setLastIndexRef] = useState(null);
     const [totalTransX, setTotalTransX] = useState(0);
     const [totalTransY, setTotalTransY] = useState(0);
-
+    console.log(jewelType, 'variablecontext')
     const contextValue = {
         autorotate,
         setAutorotate,
@@ -263,7 +264,9 @@ export const VariableProvider = ({ children }) => {
         cameraFarVar,
         setCameraFarVar,
         cameraNearVar,
-        setCameraNearVar
+        setCameraNearVar,
+        rowArType,
+        setRowArType
 
     };
 

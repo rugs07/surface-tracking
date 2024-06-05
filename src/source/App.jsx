@@ -8,6 +8,7 @@ import Hands from "./Components/Loading-Screen/Hands";
 import { VariableProvider } from "./context/variableContext";
 import { GlobalFunctionsProvider } from "./context/ARContext";
 import Showhandscreen from "./Components/AR/Showhandscreen";
+import FaceTrackingComponent from "./Components/AR/FaceTrackingComponent";
 
 const App = () => {
   return (
@@ -20,7 +21,7 @@ const App = () => {
               <Route path="/VR" element={<VR />} />
               <Route path="/AR" element={<HandTrackingComponent />} />
               <Route path="/Loading" element={<Hands />} />
-              <Route path='/test' element={<Showhandscreen />} />
+              <Route path='/test' element={<FaceTrackingComponent />} />
             </Routes>
           </BrowserRouter>
         </GlobalFunctionsProvider>
