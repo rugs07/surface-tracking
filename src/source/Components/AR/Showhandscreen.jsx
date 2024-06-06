@@ -24,7 +24,7 @@ const Showhandscreen = () => {
   const lastJewel = sessionStorage.getItem("selectedJewel") || "{}";
   let animationFrameId;
 
-  
+
   let jewelName = JSON.parse(lastJewel);
 
   function changeJewel(type) {
@@ -81,7 +81,7 @@ const Showhandscreen = () => {
         <div className="jewel-container ar-jewel" id="jewel3_lr" alt="">
           <img src={queen} className="jewelimg" alt="Queen's Ring" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeJewellery("jewel3_lr")}>Queen's Ring</button>
+            <button type="button" onClick={() => changeToRing("jewel3_lr")}>Queen's Ring</button>
           </div>
         </div>
         <div className="jewel-container ar-jewel" id="jewel26_lr" alt="">
