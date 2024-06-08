@@ -11,7 +11,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
   let yArr = [];
   let xtArr = [];
   let ytArr = [];
-  let type
+  let type;
 
   // const gsplatCanvas = document.getElementById("gsplatCanvas");
   // Define your globally accessible functions
@@ -116,12 +116,12 @@ export const GlobalFunctionsProvider = ({ children }) => {
     YRAngle = angle;
 
     if (
-      (handLabels == "Right" && facingMode !== "environment") ||
-      (handLabels == "Left" && facingMode === "environment")
+      handLabels == "Right"
     ) {
-      YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
-    } else {
       YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle);
+    } else {
+      console.log(handLabels, "handlabels");
+      YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
     }
 
     setYRDelta(-YRDelta);
@@ -158,7 +158,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let canP = 0;
     // cameraControls.setFocalOffset(canX, canY, 0.0, false);
     let adjustmentFactor = window.innerWidth * 0.5;
-    angle = angle;
+    angle = - angle;
     let transform = null;
     if (!translation) transform = "rotateZ(" + angle + "deg)";
     else canP = canX - adjustmentFactor;

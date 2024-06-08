@@ -90,7 +90,7 @@ export const VariableProvider = ({ children }) => {
     const [lastIndexRef, setLastIndexRef] = useState(null);
     const [totalTransX, setTotalTransX] = useState(0);
     const [totalTransY, setTotalTransY] = useState(0);
-    console.log(jewelType, 'variablecontext')
+ 
     const contextValue = {
         autorotate,
         setAutorotate,
