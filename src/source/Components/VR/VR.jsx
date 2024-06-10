@@ -1,18 +1,20 @@
 import React, { useEffect, useRef, useState, Suspense, lazy } from "react";
 import * as SPLAT from "gsplat";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import FPSStats from "react-fps-stats";
-import { hideLoading, updateLoadingProgress } from "../../js/utils";
+import { hideLoading, updateLoadingProgress } from "../../../js/utils";
 import { useNavigate } from "react-router-dom";
-import { useVariables } from "../context/variableContext";
-import qrcode from "../assets/qr-code.jpeg";
+import { useVariables } from "../../context/variableContext";
+import qrcode from "../../assets/qr-code.jpeg";
 
-import "../css/gsplat.css";
-import "../css/loader.css";
-import "../css/style.css";
+import "../../css/gsplat.css";
+import "../../css/loader.css";
+import "../../css/style.css";
+import Box from "./Box";
+import RotatingSplat from "./RotatingSplat";
 
-const ErrorBoundary = lazy(() => import("./Errorboundary/ErrorBoundary"));
+const ErrorBoundary = lazy(() => import("../Errorboundary/ErrorBoundary"));
 const SplatComponent = lazy(() =>
   import("@react-three/drei").then((module) => ({ default: module.Splat }))
 );
@@ -25,6 +27,9 @@ const VR = () => {
   const autorotateAngleRef = useRef(0);
   const viewSpaceContainerRef = useRef(null);
   const { XRDelta, YRDelta, ZRDelta, jewelType } = useVariables();
+  const [isHovered, setIsHovered] = useState(false);
+  
+  const timeRef = useRef(0); // To track elapsed time
   let autorotate = true;
   const autorotateSpeed = 0.005;
   let splat;
@@ -37,6 +42,7 @@ const VR = () => {
   url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
   useEffect(() => {
+    timeRef.current = 0;
     if (!SPLAT || !canvasRef.current || !selectedJewel) return;
 
     const scene = new SPLAT.Scene();
@@ -95,12 +101,16 @@ const VR = () => {
   };
 
   const handleClick = () => {
-   
-      navigate("/Loading");
-    
+    navigate("/Loading");
   };
 
-  const scale = selectedJewel ? (jewelType === 'bangle' ? 0.8 : jewelType === 'ring' ? 0.5 : 1) : 1;
+  const scale = selectedJewel
+    ? jewelType === "bangle"
+      ? 0.8
+      : jewelType === "ring"
+      ? 0.5
+      : 1
+    : 1;
 
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">
@@ -142,16 +152,18 @@ const VR = () => {
               camera={{ fov: 86, position: [0, 1.9, 5.5], near: 0.25, far: 16 }}
             >
               <OrbitControls
-                maxDistance={2.9}
-                autoRotate={true}
+                maxDistance={5.9}
+                autoRotate={isHovered ? false : true}
                 autoRotateSpeed={2}
               />
-              <SplatComponent
-                src={url}
-                rotation={[0.015, -3.55, 1.6]}
-                position={[0, 0, 0]}
+              <RotatingSplat
+                url={url}
                 scale={scale}
+                rotation={[0.015, -3.55, 1.6]}
+                isHovered={isHovered}
+                setIsHovered={setIsHovered}
               />
+              <Box size={1.25} />
             </Canvas>
           </ErrorBoundary>
         </Suspense>
