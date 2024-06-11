@@ -151,7 +151,7 @@ const VR = () => {
               gl={{ localClippingEnabled: true }}
               camera={{
                 fov: 86,
-                position: [5, -0.7, 3.5],
+                position: [0, -0.7, 10],
                 near: 0.25,
                 far: 16,
               }}
