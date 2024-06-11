@@ -7,7 +7,7 @@ const SplatComponent = lazy(() =>
   import("@react-three/drei").then((module) => ({ default: module.Splat }))
 );
 
-const RotatingSplat = ({ url, isHovered, setIsHovered, scale }) => {
+const RotatingSplat = ({ url, isHovered, setIsHovered, scale, rotation }) => {
   const [position, setPosition] = useState([0, 0, 0]);
   const spotLightRef = useRef();
 
@@ -41,14 +41,14 @@ const RotatingSplat = ({ url, isHovered, setIsHovered, scale }) => {
         ref={spotLightRef}
         color={"white"}
         intensity={-5}
-        position={[0, 1, 0]}
+        position={[0, 0.5, 0]}
         angle={0.25}
         penumbra={1}
         castShadow={true}
       />
       <SplatComponent
         src={url}
-        rotation={[0.015, -3.55, 1.6]}
+        rotation={rotation}
         // position={[0, 0, 0]}
         position={position}
         onPointerEnter={(e) => {

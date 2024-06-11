@@ -2,13 +2,10 @@
 import React, { useRef } from "react";
 import Frame from "./Frame";
 import Lid from "./Lid";
-import { useHelper } from "@react-three/drei";
 import Bulb from "./Bulb";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
-import { DirectionalLightHelper } from "three";
 import Glass from "./Glass";
-import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 
 const Box = ({ size = 1.25 }) => {
   const camera = useThree(({ camera }) => {
@@ -131,21 +128,22 @@ const Box = ({ size = 1.25 }) => {
         <Frame size={size} position={[size, 0, -size]} />
         <Frame size={size} position={[-size, 0, -size]} />
       </Glass>
-
-      <directionalLight
-        ref={directionalLightRef}
-        intensity={2.5}
-        castShadow={false}
-        color="white"
-        scale={1}
-      />
-      <directionalLight
-        ref={directionalLightRef2}
-        intensity={2.5}
-        color="white"
-        castShadow={false}
-        scale={1}
-      />
+      <group position={[0, 0.5, 0]}>
+        <directionalLight
+          ref={directionalLightRef}
+          intensity={2.5}
+          castShadow={false}
+          color="white"
+          scale={1}
+        />
+        <directionalLight
+          ref={directionalLightRef2}
+          intensity={2.5}
+          color="white"
+          castShadow={false}
+          scale={1}
+        />
+      </group>
     </>
   );
 };
