@@ -9,7 +9,7 @@ let jewelsList = {
     baseThetaAR: -0.05, //var4
     basePhiAR: -0.6, //var5
     baseGamaAR: -1.55, //var6
-    scaleMulObjVR: 1.5,
+    scaleMulObjVR: 1,
   },
   laxmi_exp: {
     name: "laxmi_exp",
@@ -38,7 +38,7 @@ let jewelsList = {
     type: "bangle",
     baseThetaVR: -0.02,
     basePhiVR: -1.1,
-    baseGamaVR: 0.,
+    baseGamaVR: 0,
     baseThetaAR: -0.05,
     basePhiAR: 0,
     baseGamaAR: 0.0,
@@ -112,7 +112,7 @@ let jewelsList = {
     baseThetaAR: 0,
     basePhiAR: 0,
     baseGamaAR: 0,
-    lightBackground: "radial-gradient(#000,#000)"
+    lightBackground: "radial-gradient(#000,#000)",
   },
   swan: {
     name: "swan",
@@ -124,7 +124,7 @@ let jewelsList = {
     baseThetaAR: 0,
     basePhiAR: 0,
     baseGamaAR: 0,
-    lightBackground: "radial-gradient(#000,#000)"
+    lightBackground: "radial-gradient(#000,#000)",
   },
   natraj: {
     name: "natraj",
@@ -136,7 +136,7 @@ let jewelsList = {
     baseThetaAR: 0,
     basePhiAR: 0,
     baseGamaAR: 0,
-    lightBackground: "radial-gradient(#333,#000)"
+    lightBackground: "radial-gradient(#333,#000)",
   },
   table_1: {
     name: "table_1",
@@ -148,7 +148,7 @@ let jewelsList = {
     baseThetaAR: 0,
     basePhiAR: 0,
     baseGamaAR: 0,
-    lightBackground: "radial-gradient(#333,#000)"
+    lightBackground: "radial-gradient(#333,#000)",
   },
 };
 
@@ -176,9 +176,9 @@ export const setJewellery = (value) => {
   sessionStorage.setItem("selectedJewel", value || "b4_gen3");
 
   location.href = "/tryon.html";
-}
+};
 
-export const  changeJewellery = (newJewel) => {
+export const changeJewellery = (newJewel) => {
   const lastJewel = sessionStorage.getItem("selectedJewel");
   if (lastJewel === newJewel) return;
 
@@ -189,18 +189,18 @@ export const  changeJewellery = (newJewel) => {
   setJewelParams();
   loadGsplat();
   resetMeshForAR();
-}
+};
 
 export const gotoHome = () => {
   location.href = `https://www.jar4u.com/`;
-}
+};
 
 function applyRingTrans() {
   gRayMarchScene.children[0].material.uniforms.ringTrans.value = ringTrans;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
 
-function applyTransVar() {  
+function applyTransVar() {
   gRayMarchScene.children[0].material.uniforms.transVar.value = transVar;
   gRenderer.render(gRayMarchScene, gBlitCamera);
 }
@@ -219,16 +219,16 @@ export const hideJewel = () => {
   showingJewel = 0;
   gRayMarchScene.children[0].material.uniforms.showingJewel.value = 0;
   gRenderer.render(gRayMarchScene, gBlitCamera);
-}
+};
 export const showJewel = () => {
   showingJewel = 1;
   gRayMarchScene.children[0].material.uniforms.showingJewel.value = 1;
   gRenderer.render(gRayMarchScene, gBlitCamera);
-}
+};
 
 export const hideHandScreen = () => {
   showhandscreen.style.display = "none";
-}
+};
 
 export const setJewelParams = () => {
   selectedJewel = sessionStorage.getItem("selectedJewel") || "jewel7_lr";
@@ -245,7 +245,7 @@ export const setJewelParams = () => {
 
   let updateNote = document.getElementById("updatenote");
   updateNote.innerText = selectedJewelDetails.label;
-}
+};
 
 // Method to enable or disable fullscreen view
 const fullscreen = (mode = true, el = "body") =>
@@ -253,7 +253,7 @@ const fullscreen = (mode = true, el = "body") =>
     ? document.querySelector(el).requestFullscreen()
     : document.exitFullscreen();
 
-  export const resetMeshForAR = () => {
+export const resetMeshForAR = () => {
   console.log("resetting mesh for AR");
   baseTheta = baseThetaAR;
   basePhi = basePhiAR;
@@ -266,8 +266,8 @@ const fullscreen = (mode = true, el = "body") =>
   // cameraFar = -1.5;
   // cameraNear = 0.1;
   gsplatCanvas.style.transform = "none";
-  renderer.setSize(window.innerWidth*2, window.innerHeight);
-}
+  renderer.setSize(window.innerWidth * 2, window.innerHeight);
+};
 
 export const resetMeshForVR = () => {
   // console.log(controls.desiredAlpha);
@@ -284,7 +284,7 @@ export const resetMeshForVR = () => {
   cameraNear = 0.1;
   renderer.setSize(window.innerWidth, window.innerHeight);
   resetGlamCanvas();
-}
+};
 
 export const resetGlamCanvas = () => {
   let deviceWidth = document.documentElement.clientWidth;
@@ -319,7 +319,7 @@ export const resetGlamCanvas = () => {
       gsplatCanvas.style.transform = "none";
     }
   }
-}
+};
 
 export const resetMesh = () => {
   scaleMul = 0.5;
@@ -327,14 +327,14 @@ export const resetMesh = () => {
   ZRAngle = 0;
   gsplatCanvas.style.transform = "none";
   hideJewel();
-}
+};
 
 export const mapRange = (value, oldMin, oldMax, newMin, newMax) => {
   const oldRange = oldMax - oldMin;
   const newRange = newMax - newMin;
   const newValue = ((value - oldMin) * newRange) / oldRange + newMin;
   return newValue;
-}
+};
 
 // Define a function to calculate the angle at the middle point of three 3D landmarks
 export const calculateAngleAtMiddle = (landmark1, landmark2, landmark3) => {
@@ -372,11 +372,11 @@ export const calculateAngleAtMiddle = (landmark1, landmark2, landmark3) => {
   const angleInDegrees = (angleInRadians * 180) / Math.PI;
 
   return Math.trunc(angleInDegrees / 10);
-}
+};
 
 export const startSession = () => {
   usermanual.style.display = "none";
-}
+};
 
 export const showManual = () => {
   let step1img = document.getElementById("step1img");
@@ -391,7 +391,7 @@ export const showManual = () => {
   usermanual.style.display = "flex";
   resetCamera();
   toggleVideo();
-}
+};
 
 /**
  * Reports an error to the user by populating the error div with text.
@@ -401,7 +401,7 @@ export const error = (text) => {
   const e = document.getElementById("error");
   e.textContent = text;
   e.style.display = "block";
-}
+};
 
 /**
  * Creates a DOM element that belongs to the given CSS class.
@@ -415,7 +415,7 @@ export const create = (what, classname) => {
     e.className = classname;
   }
   return e;
-}
+};
 
 /**
  * Formats the integer i as a string with "min" leading zeroes.
@@ -430,7 +430,7 @@ export const digits = (i, min) => {
   } else {
     return ("00000" + s).substr(-min);
   }
-}
+};
 
 /**
  * Resizes a DOM element to the given dimensions.
@@ -441,7 +441,7 @@ export const digits = (i, min) => {
 export const setDims = (element, width, height) => {
   element.style.width = width.toFixed(2) + "px";
   element.style.height = height.toFixed(2) + "px";
-}
+};
 
 /**
  * Adds event listeners to UI.
@@ -466,7 +466,7 @@ export const addHandlers = () => {
       e.preventDefault();
     }
   });
-}
+};
 
 /**
  * Hides the Loading prompt.
@@ -493,7 +493,7 @@ export const hideLoading = () => {
   viewARButton.onclick = showManual;
   viewARButton.classList.remove("disabledbtn");
   isLoading = false;
-}
+};
 
 export const showLoading = () => {
   isLoading = true;
@@ -519,7 +519,7 @@ export const showLoading = () => {
 
   let activeJewel = document.getElementById(`${selectedJewel}`);
   if (activeJewel) activeJewel.classList.add("active-ar-jewel");
-}
+};
 
 /**
  * Updates the loading progress HTML elements.
@@ -531,7 +531,7 @@ let lastUpdate = Date.now();
 
 export const getRandomItem = (array) => {
   return array[Math.floor(Math.random() * array.length)];
-}
+};
 
 export const updateMessageAndFunFact = () => {
   const loadingMessages = [
@@ -563,7 +563,7 @@ export const updateMessageAndFunFact = () => {
   currentFunFact = getRandomItem(funFactsAndTips);
 
   lastUpdate = Date.now();
-}
+};
 
 export const updateLoadingProgress = (percentage) => {
   let funOrFact = document.getElementById("funorfact");
@@ -584,8 +584,7 @@ export const updateLoadingProgress = (percentage) => {
   const updateInterval = 5000; // 5 seconds
 
   if (
-    !currentMessage 
-    ||
+    !currentMessage ||
     // !currentFunFact ||
     timeSinceLastUpdate > updateInterval
   ) {
@@ -604,7 +603,7 @@ export const updateLoadingProgress = (percentage) => {
     setTimeout(hideLoading, 100);
     loadPercentage = 0;
   }
-}
+};
 
 export const mobileAndTabletCheck = () => {
   let check = false;
@@ -617,13 +616,13 @@ export const mobileAndTabletCheck = () => {
         a.substr(0, 4)
       )
     )
-    check = true;
-    else if(navigator.userAgent.includes("OnePlus")){
-      check  = true;
+      check = true;
+    else if (navigator.userAgent.includes("OnePlus")) {
+      check = true;
     }
   })(navigator.userAgent || navigator.vendor || window.opera);
   return check;
-}
+};
 
 export const iOSCheck = () => {
   return (
@@ -636,9 +635,11 @@ export const iOSCheck = () => {
       "iPod",
     ].includes(navigator.platform) ||
     // iPad on iOS 13 detection
-    (navigator.userAgent.includes("Mac") && "ontouchend" in document && navigator.maxTouchPoints > 1)
+    (navigator.userAgent.includes("Mac") &&
+      "ontouchend" in document &&
+      navigator.maxTouchPoints > 1)
   );
-}
+};
 
 export const getBrowserName = () => {
   if (
@@ -674,7 +675,7 @@ export const getBrowserName = () => {
   } else {
     return "Other";
   }
-}
+};
 
 export const checkDevice = () => {
   isMobile = mobileAndTabletCheck();
@@ -683,11 +684,11 @@ export const checkDevice = () => {
   console.log("isIOS", isIOS);
   browserName = getBrowserName();
   console.log(browserName);
-}
+};
 
 export const copyText = (text) => {
   navigator.clipboard.writeText("chrome://flags/#use-angle");
-}
+};
 
 function addError(errorObj, index, arr) {
   const { error, msg1, msg2, instructions, imgsrc, tryagain } = errorObj;
@@ -786,7 +787,7 @@ export const showErrors = (errors) => {
   errors.forEach(addError);
 
   sideErrors.style.display = "flex";
-}
+};
 
 export const generateQR = (user_input) => {
   let qr_container = document.querySelector(".qr-code-container");
@@ -827,7 +828,7 @@ export const generateQR = (user_input) => {
       download_link.setAttribute("href", `${qr_code_img.getAttribute("src")}`);
     }, 300);
   }
-}
+};
 
 /**
  * Checks whether the WebGL context is valid and the underlying hardware is
@@ -939,6 +940,6 @@ export const isRendererUnsupported = () => {
   // }
 
   return false;
-}
+};
 
 window.showErrors = showErrors;

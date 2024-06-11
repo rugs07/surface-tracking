@@ -2,7 +2,7 @@ import React from "react";
 import Home from "./Components/Home";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { JewelsProvider } from "./context/JewelsContext";
-import VR from "./Components/VR";
+import VR from "./Components/VR/VR";
 import HandTrackingComponent from "./Components/AR/HandTrackingComponent";
 import Hands from "./Components/Loading-Screen/Hands";
 import { VariableProvider } from "./context/variableContext";
@@ -21,7 +21,7 @@ const App = () => {
               <Route path="/VR" element={<VR />} />
               <Route path="/AR" element={<HandTrackingComponent />} />
               <Route path="/Loading" element={<Hands />} />
-              <Route path='/test' element={<FaceTrackingComponent />} />
+              <Route path="/test" element={<FaceTrackingComponent />} />
             </Routes>
           </BrowserRouter>
         </GlobalFunctionsProvider>
