@@ -20,7 +20,7 @@ const HandTrackingComponent = () => {
     ZRDelta,
     wristZoom,
     setHandLabels,
-
+    rowArType
   } = useVariables();
   const canvasRef = useRef(null);
   const [landmark, setLandmark] = useState([]);
