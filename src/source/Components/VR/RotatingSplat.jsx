@@ -51,13 +51,13 @@ const RotatingSplat = ({ url, isHovered, setIsHovered, scale, rotation }) => {
         rotation={rotation}
         // position={[0, 0, 0]}
         position={position}
-        onPointerEnter={(e) => {
-          e.stopPropagation();
-          setIsHovered(true);
-        }}
-        onPointerLeave={(e) => {
-          setIsHovered(false);
-        }}
+        // onPointerEnter={(e) => {
+        //   e.stopPropagation();
+        //   setIsHovered(true);
+        // }}
+        // onPointerLeave={(e) => {
+        //   setIsHovered(false);
+        // }}
         scale={scale}
       />
     </>
