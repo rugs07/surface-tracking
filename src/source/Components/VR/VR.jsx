@@ -158,7 +158,7 @@ const VR = () => {
             >
               <group position={[0, -0.5, 0]}>
                 <OrbitControls
-                  maxDistance={5.9}
+                  minDistance={10}
                   autoRotate={isHovered ? false : true}
                   autoRotateSpeed={2}
                 />
