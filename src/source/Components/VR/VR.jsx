@@ -162,16 +162,19 @@ const VR = () => {
                   autoRotate={isHovered ? false : true}
                   autoRotateSpeed={2}
                 />
-                <RotatingSplat
-                  url={url}
+                <SplatComponent
+                  src={url}
+                  // rotation={rotation}
+                  // position={[0, 0, 0]}
+                  // position={position}
+                  // onPointerEnter={(e) => {
+                  //   e.stopPropagation();
+                  //   setIsHovered(true);
+                  // }}
+                  // onPointerLeave={(e) => {
+                  //   setIsHovered(false);
+                  // }}
                   // scale={scale}
-                  rotation={
-                    selectedJewel.type === "ring"
-                      ? [0.015, 0, 0]
-                      : [0.015, -3.55, 1.6]
-                  }
-                  isHovered={isHovered}
-                  setIsHovered={setIsHovered}
                 />
 
                 <Box size={1.5} />
