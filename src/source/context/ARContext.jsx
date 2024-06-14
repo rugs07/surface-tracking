@@ -4,15 +4,16 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useVariables } from "./variableContext";
 
 const GlobalFunctionsContext = createContext();
-
+let GlobalHandLabel;
 export const GlobalFunctionsProvider = ({ children }) => {
+  // var handType;
   let zArr = [];
   let rsArr = [];
   let yArr = [];
   let xtArr = [];
   let ytArr = [];
   let type
-
+  const [handType, setHandType] = useState()
   // const gsplatCanvas = document.getElementById("gsplatCanvas");
   // Define your globally accessible functions
   let {
@@ -61,6 +62,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
   // const { calculateAngleAtMiddle } = ARFunctions()
   jewelType === type;
   function rotateX(angle) {
+
     if (isArcball) {
       var quaternion = new THREE.Quaternion().setFromAxisAngle(
         new THREE.Vector3(1, 0, 0),
@@ -116,8 +118,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
     YRAngle = angle;
 
     if (
-      (handLabels == "Right" && facingMode !== "environment") ||
-      (handLabels == "Left" && facingMode === "environment")
+      (GlobalHandLabel == "Right" && facingMode !== "environment") ||
+      (GlobalHandLabel == "Left" && facingMode === "environment")
     ) {
       YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
     } else {
@@ -125,7 +127,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     }
 
     setYRDelta(-YRDelta);
-
+    console.log(handType, 'hand type');
     return YRDelta;
   }
 
@@ -516,6 +518,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
   mapRange;
 
   function smoothResizing(wristSize) {
+    console.log(GlobalHandLabel, "smooth resizing");
     if (enableSmoothing) {
       let diff = 0;
       if (lastSize) {
@@ -540,6 +543,11 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
 
   function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
+    GlobalHandLabel = handLabel;
+    setHandType(handLabel)
+    let obj1 = { value: handLabel }
+    var typehand = handLabel;
+    console.log(typehand,);
     let jewel = sessionStorage.getItem("selectedJewel")
     type = JSON.parse(jewel).type
     console.log(JSON.parse(jewel).type);
