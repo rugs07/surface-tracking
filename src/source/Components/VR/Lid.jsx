@@ -1,34 +1,59 @@
-import { useHelper, useTexture } from "@react-three/drei";
-import { DoubleSide } from "three";
-
-// import glass from "./glass.jpg";
-import { useRef } from "react";
+import * as THREE from "three";
 
 const Lid = ({
   size,
   position,
-  color = "black",
-  roughness = 1,
   name,
   children,
-  opacity = 1,
-  transmission,
+  topColor = "black",
+  bottomColor = "black",
 }) => {
-  // const texture = useTexture(glass);
+  const geometry = new THREE.BoxGeometry(size[0], size[1], size[2], 1, 1, 1);
+
+  // Define material for the top face
+  const materials = [
+    new THREE.MeshPhysicalMaterial({
+      color: "black",
+      opacity: 1,
+      // transparent: true,
+    }), // Left
+    new THREE.MeshPhysicalMaterial({
+      color: "black",
+      opacity: 1,
+    }), // Right
+    new THREE.MeshPhysicalMaterial({
+      color: topColor,
+      roughness: 0.8,
+      opacity: 0.2,
+      transmission: 0,
+      metalness: 0.998,
+    }), // Top
+    new THREE.MeshPhysicalMaterial({
+      color: bottomColor,
+      roughness: 1,
+      opacity: 0.2,
+      transmission: 0,
+      metalness: 0.999,
+    }), // Bottom
+    new THREE.MeshPhysicalMaterial({
+      color: "black",
+      opacity: 1,
+    }), // Front
+    new THREE.MeshPhysicalMaterial({
+      color: "black",
+      opacity: 1,
+    }), // Back
+  ];
 
   return (
     <>
-      <mesh name={name} position={position}>
+      <mesh
+        name={name}
+        position={position}
+        geometry={geometry}
+        material={materials}
+      >
         {children}
-        <boxGeometry args={size} />
-        <meshPhysicalMaterial
-          // map={texture}
-          transmission={transmission}
-          reflectivity={1}
-          color={color}
-          opacity={opacity}
-          roughness={roughness}
-        />
       </mesh>
     </>
   );

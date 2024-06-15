@@ -40,16 +40,14 @@ const RotatingSplat = ({ url, isHovered, setIsHovered, scale, rotation }) => {
       <spotLight
         ref={spotLightRef}
         color={"white"}
-        intensity={-5}
-        position={[0, 0.5, 0]}
+        intensity={-0.5}
+        position={[0, 1, 0]}
         angle={0.25}
         penumbra={1}
         castShadow={true}
       />
-      <SplatComponent
-        src={url}
-        rotation={rotation}
-        // position={[0, 0, 0]}
+
+      <Splat
         position={position}
         onPointerEnter={(e) => {
           e.stopPropagation();
@@ -58,7 +56,7 @@ const RotatingSplat = ({ url, isHovered, setIsHovered, scale, rotation }) => {
         onPointerLeave={(e) => {
           setIsHovered(false);
         }}
-        scale={scale}
+        src={url}
       />
     </>
   );

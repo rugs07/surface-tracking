@@ -147,18 +147,21 @@ const VR = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <ErrorBoundary>
             <Canvas
+              performance={{ min: 0.8 }}
               shadows
               gl={{ localClippingEnabled: true }}
               camera={{
                 fov: 86,
-                position: [0, -0.7, 10],
+                position: [3, 0.5, 3.5],
+                frustumCulled: true,
                 near: 0.25,
                 far: 16,
               }}
             >
               <group position={[0, -0.5, 0]}>
                 <OrbitControls
-                  minDistance={10}
+                  minDistance={3} //for mobile it is needed
+                  maxDistance={8}
                   autoRotate={isHovered ? false : true}
                   autoRotateSpeed={2}
                 />
