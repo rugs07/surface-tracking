@@ -88,6 +88,15 @@ button {
   letter-spacing: 1.5px;
   /* word-spacing: 5px; */
 }
+.showhandscreen  {
+  font-weight: 800;
+  font-size: 26px;
+  background: var(--gradientColor);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: cemter;
+}
+
 
 .stopArBtn{
   position: absolute;
@@ -95,6 +104,7 @@ button {
   left: 44%;
   transform: translate(-50%,-50%);
   z-index: 1001;
+  margin-top: 4rem;
 }
 
 span{
@@ -967,7 +977,8 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   p {
     font-size: 14px;
     line-height: 1.5rem;
-    word-spacing: 3px;
+    word-spacing: 3px; 
+    text-align: center;
   }
 
   .ar-toggle-container{
@@ -1184,6 +1195,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     left: 60%;
     transform: translate(-50%,-50%);
     z-index: 1001;
+    margin-top: 6rem;
   }
 
   .jewel-container {
@@ -1215,7 +1227,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     background: none;
   }
 
-  #showhandscreen p {
+  .showhandscreen p {
     text-align: center;
     font-size: 16px;
   }
@@ -1235,6 +1247,11 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
     height: 50px;
     margin-left: auto;
     padding: 10px;
+  }
+  .showHandScreen{
+    font-weight: 800;
+    text-align: center;
+    /* font-size: 20px; */
   }
 
   .switchimg {

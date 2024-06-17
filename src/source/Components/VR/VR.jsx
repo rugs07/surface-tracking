@@ -41,6 +41,20 @@ const VR = () => {
 
   url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
+  // Function to detect if the device is a mobile
+  const isMobileDevice = () => {
+    return (
+      typeof window.orientation !== "undefined" ||
+      navigator.userAgent.indexOf("IEMobile") !== -1
+    );
+  };
+
+  // Function to detect if the mode is 'dev' in the URL
+  const isDevMode = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    return queryParams.get("mode") === "dev";
+  };
+
   useEffect(() => {
     timeRef.current = 0;
     if (!SPLAT || !canvasRef.current || !selectedJewel) return;
@@ -101,16 +115,12 @@ const VR = () => {
   };
 
   const handleClick = () => {
-    navigate("/Loading");
+    if (isMobileDevice() || isDevMode()) {
+      navigate("/Loading");
+    } else {
+      setShowModal(true);
+    }
   };
-
-  // const scale = selectedJewel
-  //   ? jewelType === "bangle"
-  //     ? 0.8
-  //     : jewelType === "ring"
-  //     ? 0.5
-  //     : 1
-  //   : 1;
 
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">
@@ -164,17 +174,6 @@ const VR = () => {
                 />
                 <SplatComponent
                   src={url}
-                  // rotation={rotation}
-                  // position={[0, 0, 0]}
-                  // position={position}
-                  // onPointerEnter={(e) => {
-                  //   e.stopPropagation();
-                  //   setIsHovered(true);
-                  // }}
-                  // onPointerLeave={(e) => {
-                  //   setIsHovered(false);
-                  // }}
-                  // scale={scale}
                 />
 
                 <Box size={1.5} />
@@ -182,20 +181,20 @@ const VR = () => {
             </Canvas>
           </ErrorBoundary>
         </Suspense>
-      </div>
-      {/* {showModal && (
-        <div className="modal-wrapper" onClick={handleModalClose}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-content">
-              <span className="close" onClick={handleModalClose}>&times;</span>
-              <h1>"Try On Now!"</h1>
-              <p>Scan this QR code with your phone to virtually try on this item</p>
-              <img id="qrCodeImage" src={qrcode} alt="QR Code" />
-              <p>Or visit <span style={{ fontWeight: "bold", color: "black" }}>v2.jar4u.com</span> on your phone</p>
+        {showModal && (
+          <div className="modal-wrapper" onClick={handleModalClose}>
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-content">
+                <span className="close" onClick={handleModalClose}>&times;</span>
+                <h1>Try On Now!</h1>
+                <p>Scan this QR code with your phone to virtually try on this item</p>
+                <img id="qrCodeImage" src={qrcode} alt="QR Code" />
+                <p>Or visit <span style={{ fontWeight: "bold", color: "black" }}>v2.jar4u.com</span> on your phone</p>
+              </div>
             </div>
           </div>
-        </div>
-      )} */}
+        )}
+      </div>
     </div>
   );
 };
