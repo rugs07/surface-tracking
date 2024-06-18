@@ -64,7 +64,7 @@ const Box = ({ size }) => {
           bottomColor={"white"}
         >
           <Bulb size={size * 0.12} position={[0, -(size * 0.05), size * 0.5]} />
-          <Bulb
+          {/* <Bulb
             size={size * 0.12}
             position={[0, -(size * 0.05), -(size * 0.5)]}
           />
@@ -73,7 +73,7 @@ const Box = ({ size }) => {
             size={size * 0.12}
             position={[-(size * 0.5), -(size * 0.05), 0]}
           />
-          <Bulb size={size * 0.12} position={[size * 0.5, -(size * 0.05), 0]} />
+          <Bulb size={size * 0.12} position={[size * 0.5, -(size * 0.05), 0]} /> */}
         </Lid>
         <Lid
           name={"lid"}

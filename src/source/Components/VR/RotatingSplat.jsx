@@ -23,7 +23,7 @@ const RotatingSplat = ({ url, isHovered, setIsHovered, scale, rotation }) => {
       timeRef.current += 0.02; // Adjust speed of oscillation (lower for slower)
 
       // Calculate new y position based on sine function
-      const newY = Math.sin(timeRef.current) * 0.15; // Adjust amplitude (higher for larger movement)
+      const newY = Math.sin(timeRef.current) * 0.1; // Adjust amplitude (higher for larger movement)
 
       // Update position state with new y value
       setPosition([position[0], newY, position[2]]);
@@ -48,6 +48,7 @@ const RotatingSplat = ({ url, isHovered, setIsHovered, scale, rotation }) => {
       />
 
       <Splat
+        scale={scale}
         position={position}
         onPointerEnter={(e) => {
           e.stopPropagation();

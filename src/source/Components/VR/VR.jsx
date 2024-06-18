@@ -112,6 +112,8 @@ const VR = () => {
   //     : 1
   //   : 1;
 
+  const scale = window.innerWidth < 768 ? 0.8 : 1.3;
+
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">
       <div className="ar-toggle-container" id="ar-toggle-container">
@@ -164,10 +166,11 @@ const VR = () => {
                   maxDistance={8}
                   autoRotate={isHovered ? false : true}
                   autoRotateSpeed={2}
+                  enableDamping={false}
                 />
                 <RotatingSplat
                   url={url}
-                  // scale={scale}
+                  scale={scale * 0.7}
                   rotation={
                     selectedJewel.type === "ring"
                       ? [0.015, 0, 0]
@@ -177,7 +180,7 @@ const VR = () => {
                   setIsHovered={setIsHovered}
                 />
 
-                <Box size={1.5} />
+                <Box size={scale} />
               </group>
             </Canvas>
           </ErrorBoundary>

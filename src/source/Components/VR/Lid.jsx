@@ -30,10 +30,10 @@ const Lid = ({
     }), // Top
     new THREE.MeshPhysicalMaterial({
       color: bottomColor,
-      roughness: 1,
-      opacity: 0.2,
+      roughness: 0.6,
+      opacity: 1,
       transmission: 0,
-      metalness: 0.999,
+      metalness: 1,
     }), // Bottom
     new THREE.MeshPhysicalMaterial({
       color: "black",
