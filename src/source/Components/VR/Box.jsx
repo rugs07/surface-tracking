@@ -42,19 +42,19 @@ const Box = ({ size }) => {
     directionalLightRef?.current?.position.copy(camera.position);
     directionalLightRef?.current?.position
       .add(perpendicularVector)
-      .multiply(new THREE.Vector3(-1, -0.4, -1));
+      .multiply(new THREE.Vector3(-1, -0.8, -1));
 
     directionalLightRef2?.current?.position.copy(camera.position);
     directionalLightRef2?.current?.position
       .sub(perpendicularVector)
-      .multiply(new THREE.Vector3(-1, -0.4, -1));
+      .multiply(new THREE.Vector3(-1, -0.8, -1));
   });
 
   return (
     <>
       <Suspense fallback={null}>
-        <ambientLight intensity={10} />
-        <AdaptiveDpr />
+        <ambientLight intensity={1} />
+        {/* <AdaptiveDpr /> */}
         <Lid
           name={"lid"}
           // isClicked={isClicked}
