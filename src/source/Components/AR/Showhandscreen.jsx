@@ -54,7 +54,7 @@ const Showhandscreen = () => {
     const selectedJewel = jewelsList[jewelId];
     changeJewel(jewelsList[jewelId].type);
     sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
-    window.location.reload();
+    // window.location.reload();
   }
 
 

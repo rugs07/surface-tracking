@@ -690,6 +690,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       getZAngleAndRotate(wrist, midPip, canX, canY);
       getXAngleAndRotate(wrist, midPip, ZRAngle);
       getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
+      console.log(handLabel, "tsm function");
     }
     else if (jewelType === "bangle" && type === "ring") {
       if (isDirectionalRing) {
@@ -771,8 +772,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
       if (isMobile || isIOS) {
         resizeMul = window_scale * 3.0 * scaleAdjustment;
         if (
-          (handLabel === "Right" && isPalmFacing) ||
-          (handLabel === "Left" && !isPalmFacing)
+          (handLabel === "Right" ) ||
+          (handLabel === "Left" )
         ) {
           resizeMul *= 0.925;
         }
@@ -780,7 +781,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         resizeMul = window_scale * 1.5 * scaleAdjustment;
       }
 
-      if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
+      // if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
     }
     else if (jewelType === "bangle" && type === "ring") {
       let visibilityFactor =
