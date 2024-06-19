@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState, Suspense, lazy } from "react";
 import * as SPLAT from "gsplat";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+  AdaptiveDpr,
+  OrbitControls,
+  PerspectiveCamera,
+} from "@react-three/drei";
 import FPSStats from "react-fps-stats";
 import { hideLoading, updateLoadingProgress } from "../../../js/utils";
 import { useNavigate } from "react-router-dom";
@@ -149,12 +153,12 @@ const VR = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <ErrorBoundary>
             <Canvas
-              performance={{ min: 0.8 }}
+              dpr={1}
               shadows
               gl={{ localClippingEnabled: true }}
               camera={{
                 fov: 86,
-                position: [3, 0.5, 3.5],
+                position: [0, -0.1, 3.5],
                 frustumCulled: true,
                 near: 0.25,
                 far: 16,
@@ -162,12 +166,13 @@ const VR = () => {
             >
               <group position={[0, -0.5, 0]}>
                 <OrbitControls
-                  minDistance={3} //for mobile it is needed
-                  maxDistance={8}
+                  minDistance={2} //for mobile it is needed
+                  maxDistance={7}
                   autoRotate={isHovered ? false : true}
                   autoRotateSpeed={2}
                   enableDamping={false}
                 />
+                <AdaptiveDpr pixelated={true} />
                 <RotatingSplat
                   url={url}
                   scale={scale * 0.7}
@@ -179,7 +184,6 @@ const VR = () => {
                   isHovered={isHovered}
                   setIsHovered={setIsHovered}
                 />
-
                 <Box size={scale} />
               </group>
             </Canvas>

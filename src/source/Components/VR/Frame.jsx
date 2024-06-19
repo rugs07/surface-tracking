@@ -1,10 +1,11 @@
-import React, { useRef } from "react";
+import React, { forwardRef, useRef } from "react";
 import { Cylinder, Detailed, useHelper } from "@react-three/drei";
-import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
+import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper";
 
 const Frame = ({ position, size }) => {
   const rectAreaLight = useRef();
   useHelper(rectAreaLight, RectAreaLightHelper);
+
   return (
     <>
       {/* Tube Geometry */}

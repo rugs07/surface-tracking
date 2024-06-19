@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { Suspense, lazy, useRef, forwardRef, useEffect } from "react";
 import { AdaptiveDpr } from "@react-three/drei";
+import HaloRing from "./HaloRing";
 
 const Glass = lazy(() => import("./Glass"));
 const Lid = lazy(() => import("./Lid"));
@@ -12,14 +13,8 @@ const Box = ({ size }) => {
   const camera = useThree(({ camera }) => {
     return camera;
   });
-  const { performance } = useThree();
-
   const directionalLightRef = useRef();
   const directionalLightRef2 = useRef();
-
-  useEffect(() => {
-    performance.regress();
-  });
 
   //useBoxOpen(isClicked);
 
@@ -42,19 +37,18 @@ const Box = ({ size }) => {
     directionalLightRef?.current?.position.copy(camera.position);
     directionalLightRef?.current?.position
       .add(perpendicularVector)
-      .multiply(new THREE.Vector3(-1, -0.8, -1));
+      .multiply(new THREE.Vector3(-1, -0.6, -1));
 
     directionalLightRef2?.current?.position.copy(camera.position);
     directionalLightRef2?.current?.position
       .sub(perpendicularVector)
-      .multiply(new THREE.Vector3(-1, -0.8, -1));
+      .multiply(new THREE.Vector3(-1, -0.6, -1));
   });
 
   return (
     <>
       <Suspense fallback={null}>
         <ambientLight intensity={1} />
-        {/* <AdaptiveDpr /> */}
         <Lid
           name={"lid"}
           // isClicked={isClicked}
@@ -63,8 +57,9 @@ const Box = ({ size }) => {
           roughness={1}
           bottomColor={"white"}
         >
+          {/* <HaloRing /> */}
           <Bulb size={size * 0.12} position={[0, -(size * 0.05), size * 0.5]} />
-          {/* <Bulb
+          <Bulb
             size={size * 0.12}
             position={[0, -(size * 0.05), -(size * 0.5)]}
           />
@@ -73,7 +68,7 @@ const Box = ({ size }) => {
             size={size * 0.12}
             position={[-(size * 0.5), -(size * 0.05), 0]}
           />
-          <Bulb size={size * 0.12} position={[size * 0.5, -(size * 0.05), 0]} /> */}
+          <Bulb size={size * 0.12} position={[size * 0.5, -(size * 0.05), 0]} />
         </Lid>
         <Lid
           name={"lid"}

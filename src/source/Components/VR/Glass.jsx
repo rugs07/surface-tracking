@@ -1,3 +1,5 @@
+import { useThree } from "@react-three/fiber";
+import { forwardRef, useEffect } from "react";
 import * as THREE from "three";
 
 const Glass = ({ size = 1.25, position, name, children, opacity = 0.4 }) => {
