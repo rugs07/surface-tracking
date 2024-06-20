@@ -1,11 +1,14 @@
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { Suspense, lazy, useRef, forwardRef, useEffect } from "react";
-
-const Glass = lazy(() => import("./Glass"));
-const Lid = lazy(() => import("./Lid"));
-const Bulb = lazy(() => import("./Bulb"));
-const Frame = lazy(() => import("./Frame"));
+import Lid from "./Lid";
+import Glass from "./Glass";
+import Frame from "./Frame";
+import Bulb from "./Bulb";
+// const Glass = lazy(() => import("./Glass"));
+// const Lid = lazy(() => import("./Lid"));
+// const Bulb = lazy(() => import("./Bulb"));
+// const Frame = lazy(() => import("./Frame"));
 
 const Box = ({ size }) => {
   const camera = useThree(({ camera }) => {
