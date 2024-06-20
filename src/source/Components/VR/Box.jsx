@@ -49,7 +49,7 @@ const Box = ({ size }) => {
   return (
     <>
       <Suspense fallback={null}>
-        <ambientLight intensity={1} />
+        {/* <ambientLight intensity={1} /> */}
         <Lid
           name={"lid"}
           // isClicked={isClicked}

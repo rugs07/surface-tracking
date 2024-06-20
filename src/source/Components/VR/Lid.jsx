@@ -23,9 +23,12 @@ const Lid = (
       roughness: 0.8,
       opacity: 0.2,
       transmission: 0,
-      metalness: 0.84,
+      metalness: 0.998,
     }),
-    new THREE.MeshPhysicalMaterial({ color: "black", opacity: 1 }),
+    new THREE.MeshPhysicalMaterial({
+      color: "black",
+      opacity: 1,
+    }),
     new THREE.MeshPhysicalMaterial({ color: "black", opacity: 1 }),
   ];
 
