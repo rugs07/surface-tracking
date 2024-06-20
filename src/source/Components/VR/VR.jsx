@@ -158,7 +158,7 @@ const VR = () => {
               gl={{ localClippingEnabled: true }}
               camera={{
                 fov: 86,
-                position: [0, -0.1, 3.5],
+                position: [0, 0, 3.5],
                 frustumCulled: true,
                 near: 0.25,
                 far: 16,
@@ -167,7 +167,7 @@ const VR = () => {
               <group position={[0, -0.5, 0]}>
                 <OrbitControls
                   minDistance={2} //for mobile it is needed
-                  maxDistance={7}
+                  maxDistance={5}
                   autoRotate={isHovered ? false : true}
                   autoRotateSpeed={2}
                   enableDamping={false}
@@ -175,7 +175,7 @@ const VR = () => {
                 <AdaptiveDpr pixelated={true} />
                 <RotatingSplat
                   url={url}
-                  scale={scale * 0.7}
+                  scale={scale * selectedJewel.size}
                   rotation={
                     selectedJewel.type === "ring"
                       ? [0.015, 0, 0]

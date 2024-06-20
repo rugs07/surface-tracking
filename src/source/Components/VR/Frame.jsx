@@ -9,7 +9,7 @@ const Frame = ({ position, size }) => {
   return (
     <>
       {/* Tube Geometry */}
-      <Detailed distances={[2, 7]}>
+      <Detailed distances={[2, 3]}>
         <Cylinder
           rotation={[0, Math.PI / 2, 0]}
           position={position}

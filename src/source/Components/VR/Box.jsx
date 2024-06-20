@@ -1,8 +1,6 @@
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { Suspense, lazy, useRef, forwardRef, useEffect } from "react";
-import { AdaptiveDpr } from "@react-three/drei";
-import HaloRing from "./HaloRing";
 
 const Glass = lazy(() => import("./Glass"));
 const Lid = lazy(() => import("./Lid"));
@@ -57,7 +55,6 @@ const Box = ({ size }) => {
           roughness={1}
           bottomColor={"white"}
         >
-          {/* <HaloRing /> */}
           <Bulb size={size * 0.12} position={[0, -(size * 0.05), size * 0.5]} />
           <Bulb
             size={size * 0.12}
