@@ -12,7 +12,7 @@ const Bulb = ({ position, size }, ref) => {
         position={position}
         intensity={0.2}
       />
-      <Cylinder args={[size, size, size + 0.02, 8]} position={position}>
+      <Cylinder args={[size, size, size + 0.02, 16]} position={position}>
         {/* Array of materials: [side, top, bottom] */}
         <meshBasicMaterial shadowSide={1} color={0xffffff} />
         {/* <meshStandardMaterial attach="material-0" color="white" />
