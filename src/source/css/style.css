@@ -65,7 +65,7 @@ body {
   letter-spacing: 0.25px;
   word-spacing: 5px;
   line-height: 1.75rem;
-  background-color: rgb(18, 18, 18);
+  background-color: rgb(0, 0, 0);
 }
 
 button {
@@ -498,7 +498,8 @@ button:hover {
   overflow: hidden;
   margin: 0 auto;
   padding: 0;
-  background: none;
+  background-color: rgb(18, 18, 18);
+  /* background: none; */
   /* background-image: url('../assets/bg/12_b33.jpg');
   background-size: cover; 
   background-position: center;
