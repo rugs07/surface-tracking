@@ -121,16 +121,14 @@ const VR = () => {
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">
       <div className="ar-toggle-container" id="ar-toggle-container">
-        <div className="FPSStats">
-          <FPSStats />
-        </div>
-        <button
+        <div className="FPSStats">{/* <FPSStats /> */}</div>
+        {/* <button
           className="tryon-button"
           id="desktop-viewar"
           onClick={handleClick}
         >
           Try On
-        </button>
+        </button> */}
         <h2 id="updatenote">{selectedJewel.label}</h2>
         <div className="gsplatButtonDiv">
           <span className="gsplatSoundEffect"></span>
@@ -153,7 +151,7 @@ const VR = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <ErrorBoundary>
             <Canvas
-              dpr={1}
+              dpr={1.5}
               shadows
               gl={{ localClippingEnabled: true }}
               camera={{
