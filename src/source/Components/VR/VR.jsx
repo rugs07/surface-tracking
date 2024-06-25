@@ -121,7 +121,7 @@ const VR = () => {
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">
       <div className="ar-toggle-container" id="ar-toggle-container">
-        <div className="FPSStats">{/* <FPSStats /> */}</div>
+        {/* <div className="FPSStats"><FPSStats /></div> */}
         {/* <button
           className="tryon-button"
           id="desktop-viewar"
