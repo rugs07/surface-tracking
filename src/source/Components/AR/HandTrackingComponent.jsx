@@ -155,7 +155,7 @@ const HandTrackingComponent = () => {
         style={window.innerWidth <= 768 ? {
           position: "absolute",
 
-          // transform: "rotateY(180deg)", //! add screen size based ternary operator
+          transform: "rotateY(180deg)", //! add screen size based ternary operator
           top: 0,
           left: 0,
           right: 0,
@@ -191,7 +191,7 @@ const HandTrackingComponent = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          transform: "rotateY(180deg)"
+          // transform: "rotateY(180deg)"
         
         } : {
           position: "absolute",
