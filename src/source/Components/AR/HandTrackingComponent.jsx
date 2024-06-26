@@ -152,7 +152,7 @@ const HandTrackingComponent = () => {
         ref={videoRef}
         autoPlay
         playsInline
-        style={window.innerWidth < 768 ? {
+        style={window.innerWidth <= 768 ? {
           position: "absolute",
 
           // transform: "rotateY(180deg)", //! add screen size based ternary operator
@@ -182,7 +182,7 @@ const HandTrackingComponent = () => {
       ></video>
       <FPSStats />
       <div
-        style={window.innerWidth < 768 ? {
+        style={window.innerWidth <= 768 ? {
           position: "absolute",
           top: 0,
           left: 0,
@@ -191,6 +191,7 @@ const HandTrackingComponent = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          transform: "rotateY(180deg)"
         
         } : {
           position: "absolute",
