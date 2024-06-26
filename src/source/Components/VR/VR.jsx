@@ -7,6 +7,7 @@ import { hideLoading, updateLoadingProgress } from "../../../js/utils";
 import { useNavigate } from "react-router-dom";
 import { useVariables } from "../../context/variableContext";
 import qrcode from "../../assets/qr-code.jpeg";
+import { Splat as SplatComponent } from "@react-three/drei";
 
 import "../../css/gsplat.css";
 import "../../css/loader.css";
@@ -15,9 +16,9 @@ import Box from "./Box";
 import RotatingSplat from "./RotatingSplat";
 
 const ErrorBoundary = lazy(() => import("../Errorboundary/ErrorBoundary"));
-const SplatComponent = lazy(() =>
-  import("@react-three/drei").then((module) => ({ default: module.Splat }))
-);
+// const SplatComponent = lazy(() =>
+//   import("@react-three/drei").then((module) => ({ default: module.Splat }))
+// );
 
 const VR = () => {
   const navigate = useNavigate();
@@ -115,12 +116,13 @@ const VR = () => {
   };
 
   const handleClick = () => {
-    if (isMobileDevice() || isDevMode()) {
-      navigate("/Loading");
-    } else {
-      setShowModal(true);
-    }
+    // if (isMobileDevice() || isDevMode()) {
+    navigate("/Loading");
+    // } else {
+    setShowModal(true);
+    // }
   };
+  const distance = window.innerWidth < 768 ? 7 : 5.9
 
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">
@@ -168,7 +170,7 @@ const VR = () => {
             >
               <group position={[0, -0.5, 0]}>
                 <OrbitControls
-                  // maxDistance={5.9}
+                  maxDistance={distance}
                   autoRotate={isHovered ? false : true}
                   autoRotateSpeed={2}
                 />
@@ -181,7 +183,7 @@ const VR = () => {
             </Canvas>
           </ErrorBoundary>
         </Suspense>
-        {showModal && (
+        {/* {showModal && (
           <div className="modal-wrapper" onClick={handleModalClose}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
               <div className="modal-content">
@@ -193,7 +195,7 @@ const VR = () => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

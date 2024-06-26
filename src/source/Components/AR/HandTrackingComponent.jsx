@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
-import hand_landmarker_task from "../../../models/hand_landmarker.task";
 import { Canvas } from "@react-three/fiber";
 import { Splat } from "@react-three/drei";
 import FPSStats from "react-fps-stats";
@@ -9,9 +8,11 @@ import { useNavigate } from "react-router-dom";
 import Showhandscreen from "./Showhandscreen";
 import { useVariables } from "../../context/variableContext";
 import ErrorBoundary from "../Errorboundary/ErrorBoundary";
+import { useJewels } from "../../context/JewelsContext";
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
+  const { jewelsList } = useJewels();
   const { translateRotateMesh } = ARFunctions();
   const {
     jewelType,
@@ -20,7 +21,7 @@ const HandTrackingComponent = () => {
     ZRDelta,
     wristZoom,
     setHandLabels,
-    rowArType
+
   } = useVariables();
   const canvasRef = useRef(null);
   const [landmark, setLandmark] = useState([]);
@@ -48,6 +49,11 @@ const HandTrackingComponent = () => {
     let handLandmarker;
     let animationFrameId;
 
+
+    // const selectedJewel = jewelsList[jewelId];
+
+    // sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
+
     const initializeHandDetection = async () => {
       try {
         const vision = await FilesetResolver.forVisionTasks(
@@ -55,7 +61,7 @@ const HandTrackingComponent = () => {
         );
         handLandmarker = await HandLandmarker.createFromOptions(vision, {
           baseOptions: {
-            modelAssetPath: hand_landmarker_task,
+            modelAssetPath: `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
             delegate: "GPU",
           },
           numHands: 1,
@@ -129,10 +135,11 @@ const HandTrackingComponent = () => {
       }
     };
   }, []);
+  console.log(XRDelta, YRDelta, ZRDelta, "rotations ");
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
-      {!handPresence && <Showhandscreen typeJewel={jewelType} />}
+      {!handPresence && <Showhandscreen />}
       {!handPresence && (
         <button
           className="stopArBtn"
@@ -145,9 +152,10 @@ const HandTrackingComponent = () => {
         ref={videoRef}
         autoPlay
         playsInline
-        style={{
+        style={window.innerWidth<768?{
           position: "absolute",
-          transform: "rotateY(180deg)",
+          
+          transform: "rotateY(180deg)", //! add screen size based ternary operator
           top: 0,
           left: 0,
           right: 0,
@@ -156,7 +164,21 @@ const HandTrackingComponent = () => {
           height: "100%",
           zIndex: "-1000",
           objectFit: "cover",
-        }}
+        }:
+          {
+            position: "absolute",
+
+            // transform: "rotateY(180deg)", //! add screen size based ternary operator
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: "-1000",
+            objectFit: "cover",
+}
+        }
       ></video>
       <FPSStats />
       <div

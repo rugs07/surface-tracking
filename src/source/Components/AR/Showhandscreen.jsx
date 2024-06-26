@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../css/style.css';
 import '../../css/loader.css';
 import '../../css/gsplat.css';
@@ -23,6 +23,14 @@ const Showhandscreen = () => {
   const navigate = useNavigate();
   const lastJewel = sessionStorage.getItem("selectedJewel") || "{}";
   let animationFrameId;
+  const [handLabels, setHandLabels] = useState('');
+
+  const handleJewelTypeChange = (jewelType) => {
+    if (jewelType === 'ring') {
+      // Update the handLabels state to trigger a re-render
+      setHandLabels(handLabels === 'Left' ? 'Right' : 'Left');
+    }
+  };
 
   useEffect(() => {
     setJewelType(lastJewel.type);
@@ -51,6 +59,7 @@ const Showhandscreen = () => {
 
       return;
     }
+    handleJewelTypeChange('ring')
     const selectedJewel = jewelsList[jewelId];
     changeJewel(jewelsList[jewelId].type);
     sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
