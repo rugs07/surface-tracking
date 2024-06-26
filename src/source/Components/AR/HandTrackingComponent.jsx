@@ -152,10 +152,10 @@ const HandTrackingComponent = () => {
         ref={videoRef}
         autoPlay
         playsInline
-        style={window.innerWidth<768?{
+        style={window.innerWidth < 768 ? {
           position: "absolute",
-          
-          transform: "rotateY(180deg)", //! add screen size based ternary operator
+
+          // transform: "rotateY(180deg)", //! add screen size based ternary operator
           top: 0,
           left: 0,
           right: 0,
@@ -164,11 +164,11 @@ const HandTrackingComponent = () => {
           height: "100%",
           zIndex: "-1000",
           objectFit: "cover",
-        }:
+        } :
           {
             position: "absolute",
 
-            // transform: "rotateY(180deg)", //! add screen size based ternary operator
+            transform: "rotateY(180deg)", //! add screen size based ternary operator
             top: 0,
             left: 0,
             right: 0,
@@ -177,12 +177,12 @@ const HandTrackingComponent = () => {
             height: "100%",
             zIndex: "-1000",
             objectFit: "cover",
-}
+          }
         }
       ></video>
       <FPSStats />
       <div
-        style={{
+        style={window.innerWidth < 768 ? {
           position: "absolute",
           top: 0,
           left: 0,
@@ -191,7 +191,20 @@ const HandTrackingComponent = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-        }}
+        
+        } : {
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+            transform: "rotateY(180deg)"
+
+        }
+        }
       >
         <ErrorBoundary>
           <Canvas
