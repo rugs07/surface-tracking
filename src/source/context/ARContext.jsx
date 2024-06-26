@@ -78,7 +78,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     XRAngle = angle;
     XRDelta = THREE.MathUtils.degToRad(-XRAngle);
-    setXRDelta(XRDelta);
+    setXRDelta(-XRDelta);
     // (
     //   THREE.MathUtils.radToDeg(XRAngle),
     //   THREE.MathUtils.radToDeg(YRAngle),
@@ -115,7 +115,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
     //   // );
     // }
 
-    window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
+
+    window.innerWidth < 768 ? YRAngle = angle : YRAngle = angle
     // YRAngle = -angle;
 
     if (
@@ -165,6 +166,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let transform = null;
     if (!translation) transform = "rotateZ(" + angle + "deg)";
     else canP = canX - adjustmentFactor;
+    const angless = window.innerWidth<768? -angle:angle
     transform =
       "translate3d(" +
       canX +
@@ -173,13 +175,13 @@ export const GlobalFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angle +
+     angless +
       "deg)";
     transform, "can's";
     gsplatCanvas.style.transform = transform;
 
-    ZRAngle = angle;
-    XTrans = canX;
+    ZRAngle = -angle;
+    XTrans = -canX;
     YTrans = canY;
     // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
   }
