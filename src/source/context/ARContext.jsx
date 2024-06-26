@@ -115,7 +115,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
     //   // );
     // }
 
-    YRAngle = angle;
+    window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
+    // YRAngle = -angle;
 
     if (
       (GlobalHandLabel == "Right" && facingMode !== "environment") ||
@@ -772,8 +773,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
       if (isMobile || isIOS) {
         resizeMul = window_scale * 3.0 * scaleAdjustment;
         if (
-          (handLabel === "Right" ) ||
-          (handLabel === "Left" )
+          (handLabel === "Right") ||
+          (handLabel === "Left")
         ) {
           resizeMul *= 0.925;
         }
