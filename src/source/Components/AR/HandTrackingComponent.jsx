@@ -62,7 +62,7 @@ const HandTrackingComponent = () => {
         handLandmarker = await HandLandmarker.createFromOptions(vision, {
           baseOptions: {
             modelAssetPath: `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
-            delegate: "GPU",
+            delegate: "CPU",
           },
           numHands: 1,
           runningMode: "video",
@@ -192,7 +192,7 @@ const HandTrackingComponent = () => {
           justifyContent: "center",
           alignItems: "center",
           // transform: "rotateY(180deg)"
-        
+
         } : {
           position: "absolute",
           top: 0,
@@ -202,7 +202,7 @@ const HandTrackingComponent = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-            transform: "rotateY(180deg)"
+          transform: "rotateY(180deg)"
 
         }
         }
