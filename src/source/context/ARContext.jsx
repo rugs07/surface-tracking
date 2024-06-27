@@ -58,7 +58,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     setJewelType,
     setCameraNearVar,
   } = useVariables();
-
+  console.log(enableSmoothing, "arcontext enable smoothing ");
   // const { calculateAngleAtMiddle } = ARFunctions()
   jewelType === type;
   function rotateX(angle) {
@@ -175,7 +175,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      -angle +
+      angle +
       "deg)";
     transform, "can's";
     gsplatCanvas.style.transform = transform;
@@ -277,6 +277,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     // previous code
     if (enableSmoothing) {
+      console.log(enableSmoothing, "enable smoothing ");
       //("enablesmoothing");
       let diff = normYAngle - YRAngle;
       yArr.push(diff); // Insert new value at the end
