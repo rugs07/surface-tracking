@@ -164,12 +164,14 @@ const HandTrackingComponent = () => {
             }
             setPrevFrame(frameSets[frameSets.length - 1]);
           }
-
+          console.log(results, "result in smooth landmarks");
+          // console.log(smoothedDetections.landmarks[0]);
           return results;
         };
-
-
+        
+        
         const smoothedDetections = smoothLandmarks(detections);
+        console.log(smoothedDetections.landmarks[0], ":if check");
         if (smoothedDetections.landmarks && smoothedDetections.landmarks.length > 0) {
           try {
             console.log(smoothedDetections, 'detecitons smmoths');
