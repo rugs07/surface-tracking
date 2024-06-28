@@ -12,6 +12,10 @@ import { useJewels } from "../../context/JewelsContext";
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
+  const [frameSets, setFrameSets] = useState([]);
+  const [frames, setFrames] = useState([]);
+  const [prevFrame, setPrevFrame] = useState(null);
+  const isMobile = window.innerWidth <= 768; // Define isMobile based on screen width
   const { jewelsList } = useJewels();
   const { translateRotateMesh } = ARFunctions();
   const {
@@ -80,22 +84,107 @@ const HandTrackingComponent = () => {
           performance.now()
         );
         setHandPresence(detections.handednesses.length > 0);
+        // console.log(detections, 'detectionsssss');
+        const smoothLandmarks = (results) => {
+          if (results.landmarks && results.landmarks[0]) {
+            setFrameSets(prev => {
+              const newFrameSets = [...prev, results.landmarks[0]];
+              return newFrameSets.slice(-8); // Keep only the last 8 frames
+            });
+            setFrames(prev => {
+              const newFrames = [...prev, results];
+              return newFrames.slice(-8); // Keep only the last 8 frames
+            });
+          }
 
-        if (detections.landmarks && detections.landmarks.length > 0) {
+          const calculateVelocity = (currentFrame, previousFrame) => {
+            if (!currentFrame || !previousFrame) return 0;
+
+            let totalDistance = 0;
+            for (let i = 0; i < currentFrame.length; i++) {
+              const dx = currentFrame[i].x - previousFrame[i].x;
+              const dy = currentFrame[i].y - previousFrame[i].y;
+              const dz = currentFrame[i].z - previousFrame[i].z;
+              totalDistance += Math.sqrt(dx * dx + dy * dy + dz * dz);
+            }
+            return totalDistance / currentFrame.length;
+          };
+
+          let velocity = 0;
+          if (frameSets.length > 1 && prevFrame) {
+            velocity = calculateVelocity(frameSets[frameSets.length - 1], prevFrame);
+          }
+
+          // Adjust the smoothing based on velocity
+          let effectiveLength = frameSets.length;
+          if (isMobile) {
+            if (jewelType === "bangle") {
+              if (velocity > 0.04) {
+                effectiveLength = Math.min(effectiveLength, 4);
+              } else if (velocity > 0.015) {
+                effectiveLength = Math.min(effectiveLength, 6);
+              } else {
+                effectiveLength = Math.min(effectiveLength, 8);
+              }
+            } else {
+              if (velocity > 0.015) {
+                effectiveLength = Math.min(effectiveLength, 4);
+              } else {
+                effectiveLength = 6;
+              }
+            }
+          } else {
+            if (velocity > 0.04) {
+              effectiveLength = Math.min(effectiveLength, 4);
+            } else if (velocity > 0.015) {
+              effectiveLength = Math.min(effectiveLength, 6);
+            } else {
+              effectiveLength = 8;
+            }
+          }
+
+          if (effectiveLength >= 4 && frameSets.length >= effectiveLength) {
+            const smoothedLandmarks = frameSets
+              .slice(-effectiveLength)
+              .reduce((acc, frame) => {
+                return frame.map((point, index) => {
+                  if (!acc[index]) {
+                    acc[index] = { x: 0, y: 0, z: 0, visibility: 0 };
+                  }
+                  acc[index].x += point.x / effectiveLength;
+                  acc[index].y += point.y / effectiveLength;
+                  acc[index].z += point.z / effectiveLength;
+                  acc[index].visibility += point.visibility / effectiveLength;
+                  return acc[index];
+                });
+              }, []);
+
+            if (results.landmarks && results.landmarks[0]) {
+              results.landmarks[0] = smoothedLandmarks;
+            }
+            setPrevFrame(frameSets[frameSets.length - 1]);
+          }
+
+          return results;
+        };
+
+
+        const smoothedDetections = smoothLandmarks(detections);
+        if (smoothedDetections.landmarks && smoothedDetections.landmarks.length > 0) {
           try {
+            console.log(smoothedDetections, 'detecitons smmoths');
             translateRotateMesh(
-              detections.landmarks[0],
-              detections.handednesses[0][0].displayName,
+              smoothedDetections.landmarks[0],
+              smoothedDetections.handednesses[0][0].displayName,
               false,
               canvasRef.current
-
             );
-            setHandLabels(detections.handednesses[0][0].displayName);
+            setHandLabels(smoothedDetections.handednesses[0][0].displayName);
           } catch (error) {
-            error;
+            console.error(error);
           }
         } else {
-          ("No hand landmarks detected");
+          console.log("No hand landmarks detected");
         }
       }
       requestAnimationFrame(detectHands);
