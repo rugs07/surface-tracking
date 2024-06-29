@@ -175,7 +175,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angle +
+      -angle +
       "deg)";
     transform, "can's";
     gsplatCanvas.style.transform = transform;

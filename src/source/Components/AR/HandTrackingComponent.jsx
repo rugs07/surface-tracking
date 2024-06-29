@@ -14,7 +14,7 @@ const HandTrackingComponent = () => {
   const videoRef = useRef(null);
   const [frameSets, setFrameSets] = useState([]);
   const [frames, setFrames] = useState([]);
-  const [prevFrame, setPrevFrame] = useState(null);
+  const [prevFrame, setPrevFrame] = useState();
   const isMobile = window.innerWidth <= 768; // Define isMobile based on screen width
   const { jewelsList } = useJewels();
   const { translateRotateMesh } = ARFunctions();
@@ -86,14 +86,15 @@ const HandTrackingComponent = () => {
         setHandPresence(detections.handednesses.length > 0);
         // console.log(detections, 'detectionsssss');
         const smoothLandmarks = (results) => {
+          let currentFrameSets = [];
+
           if (results.landmarks && results.landmarks[0]) {
-            setFrameSets(prev => {
-              const newFrameSets = [...prev, results.landmarks[0]];
-              return newFrameSets.slice(-8); // Keep only the last 8 frames
-            });
+            currentFrameSets = [...frameSets, results.landmarks[0]].slice(-8);
+            setFrameSets(currentFrameSets);
+
             setFrames(prev => {
               const newFrames = [...prev, results];
-              return newFrames.slice(-8); // Keep only the last 8 frames
+              return newFrames.slice(-8);
             });
           }
 
@@ -111,26 +112,25 @@ const HandTrackingComponent = () => {
           };
 
           let velocity = 0;
-          if (frameSets.length > 1 && prevFrame) {
-            velocity = calculateVelocity(frameSets[frameSets.length - 1], prevFrame);
+          if (currentFrameSets.length > 1) {
+            velocity = calculateVelocity(currentFrameSets[currentFrameSets.length - 1], currentFrameSets[currentFrameSets.length - 2]);
           }
 
           // Adjust the smoothing based on velocity
-          let effectiveLength = frameSets.length;
+          let effectiveLength = Math.min(currentFrameSets.length, 8); // Ensure we don't exceed available frames
+
           if (isMobile) {
             if (jewelType === "bangle") {
               if (velocity > 0.04) {
                 effectiveLength = Math.min(effectiveLength, 4);
               } else if (velocity > 0.015) {
                 effectiveLength = Math.min(effectiveLength, 6);
-              } else {
-                effectiveLength = Math.min(effectiveLength, 8);
               }
             } else {
               if (velocity > 0.015) {
                 effectiveLength = Math.min(effectiveLength, 4);
               } else {
-                effectiveLength = 6;
+                effectiveLength = Math.min(effectiveLength, 6);
               }
             }
           } else {
@@ -138,13 +138,17 @@ const HandTrackingComponent = () => {
               effectiveLength = Math.min(effectiveLength, 4);
             } else if (velocity > 0.015) {
               effectiveLength = Math.min(effectiveLength, 6);
-            } else {
-              effectiveLength = 8;
             }
           }
 
-          if (effectiveLength >= 4 && frameSets.length >= effectiveLength) {
-            const smoothedLandmarks = frameSets
+          // Ensure effectiveLength is at least 2 to perform smoothing
+          effectiveLength = Math.max(effectiveLength, 2);
+
+          console.log("Effective Length:", effectiveLength, "Current Frames:", currentFrameSets.length);
+
+          if (currentFrameSets.length >= effectiveLength) {
+            console.log(effectiveLength, "effective length");
+            const smoothedLandmarks = currentFrameSets
               .slice(-effectiveLength)
               .reduce((acc, frame) => {
                 return frame.map((point, index) => {
@@ -162,14 +166,13 @@ const HandTrackingComponent = () => {
             if (results.landmarks && results.landmarks[0]) {
               results.landmarks[0] = smoothedLandmarks;
             }
-            setPrevFrame(frameSets[frameSets.length - 1]);
+            setPrevFrame(currentFrameSets[currentFrameSets.length - 1]);
           }
-          console.log(results, "result in smooth landmarks");
-          // console.log(smoothedDetections.landmarks[0]);
+
           return results;
         };
-        
-        
+
+
         const smoothedDetections = smoothLandmarks(detections);
         console.log(smoothedDetections.landmarks[0], ":if check");
         if (smoothedDetections.landmarks && smoothedDetections.landmarks.length > 0) {
