@@ -23,10 +23,15 @@ let typeOfJewel;
 const Home = () => {
   const navigate = useNavigate();
   const { jewelsList } = useJewels();
-  const { setJewelType, jewelType } = useVariables();
+  const { setJewelType, jewelType, setXRDelta, setYRDelta, setZRDelta } = useVariables();
   const handleClick = (jewelId) => {
     const selectedJewel = jewelsList[jewelId];
-    
+    if (selectedJewel === "jewel3_lr") {
+      setXRDelta(0);
+      setYRDelta(0);
+      setZRDelta(0)
+    }
+
     setJewelType(jewelsList[jewelId].type);
 
     typeOfJewel == jewelsList[jewelId].type;

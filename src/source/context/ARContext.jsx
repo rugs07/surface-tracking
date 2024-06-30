@@ -14,6 +14,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
   let ytArr = [];
   let type
   const [handType, setHandType] = useState()
+  const [recentYRotations, setRecentYRotations] = useState([]);
   // const gsplatCanvas = document.getElementById("gsplatCanvas");
   // Define your globally accessible functions
   let {
@@ -88,32 +89,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
   }
 
   function rotateY(angle) {
-    // setHandLabel(handLabel)
-    // if (isArcball) {
-    //   var quaternion = new THREE.Quaternion().setFromAxisAngle(
-    //     new THREE.Vector3(0, 1, 0),
-    //
-    //   );
-    //   gCamera.position.applyQuaternion(quaternion);
-    //   gCamera.up.applyQuaternion(quaternion);
-    //   gCamera.quaternion.multiplyQuaternions(quaternion, gCamera.quaternion);
-    // } else {
-    //   // cameraControls.rotate(angle, 0, false);
-    //   // Using Show zone to not show the part which was placed on for recording
-
-    //   let showZone = [-90, 90];
-    //   if (selectedJewel === "flowerbangle") showZone = [-60, 90];
-
-    //   if (angle > showZone[0] && angle < showZone[1]) {
-    //     // cameraControls.azimuthAngle = THREE.MathUtils.degToRad(angle) + baseTheta;
-    //   }
-    //   // (
-    //   //   "yangle",
-    //   //   angle.toFixed(2),
-    //   //   THREE.MathUtils.radToDeg(baseTheta).toFixed(2),
-    //   //   handLabel
-    //   // );
-    // }
 
 
     window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
@@ -206,6 +181,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       rotatedNewPinkyRef.z - rotatedNewIndexRef.z,
       rotatedNewPinkyRef.x - rotatedNewIndexRef.x
     );
+   
     // make show zone from -90 to
 
     yAngle = THREE.MathUtils.radToDeg(yAngle) - 90;
@@ -259,6 +235,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
         } // for Heart ring
         if (selectedJewel === "jewel3_lr") {
           cameraNear = 4.94;
+          setXRDelta(0)
+          setYRDelta(0)
+          setXRDelta(0)
           if (isMobile || isIOS) {
             cameraNear += phonethreshold;
           }
@@ -280,6 +259,21 @@ export const GlobalFunctionsProvider = ({ children }) => {
       console.log(enableSmoothing, "enable smoothing ");
       //("enablesmoothing");
       let diff = normYAngle - YRAngle;
+      setRecentYRotations(prevRotations => {
+        const updatedRotations = [...prevRotations, normYAngle];
+        // Keep only the last 5 rotations
+        return updatedRotations.slice(-5);
+      });
+
+      // Calculate the weighted average
+      if (recentYRotations.length === 5) {
+        const weights = [1, 2, 3, 4, 5];
+        const weightedSum = recentYRotations.reduce((sum, angle, index) => sum + angle * weights[index], 0);
+        const weightSum = weights.reduce((sum, weight) => sum + weight, 0);
+        normYAngle = weightedSum / weightSum;
+      }
+
+
       yArr.push(diff); // Insert new value at the end
       //(diff, 'differ', yArr.length);
       if (yArr.length > 3) {
