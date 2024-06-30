@@ -102,7 +102,7 @@ const HandTrackingComponent = () => {
     const startWebcam = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } }
+          video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } }
         });
         videoRef.current.srcObject = stream;
         await initializeHandDetection();
