@@ -181,7 +181,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       rotatedNewPinkyRef.z - rotatedNewIndexRef.z,
       rotatedNewPinkyRef.x - rotatedNewIndexRef.x
     );
-   
+
     // make show zone from -90 to
 
     yAngle = THREE.MathUtils.radToDeg(yAngle) - 90;

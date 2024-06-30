@@ -66,7 +66,7 @@ const HandTrackingComponent = () => {
     };
 
     const smoothLandmarks = (landmarks) => {
-      const smoothingFactor = isMobile ? 0.7 : 0.6;
+      const smoothingFactor = isMobile ? 0.7 : 0.9;
       if (!prevFrameRef.current) {
         prevFrameRef.current = landmarks;
         return landmarks;
@@ -177,7 +177,8 @@ const HandTrackingComponent = () => {
             <Splat
               src={url}
               rotation={[XRDelta, YRDelta, ZRDelta]}
-              scale={[wristZoom, wristZoom, wristZoom]}
+              // scale={[wristZoom, wristZoom, wristZoom]}
+              scale={0.5}
               position={[0, 0, 0]}
             />
           </Canvas>
