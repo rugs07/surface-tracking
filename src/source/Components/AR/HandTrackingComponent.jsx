@@ -147,10 +147,10 @@ const HandTrackingComponent = () => {
           console.log("Effective Length:", effectiveLength, "Current Frames:", currentFrameSets.length);
 
           if (currentFrameSets.length >= effectiveLength) {
-            console.log(effectiveLength, "effective length");
             const smoothedLandmarks = currentFrameSets
               .slice(-effectiveLength)
               .reduce((acc, frame) => {
+                console.log(smoothLandmarks, "effective length");
                 return frame.map((point, index) => {
                   if (!acc[index]) {
                     acc[index] = { x: 0, y: 0, z: 0, visibility: 0 };
@@ -163,6 +163,7 @@ const HandTrackingComponent = () => {
                 });
               }, []);
 
+            console.log(results, 'results');
             if (results.landmarks && results.landmarks[0]) {
               results.landmarks[0] = smoothedLandmarks;
             }
