@@ -12,10 +12,8 @@ import { useJewels } from "../../context/JewelsContext";
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
-  const [frameSets, setFrameSets] = useState([]);
-  const [frames, setFrames] = useState([]);
   const [prevFrame, setPrevFrame] = useState();
-  const isMobile = window.innerWidth <= 768; // Define isMobile based on screen width
+  const isMobile = window.innerWidth <= 768;
   const { jewelsList } = useJewels();
   const { translateRotateMesh } = ARFunctions();
   const {
@@ -25,38 +23,26 @@ const HandTrackingComponent = () => {
     ZRDelta,
     wristZoom,
     setHandLabels,
-
   } = useVariables();
   const canvasRef = useRef(null);
-  const [landmark, setLandmark] = useState([]);
-  const [handPresence, setHandPresence] = useState();
+  const [handPresence, setHandPresence] = useState(false);
   const selectedJewel = JSON.parse(
     sessionStorage.getItem("selectedJewel") || "{}"
   );
-  let detections;
-
 
   const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
   const navigate = useNavigate();
 
   const handleStopAR = () => {
-    // Stop the video stream
     if (videoRef.current && videoRef.current.srcObject) {
-      // videoRef.current.srcObject?.getTracks()?.forEach((track) => track.stop());
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
     }
-
     navigate("/VR");
   };
 
-  let wristPoints;
   useEffect(() => {
     let handLandmarker;
     let animationFrameId;
-
-
-    // const selectedJewel = jewelsList[jewelId];
-
-    // sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
 
     const initializeHandDetection = async () => {
       try {
@@ -66,7 +52,7 @@ const HandTrackingComponent = () => {
         handLandmarker = await HandLandmarker.createFromOptions(vision, {
           baseOptions: {
             modelAssetPath: `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
-            delegate: "CPU",
+            delegate: "GPU",
           },
           numHands: 1,
           runningMode: "video",
@@ -77,159 +63,83 @@ const HandTrackingComponent = () => {
       }
     };
 
+    const smoothLandmarks = (landmarks) => {
+      const smoothingFactor = isMobile ? 0.6 : 0.5;
+      if (!prevFrame) {
+        setPrevFrame(landmarks);
+        return landmarks;
+      }
+      const smoothedLandmarks = landmarks.map((point, index) => ({
+        x: smoothingFactor * point.x + (1 - smoothingFactor) * prevFrame[index].x,
+        y: smoothingFactor * point.y + (1 - smoothingFactor) * prevFrame[index].y,
+        z: smoothingFactor * point.z + (1 - smoothingFactor) * prevFrame[index].z,
+        visibility: smoothingFactor * point.visibility + (1 - smoothingFactor) * prevFrame[index].visibility
+      }));
+      setPrevFrame(smoothedLandmarks);
+      return smoothedLandmarks;
+    };
+
+    const debounce = (func, delay) => {
+      let timeoutId;
+      return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func(...args), delay);
+      };
+    };
+
+    const debouncedUpdate = debounce((landmarks, handedness) => {
+      translateRotateMesh(landmarks, handedness, false, canvasRef.current);
+      setHandLabels(handedness);
+    }, isMobile ? 32 : 16);
+
+    let frameCount = 0;
     const detectHands = () => {
+      frameCount++;
       if (videoRef.current && videoRef.current.readyState >= 2) {
-        detections = handLandmarker.detectForVideo(
-          videoRef.current,
-          performance.now()
-        );
-        setHandPresence(detections.handednesses.length > 0);
-        // console.log(detections, 'detectionsssss');
-        const smoothLandmarks = (results) => {
-          let currentFrameSets = [];
+        if (frameCount % (isMobile ? 3 : 2) === 0) {
+          const detections = handLandmarker.detectForVideo(videoRef.current, performance.now());
+          setHandPresence(detections.handednesses.length > 0);
 
-          if (results.landmarks && results.landmarks[0]) {
-            currentFrameSets = [...frameSets, results.landmarks[0]].slice(-8);
-            setFrameSets(currentFrameSets);
-
-            setFrames(prev => {
-              const newFrames = [...prev, results];
-              return newFrames.slice(-8);
-            });
+          if (detections.landmarks && detections.landmarks[0]) {
+            const smoothedLandmarks = smoothLandmarks(detections.landmarks[0]);
+            debouncedUpdate(smoothedLandmarks, detections.handednesses[0][0].displayName);
           }
-
-          const calculateVelocity = (currentFrame, previousFrame) => {
-            // ... (keep this function as is)
-          };
-
-          let velocity = 0;
-          if (currentFrameSets.length > 1) {
-            velocity = calculateVelocity(currentFrameSets[currentFrameSets.length - 1], currentFrameSets[currentFrameSets.length - 2]);
-          }
-
-          // Adjust the smoothing based on velocity and available frames
-          let effectiveLength = Math.min(currentFrameSets.length, 8);
-
-          if (isMobile) {
-            if (jewelType === "bangle") {
-              if (velocity > 0.04) {
-                effectiveLength = Math.min(effectiveLength, 4);
-              } else if (velocity > 0.015) {
-                effectiveLength = Math.min(effectiveLength, 6);
-              }
-            } else {
-              if (velocity > 0.015) {
-                effectiveLength = Math.min(effectiveLength, 4);
-              } else {
-                effectiveLength = Math.min(effectiveLength, 6);
-              }
-            }
-          } else {
-            if (velocity > 0.04) {
-              effectiveLength = Math.min(effectiveLength, 4);
-            } else if (velocity > 0.015) {
-              effectiveLength = Math.min(effectiveLength, 6);
-            }
-          }
-
-          // Ensure effectiveLength is at least 2 to perform smoothing, but not more than available frames
-          effectiveLength = Math.max(2, Math.min(effectiveLength, currentFrameSets.length));
-
-          console.log("Effective Length:", effectiveLength, "Current Frames:", currentFrameSets.length);
-
-          // Always perform smoothing if we have at least 2 frames
-          if (currentFrameSets.length >= 2) {
-            const smoothedLandmarks = currentFrameSets
-              .slice(-effectiveLength)
-              .reduce((acc, frame) => {
-                return frame.map((point, index) => {
-                  if (!acc[index]) {
-                    acc[index] = { x: 0, y: 0, z: 0, visibility: 0 };
-                  }
-                  acc[index].x += point.x / effectiveLength;
-                  acc[index].y += point.y / effectiveLength;
-                  acc[index].z += point.z / effectiveLength;
-                  acc[index].visibility += point.visibility / effectiveLength;
-                  return acc[index];
-                });
-              }, []);
-
-            if (results.landmarks && results.landmarks[0]) {
-              results.landmarks[0] = smoothedLandmarks;
-            }
-            setPrevFrame(currentFrameSets[currentFrameSets.length - 1]);
-          }
-          console.log(results, 'results');
-          return results;
-        };
-
-
-        const smoothedDetections = smoothLandmarks(detections);
-        console.log(smoothedDetections.landmarks[0], ":if check");
-        if (smoothedDetections.landmarks && smoothedDetections.landmarks.length > 0) {
-          try {
-            console.log(smoothedDetections, 'detecitons smmoths');
-            translateRotateMesh(
-              smoothedDetections.landmarks[0],
-              smoothedDetections.handednesses[0][0].displayName,
-              false,
-              canvasRef.current
-            );
-            setHandLabels(smoothedDetections.handednesses[0][0].displayName);
-          } catch (error) {
-            console.error(error);
-          }
-        } else {
-          console.log("No hand landmarks detected");
         }
       }
-      requestAnimationFrame(detectHands);
+      animationFrameId = requestAnimationFrame(detectHands);
     };
 
     const startWebcam = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         videoRef.current.srcObject = stream;
-        // videoRef.current.style.transform = 'scaleX(-1)';
         await initializeHandDetection();
       } catch (error) {
-        alert('Error accessing web cam')
         console.error("Error accessing webcam:", error);
+        alert('Error accessing web cam');
       }
     };
 
     startWebcam();
-    return () => {
-      try {
 
-        if (videoRef.current && videoRef.current.srcObject) {
-          videoRef.current.srcObject
-            ?.getTracks()
-            ?.forEach((track) => track.stop());
-        }
-        if (handLandmarker) {
-          handLandmarker.close();
-        }
-        if (animationFrameId) {
-          cancelAnimationFrame(animationFrameId);
-        }
-      } catch (error) {
-        alert('Camera not available');
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+      }
+      if (handLandmarker) {
+        handLandmarker.close();
+      }
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
       }
     };
   }, []);
-  console.log(XRDelta, YRDelta, ZRDelta, "rotations ");
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       {!handPresence && <Showhandscreen />}
       {!handPresence && (
-        <button
-          className="stopArBtn"
-          onClick={handleStopAR}
-        >
+        <button className="stopArBtn" onClick={handleStopAR}>
           STOP AR
         </button>
       )}
@@ -237,10 +147,9 @@ const HandTrackingComponent = () => {
         ref={videoRef}
         autoPlay
         playsInline
-        style={window.innerWidth <= 768 ? {
+        style={{
           position: "absolute",
-
-          transform: "rotateY(180deg)", //! add screen size based ternary operator
+          transform: "rotateY(180deg)",
           top: 0,
           left: 0,
           right: 0,
@@ -249,25 +158,11 @@ const HandTrackingComponent = () => {
           height: "100%",
           zIndex: "-1000",
           objectFit: "cover",
-        } :
-          {
-            position: "absolute",
-
-            transform: "rotateY(180deg)", //! add screen size based ternary operator
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            width: "100%",
-            height: "100%",
-            zIndex: "-1000",
-            objectFit: "cover",
-          }
-        }
-      ></video>
+        }}
+      />
       <FPSStats />
       <div
-        style={window.innerWidth <= 768 ? {
+        style={{
           position: "absolute",
           top: 0,
           left: 0,
@@ -276,21 +171,8 @@ const HandTrackingComponent = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          // transform: "rotateY(180deg)"
-
-        } : {
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          transform: "rotateY(180deg)"
-
-        }
-        }
+          transform: isMobile ? "none" : "rotateY(180deg)"
+        }}
       >
         <ErrorBoundary>
           <Canvas
