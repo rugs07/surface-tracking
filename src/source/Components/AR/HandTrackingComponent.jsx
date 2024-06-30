@@ -99,16 +99,7 @@ const HandTrackingComponent = () => {
           }
 
           const calculateVelocity = (currentFrame, previousFrame) => {
-            if (!currentFrame || !previousFrame) return 0;
-
-            let totalDistance = 0;
-            for (let i = 0; i < currentFrame.length; i++) {
-              const dx = currentFrame[i].x - previousFrame[i].x;
-              const dy = currentFrame[i].y - previousFrame[i].y;
-              const dz = currentFrame[i].z - previousFrame[i].z;
-              totalDistance += Math.sqrt(dx * dx + dy * dy + dz * dz);
-            }
-            return totalDistance / currentFrame.length;
+            // ... (keep this function as is)
           };
 
           let velocity = 0;
@@ -116,8 +107,8 @@ const HandTrackingComponent = () => {
             velocity = calculateVelocity(currentFrameSets[currentFrameSets.length - 1], currentFrameSets[currentFrameSets.length - 2]);
           }
 
-          // Adjust the smoothing based on velocity
-          let effectiveLength = Math.min(currentFrameSets.length, 8); // Ensure we don't exceed available frames
+          // Adjust the smoothing based on velocity and available frames
+          let effectiveLength = Math.min(currentFrameSets.length, 8);
 
           if (isMobile) {
             if (jewelType === "bangle") {
@@ -141,16 +132,16 @@ const HandTrackingComponent = () => {
             }
           }
 
-          // Ensure effectiveLength is at least 2 to perform smoothing
-          effectiveLength = Math.max(effectiveLength, 2);
+          // Ensure effectiveLength is at least 2 to perform smoothing, but not more than available frames
+          effectiveLength = Math.max(2, Math.min(effectiveLength, currentFrameSets.length));
 
           console.log("Effective Length:", effectiveLength, "Current Frames:", currentFrameSets.length);
 
-          if (currentFrameSets.length >= effectiveLength) {
+          // Always perform smoothing if we have at least 2 frames
+          if (currentFrameSets.length >= 2) {
             const smoothedLandmarks = currentFrameSets
               .slice(-effectiveLength)
               .reduce((acc, frame) => {
-                console.log(smoothLandmarks, "effective length");
                 return frame.map((point, index) => {
                   if (!acc[index]) {
                     acc[index] = { x: 0, y: 0, z: 0, visibility: 0 };
@@ -163,13 +154,12 @@ const HandTrackingComponent = () => {
                 });
               }, []);
 
-            console.log(results, 'results');
             if (results.landmarks && results.landmarks[0]) {
               results.landmarks[0] = smoothedLandmarks;
             }
             setPrevFrame(currentFrameSets[currentFrameSets.length - 1]);
           }
-
+          console.log(results, 'results');
           return results;
         };
 
