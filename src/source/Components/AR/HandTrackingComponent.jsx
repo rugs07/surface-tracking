@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
 import { Canvas } from "@react-three/fiber";
 import { Splat } from "@react-three/drei";
@@ -12,7 +12,7 @@ import { useJewels } from "../../context/JewelsContext";
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
-  const [prevFrame, setPrevFrame] = useState();
+  const prevFrameRef = useRef(null);
   const isMobile = window.innerWidth <= 768;
   const { jewelsList } = useJewels();
   const { translateRotateMesh } = ARFunctions();
@@ -26,15 +26,16 @@ const HandTrackingComponent = () => {
   } = useVariables();
   const canvasRef = useRef(null);
   const [handPresence, setHandPresence] = useState(false);
-  const selectedJewel = JSON.parse(
-    sessionStorage.getItem("selectedJewel") || "{}"
-  );
-
-  const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
   const navigate = useNavigate();
 
+  const selectedJewel = useMemo(() => JSON.parse(
+    sessionStorage.getItem("selectedJewel") || "{}"
+  ), []);
+
+  const url = useMemo(() => `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`, [selectedJewel]);
+
   const handleStopAR = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
+    if (videoRef.current?.srcObject) {
       videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
     }
     navigate("/VR");
@@ -43,6 +44,7 @@ const HandTrackingComponent = () => {
   useEffect(() => {
     let handLandmarker;
     let animationFrameId;
+    let lastProcessTime = 0;
 
     const initializeHandDetection = async () => {
       try {
@@ -55,7 +57,7 @@ const HandTrackingComponent = () => {
             delegate: "GPU",
           },
           numHands: 1,
-          runningMode: "video",
+          runningMode: "VIDEO",
         });
         detectHands();
       } catch (error) {
@@ -64,45 +66,33 @@ const HandTrackingComponent = () => {
     };
 
     const smoothLandmarks = (landmarks) => {
-      const smoothingFactor = isMobile ? 0.6 : 0.5;
-      if (!prevFrame) {
-        setPrevFrame(landmarks);
+      const smoothingFactor = isMobile ? 0.7 : 0.6;
+      if (!prevFrameRef.current) {
+        prevFrameRef.current = landmarks;
         return landmarks;
       }
       const smoothedLandmarks = landmarks.map((point, index) => ({
-        x: smoothingFactor * point.x + (1 - smoothingFactor) * prevFrame[index].x,
-        y: smoothingFactor * point.y + (1 - smoothingFactor) * prevFrame[index].y,
-        z: smoothingFactor * point.z + (1 - smoothingFactor) * prevFrame[index].z,
-        visibility: smoothingFactor * point.visibility + (1 - smoothingFactor) * prevFrame[index].visibility
+        x: smoothingFactor * point.x + (1 - smoothingFactor) * prevFrameRef.current[index].x,
+        y: smoothingFactor * point.y + (1 - smoothingFactor) * prevFrameRef.current[index].y,
+        z: smoothingFactor * point.z + (1 - smoothingFactor) * prevFrameRef.current[index].z,
+        visibility: point.visibility
       }));
-      setPrevFrame(smoothedLandmarks);
+      prevFrameRef.current = smoothedLandmarks;
       return smoothedLandmarks;
     };
 
-    const debounce = (func, delay) => {
-      let timeoutId;
-      return (...args) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func(...args), delay);
-      };
-    };
-
-    const debouncedUpdate = debounce((landmarks, handedness) => {
-      translateRotateMesh(landmarks, handedness, false, canvasRef.current);
-      setHandLabels(handedness);
-    }, isMobile ? 32 : 16);
-
-    let frameCount = 0;
-    const detectHands = () => {
-      frameCount++;
-      if (videoRef.current && videoRef.current.readyState >= 2) {
-        if (frameCount % (isMobile ? 3 : 2) === 0) {
-          const detections = handLandmarker.detectForVideo(videoRef.current, performance.now());
+    const detectHands = async () => {
+      if (videoRef.current?.readyState >= 2) {
+        const currentTime = performance.now();
+        if (currentTime - lastProcessTime >= 33) { // Aim for ~30 FPS
+          lastProcessTime = currentTime;
+          const detections = handLandmarker.detectForVideo(videoRef.current, currentTime);
           setHandPresence(detections.handednesses.length > 0);
 
-          if (detections.landmarks && detections.landmarks[0]) {
+          if (detections.landmarks?.[0]) {
             const smoothedLandmarks = smoothLandmarks(detections.landmarks[0]);
-            debouncedUpdate(smoothedLandmarks, detections.handednesses[0][0].displayName);
+            translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, canvasRef.current);
+            setHandLabels(detections.handednesses[0][0].displayName);
           }
         }
       }
@@ -111,7 +101,9 @@ const HandTrackingComponent = () => {
 
     const startWebcam = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } }
+        });
         videoRef.current.srcObject = stream;
         await initializeHandDetection();
       } catch (error) {
@@ -123,15 +115,9 @@ const HandTrackingComponent = () => {
     startWebcam();
 
     return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-      }
-      if (handLandmarker) {
-        handLandmarker.close();
-      }
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
+      videoRef.current?.srcObject?.getTracks().forEach(track => track.stop());
+      handLandmarker?.close();
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
