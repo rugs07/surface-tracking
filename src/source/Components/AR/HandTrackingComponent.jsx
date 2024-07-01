@@ -78,13 +78,14 @@ const HandTrackingComponent = () => {
         visibility: point.visibility
       }));
       prevFrameRef.current = smoothedLandmarks;
+      console.log(smoothedLandmarks, 'smoooth lanndmarkss');
       return smoothedLandmarks;
     };
 
     const detectHands = async () => {
       if (videoRef.current?.readyState >= 2) {
         const currentTime = performance.now();
-        if (currentTime - lastProcessTime >= 33) { // Aim for ~30 FPS
+        if (currentTime - lastProcessTime >= 26) { // Aim for ~30 FPS
           lastProcessTime = currentTime;
           const detections = handLandmarker.detectForVideo(videoRef.current, currentTime);
           setHandPresence(detections.handednesses.length > 0);
@@ -177,9 +178,9 @@ const HandTrackingComponent = () => {
             <Splat
               src={url}
               rotation={[XRDelta, YRDelta, ZRDelta]}
-              // scale={[wristZoom, wristZoom, wristZoom]}
-              scale={0.5}
-              position={[0, 0, 0]}
+              scale={[wristZoom, wristZoom, wristZoom]}
+            // scale={0.5}
+            // position={[0, 0, 0]}
             />
           </Canvas>
         </ErrorBoundary>
