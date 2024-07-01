@@ -170,19 +170,13 @@ export const GlobalFunctionsProvider = ({ children }) => {
   }
 
   function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
-    // rotate vectors around y-axis by -zAngle
-
     let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
-
     let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
 
-    // the arctangent of the slope is the angle of the hand with respect to the x-axis
     let yAngle = -Math.atan2(
       rotatedNewPinkyRef.z - rotatedNewIndexRef.z,
       rotatedNewPinkyRef.x - rotatedNewIndexRef.x
     );
-
-    // make show zone from -90 to
 
     yAngle = THREE.MathUtils.radToDeg(yAngle) - 90;
 
@@ -192,121 +186,34 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     let normYAngle = normalizeAngle(yAngle);
 
-    const baseNear = 0.0975;
-
-    const phonethreshold = 0.015;
-
-    let jewel = sessionStorage.getItem("selectedJewel")
-    type = JSON.parse(jewel).type
-    if (jewelType === "bangle" && enableRingTransparency || type === "bangle" && enableRingTransparency) {
-      console.log(type, 'file checks');
-      let transparencyZone = [-25, 25];
-      console.log(type, 'file check');
-
-      if (
-        normYAngle > transparencyZone[0] &&
-        normYAngle < transparencyZone[1]
-      ) {
-        cameraNear = 4.9525;
-
-        if (selectedJewel === "jewel26_lr") {
-          cameraNear = 4.925;
-          if (isMobile || isIOS) {
-            cameraNear += phonethreshold + 0.005;
-          }
-        } // for flowerring
-        if (selectedJewel === "jewel1_lr") {
-          cameraNear = 4.93;
-          if (isMobile || isIOS) {
-            cameraNear += phonethreshold;
-          }
-        } // for sunny ring
-        if (selectedJewel === "jewel25_lr") {
-          cameraNear = 4.915;
-          if (isMobile || isIOS) {
-            cameraNear += phonethreshold + 0.015;
-          }
-        } // for red eye ring
-        if (selectedJewel === "jewel21_lr") {
-          cameraNear = 4.935;
-          if (isMobile || isIOS) {
-            cameraNear += phonethreshold + 0.01;
-          }
-        } // for Heart ring
-        if (selectedJewel === "jewel3_lr") {
-          cameraNear = 4.94;
-          setXRDelta(0)
-          setYRDelta(0)
-          setXRDelta(0)
-          if (isMobile || isIOS) {
-            cameraNear += phonethreshold;
-          }
-        } // for Queen's Ring
-
-        // converting angles to new range -20 to 20 -> 20 - 60 for transparency;
-
-        normYAngle = convertRingTransRange(normYAngle);
-      } else {
-        // if (normYAngle > 0) normYAngle += 0.5;
-        // else normYAngle -= 0.5;
-
-        cameraNear = baseNear + scaleMul * 0.01;
-      }
-    }
-
-    // previous code
     if (enableSmoothing) {
-      console.log(enableSmoothing, "enable smoothing ");
-      //("enablesmoothing");
-      let diff = normYAngle - YRAngle;
+      // Increase smoothing window
       setRecentYRotations(prevRotations => {
         const updatedRotations = [...prevRotations, normYAngle];
-        // Keep only the last 5 rotations
-        return updatedRotations.slice(-5);
+        return updatedRotations.slice(-10); // Increase to 10 points
       });
 
-      // Calculate the weighted average
-      if (recentYRotations.length === 5) {
-        const weights = [1, 2, 3, 4, 5];
+      // Calculate weighted average with more recent values having higher weight
+      if (recentYRotations.length === 10) {
+        const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const weightedSum = recentYRotations.reduce((sum, angle, index) => sum + angle * weights[index], 0);
         const weightSum = weights.reduce((sum, weight) => sum + weight, 0);
-        normYAngle = weightedSum / weightSum;
-      }
+        const smoothedAngle = weightedSum / weightSum;
 
-
-      yArr.push(diff); // Insert new value at the end
-      //(diff, 'differ', yArr.length);
-      if (yArr.length > 3) {
-        yArr.shift(); // Remove first index value
-
-        // Check if all 5 values are either positive or negative
-        var allSameSign = yArr.every(function (value) {
-          return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
-        });
-
-        if (!allSameSign) {
-          normYAngle = YRAngle;
-        }
+        // Clamp maximum angle change
+        const maxAngleChange = 5; // Adjust this value as needed
+        normYAngle = Math.max(Math.min(smoothedAngle, YRAngle + maxAngleChange), YRAngle - maxAngleChange);
       }
     }
 
     if (horizontalRotation) {
-      // if (normYAngle > 90) normYAngle = 90;
-      // else if (normYAngle < -90) normYAngle = -90;
-
       rotateY(-normYAngle);
     } else if (verticalRotation) {
-      if (normYAngle > 90) {
-        normYAngle = 90;
-      } else if (normYAngle < -90) {
-        normYAngle = -90;
-      }
-
+      normYAngle = Math.max(-90, Math.min(90, normYAngle));
       rotateY(-normYAngle);
     }
 
     newPinkyRef = lastPinkyRef;
-
     newIndexRef = lastIndexRef;
   }
 
