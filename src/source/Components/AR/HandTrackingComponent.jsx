@@ -75,23 +75,25 @@ const HandTrackingComponent = () => {
         x: smoothingFactor * point.x + (1 - smoothingFactor) * prevFrameRef.current[index].x,
         y: smoothingFactor * point.y + (1 - smoothingFactor) * prevFrameRef.current[index].y,
         z: smoothingFactor * point.z + (1 - smoothingFactor) * prevFrameRef.current[index].z,
-        visibility: point.visibility
+
       }));
       prevFrameRef.current = smoothedLandmarks;
       console.log(smoothedLandmarks, 'smoooth lanndmarkss');
+
       return smoothedLandmarks;
     };
 
     const detectHands = async () => {
       if (videoRef.current?.readyState >= 2) {
         const currentTime = performance.now();
-        if (currentTime - lastProcessTime >= 26) { // Aim for ~30 FPS
+        if (currentTime - lastProcessTime >= 60) { // Aim for ~30 FPS
           lastProcessTime = currentTime;
           const detections = handLandmarker.detectForVideo(videoRef.current, currentTime);
           setHandPresence(detections.handednesses.length > 0);
 
           if (detections.landmarks?.[0]) {
             const smoothedLandmarks = smoothLandmarks(detections.landmarks[0]);
+            console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
             translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, canvasRef.current);
             setHandLabels(detections.handednesses[0][0].displayName);
           }
