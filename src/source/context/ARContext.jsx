@@ -15,6 +15,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
   let type
   const [handType, setHandType] = useState()
   const [recentYRotations, setRecentYRotations] = useState([]);
+  const [recentZRotations, setRecentZRotations] = useState([]);
   // const gsplatCanvas = document.getElementById("gsplatCanvas");
   // Define your globally accessible functions
   let {
@@ -265,63 +266,40 @@ export const GlobalFunctionsProvider = ({ children }) => {
       let normZAngle = normalizeAngle(zAngle);
 
       if (enableSmoothing) {
-        const angleDifference = ZRAngle - normZAngle;
+        // Smooth rotation
+        setRecentZRotations(prevRotations => {
+          const updatedRotations = [...prevRotations, normZAngle];
+          return updatedRotations.slice(-10); // Keep last 10 points
+        });
 
-        zArr.push(angleDifference);
-        //(zArr, 'zarr');
-        if (zArr.length > 3) {
-          zArr.shift(); // Remove first index value
-          // Check if all 5 values are either positive or negative
-          var allSameSign = zArr.every(function (value) {
-            return (
-              (value >= 0 && angleDifference >= 5) ||
-              (value < 0 && angleDifference < -5)
-            );
-          });
+        if (recentZRotations.length === 10) {
+          const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+          const weightedSum = recentZRotations.reduce((sum, angle, index) => sum + angle * weights[index], 0);
+          const weightSum = weights.reduce((sum, weight) => sum + weight, 0);
+          const smoothedAngle = weightedSum / weightSum;
 
-          if (!allSameSign) {
-            normZAngle = ZRAngle;
-          }
-        }
-        const XDiff = XTrans - canX;
-        //(XDiff, 'xdiff');
-
-        xtArr.push(XDiff); // Insert new value at the end
-
-        if (xtArr.length > 3) {
-          xtArr.shift(); // Remove first index value
-          // Check if all 5 values are either positive or negative
-          var allSameSign = xtArr.every(function (value) {
-            return (value >= 0 && XDiff >= 0) || (value < 0 && XDiff < 0);
-          });
-
-          if (!allSameSign) {
-            canX = XTrans;
-          }
+          // Use a smaller max angle change for more responsiveness
+          const maxAngleChange = 2;
+          normZAngle = Math.max(Math.min(smoothedAngle, ZRAngle + maxAngleChange), ZRAngle - maxAngleChange);
         }
 
-        const YDiff = YTrans - canY;
-        //(YDiff, 'y diff');
-        ytArr.push(YDiff); // Insert new value at the end
+        // Smooth translation
+        const translationSmoothingFactor = 1; // Adjust this value between 0 and 1 for desired smoothness
 
-        if (ytArr.length > 3) {
-          ytArr.shift(); // Remove first index value
-          // Check if all 5 values are either positive or negative
-          var allSameSign = ytArr.every(function (value) {
-            return (value >= 0 && YDiff >= 0) || (value < 0 && YDiff < 0);
-          });
+        let smoothedX = XTrans * (1 - translationSmoothingFactor) + canX * translationSmoothingFactor;
+        let smoothedY = YTrans * (1 - translationSmoothingFactor) + canY * translationSmoothingFactor;
 
-          if (!allSameSign) {
-            canY = YTrans;
-          }
-        }
+        // Update the global translation variables
+        XTrans = smoothedX;
+        YTrans = smoothedY;
+
+        // Use the smoothed values for rotation
+        canX = smoothedX;
+        canY = smoothedY;
       }
-
-      // normZAngle *= 0.85;
 
       if (isMobile || isIOS) {
         if (jewelType === "bangle" || type === "bangle") normZAngle *= 1;
-        console.log(type, 'rotateZ upper');
       }
 
       rotateZ(normZAngle, canX, canY);
@@ -421,31 +399,43 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
   let lastSize = null;
   mapRange;
-
   function smoothResizing(wristSize) {
     console.log(GlobalHandLabel, "smooth resizing");
     if (enableSmoothing) {
       let diff = 0;
-      if (lastSize) {
+      if (lastSize !== null) {
         diff = wristSize - lastSize;
 
         rsArr.push(diff); // Insert new value at the end
 
         if (rsArr.length > 3) {
-          rsArr.shift(); // Remove first index value
+          rsArr.shift(); // Remove the first index value
 
-          // Check if all 5 values are either positive or negative
+          // Check if all values are either positive or negative
           var allSameSign = rsArr.every(function (value) {
             return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
           });
 
           if (!allSameSign) return lastSize;
+
+          // Apply weighted moving average for smoother transition
+          let sumWeights = 0;
+          let weightedSum = 0;
+          for (let i = 0; i < rsArr.length; i++) {
+            const weight = i + 1; // Assign higher weight to more recent changes
+            sumWeights += weight;
+            weightedSum += rsArr[i] * weight;
+          }
+          const smoothDiff = weightedSum / sumWeights;
+          wristSize = lastSize + smoothDiff;
         }
       }
+      lastSize = wristSize;
+    } else {
+      lastSize = wristSize;
     }
     return wristSize;
   }
-
 
   function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
     GlobalHandLabel = handLabel;

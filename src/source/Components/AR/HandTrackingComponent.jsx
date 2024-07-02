@@ -86,7 +86,7 @@ const HandTrackingComponent = () => {
     const detectHands = async () => {
       if (videoRef.current?.readyState >= 2) {
         const currentTime = performance.now();
-        if (currentTime - lastProcessTime >= 60) { // Aim for ~30 FPS
+        if (currentTime - lastProcessTime >= 30) { // Aim for ~30 FPS
           lastProcessTime = currentTime;
           const detections = handLandmarker.detectForVideo(videoRef.current, currentTime);
           setHandPresence(detections.handednesses.length > 0);
