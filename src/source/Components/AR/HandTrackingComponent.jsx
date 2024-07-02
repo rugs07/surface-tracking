@@ -66,20 +66,43 @@ const HandTrackingComponent = () => {
     };
 
     const smoothLandmarks = (landmarks) => {
-      const smoothingFactor = isMobile ? 0.7 : 0.9;
+      const baseSmoothingFactor = isMobile ? 0.8 : 0.9;
+      const jitterThreshold = 0.001; // Adjust this value to control jitter sensitivity
+
       if (!prevFrameRef.current) {
         prevFrameRef.current = landmarks;
         return landmarks;
       }
-      const smoothedLandmarks = landmarks.map((point, index) => ({
-        x: smoothingFactor * point.x + (1 - smoothingFactor) * prevFrameRef.current[index].x,
-        y: smoothingFactor * point.y + (1 - smoothingFactor) * prevFrameRef.current[index].y,
-        z: smoothingFactor * point.z + (1 - smoothingFactor) * prevFrameRef.current[index].z,
 
-      }));
+      const smoothedLandmarks = landmarks.map((point, index) => {
+        const prev = prevFrameRef.current[index];
+        const delta = {
+          x: point.x - prev.x,
+          y: point.y - prev.y,
+          z: point.z - prev.z
+        };
+
+        const distanceSquared = delta.x ** 2 + delta.y ** 2 + delta.z ** 2;
+
+        let smoothingFactor;
+        if (distanceSquared < jitterThreshold) {
+          // If movement is very small, apply strong smoothing
+          smoothingFactor = 0.85;
+        } else {
+          // For larger movements, use the base smoothing factor
+          smoothingFactor = baseSmoothingFactor;
+        }
+
+        const smoothed = {
+          x: smoothingFactor * prev.x + (1 - smoothingFactor) * point.x,
+          y: smoothingFactor * prev.y + (1 - smoothingFactor) * point.y,
+          z: smoothingFactor * prev.z + (1 - smoothingFactor) * point.z
+        };
+
+        return smoothed;
+      });
+
       prevFrameRef.current = smoothedLandmarks;
-      console.log(smoothedLandmarks, 'smoooth lanndmarkss');
-
       return smoothedLandmarks;
     };
 
