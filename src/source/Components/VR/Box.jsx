@@ -5,10 +5,19 @@ import Lid from "./Lid";
 import Glass from "./Glass";
 import Frame from "./Frame";
 import Bulb from "./Bulb";
+import blackGradientTexture from "./blackGradient.jpg";
+
 // const Glass = lazy(() => import("./Glass"));
 // const Lid = lazy(() => import("./Lid"));
 // const Bulb = lazy(() => import("./Bulb"));
 // const Frame = lazy(() => import("./Frame"));
+
+const textureLoader = new THREE.TextureLoader();
+
+// Load textures for top and bottom
+const texture = textureLoader.load(blackGradientTexture);
+texture.minFilter = THREE.LinearMipMapLinearFilter;
+texture.magFilter = THREE.LinearFilter;
 
 const Box = ({ size }) => {
   const camera = useThree(({ camera }) => {
@@ -55,8 +64,14 @@ const Box = ({ size }) => {
           // isClicked={isClicked}
           size={[size * 2, size * 0.2, size * 2]}
           position={[0, size * 1.096, 0]}
-          roughness={1}
           bottomColor={"white"}
+          topTransmission={1}
+          bottomTransmission={0.4}
+          topRougness={0}
+          bottomRoughness={1}
+          topMetalness={1}
+          bottomMetalness={0.4}
+          texture={texture}
         >
           <Bulb size={size * 0.12} position={[0, -(size * 0.05), size * 0.5]} />
           <Bulb
@@ -76,6 +91,13 @@ const Box = ({ size }) => {
           size={[size * 2, size * 0.2, size * 2]}
           position={[0, -size * 1.096, 0]}
           topColor={"white"}
+          topTransmission={0.5}
+          bottomTransmission={1}
+          topRougness={1}
+          bottomRoughness={1}
+          topMetalness={0.5}
+          bottomMetalness={0}
+          texture={texture}
         />
 
         {/* Glass */}
@@ -96,14 +118,14 @@ const Box = ({ size }) => {
 
         <directionalLight
           ref={directionalLightRef}
-          intensity={1.5}
+          intensity={0.5}
           castShadow={false}
           color="white"
           scale={1}
         />
         <directionalLight
           ref={directionalLightRef2}
-          intensity={1.5}
+          intensity={0.5}
           color="white"
           castShadow={false}
           scale={1}

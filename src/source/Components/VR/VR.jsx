@@ -43,6 +43,9 @@ const VR = () => {
     sessionStorage.getItem("selectedJewel") || "{}"
   );
 
+  const queryParams = new URLSearchParams(window.location.search);
+  const isDevMode = queryParams.get("mode") === "dev";
+
   url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
   useEffect(() => {
@@ -121,7 +124,12 @@ const VR = () => {
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">
       <div className="ar-toggle-container" id="ar-toggle-container">
-        {/* <div className="FPSStats"><FPSStats /></div> */}
+        {isDevMode ? (
+          <div className="FPSStats">
+            <FPSStats />
+          </div>
+        ) : null}
+
         {/* <button
           className="tryon-button"
           id="desktop-viewar"
@@ -169,6 +177,7 @@ const VR = () => {
                   autoRotate={isHovered ? false : true}
                   autoRotateSpeed={2}
                   enableDamping={false}
+                  enablePan={false}
                 />
                 <AdaptiveDpr pixelated={true} />
                 <RotatingSplat

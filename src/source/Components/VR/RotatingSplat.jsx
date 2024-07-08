@@ -1,7 +1,8 @@
 import React, { forwardRef, lazy, useEffect, useRef, useState } from "react";
-import { Splat } from "@react-three/drei";
+import { Splat, useHelper } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { SpotLightHelper } from "three";
 
 const SplatComponent = lazy(() =>
   import("@react-three/drei").then((module) => ({ default: module.Splat }))
@@ -35,13 +36,15 @@ const RotatingSplat = ({ url, isHovered, setIsHovered, scale, rotation }) => {
     }
   });
 
+  // useHelper(spotLightRef, SpotLightHelper, "lightblue");
+
   return (
     <>
       <spotLight
         ref={spotLightRef}
         color={"white"}
-        intensity={-0.5}
-        position={[0, 1, 0]}
+        intensity={-1}
+        // position={[0, 0, 0]}
         angle={0.25}
         penumbra={1}
         castShadow={true}
