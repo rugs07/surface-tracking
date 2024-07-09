@@ -697,10 +697,10 @@ export const GlobalFunctionsProvider = ({ children }) => {
           ? 1.0
           : 0.9;
       if (isMobile || isIOS) {
-        resizeMul = window_scale * 3.2 * visibilityFactor;
+        resizeMul = window_scale * 3.0 * visibilityFactor;
         // if (isPalmFacing) resizeMul *= 0.9;
       } else
-        resizeMul = window_scale * 0.75 * visibilityFactor;
+        resizeMul = window_scale * 0.70 * visibilityFactor;
 
       if (selectedJewel === "floralring") {
         resizeMul *= 0.9;
@@ -710,10 +710,10 @@ export const GlobalFunctionsProvider = ({ children }) => {
       let visibilityFactor = 1.0
 
       if (isMobile || isIOS) {
-        resizeMul = window_scale * 1.2 * visibilityFactor * basesize;
+        resizeMul = window_scale * 1.1 * visibilityFactor * basesize;
         // if (isPalmFacing) resizeMul *= 0.9;
       } else
-        resizeMul = window_scale * 0.75 * visibilityFactor * baseSize;
+        resizeMul = window_scale * 0.70 * visibilityFactor * baseSize;
 
       if (selectedJewel === "floralring") {
         resizeMul *= 0.9;
