@@ -17,6 +17,7 @@ export const JewelsProvider = ({ children }) => {
       basePhiAR: -0.6, //var5
       baseGamaAR: -1.55, //var6
       scaleMulObjVR: 1.5,
+      size: 0.7,
     },
     laxmi_exp: {
       name: "laxmi_exp",
@@ -29,6 +30,7 @@ export const JewelsProvider = ({ children }) => {
       basePhiAR: -0.6,
       baseGamaAR: -1.55,
       scaleMulObjVR: 1.55,
+      size: 0.7,
     },
     // grt_11_single: {
     //   name: "grt_11_single",
@@ -50,6 +52,7 @@ export const JewelsProvider = ({ children }) => {
       basePhiAR: 0,
       baseGamaAR: 0.0,
       lightBackground: "radial-gradient(#333,#000)",
+      size: 0.7,
     },
     jewel3_lr: {
       name: "jewel3_lr",
@@ -62,6 +65,7 @@ export const JewelsProvider = ({ children }) => {
       basePhiAR: 2.57,
       baseGamaAR: -0.05,
       lightBackground: "radial-gradient(#333,#000)",
+      size: 0.4,
     },
     jewel21_lr: {
       name: "jewel21_lr",
@@ -74,6 +78,7 @@ export const JewelsProvider = ({ children }) => {
       basePhiAR: 2.6,
       baseGamaAR: -1.5,
       lightBackground: "radial-gradient(#333,#000)",
+      size: 0.4,
     },
     jewel25_lr: {
       name: "jewel25_lr",
@@ -85,6 +90,7 @@ export const JewelsProvider = ({ children }) => {
       baseThetaAR: -0.05,
       basePhiAR: 1.995,
       baseGamaAR: -1.5,
+      size: 0.4,
     },
     jewel1_lr: {
       name: "jewel1_lr",
@@ -97,6 +103,7 @@ export const JewelsProvider = ({ children }) => {
       basePhiAR: 2.55,
       baseGamaAR: -1.45,
       lightBackground: "radial-gradient(#333,#000)",
+      size: 0.4,
     },
     jewel26_lr: {
       name: "jewel26_lr",
@@ -108,6 +115,7 @@ export const JewelsProvider = ({ children }) => {
       baseThetaAR: -0.06,
       basePhiAR: 2.55,
       baseGamaAR: 1.7,
+      size: 0.4,
     },
     pots: {
       name: "pots",
@@ -120,6 +128,7 @@ export const JewelsProvider = ({ children }) => {
       basePhiAR: 0,
       baseGamaAR: 0,
       lightBackground: "radial-gradient(#000,#000)",
+      size: 0.38,
     },
     swan: {
       name: "swan",
@@ -132,6 +141,7 @@ export const JewelsProvider = ({ children }) => {
       basePhiAR: 0,
       baseGamaAR: 0,
       lightBackground: "radial-gradient(#000,#000)",
+      size: 0.45,
     },
     natraj: {
       name: "natraj",
@@ -144,6 +154,7 @@ export const JewelsProvider = ({ children }) => {
       basePhiAR: 0,
       baseGamaAR: 0,
       lightBackground: "radial-gradient(#333,#000)",
+      size: 0.86,
     },
     table_1: {
       name: "table_1",
@@ -156,6 +167,7 @@ export const JewelsProvider = ({ children }) => {
       basePhiAR: 0,
       baseGamaAR: 0,
       lightBackground: "radial-gradient(#333,#000)",
+      size: 0.38,
     },
   };
 

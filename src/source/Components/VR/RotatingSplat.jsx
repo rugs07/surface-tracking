@@ -1,7 +1,8 @@
 import React, { forwardRef, lazy, useEffect, useRef, useState } from "react";
-import { Splat } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { Splat, useHelper } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { SpotLightHelper } from "three";
 
 const SplatComponent = lazy(() =>
   import("@react-three/drei").then((module) => ({ default: module.Splat }))
@@ -23,7 +24,7 @@ const RotatingSplat = ({ url, isHovered, setIsHovered, scale, rotation }) => {
       timeRef.current += 0.02; // Adjust speed of oscillation (lower for slower)
 
       // Calculate new y position based on sine function
-      const newY = Math.sin(timeRef.current) * 0.15; // Adjust amplitude (higher for larger movement)
+      const newY = Math.sin(timeRef.current) * 0.1; // Adjust amplitude (higher for larger movement)
 
       // Update position state with new y value
       setPosition([position[0], newY, position[2]]);
@@ -35,30 +36,31 @@ const RotatingSplat = ({ url, isHovered, setIsHovered, scale, rotation }) => {
     }
   });
 
+  // useHelper(spotLightRef, SpotLightHelper, "lightblue");
+
   return (
     <>
       <spotLight
         ref={spotLightRef}
         color={"white"}
-        intensity={-5}
-        position={[0, 0.5, 0]}
+        intensity={-1}
+        // position={[0, 0, 0]}
         angle={0.25}
         penumbra={1}
         castShadow={true}
       />
-      <SplatComponent
-        src={url}
-        rotation={rotation}
-        // position={[0, 0, 0]}
-        position={position}
-        // onPointerEnter={(e) => {
-        //   e.stopPropagation();
-        //   setIsHovered(true);
-        // }}
-        // onPointerLeave={(e) => {
-        //   setIsHovered(false);
-        // }}
+
+      <Splat
         scale={scale}
+        position={position}
+        onPointerEnter={(e) => {
+          e.stopPropagation();
+          setIsHovered(true);
+        }}
+        onPointerLeave={(e) => {
+          setIsHovered(false);
+        }}
+        src={url}
       />
     </>
   );

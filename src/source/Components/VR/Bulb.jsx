@@ -1,28 +1,22 @@
-// Bulb.js
-import React, { useRef } from "react";
-import { Cylinder, useHelper } from "@react-three/drei";
-import { SpotLightHelper } from "three";
+import React, { forwardRef, useRef } from "react";
+import { Cylinder } from "@react-three/drei";
 
-const Bulb = ({ position, size }) => {
+const Bulb = ({ position, size }, ref) => {
   const spotLightRef = useRef();
-  // useHelper(spotLightRef, SpotLightHelper);
 
   return (
     <>
       <spotLight
         ref={spotLightRef}
-        //castShadow={true}
         angle={Math.PI * 1.2}
         position={position}
-        intensity={0.4}
-        // penumbra={1}
+        intensity={0.2}
       />
-      <Cylinder args={[size, size, size + 0.02, 32]} position={position}>
+      <Cylinder args={[size, size, size + 0.02, 16]} position={position}>
         {/* Array of materials: [side, top, bottom] */}
-        <meshStandardMaterial attach="material-0" color="white" /> {/* side */}
-        <meshStandardMaterial attach="material-1" color="black" /> {/* top */}
-        <meshStandardMaterial attach="material-2" color="white" />
-        {/* bottom */}
+        <meshBasicMaterial shadowSide={1} color={0xffffff} />
+        {/* <meshStandardMaterial attach="material-0" color="white" />
+        <meshStandardMaterial attach="material-2" color="white" /> */}
       </Cylinder>
     </>
   );

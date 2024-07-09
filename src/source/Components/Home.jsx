@@ -26,11 +26,6 @@ const Home = () => {
   const { setJewelType, jewelType, setXRDelta, setYRDelta, setZRDelta } = useVariables();
   const handleClick = (jewelId) => {
     const selectedJewel = jewelsList[jewelId];
-    if (selectedJewel === "jewel3_lr") {
-      setXRDelta(0);
-      setYRDelta(0);
-      setZRDelta(0)
-    }
 
     setJewelType(jewelsList[jewelId].type);
 
@@ -102,7 +97,7 @@ const Home = () => {
               <div
                 className="jewel-container home-jewel"
                 onClick={() => {
-                  handleNavigate("https://prod.jar4u.com/?id=jewel7_lr");
+                  handleClick("jewel7_lr");
                 }}
               >
                 <img src={diamond} className="jewelimg" />
@@ -133,7 +128,7 @@ const Home = () => {
             <div className="glassmorph">
               <div
                 className="jewel-container home-jewel"
-                onClick={() => handleNavigate("https://prod.jar4u.com/?id=pots")}
+                onClick={() => handleClick("pots")}
               >
                 <img src={ancientpots} className="jewelimg" />
                 <div className="selectarea">
@@ -146,7 +141,7 @@ const Home = () => {
               <div
                 className="jewel-container home-jewel"
                 onClick={() => {
-                  handleNavigate("https://prod.jar4u.com/?id=swan");
+                  handleClick("swan");
                 }}
               >
                 <img src={livelyswans} className="jewelimg" />
@@ -161,7 +156,7 @@ const Home = () => {
               <div
                 className="jewel-container home-jewel"
                 onClick={() => {
-                  handleNavigate("https://prod.jar4u.com/?id=natraj");
+                  handleClick("natraj");
                 }}
               >
                 <img src={natraj} className="jewelimg" />
@@ -175,7 +170,7 @@ const Home = () => {
               <div
                 className="jewel-container home-jewel"
                 onClick={() => {
-                  handleNavigate("https://prod.jar4u.com/?id=table_1");
+                  handleClick("table_1");
                 }}
               >
                 <img src={table} className="jewelimg" />

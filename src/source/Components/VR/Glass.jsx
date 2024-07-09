@@ -1,11 +1,8 @@
-/* eslint-disable react/no-unknown-property */
-import { useTexture } from "@react-three/drei";
+import { useThree } from "@react-three/fiber";
+import { forwardRef, useEffect } from "react";
 import * as THREE from "three";
 
 const Glass = ({ size = 1.25, position, name, children, opacity = 0.4 }) => {
-  const textureUrl = "/glass2.jpg";
-  const texture = useTexture(textureUrl);
-
   const vertices = new Float32Array([
     // Front
     -size,
@@ -100,13 +97,13 @@ const Glass = ({ size = 1.25, position, name, children, opacity = 0.4 }) => {
     <>
       <mesh name={name} position={position} geometry={geometry}>
         {children}
+
         <meshPhysicalMaterial
-          map={texture}
           color={"white"}
           opacity={opacity} //0.2 for white bg and 0.4 for black bg
           transparent={true}
           roughness={0.2}
-          metalness={0.999}
+          metalness={1}
           transmission={0.1}
           reflectivity={0.1}
           ior={1.5}

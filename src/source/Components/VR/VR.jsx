@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState, Suspense, lazy } from "react";
 import * as SPLAT from "gsplat";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+  AdaptiveDpr,
+  OrbitControls,
+  PerspectiveCamera,
+} from "@react-three/drei";
 import FPSStats from "react-fps-stats";
 import { hideLoading, updateLoadingProgress } from "../../../js/utils";
 import { useNavigate } from "react-router-dom";
@@ -40,6 +44,9 @@ const VR = () => {
     sessionStorage.getItem("selectedJewel") || "{}"
   );
 
+  const queryParams = new URLSearchParams(window.location.search);
+  const isDevMode = queryParams.get("mode") === "dev";
+
   url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
   // Function to detect if the device is a mobile
@@ -51,10 +58,10 @@ const VR = () => {
   };
 
   // Function to detect if the mode is 'dev' in the URL
-  const isDevMode = () => {
-    const queryParams = new URLSearchParams(window.location.search);
-    return queryParams.get("mode") === "dev";
-  };
+  // const isDevMode = () => {
+  //   const queryParams = new URLSearchParams(window.location.search);
+  //   return queryParams.get("mode") === "dev";
+  // };
 
   useEffect(() => {
     timeRef.current = 0;
@@ -118,18 +125,27 @@ const VR = () => {
   const handleClick = () => {
     // if (isMobileDevice() || isDevMode()) {
     navigate("/Loading");
-    // } else {
-    setShowModal(true);
-    // }
   };
-  const distance = window.innerWidth < 768 ? 7 : 5.9
+
+  // const scale = selectedJewel
+  //   ? jewelType === "bangle"
+  //     ? 0.8
+  //     : jewelType === "ring"
+  //     ? 0.5
+  //     : 1
+  //   : 1;
+
+  const scale = window.innerWidth < 768 ? 0.8 : 1.3;
 
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">
       <div className="ar-toggle-container" id="ar-toggle-container">
-        <div className="FPSStats">
-          <FPSStats />
-        </div>
+        {isDevMode ? (
+          <div className="FPSStats">
+            <FPSStats />
+          </div>
+        ) : null}
+
         <button
           className="tryon-button"
           id="desktop-viewar"
@@ -159,26 +175,39 @@ const VR = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <ErrorBoundary>
             <Canvas
+              dpr={1.5}
               shadows
               gl={{ localClippingEnabled: true }}
               camera={{
                 fov: 86,
-                position: [0, -0.7, 10],
+                position: [0, 0, 3.5],
+                frustumCulled: true,
                 near: 0.25,
                 far: 16,
               }}
             >
               <group position={[0, -0.5, 0]}>
                 <OrbitControls
-                  maxDistance={distance}
+                  minDistance={2} //for mobile it is needed
+                  maxDistance={5}
                   autoRotate={isHovered ? false : true}
                   autoRotateSpeed={2}
+                  enableDamping={false}
+                  enablePan={false}
                 />
-                <SplatComponent
-                  src={url}
+                <AdaptiveDpr pixelated={true} />
+                <RotatingSplat
+                  url={url}
+                  scale={scale * selectedJewel.size}
+                  rotation={
+                    selectedJewel.type === "ring"
+                      ? [0.015, 0, 0]
+                      : [0.015, -3.55, 1.6]
+                  }
+                  isHovered={isHovered}
+                  setIsHovered={setIsHovered}
                 />
-
-                <Box size={1.5} />
+                <Box size={scale} />
               </group>
             </Canvas>
           </ErrorBoundary>
