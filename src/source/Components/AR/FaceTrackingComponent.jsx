@@ -1,121 +1,189 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from "react";
+import { FilesetResolver, FaceLandmarker } from "@mediapipe/tasks-vision";
+import { Canvas } from "@react-three/fiber";
 import face_landmarker_task from "../../../models/face_landmarker.task";
-import { useNavigate } from 'react-router-dom';
-import { FaceLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
+import { Splat } from "@react-three/drei";
+import { log } from "three/examples/jsm/nodes/Nodes.js";
+import { FaceFunctions } from "../../context/FaceContext";
+import { ARFunctions } from "../../context/ARContext";
+import FPSStats from "react-fps-stats";
+import { useVariables } from "../../context/variableContext";
 
-// const url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
+const HandTrackingComponent = () => {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const isMobile = window.innerWidth <= 768;
+  console.log(ARFunctions);
+  console.log(FaceFunctions);
+  const { translateRotateMesh } = FaceFunctions();
+  const {
+    jewelType,
+    YRDelta,
+    XRDelta,
+    ZRDelta,
+    wristZoom,
+    setHandLabels,
+  } = useVariables();
 
+  const [faceDetections, setFaceDetections] = useState(null);
 
-//! eyeBlinkLeft, eyeBlinkRight: Useful for detecting eye blinks and ensuring the eyewear frames adapt during these actions.
-//!    eyeSquintLeft, eyeSquintRight: Helps in ensuring the glasses fit correctly when the user squints.
-//!         eyeLookUpLeft, eyeLookUpRight, eyeLookDownLeft, eyeLookDownRight: Important for tracking eye movements and ensuring the eyewear orientation follows the eyes.
-//!             eyeWideLeft, eyeWideRight: Indicates the openness of the eyes, useful for adjusting the position and fit of the glasses.
+  const ringUrl1 = useMemo(
+    () =>
+      `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`
+  );
 
-const FaceTrackingComponent = () => {
-    const videoRef = useRef(null);
+  const ringUrl2 = useMemo(
+    () =>
+      `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`
+  );
 
-    // const navigate = useNavigate();
-    let faceDetections;
-
-
-    let wristPoints;
+  useEffect(() => {
     let faceLandmarker;
-    useEffect(() => {
-        let handLandmarker;
-        let animationFrameId;
+    let animationFrameId;
+    let lastProcessTime = 0;
 
-        const initializeFaceDetection = async () => {
-            try {
-                const vision = await FilesetResolver.forVisionTasks(
-                    // path/to/wasm/root
-                    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
-                );
-                faceLandmarker = await FaceLandmarker.createFromOptions(
-                    vision,
-                    {
-                        baseOptions: {
-                            modelAssetPath: face_landmarker_task,
-                            delegate: 'GPU'
-                        },
-                        numFaces: 1,
-                        runningMode: "video",
-                    });
-                detectFace();
-            } catch (error) {
-                console.error("Error initializing face detet detection:", error);
-            }
-        };
+    const initializeFaceDetection = async () => {
+      try {
+        const vision = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
+        );
 
-        const detectFace = () => {
-            if (videoRef.current && videoRef.current.readyState >= 2) {
-                faceDetections = faceLandmarker.detectForVideo(
-                    videoRef.current,
-                    performance.now()
-                );
-                console.log(faceDetections, 'face detections ');
-                // setHandPresence(detections.handednesses.length > 0);;
+        faceLandmarker = await FaceLandmarker.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath: face_landmarker_task,
+            delegate: "GPU",
+          },
+          runningMode: "VIDEO",
+        });
 
-            }
-            console.log(faceDetections, 'face detections');
-            requestAnimationFrame(detectFace);
-        };
+        detectFaces();
+      } catch (error) {
+        console.error("Error initializing face detection:", error);
+      }
+    };
 
-        const startWebcam = async () => {
-            try {
-                const faceStream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
-                });
-                console.log(videoRef);
-                videoRef.current.srcObject = faceStream;
-                await initializeFaceDetection();
-            } catch (error) {
-                alert('Error accessing web cam');
-                console.error("Error accessing webcam:", error);
-            }
-        };
+    const detectFaces = async () => {
+      if (videoRef.current?.readyState >= 2) {
+        const currentTime = performance.now();
+        if (currentTime - lastProcessTime >= 30) {
+          lastProcessTime = currentTime;
+          const faceDetections = faceLandmarker.detectForVideo(
+            videoRef.current,
+            currentTime
+          );
+        //   console.log(faceDetections?.faceLandmarks[0],'face 401');
+          setFaceDetections(faceDetections);
+          if (faceDetections?.faceLandmarks[0]) {
+            // console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
+            translateRotateMesh(faceDetections?.faceLandmarks[0], "left", false, canvasRef);
+          }
+          
+        }
+      }
+      animationFrameId = requestAnimationFrame(detectFaces);
+    };
 
+    const startWebcam = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: "user",
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+          },
+        });
+        videoRef.current.srcObject = stream;
+        await initializeFaceDetection();
+      } catch (error) {
+        console.error("Error accessing webcam:", error);
+        alert("Error accessing webcam");
+      }
+    };
 
-        startWebcam();
-        return () => {
-            try {
+    startWebcam();
 
-                if (videoRef.current && videoRef.current.srcObject) {
-                    videoRef.current.srcObject
-                        ?.getTracks()
-                        ?.forEach((track) => track.stop());
-                }
-                if (handLandmarker) {
-                    handLandmarker.close();
-                }
-                if (animationFrameId) {
-                    cancelAnimationFrame(animationFrameId);
-                }
-            } catch (error) {
-                alert('Camera not available');
-            }
-        };
-    }, []);
-    return (
-        <div>
-            <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                style={{
-                    position: "absolute",
-                    transform: "rotateY(180deg)",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    width: "100%",
-                    height: "100%",
-                    zIndex: "-1000",
-                    objectFit: "cover",
-                }}
-            ></video>
-        </div>
-    )
-}
+    return () => {
+      videoRef.current?.srcObject?.getTracks().forEach((track) => track.stop());
+      faceLandmarker?.close();
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
-export default FaceTrackingComponent
+  return (
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        style={{
+          position: "absolute",
+        //   transform: "rotateY(180deg)",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: "-1000",
+          objectFit: "cover",
+        }}
+      />
+      <FPSStats />
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 1000
+        //   transform: isMobile ? "none" : "rotateY(180deg)",
+        }}
+      >
+        <Canvas
+          id="gsplatCanvas"
+          ref={canvasRef}
+          shadows
+          gl={{ localClippingEnabled: true }}
+          camera={{
+            fov: 46,
+            position: [0, 1.5, 4.5],
+            near: 0.093,
+            far: 4.75,
+          }}
+          style={{ width: "100vw", height: "100vh" }}
+        >
+          {faceDetections?.faceLandmarks?.[0]?.[401] && (
+            <>
+            <Splat
+              src={ringUrl1}
+              position={[
+                faceDetections.faceLandmarks[0][401].x,
+                faceDetections.faceLandmarks[0][401].y,
+                faceDetections.faceLandmarks[0][401].z,
+              ]}
+              scale={0.1}
+              rotation={[0.1,0.01,0.1]}
+            />
+             {/* <Splat
+              src={ringUrl2}
+              position={[
+                faceDetections.faceLandmarks[0][177].x,
+                faceDetections.faceLandmarks[0][177].y,
+                faceDetections.faceLandmarks[0][177].z,
+              ]}
+              scale={0.2}
+              rotation={[0.1,0.01,0.1]}
+            /> */}
+            </>
+          )}
+        </Canvas>
+      </div>
+    </div>
+  );
+};
+
+export default HandTrackingComponent;
