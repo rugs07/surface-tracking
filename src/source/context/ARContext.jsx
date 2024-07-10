@@ -710,7 +710,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       let visibilityFactor = 1.0
 
       if (isMobile || isIOS) {
-        resizeMul = window_scale * 1.1 * visibilityFactor * basesize;
+        resizeMul = window_scale * 1.1 * visibilityFactor ;
         // if (isPalmFacing) resizeMul *= 0.9;
       } else
         resizeMul = window_scale * 0.70 * visibilityFactor * baseSize;
