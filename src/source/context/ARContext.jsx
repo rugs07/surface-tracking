@@ -60,7 +60,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     setJewelType,
     setCameraNearVar,
   } = useVariables();
-  console.log(enableSmoothing, "arcontext enable smoothing ");
+  // console.log(enableSmoothing, "arcontext enable smoothing ");
   // const { calculateAngleAtMiddle } = ARFunctions()
   jewelType === type;
   function rotateX(angle) {
@@ -105,7 +105,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     }
 
     setYRDelta(-YRDelta);
-    console.log(handType, 'hand type');
+    // console.log(handType, 'hand type');
     return YRDelta;
   }
 
@@ -316,18 +316,18 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let jewel = sessionStorage.getItem("selectedJewel")
     type = JSON.parse(jewel).type
     if (jewelType === "bangle" || type === "bangle") {
-      console.log(type, "getnomalised");
+      // console.log(type, "getnomalised");
       newMin = 0.44;
       newMax = 0.56;
     }
     else if (jewelType === "bangle" && type === "ring") {
-      console.log(type, "else of get normalised");
+      // console.log(type, "else of get normalised");
       newMin = 0.435;
       newMax = 0.525;
     }
 
     else if (jewelType === "ring" || type === "ring") {
-      console.log(type, "else of get normalised");
+      // console.log(type, "else of get normalised");
       newMin = 0.435;
       newMax = 0.525;
     }
@@ -400,7 +400,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
   let lastSize = null;
   mapRange;
   function smoothResizing(wristSize) {
-    console.log(GlobalHandLabel, "smooth resizing");
+    // console.log(GlobalHandLabel, "smooth resizing");
     if (enableSmoothing) {
       let diff = 0;
       if (lastSize !== null) {
@@ -442,17 +442,17 @@ export const GlobalFunctionsProvider = ({ children }) => {
     setHandType(handLabel)
     let obj1 = { value: handLabel }
     var typehand = handLabel;
-    console.log(typehand,);
+    // console.log(typehand,);
     let jewel = sessionStorage.getItem("selectedJewel")
     type = JSON.parse(jewel).type
-    console.log(JSON.parse(jewel).type);
+    // console.log(JSON.parse(jewel).type);
     jewelType === type;
     if (!points || points.length === 0) {
       return;
     }
     setHandLabels(handLabel);
-    console.log(type == jewelType, 'ar context');
-    console.log(jewelType, 'arcontext jewel type');
+    // console.log(type == jewelType, 'ar context');
+    // console.log(jewelType, 'arcontext jewel type');
     let wrist = points[0];
     let firstKnuckle = points[5];
     let thumbTip = points[4];
@@ -476,7 +476,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     if (verticalRotation) {
       // setJewelType(type);
 
-      console.log(jewelType == type, "check");
+      // console.log(jewelType == type, "check");
       if (type === "bangle") {
         if (handLabel === "Left") {
           stayPoint = {
@@ -581,11 +581,11 @@ export const GlobalFunctionsProvider = ({ children }) => {
     totalTransY = canY;
     // totalTransY = canY;
     if (jewelType === "bangle" || type === "bangle") {
-      console.log(type, 'file checks');
+      // console.log(type, 'file checks');
       getZAngleAndRotate(wrist, midPip, canX, canY);
       getXAngleAndRotate(wrist, midPip, ZRAngle);
       getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
-      console.log(handLabel, "tsm function");
+      // console.log(handLabel, "tsm function");
     }
     else if (jewelType === "bangle" && type === "ring") {
       if (isDirectionalRing) {
@@ -663,7 +663,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     if (jewelType === "bangle" || type === "bangle") {
       //previous code
-      console.log(type, "sscale adjustment low");
+      // console.log(type, "sscale adjustment low");
       if (isMobile || isIOS) {
         resizeMul = window_scale * 3.0 * scaleAdjustment;
         if (

@@ -13,29 +13,25 @@ const HandTrackingComponent = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const isMobile = window.innerWidth <= 768;
-  console.log(ARFunctions);
-  console.log(FaceFunctions);
+  //   console.log(ARFunctions);
+  //   console.log(FaceFunctions);
   const { translateRotateMesh } = FaceFunctions();
-  const {
-    jewelType,
-    YRDelta,
-    XRDelta,
-    ZRDelta,
-    wristZoom,
-    setHandLabels,
-  } = useVariables();
+  const { jewelType, YRDelta, XRDelta, ZRDelta, wristZoom, setHandLabels } =
+    useVariables();
 
   const [faceDetections, setFaceDetections] = useState(null);
+  const [earringPosition, setEarringPosition] = useState([0, 0, 0]);
+//   console.log(earringPosition);
 
   const ringUrl1 = useMemo(
     () =>
       `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`
   );
 
-  const ringUrl2 = useMemo(
-    () =>
-      `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`
-  );
+  //   const ringUrl2 = useMemo(
+  //     () =>
+  //       `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`
+  //   );
 
   useEffect(() => {
     let faceLandmarker;
@@ -71,13 +67,23 @@ const HandTrackingComponent = () => {
             videoRef.current,
             currentTime
           );
-        //   console.log(faceDetections?.faceLandmarks[0],'face 401');
+          //   console.log(faceDetections?.faceLandmarks[0],'face 401');
           setFaceDetections(faceDetections);
           if (faceDetections?.faceLandmarks[0]) {
             // console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
-            translateRotateMesh(faceDetections?.faceLandmarks[0], "left", false, canvasRef);
+            translateRotateMesh(
+              faceDetections?.faceLandmarks[0],
+              "left",
+              false,
+              canvasRef.current
+            );
+            const landmark = faceDetections.faceLandmarks[0][401];
+            setEarringPosition([
+              landmark.x,
+              landmark.y,
+              landmark.z,
+            ]);
           }
-          
         }
       }
       animationFrameId = requestAnimationFrame(detectFaces);
@@ -109,6 +115,11 @@ const HandTrackingComponent = () => {
     };
   }, []);
 
+  const stopAR = () => {
+    videoRef.current?.srcObject?.getTracks().forEach((track) => track.stop());
+    window.location.href = 'http://localhost:5173';
+  };
+
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       <video
@@ -117,7 +128,7 @@ const HandTrackingComponent = () => {
         playsInline
         style={{
           position: "absolute",
-        //   transform: "rotateY(180deg)",
+          //   transform: "rotateY(180deg)",
           top: 0,
           left: 0,
           right: 0,
@@ -129,6 +140,23 @@ const HandTrackingComponent = () => {
         }}
       />
       <FPSStats />
+      <button
+        onClick={stopAR}
+        style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          zIndex: 2000,
+          padding: '10px',
+          background: 'whitesmoke',
+          color: 'black',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer'
+        }}
+      >
+        Stop AR
+      </button>
       <div
         style={{
           position: "absolute",
@@ -139,8 +167,8 @@ const HandTrackingComponent = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          zIndex: 1000
-        //   transform: isMobile ? "none" : "rotateY(180deg)",
+          zIndex: 1000,
+          //   transform: isMobile ? "none" : "rotateY(180deg)",
         }}
       >
         <Canvas
@@ -158,17 +186,18 @@ const HandTrackingComponent = () => {
         >
           {faceDetections?.faceLandmarks?.[0]?.[401] && (
             <>
-            <Splat
-              src={ringUrl1}
-              position={[
-                faceDetections.faceLandmarks[0][401].x,
-                faceDetections.faceLandmarks[0][401].y,
-                faceDetections.faceLandmarks[0][401].z,
-              ]}
-              scale={0.1}
-              rotation={[0.1,0.01,0.1]}
-            />
-             {/* <Splat
+              <Splat
+                src={ringUrl1}
+                // position={[
+                //   faceDetections.faceLandmarks[0][401].x,
+                //   faceDetections.faceLandmarks[0][401].y,
+                //   faceDetections.faceLandmarks[0][401].z,
+                // ]}
+                position={earringPosition}
+                scale={0.1}
+                rotation={[0.1, 0.01, 0.1]}
+              />
+              {/* <Splat
               src={ringUrl2}
               position={[
                 faceDetections.faceLandmarks[0][177].x,

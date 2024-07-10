@@ -60,7 +60,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     setJewelType,
     setCameraNearVar,
   } = useVariables();
-  console.log(enableSmoothing, "arcontext enable smoothing ");
+//   console.log(enableSmoothing, "arcontext enable smoothing ");
   // const { calculateAngleAtMiddle } = ARFunctions()
   jewelType === type;
   function rotateX(angle) {
@@ -105,7 +105,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     }
 
     setYRDelta(-YRDelta);
-    console.log(handType, 'hand type');
+    // console.log(handType, 'hand type');
     return YRDelta;
   }
 
@@ -134,7 +134,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
   }
 
   function rotateZ(angle, canX, canY) {
-    canX, canY, "canxandy";
+    // canX, canY, "canxandy";
     let canP = 0;
     // cameraControls.setFocalOffset(canX, canY, 0.0, false);
     let adjustmentFactor = window.innerWidth * 0.5;
@@ -143,6 +143,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     if (!translation) transform = "rotateZ(" + angle + "deg)";
     else canP = canX - adjustmentFactor;
     const angless = window.innerWidth < 768 ? -angle : angle
+    console.log(canX,canY,"CanX and canY");
     transform =
       "translate3d(" +
       canX +
@@ -153,7 +154,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       "px) rotateZ(" +
       angless +
       "deg)";
-    transform, "can's";
+    // transform, "can's";
     gsplatCanvas.style.transform = transform;
 
     ZRAngle = -angle;
@@ -301,10 +302,11 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       if (isMobile || isIOS) {
         if (jewelType === "bangle" || type === "bangle") normZAngle *= 1;
       }
+    //   rotateZ(normZAngle, canX, canY);
 
-      rotateZ(normZAngle, canX, canY);
     }
-
+    
+    rotateZ(0, canX, canY);
     lastMidRef = newMidRef;
   }
 
@@ -316,18 +318,18 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     let jewel = sessionStorage.getItem("selectedJewel")
     type = JSON.parse(jewel).type
     if (jewelType === "bangle" || type === "bangle") {
-      console.log(type, "getnomalised");
+    //   console.log(type, "getnomalised");
       newMin = 0.44;
       newMax = 0.56;
     }
     else if (jewelType === "bangle" && type === "ring") {
-      console.log(type, "else of get normalised");
+    //   console.log(type, "else of get normalised");
       newMin = 0.435;
       newMax = 0.525;
     }
 
     else if (jewelType === "ring" || type === "ring") {
-      console.log(type, "else of get normalised");
+    //   console.log(type, "else of get normalised");
       newMin = 0.435;
       newMax = 0.525;
     }
@@ -400,7 +402,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
   let lastSize = null;
   mapRange;
   function smoothResizing(wristSize) {
-    console.log(GlobalHandLabel, "smooth resizing");
+    // console.log(GlobalHandLabel, "smooth resizing");
     if (enableSmoothing) {
       let diff = 0;
       if (lastSize !== null) {
@@ -451,8 +453,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       return;
     }
     setHandLabels(handLabel);
-    console.log(type == jewelType, 'ar context');
-    console.log(jewelType, 'arcontext jewel type');
+    // console.log(type == jewelType, 'ar context');
+    // console.log(jewelType, 'arcontext jewel type');
     let wrist = points[0];
     let firstKnuckle = points[5];
     let thumbTip = points[4];
@@ -466,17 +468,17 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     let midTop = points[12];
     let midPip = points[10];
     let ringPos = {
-      x: (points[13].x + points[14].x) / 2.0,
-      y: (points[13].y + points[14].y) / 2.0,
-      z: (points[13].z + points[14].z) / 2.0,
+      x: (points[401].x + points[323].x) / 2.0,
+      y: (points[401].y + points[323].y) / 2.0,
+      z: (points[401].z + points[323].z) / 2.0,
     };
 
     let stayPoint = null;
-    console.log(type, "tsm check");
+    // console.log(type, "tsm check");
     if (verticalRotation) {
       // setJewelType(type);
 
-      console.log(jewelType == type, "check");
+    //   console.log(jewelType == type, "check");
       if (type === "bangle") {
         if (handLabel === "Left") {
           stayPoint = {
@@ -532,10 +534,10 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       // }
 
 
-
-      setHandPointsX(stayPoint.x);
-      setHandPointsY(stayPoint.y);
-      setHandPointsZ(stayPoint.z);
+      stayPoint = points[4];
+    //   setHandPointsX(stayPoint.x);
+    //   setHandPointsY(stayPoint.y);
+    //   setHandPointsZ(stayPoint.z);
     }
     // (stayPoint);
 
@@ -551,10 +553,11 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     "SourceImage width : ", sourceImage.width;
     //old code
 
-    windowWidth, stayPoint.x, "win height";
+
     if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
       // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
       canX = (1 - stayPoint.x) * windowWidth - windowWidth / 2;
+
       // if(window.navigator.userAgent.includes("Firefox")){
       //   window_scale = (windowWidth/sourceImage.width) * 1.75;
       // }
@@ -563,12 +566,14 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
         stayPoint.y * (sourceImage.height * window_scale) -
         (sourceImage.height * window_scale) / 2;
     } else {
-      // Image is wider than the canvas, so we crop left & right & scale as per best fit of height
-      canY = stayPoint.y * windowHeight - windowHeight / 2;
-      window_scale = windowHeight / sourceImage.height;
-      canX =
+        // Image is wider than the canvas, so we crop left & right & scale as per best fit of height
+        canY = stayPoint.y * windowHeight - windowHeight / 2;
+        window_scale = windowHeight / sourceImage.height;
+        canX =
         stayPoint.x * (sourceImage.width * window_scale) -
         (sourceImage.width * window_scale) / 2;
+        // console.log(window_scale,"window scale",sourceImage.width,"sourceimage width")
+        // console.log(canX,"CanX",canY,"canY",stayPoint.x,stayPoint.y,"Staypointsx and y");
     }
 
     // (window_scale);
@@ -580,51 +585,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     totalTransX = canX;
     totalTransY = canY;
     // totalTransY = canY;
-    if (jewelType === "bangle" || type === "bangle") {
-      console.log(type, 'file checks');
-      getZAngleAndRotate(wrist, midPip, canX, canY);
-      getXAngleAndRotate(wrist, midPip, ZRAngle);
-      getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
-      console.log(handLabel, "tsm function");
-    }
-    else if (jewelType === "bangle" && type === "ring") {
-      if (isDirectionalRing) {
-        getZAngleAndRotate(points[13], points[14], canX, canY);
-        getXAngleAndRotate(points[13], points[14], ZRAngle);
-      } else {
-        if (
-          (handLabel === "Right" && facingMode !== "environment") ||
-          (handLabel === "Left" && facingMode === "environment")
-        ) {
-          getZAngleAndRotate(points[14], points[13], canX, canY);
-          getXAngleAndRotate(points[14], points[13], ZRAngle);
-        } else {
-          getZAngleAndRotate(points[13], points[14], canX, canY);
-          getXAngleAndRotate(points[13], points[14], ZRAngle);
-        }
-      }
-    }
-    else if (jewelType === "ring" || type === "ring") {
-      if (isDirectionalRing) {
-        getZAngleAndRotate(points[13], points[14], canX, canY);
-        getXAngleAndRotate(points[13], points[14], ZRAngle);
-      } else {
-        if (
-          (handLabel === "Right" && facingMode !== "environment") ||
-          (handLabel === "Left" && facingMode === "environment")
-        ) {
-          getZAngleAndRotate(points[14], points[13], canX, canY);
-          getXAngleAndRotate(points[14], points[13], ZRAngle);
-        } else {
-          getZAngleAndRotate(points[13], points[14], canX, canY);
-          getXAngleAndRotate(points[13], points[14], ZRAngle);
-        }
-      }
-
-      getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
-    }
-
-
+    getZAngleAndRotate(stayPoint, midPip, canX, canY);
+    
     // Resizing
     const dist = calculateWristSize(points, YRAngle, ZRAngle, foldedHand);
 
@@ -663,7 +625,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
     if (jewelType === "bangle" || type === "bangle") {
       //previous code
-      console.log(type, "sscale adjustment low");
+    //   console.log(type, "sscale adjustment low");
       if (isMobile || isIOS) {
         resizeMul = window_scale * 3.5 * scaleAdjustment;
         if (
