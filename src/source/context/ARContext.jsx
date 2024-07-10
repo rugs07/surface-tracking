@@ -96,7 +96,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
   function rotateY(angle) {
 
 
-    window.innerWidth < 768 ? YRAngle = -angle : angle
+    window.innerWidth < 768 ? YRAngle = angle : YRAngle=angle
     // YRAngle = -angle;
 
     if (
