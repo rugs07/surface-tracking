@@ -96,7 +96,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
   function rotateY(angle) {
 
 
-    window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
+    window.innerWidth < 768 ? YRAngle = -angle : angle
     // YRAngle = -angle;
 
     if (
@@ -710,7 +710,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       let visibilityFactor = 1.0
 
       if (isMobile || isIOS) {
-        resizeMul = window_scale * 1.1 * visibilityFactor ;
+        resizeMul = window_scale * 1.1 * visibilityFactor;
         // if (isPalmFacing) resizeMul *= 0.9;
       } else
         resizeMul = window_scale * 0.70 * visibilityFactor * baseSize;
