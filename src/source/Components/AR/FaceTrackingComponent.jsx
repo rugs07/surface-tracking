@@ -188,14 +188,10 @@ const HandTrackingComponent = () => {
             <>
               <Splat
                 src={ringUrl1}
-                // position={[
-                //   faceDetections.faceLandmarks[0][401].x,
-                //   faceDetections.faceLandmarks[0][401].y,
-                //   faceDetections.faceLandmarks[0][401].z,
-                // ]}
-                position={earringPosition}
-                scale={0.1}
-                rotation={[0.1, 0.01, 0.1]}
+                // position={earringPosition}
+                scale={[wristZoom,wristZoom,wristZoom]}
+                rotation={[XRDelta,YRDelta,0]}
+                // rotation={[0.1, 0.01, 0.1]}
               />
               {/* <Splat
               src={ringUrl2}
