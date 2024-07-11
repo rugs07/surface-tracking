@@ -12,26 +12,27 @@ import { useVariables } from "../../context/variableContext";
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const canvasRef2 = useRef(null);
   const isMobile = window.innerWidth <= 768;
   //   console.log(ARFunctions);
   //   console.log(FaceFunctions);
-  const { translateRotateMesh } = FaceFunctions();
+  const { translateRotateMesh, translateRotateMesh2 } = FaceFunctions();
   const { jewelType, YRDelta, XRDelta, ZRDelta, wristZoom, setHandLabels } =
     useVariables();
 
   const [faceDetections, setFaceDetections] = useState(null);
   const [earringPosition, setEarringPosition] = useState([0, 0, 0]);
-//   console.log(earringPosition);
+  //   console.log(earringPosition);
 
   const ringUrl1 = useMemo(
     () =>
       `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`
   );
 
-  //   const ringUrl2 = useMemo(
-  //     () =>
-  //       `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`
-  //   );
+  const ringUrl2 = useMemo(
+    () =>
+      `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel25_lr/jewel25_lr.splat`
+  );
 
   useEffect(() => {
     let faceLandmarker;
@@ -77,12 +78,16 @@ const HandTrackingComponent = () => {
               false,
               canvasRef.current
             );
+
+            translateRotateMesh2(
+              faceDetections?.faceLandmarks[0],
+              "right",
+              false,
+              canvasRef2.current
+            );
+
             const landmark = faceDetections.faceLandmarks[0][401];
-            setEarringPosition([
-              landmark.x,
-              landmark.y,
-              landmark.z,
-            ]);
+            setEarringPosition([landmark.x, landmark.y, landmark.z]);
           }
         }
       }
@@ -98,8 +103,12 @@ const HandTrackingComponent = () => {
             height: { ideal: 720 },
           },
         });
-        videoRef.current.srcObject = stream;
-        await initializeFaceDetection();
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          await initializeFaceDetection();
+        } else {
+          console.error("videoRef.current is null");
+        }
       } catch (error) {
         console.error("Error accessing webcam:", error);
         alert("Error accessing webcam");
@@ -109,15 +118,21 @@ const HandTrackingComponent = () => {
     startWebcam();
 
     return () => {
-      videoRef.current?.srcObject?.getTracks().forEach((track) => track.stop());
-      faceLandmarker?.close();
-      cancelAnimationFrame(animationFrameId);
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+      }
+      if (faceLandmarker) {
+        faceLandmarker.close();
+      }
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
     };
   }, []);
 
   const stopAR = () => {
     videoRef.current?.srcObject?.getTracks().forEach((track) => track.stop());
-    window.location.href = 'http://localhost:5173';
+    window.location.href = "http://localhost:5173";
   };
 
   return (
@@ -143,16 +158,16 @@ const HandTrackingComponent = () => {
       <button
         onClick={stopAR}
         style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
+          position: "absolute",
+          top: "10px",
+          right: "10px",
           zIndex: 2000,
-          padding: '10px',
-          background: 'whitesmoke',
-          color: 'black',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer'
+          padding: "10px",
+          background: "whitesmoke",
+          color: "black",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
         }}
       >
         Stop AR
@@ -167,8 +182,7 @@ const HandTrackingComponent = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          zIndex: 1000,
-          //   transform: isMobile ? "none" : "rotateY(180deg)",
+          zIndex: 0,
         }}
       >
         <Canvas
@@ -182,27 +196,39 @@ const HandTrackingComponent = () => {
             near: 0.093,
             far: 4.75,
           }}
-          style={{ width: "100vw", height: "100vh" }}
+          style={{ width: "100vw", height: "100vh", position: "absolute" }}
         >
           {faceDetections?.faceLandmarks?.[0]?.[401] && (
             <>
               <Splat
                 src={ringUrl1}
                 // position={earringPosition}
-                scale={[wristZoom,wristZoom,wristZoom]}
-                rotation={[XRDelta,YRDelta,0]}
-                // rotation={[0.1, 0.01, 0.1]}
+                scale={[wristZoom, wristZoom, wristZoom]}
+                rotation={[XRDelta, YRDelta, 0]}
               />
-              {/* <Splat
-              src={ringUrl2}
-              position={[
-                faceDetections.faceLandmarks[0][177].x,
-                faceDetections.faceLandmarks[0][177].y,
-                faceDetections.faceLandmarks[0][177].z,
-              ]}
-              scale={0.2}
-              rotation={[0.1,0.01,0.1]}
-            /> */}
+            </>
+          )}
+        </Canvas>
+        <Canvas
+          id="gsplatCanvas2"
+          ref={canvasRef2}
+          shadows
+          gl={{ localClippingEnabled: true }}
+          camera={{
+            fov: 46,
+            position: [0, 1.5, 4.5],
+            near: 0.093,
+            far: 4.75,
+          }}
+          style={{ width: "100vw", height: "100vh", position: "absolute" }}
+        >
+          {faceDetections?.faceLandmarks?.[0] && (
+            <>
+              <Splat
+                src={ringUrl2}
+                scale={[wristZoom, wristZoom, wristZoom]}
+                rotation={[XRDelta, YRDelta, 0]}
+              />
             </>
           )}
         </Canvas>
