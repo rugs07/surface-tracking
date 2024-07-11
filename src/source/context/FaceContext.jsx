@@ -383,14 +383,47 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       return;
     }
     setHandLabels(handLabel);
-    let earringpos = {
-      x: points[401].x ,
-      y: points[401].y ,
+    let earringPos = {
+      x: points[401].x,
+      y: points[401].y,
       z: points[401].z,
     };
-
+    
     let stayPoint = null;
-    stayPoint = earringpos;
+    
+    if (points[401] && points[433]) {
+      const point401 = {
+        x: points[401].x,
+        y: points[401].y,
+        z: points[401].z,
+      };
+      const point433 = {
+        x: points[433].x,
+        y: points[433].y,
+        z: points[433].z,
+      };
+    
+      // Calculate the vector between point 401 and 433
+      const vector = {
+        x: point433.x - point401.x,
+        y: point433.y - point401.y,
+        z: point433.z - point401.z,
+      };
+    
+      // Determine the desired distance to the right of point 401
+      const desiredXDistance = 0.5; // Adjust this value as needed
+      const desiredYDistance = 0.05
+    
+      // Calculate the earring position
+      earringPos = {
+        x: point401.x - vector.x * desiredXDistance*4,
+        y: point401.y - vector.y * desiredYDistance,
+        z: point401.z,
+      };
+    
+      stayPoint = earringPos;
+    }
+    
     let nosepoint = points[4];
     let centerfacepoint = points[9];
     let earpoint1 = points[177];
