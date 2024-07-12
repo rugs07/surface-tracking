@@ -233,7 +233,7 @@ const HandTrackingComponent = () => {
             }}
             style={{ width: "100vw", height: "100vh" }}
           >
-            {handAngle <= 280 && handAngle >= 260 && (
+            {handAngle <= 290 && handAngle >= 250 && (
               <Splat
                 src={url}
                 rotation={[XRDelta, YRDelta, ZRDelta]}
