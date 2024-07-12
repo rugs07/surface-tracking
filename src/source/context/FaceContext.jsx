@@ -30,6 +30,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     XRDelta,
     setXRDelta,
     setYRDelta,
+    setYRDelta2,
     enableRingTransparency,
     XTrans,
     YTrans,
@@ -47,6 +48,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     lastRefOfMid,
     handLabels,
     YRDelta,
+    YRDelta2,
     lastPinkyRef,
     lastIndexRef,
     isMobile,
@@ -94,19 +96,27 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
     window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
     // YRAngle = -angle;
+    // gsplatCanvas2.style.display = "none";
+    // gsplatCanvas2.style.display = "block";
+    YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle-10);
+    YRDelta2 = THREE.MathUtils.degToRad(-90 - YRAngle-100);
+    console.log(YRAngle,"YRAngle");
 
-    if (
-      (GlobalHandLabel == "Right" && facingMode !== "environment") ||
-      (GlobalHandLabel == "Left" && facingMode === "environment")
-    ) {
-      YRDelta = THREE.MathUtils.degToRad(90 - YRAngle-10);
-    } else {
-      YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle-10);
-    }
+    // if(YRAngle<-130 && YRAngle>-150){
+    //   gsplatCanvas.style.display = "block"
+    //   gsplatCanvas2.style.display = "block"
+    // }
+    // else if(YRAngle>-130){
+    //   gsplatCanvas2.style.display = "none"
+    // }
+    // else if(YRAngle<-150){
+    //   gsplatCanvas.style.display = "none"
+    // }
 
     setYRDelta(YRDelta);
+    setYRDelta2(YRDelta2);
     // console.log(handType, 'hand type');
-    return YRDelta;
+    return {YRDelta,YRDelta2};
   }
 
   const mapRange = (value, oldMin, oldMax, newMin, newMax) => {
@@ -173,7 +183,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     if (!translation) transform = "rotateZ(" + angle + "deg)";
     else canP = canX - adjustmentFactor;
     const angless = window.innerWidth < 768 ? -angle : angle
-    console.log(canX,canY,"CanX and canY");
+    // console.log(canX,canY,"CanX and canY");
     transform =
       "translate3d(" +
       -canX +
@@ -479,32 +489,31 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     
     if (points[401] && points[433]) {
       const point401 = {
-        x: points[401].x,
-        y: points[401].y,
-        z: points[401].z,
+        x: (0.25* points[323].x + 0.75* points[401].x),
+        y: (0.25* points[323].y + 0.75* points[401].y),
+        z: (0.25* points[323].z + 0.75* points[401].z),
       };
-      const point433 = {
-        x: points[433].x,
-        y: points[433].y,
-        z: points[433].z,
+      const point433_376 = {
+        x: points[376].x,
+        y: points[376].y,
+        z: points[376].z,
       };
     
       // Calculate the vector between point 401 and 433
       const vector = {
-        x: point433.x - point401.x,
-        y: point433.y - point401.y,
-        z: point433.z - point401.z,
+        y: point433_376.y - points[401].y,
+        z: point433_376.z - points[401].z,
+        x: point433_376.x - points[401].x,
       };
     
       // Determine the desired distance to the right of point 401
-      const desiredXDistance = 0.5; // Adjust this value as needed
-      const desiredYDistance = 0.05
+      const desiredDistance = 1.5; // Adjust this value as needed
     
       // Calculate the earring position
       earringPos = {
-        x: point401.x - vector.x * desiredXDistance*4,
-        y: point401.y - vector.y * desiredYDistance,
-        z: point401.z,
+        x: points[401].x - vector.x * desiredDistance,
+        y: points[401].y - vector.y * desiredDistance,
+        z: points[401].z - vector.z * desiredDistance,
       };
     
       stayPoint = earringPos;
@@ -537,8 +546,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
         canX =
         stayPoint.x * (sourceImage.width * window_scale) -
         (sourceImage.width * window_scale) / 2;
-        // console.log(window_scale,"window scale",sourceImage.width,"sourceimage width")
-        // console.log(canX,"CanX",canY,"canY",stayPoint.x,stayPoint.y,"Staypointsx and y");
+        console.log(window_scale,"window scale",sourceImage.width,"sourceimage width")
+        console.log(canX,"CanX",canY,"canY");
     }
 
     // (window_scale);
@@ -606,9 +615,9 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
         z: points[177].z,
       };
       const point215 = {
-        x: points[215].x,
-        y: points[215].y,
-        z: points[215].z,
+        x: points[147].x,
+        y: points[147].y,
+        z: points[147].z,
       };
     
       // Calculate the vector between point 401 and 433
@@ -619,13 +628,13 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       };
     
       // Determine the desired distance to the right of point 401
-      const desiredXDistance = 0.5; // Adjust this value as needed
-      const desiredYDistance = 0.05
+      const desiredDistance = 1; // Adjust this value as needed
+     
     
       // Calculate the earring position
       earringPos1 = {
-        x: point177.x - vector.x * desiredXDistance*4,
-        y: point177.y - vector.y * desiredYDistance,
+        x: point177.x - vector.x * desiredDistance,
+        y: point177.y - vector.y * desiredDistance,
         z: point177.z,
       };
     

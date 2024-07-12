@@ -31,6 +31,7 @@ export const VariableProvider = ({ children }) => {
   const [YTrans, setYTrans] = useState(0);
   const [XRDelta, setXRDelta] = useState(0.015);
   const [YRDelta, setYRDelta] = useState(-3.55);
+  const [YRDelta2, setYRDelta2] = useState(-3.55);
   const [ZRDelta, setZRDelta] = useState(1.6);
   const [isMobile, setIsMobile] = useState(true);
   const [isIOS, setIsIOS] = useState(false);
@@ -135,7 +136,9 @@ export const VariableProvider = ({ children }) => {
     XRDelta,
     setXRDelta,
     YRDelta,
+    YRDelta2,
     setYRDelta,
+    setYRDelta2,
     ZRDelta,
     setZRDelta,
     isMobile,

@@ -3,7 +3,6 @@ import { FilesetResolver, FaceLandmarker } from "@mediapipe/tasks-vision";
 import { Canvas } from "@react-three/fiber";
 import face_landmarker_task from "../../../models/face_landmarker.task";
 import { Splat } from "@react-three/drei";
-import { log } from "three/examples/jsm/nodes/Nodes.js";
 import { FaceFunctions } from "../../context/FaceContext";
 import { ARFunctions } from "../../context/ARContext";
 import FPSStats from "react-fps-stats";
@@ -14,15 +13,14 @@ const HandTrackingComponent = () => {
   const canvasRef = useRef(null);
   const canvasRef2 = useRef(null);
   const isMobile = window.innerWidth <= 768;
-  //   console.log(ARFunctions);
-  //   console.log(FaceFunctions);
+
   const { translateRotateMesh, translateRotateMesh2 } = FaceFunctions();
-  const { jewelType, YRDelta, XRDelta, ZRDelta, wristZoom, setHandLabels } =
+  const { jewelType, YRDelta, XRDelta, ZRDelta, wristZoom, setHandLabels,YRDelta2 } =
     useVariables();
 
   const [faceDetections, setFaceDetections] = useState(null);
   const [earringPosition, setEarringPosition] = useState([0, 0, 0]);
-  //   console.log(earringPosition);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const ringUrl1 = useMemo(
     () =>
@@ -68,10 +66,8 @@ const HandTrackingComponent = () => {
             videoRef.current,
             currentTime
           );
-          //   console.log(faceDetections?.faceLandmarks[0],'face 401');
           setFaceDetections(faceDetections);
           if (faceDetections?.faceLandmarks[0]) {
-            // console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
             translateRotateMesh(
               faceDetections?.faceLandmarks[0],
               "left",
@@ -86,8 +82,7 @@ const HandTrackingComponent = () => {
               canvasRef2.current
             );
 
-            const landmark = faceDetections.faceLandmarks[0][401];
-            setEarringPosition([landmark.x, landmark.y, landmark.z]);
+            setIsLoaded(true);  // Set loader to false when face detections are received
           }
         }
       }
@@ -143,7 +138,6 @@ const HandTrackingComponent = () => {
         playsInline
         style={{
           position: "absolute",
-          //   transform: "rotateY(180deg)",
           top: 0,
           left: 0,
           right: 0,
@@ -154,6 +148,19 @@ const HandTrackingComponent = () => {
           objectFit: "cover",
         }}
       />
+      {!isLoaded && (
+        <div style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 3000,
+          color: "white",
+          fontSize: "24px",
+        }}>
+          Loading...
+        </div>
+      )}
       <FPSStats />
       <button
         onClick={stopAR}
@@ -202,7 +209,6 @@ const HandTrackingComponent = () => {
             <>
               <Splat
                 src={ringUrl1}
-                // position={earringPosition}
                 scale={[wristZoom, wristZoom, wristZoom]}
                 rotation={[XRDelta, YRDelta, 0]}
               />
@@ -227,7 +233,7 @@ const HandTrackingComponent = () => {
               <Splat
                 src={ringUrl2}
                 scale={[wristZoom, wristZoom, wristZoom]}
-                rotation={[XRDelta, YRDelta, 0]}
+                rotation={[XRDelta, YRDelta2, 0]}
               />
             </>
           )}
