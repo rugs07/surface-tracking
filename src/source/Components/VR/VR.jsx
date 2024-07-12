@@ -125,7 +125,7 @@ const VR = () => {
   const handleClick = () => {
     if (isMobileDevice() || isDevMode()) {
 
-      navigate("/Loading");
+      navigate("/AR");
     }
     setShowModal(true)
   };

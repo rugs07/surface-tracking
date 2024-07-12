@@ -9,6 +9,7 @@ import Showhandscreen from "./Showhandscreen";
 import { useVariables } from "../../context/variableContext";
 import ErrorBoundary from "../Errorboundary/ErrorBoundary";
 import { useJewels } from "../../context/JewelsContext";
+import HandsModal from "../Loading-Screen/Hands";
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
@@ -16,6 +17,8 @@ const HandTrackingComponent = () => {
   const isMobile = window.innerWidth <= 768;
   const { jewelsList } = useJewels();
   const { translateRotateMesh } = ARFunctions();
+  const [handAngle, setHandAngle] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const {
     jewelType,
     YRDelta,
@@ -41,10 +44,27 @@ const HandTrackingComponent = () => {
     navigate("/VR");
   };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   useEffect(() => {
     let handLandmarker;
     let animationFrameId;
     let lastProcessTime = 0;
+
+    const calculateHandAngle = (landmarks) => {
+      const wrist = landmarks[0];
+      const middleFinger = landmarks[9];
+
+      const dx = middleFinger.x - wrist.x;
+      const dy = middleFinger.y - wrist.y;
+
+      let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      angle = (angle + 360) % 360; // Normalize angle to 0-360 range
+      console.log(angle, 'handangle');
+
+      return angle;
+    };
 
     const initializeHandDetection = async () => {
       try {
@@ -109,21 +129,26 @@ const HandTrackingComponent = () => {
     const detectHands = async () => {
       if (videoRef.current?.readyState >= 2) {
         const currentTime = performance.now();
-        if (currentTime - lastProcessTime >= 30) { // Aim for ~30 FPS
+        if (currentTime - lastProcessTime >= 30) {
           lastProcessTime = currentTime;
           const detections = handLandmarker.detectForVideo(videoRef.current, currentTime);
           setHandPresence(detections.handednesses.length > 0);
 
           if (detections.landmarks?.[0]) {
             const smoothedLandmarks = smoothLandmarks(detections.landmarks[0]);
+            const angle = calculateHandAngle(smoothedLandmarks);
+            setHandAngle(angle);
             console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
             translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, canvasRef.current);
             setHandLabels(detections.handednesses[0][0].displayName);
+          } else {
+            setHandAngle(null);
           }
         }
       }
       animationFrameId = requestAnimationFrame(detectHands);
     };
+
 
     const startWebcam = async () => {
       try {
@@ -146,6 +171,14 @@ const HandTrackingComponent = () => {
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
+
+  const isJewelVisible = () => {
+    if (handAngle === null) return false;
+    const verticalAngle = 90;
+    const threshold = 30;
+    const angleDifference = Math.abs(handAngle - verticalAngle);
+    return angleDifference <= threshold;
+  };
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
@@ -200,15 +233,16 @@ const HandTrackingComponent = () => {
             }}
             style={{ width: "100vw", height: "100vh" }}
           >
-            <Splat
-              src={url}
-              rotation={[XRDelta, YRDelta, ZRDelta]}
-              scale={[wristZoom, wristZoom, wristZoom]}
-            // scale={0.5}
-            // position={[0, 0, 0]}
-            />
+            {handAngle <= 280 && handAngle >= 260 && (
+              <Splat
+                src={url}
+                rotation={[XRDelta, YRDelta, ZRDelta]}
+                scale={[wristZoom, wristZoom, wristZoom]}
+              />
+            )}
           </Canvas>
         </ErrorBoundary>
+        <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} />
       </div>
     </div>
   );
