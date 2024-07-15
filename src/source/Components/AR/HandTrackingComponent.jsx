@@ -172,17 +172,12 @@ const HandTrackingComponent = () => {
     };
   }, []);
 
-  const isJewelVisible = () => {
-    if (handAngle === null) return false;
-    const verticalAngle = 90;
-    const threshold = 30;
-    const angleDifference = Math.abs(handAngle - verticalAngle);
-    return angleDifference <= threshold;
-  };
+
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
-      {!handPresence && <Showhandscreen />}
+      {!handPresence &&  <Showhandscreen />}
+      {handAngle > 280 || handAngle < 250 ?<Showhandscreen/>:null}
       {!handPresence && (
         <button className="stopArBtn" onClick={handleStopAR}>
           STOP AR
@@ -233,7 +228,7 @@ const HandTrackingComponent = () => {
             }}
             style={{ width: "100vw", height: "100vh" }}
           >
-            {handAngle <= 290 && handAngle >= 250 && (
+            {handAngle <= 280 && handAngle >= 250 && (
               <Splat
                 src={url}
                 rotation={[XRDelta, YRDelta, ZRDelta]}
@@ -242,8 +237,8 @@ const HandTrackingComponent = () => {
             )}
           </Canvas>
         </ErrorBoundary>
-        <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} />
       </div>
+      <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>
   );
 };
