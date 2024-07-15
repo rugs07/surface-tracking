@@ -3,7 +3,7 @@ import { useJewels } from "../../context/JewelsContext";
 import { useNavigate } from "react-router-dom";
 import "../../css/style.css"; // Create a new CSS file for modal styles
 
-const HandsModal = ({ isOpen, onClose }, isLoaded) => {
+const HandsModal = ({ isOpen, onClose, isLoaded }) => {
   const { jewelsList } = useJewels();
   const [imagePaths, setImagePaths] = useState({
     step1: "",
@@ -48,6 +48,7 @@ const HandsModal = ({ isOpen, onClose }, isLoaded) => {
   };
 
   if (!isOpen) return null;
+  console.log(isLoaded, "is loaded ");
 
   return (
     <div className="modals-overlay" onClick={onClose}>
@@ -71,9 +72,9 @@ const HandsModal = ({ isOpen, onClose }, isLoaded) => {
           <button className="modal-Button" onClick={onClose}>
             Getting started...
           </button>
-        ) : <button className="modal-Button" onClick={onClose}>
+        ) : (<button className="modal-Button" onClick={onClose}>
           get Started
-        </button>}
+        </button>)}
       </div>
     </div>
   );

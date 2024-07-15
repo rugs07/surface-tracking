@@ -19,7 +19,7 @@ const HandTrackingComponent = () => {
   const { translateRotateMesh } = ARFunctions();
   const [handAngle, setHandAngle] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
   const {
     jewelType,
     YRDelta,
@@ -142,7 +142,7 @@ const HandTrackingComponent = () => {
             console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
             translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, canvasRef.current);
             setHandLabels(detections.handednesses[0][0].displayName);
-            setIsLoaded(false);
+            setIsLoaded(true);
           } else {
             setHandAngle(null);
           }
