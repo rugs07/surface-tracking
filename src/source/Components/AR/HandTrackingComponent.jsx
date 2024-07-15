@@ -19,7 +19,7 @@ const HandTrackingComponent = () => {
   const { translateRotateMesh } = ARFunctions();
   const [handAngle, setHandAngle] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(true)
   const {
     jewelType,
     YRDelta,
@@ -142,7 +142,7 @@ const HandTrackingComponent = () => {
             console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
             translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, canvasRef.current);
             setHandLabels(detections.handednesses[0][0].displayName);
-            setIsLoaded(true);
+            setIsLoaded(false);
           } else {
             setHandAngle(null);
           }
@@ -178,9 +178,9 @@ const HandTrackingComponent = () => {
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
-      {!handPresence &&  <Showhandscreen />}
-      {handAngle > 295 || handAngle < 265 ?<Showhandscreen/>:null}
-      {!handPresence  && !isLoaded (
+      {!handPresence && <Showhandscreen />}
+      {handAngle > 295 || handAngle < 265 ? <Showhandscreen /> : null}
+      {!handPresence && (
         <button className="stopArBtn" onClick={handleStopAR}>
           STOP AR
         </button>
@@ -240,7 +240,7 @@ const HandTrackingComponent = () => {
           </Canvas>
         </ErrorBoundary>
       </div>
-      <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} isLoaded={isLoaded} />
     </div>
   );
 };
