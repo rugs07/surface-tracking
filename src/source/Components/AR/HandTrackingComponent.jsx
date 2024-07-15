@@ -19,6 +19,7 @@ const HandTrackingComponent = () => {
   const { translateRotateMesh } = ARFunctions();
   const [handAngle, setHandAngle] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false)
   const {
     jewelType,
     YRDelta,
@@ -141,6 +142,7 @@ const HandTrackingComponent = () => {
             console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
             translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, canvasRef.current);
             setHandLabels(detections.handednesses[0][0].displayName);
+            setIsLoaded(true);
           } else {
             setHandAngle(null);
           }
@@ -177,8 +179,8 @@ const HandTrackingComponent = () => {
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       {!handPresence &&  <Showhandscreen />}
-      {handAngle > 280 || handAngle < 250 ?<Showhandscreen/>:null}
-      {!handPresence && (
+      {handAngle > 295 || handAngle < 265 ?<Showhandscreen/>:null}
+      {!handPresence  && !isLoaded (
         <button className="stopArBtn" onClick={handleStopAR}>
           STOP AR
         </button>
@@ -228,7 +230,7 @@ const HandTrackingComponent = () => {
             }}
             style={{ width: "100vw", height: "100vh" }}
           >
-            {handAngle <= 280 && handAngle >= 250 && (
+            {handAngle <= 295 && handAngle >= 265 && (
               <Splat
                 src={url}
                 rotation={[XRDelta, YRDelta, ZRDelta]}
