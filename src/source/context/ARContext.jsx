@@ -96,7 +96,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
   function rotateY(angle) {
 
 
-    window.innerWidth < 768 ? YRAngle = angle : YRAngle=angle
+    window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
     // YRAngle = -angle;
 
     if (
@@ -713,7 +713,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
         resizeMul = window_scale * 1.1 * visibilityFactor;
         // if (isPalmFacing) resizeMul *= 0.9;
       } else
-        resizeMul = window_scale * 0.70 * visibilityFactor ;
+        resizeMul = window_scale * 0.70 * visibilityFactor;
 
       if (selectedJewel === "floralring") {
         resizeMul *= 0.9;

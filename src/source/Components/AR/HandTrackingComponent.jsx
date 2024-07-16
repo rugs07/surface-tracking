@@ -256,7 +256,7 @@ const HandTrackingComponent = () => {
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       {!handPresence && <Showhandscreen />}
-      {handAngle > 280 || handAngle < 250 ? <Showhandscreen /> : null}
+      {handAngle > 295 || handAngle < 255 ? <Showhandscreen /> : null}
       {!handPresence && (
         <button className="stopArBtn" onClick={handleStopAR}>
           STOP AR
@@ -307,7 +307,7 @@ const HandTrackingComponent = () => {
             }}
             style={{ width: "100vw", height: "100vh" }}
           >
-            {handAngle <= 280 && handAngle >= 250 && (
+            {handAngle <= 295 && handAngle >= 255 && (
               <Splat
                 src={url}
                 rotation={[XRDelta, YRDelta, ZRDelta]}
