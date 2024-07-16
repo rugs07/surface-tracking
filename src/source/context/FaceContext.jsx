@@ -192,7 +192,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angle +
+      angless +
       "deg)";
     // transform, "can's";
 
