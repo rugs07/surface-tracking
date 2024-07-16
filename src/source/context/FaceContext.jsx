@@ -530,7 +530,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     windowWidth = window.screen.width;
     if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
       // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
-      canX = (1 - stayPoint.x) * windowWidth - windowWidth / 2;
+      canX =  stayPoint.x * windowWidth - windowWidth / 2;
 
       // if(window.navigator.userAgent.includes("Firefox")){
       //   window_scale = (windowWidth/sourceImage.width) * 1.75;

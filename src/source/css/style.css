@@ -809,7 +809,7 @@ button:hover {
   display: flex;
   border-radius: 1rem;
   background: linear-gradient(90deg, #d77da1 7.79%, #de8f77 94.18%);
-  width: fit-content;
+  /* width: fit-content; */
   flex-direction: column;
   justify-content: space-between;
   padding: 20px;
