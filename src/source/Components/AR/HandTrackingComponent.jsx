@@ -254,25 +254,71 @@ const HandTrackingComponent = () => {
   }, []);
 
   return (
-    <ErrorBoundary>
-      <div className="app">
-        <video ref={videoRef} autoPlay muted className="webcam" />
-        {handPresence && (
-          <div className="status">
-            <p>Hand Detected</p>
-          </div>
-        )}
-        <Canvas ref={canvasRef} className="canvas" style={{ width: "100%", height: "100%" }}>
-          {url && <Splat url={url} autoRotate={true} scale={0.015} position={[XRDelta, YRDelta, ZRDelta]} />}
-        </Canvas>
-        <button className="stop-button" onClick={handleStopAR}>
-          Exit to VR
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
+      {!handPresence && <Showhandscreen />}
+      {handAngle > 280 || handAngle < 250 ? <Showhandscreen /> : null}
+      {!handPresence && (
+        <button className="stopArBtn" onClick={handleStopAR}>
+          STOP AR
         </button>
-        <Showhandscreen />
-        <FPSStats />
-        <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} isLoaded={isLoaded} />
+      )}
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        style={{
+          position: "absolute",
+          transform: "rotateY(180deg)",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: "-1000",
+          objectFit: "cover",
+        }}
+      />
+      <FPSStats />
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          transform: isMobile ? "none" : "rotateY(180deg)"
+        }}
+      >
+        <ErrorBoundary>
+          <Canvas
+            id="gsplatCanvas"
+            ref={canvasRef}
+            shadows
+            gl={{ localClippingEnabled: true }}
+            camera={{
+              fov: 46,
+              position: [0, 1.5, 4.5],
+              near: 0.093,
+              far: 4.75,
+            }}
+            style={{ width: "100vw", height: "100vh" }}
+          >
+            {handAngle <= 280 && handAngle >= 250 && (
+              <Splat
+                src={url}
+                rotation={[XRDelta, YRDelta, ZRDelta]}
+                scale={[wristZoom, wristZoom, wristZoom]}
+              />
+            )}
+          </Canvas>
+        </ErrorBoundary>
       </div>
-    </ErrorBoundary>
+      <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} isLoaded={isLoaded} />
+    </div>
   );
 };
 
