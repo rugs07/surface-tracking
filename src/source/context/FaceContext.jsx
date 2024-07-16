@@ -526,7 +526,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     let window_scale, canX, canY;
     let windowWidth = document.documentElement.clientWidth;
     let windowHeight = document.documentElement.clientHeight;
-    windowWidth = window.screen.width;
+    // windowWidth = window.screen.width;
     if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
       // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
       canX =  stayPoint.x * windowWidth - windowWidth / 2;
