@@ -5,6 +5,7 @@ import { JewelsProvider } from "./context/JewelsContext";
 import VR from "./Components/VR/VR";
 import HandTrackingComponent from "./Components/AR/HandTrackingComponent";
 import Hands from "./Components/Loading-Screen/Hands";
+import Face from "./Components/Loading-Screen/Face";
 import { VariableProvider } from "./context/variableContext";
 import { GlobalFunctionsProvider } from "./context/ARContext";
 import { GlobalFaceFunctionsProvider } from "./context/FaceContext";
@@ -23,6 +24,7 @@ const App = () => {
                 <Route path="/VR" element={<VR />} />
                 <Route path="/AR" element={<HandTrackingComponent />} />
                 <Route path="/Loading" element={<Hands />} />
+                <Route path="/Loading1" element={<Face />} />
                 <Route path="/test" element={<FaceTrackingComponent />} />
               </Routes>
             </BrowserRouter>
