@@ -216,7 +216,7 @@ const HandTrackingComponent = () => {
             <>
               <Splat
                 src={ringUrl1}
-                scale= {[0.05,0.05,0.05]}
+                scale= {[0.1,0.1,0.1]}
                 rotation={[XRDelta, YRDelta, 0]}
               />
             </>
@@ -239,7 +239,7 @@ const HandTrackingComponent = () => {
             <>
               <Splat
                 src={ringUrl2}
-                scale= {[0.05,0.05,0.05]}
+                scale= {[0.1,0.1,0.1]}
                 rotation={[XRDelta, YRDelta2, 0]}
               />
             </>
