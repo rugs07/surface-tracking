@@ -94,7 +94,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
   function rotateY(angle) {
 
 
-    window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
+    window.innerWidth < 768 ? YRAngle = angle : YRAngle = angle
     // YRAngle = -angle;
     // gsplatCanvas2.style.display = "none";
     // gsplatCanvas2.style.display = "block";
