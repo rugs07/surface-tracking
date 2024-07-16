@@ -191,7 +191,7 @@ const HandTrackingComponent = () => {
           justifyContent: "center",
           alignItems: "center",
           zIndex: 0,
-          transform: isMobile ? "none" : "rotateY(180deg)"
+          transform: isMobile ? "rotateY(180deg)" : "none"
         }}
       >
         <Canvas
