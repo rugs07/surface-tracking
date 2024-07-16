@@ -214,11 +214,11 @@ const HandTrackingComponent = () => {
         >
           {faceDetections?.faceLandmarks?.[0]?.[401] && (
             <>
-              {/* <Splat
+              <Splat
                 src={ringUrl1}
-                scale={[wristZoom, wristZoom, wristZoom]}
+                scale= {isMobile ? 0.05 : 0.1}
                 rotation={[XRDelta, YRDelta, 0]}
-              /> */}
+              />
             </>
           )}
         </Canvas>
@@ -239,7 +239,7 @@ const HandTrackingComponent = () => {
             <>
               <Splat
                 src={ringUrl2}
-                scale={[0.1, 0.1, 0.1]}
+                scale= {isMobile ? 0.05 : 0.1}
                 rotation={[XRDelta, YRDelta2, 0]}
               />
             </>

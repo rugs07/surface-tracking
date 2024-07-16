@@ -156,7 +156,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     console.log(canX,canY,"CanX and canY");
     transform =
       "translate3d(" +
-      canX +
+      -canX +
       "px, " +
       canY +
       "px, " +
@@ -192,7 +192,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angle +
+      -angle +
       "deg)";
     // transform, "can's";
 
@@ -644,7 +644,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
         z:points[4].z ,
       };
 
-      stayPoint1 = earringPos1
+      stayPoint1 = earringPos1;
     }
     console.log(stayPoint1,"staypoint");
     console.log(points[177],'point177')
