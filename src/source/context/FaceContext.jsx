@@ -186,7 +186,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     // console.log(canX,canY,"CanX and canY");
     transform =
       "translate3d(" +
-      -canX +
+      canX +
       "px, " +
       canY +
       "px, " +
