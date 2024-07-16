@@ -102,16 +102,16 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     YRDelta2 = THREE.MathUtils.degToRad(-90 - YRAngle-100);
     console.log(YRAngle,"YRAngle");
 
-    if(YRAngle<-130 && YRAngle>-150){
-      gsplatCanvas.style.display = "block"
-      gsplatCanvas2.style.display = "block"
-    }
-    else if(YRAngle>-130){
-      gsplatCanvas2.style.display = "none"
-    }
-    else if(YRAngle<-150){
-      gsplatCanvas.style.display = "none"
-    }
+    // if(YRAngle<-130 && YRAngle>-150){
+    //   gsplatCanvas.style.display = "block"
+    //   gsplatCanvas2.style.display = "block"
+    // }
+    // else if(YRAngle>-130){
+    //   gsplatCanvas2.style.display = "none"
+    // }
+    // else if(YRAngle<-150){
+    //   gsplatCanvas.style.display = "none"
+    // }
 
     setYRDelta(YRDelta);
     setYRDelta2(YRDelta2);
@@ -640,6 +640,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     
       stayPoint1 = earringPos1;
     }
+    console.log(stayPoint1,"staypoint");
+    console.log(points[177],'point177')
     
     let nosepoint2 = points[4];
     let centerfacepoint2 = points[9];

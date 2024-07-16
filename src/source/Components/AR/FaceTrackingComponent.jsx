@@ -138,6 +138,7 @@ const HandTrackingComponent = () => {
         playsInline
         style={{
           position: "absolute",
+          transform: "rotateY(180deg)",
           top: 0,
           left: 0,
           right: 0,
@@ -190,6 +191,7 @@ const HandTrackingComponent = () => {
           justifyContent: "center",
           alignItems: "center",
           zIndex: 0,
+          transform: isMobile ? "none" : "rotateY(180deg)"
         }}
       >
         <Canvas
@@ -207,11 +209,11 @@ const HandTrackingComponent = () => {
         >
           {faceDetections?.faceLandmarks?.[0]?.[401] && (
             <>
-              <Splat
+              {/* <Splat
                 src={ringUrl1}
                 scale={[wristZoom, wristZoom, wristZoom]}
                 rotation={[XRDelta, YRDelta, 0]}
-              />
+              /> */}
             </>
           )}
         </Canvas>
