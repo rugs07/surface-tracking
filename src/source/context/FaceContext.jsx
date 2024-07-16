@@ -180,9 +180,9 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     let adjustmentFactor = window.innerWidth * 0.5;
     angle = angle;
     let transform = null;
-    if (!translation) transform = "rotateZ(" + angle + "deg)";
-    else canP = canX - adjustmentFactor;
-    const angless = window.innerWidth < 768 ? -angle : angle
+    // if (!translation) transform = "rotateZ(" + angle + "deg)";
+    // else canP = canX - adjustmentFactor;
+    // const angless = window.innerWidth < 768 ? -angle : angle
     // console.log(canX,canY,"CanX and canY");
     transform =
       "translate3d(" +
@@ -192,7 +192,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angless +
+      angle +
       "deg)";
     // transform, "can's";
 
@@ -474,11 +474,10 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     return facesize;
   }
 
-  function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
+  function translateRotateMesh(points, sourceImage) {
     if (!points || points.length === 0) {
       return;
     }
-    setHandLabels(handLabel);
     let earringPos = {
       x: points[401].x,
       y: points[401].y,
@@ -595,11 +594,11 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     // if (resize && isArcball)
       // gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
   }
-  function translateRotateMesh2(points, handLabel, isPalmFacing, sourceImage) {
+  function translateRotateMesh2(points, sourceImage) {
     if (!points || points.length === 0) {
       return;
     }
-    setHandLabels(handLabel);
+
     let earringPosdef;
     let earringPos1 = {
       x: points[177].x,
@@ -658,10 +657,10 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     let window_scale, canX, canY;
     let windowWidth = document.documentElement.clientWidth;
     let windowHeight = document.documentElement.clientHeight;
-    windowWidth = window.screen.width;
+    // windowWidth = window.screen.width;
     if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
       // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
-      canX = (1 - stayPoint1.x) * windowWidth - windowWidth / 2;
+      canX = stayPoint1.x * windowWidth - windowWidth / 2;
 
       // if(window.navigator.userAgent.includes("Firefox")){
       //   window_scale = (windowWidth/sourceImage.width) * 1.75;

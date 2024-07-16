@@ -15,8 +15,15 @@ const HandTrackingComponent = () => {
   const isMobile = window.innerWidth <= 768;
 
   const { translateRotateMesh, translateRotateMesh2 } = FaceFunctions();
-  const { jewelType, YRDelta, XRDelta, ZRDelta, wristZoom, setHandLabels,YRDelta2 } =
-    useVariables();
+  const {
+    jewelType,
+    YRDelta,
+    XRDelta,
+    ZRDelta,
+    wristZoom,
+    setHandLabels,
+    YRDelta2,
+  } = useVariables();
 
   const [faceDetections, setFaceDetections] = useState(null);
   const [earringPosition, setEarringPosition] = useState([0, 0, 0]);
@@ -70,19 +77,15 @@ const HandTrackingComponent = () => {
           if (faceDetections?.faceLandmarks[0]) {
             translateRotateMesh(
               faceDetections?.faceLandmarks[0],
-              "left",
-              false,
               canvasRef.current
             );
 
             translateRotateMesh2(
               faceDetections?.faceLandmarks[0],
-              "right",
-              false,
               canvasRef2.current
             );
 
-            setIsLoaded(true);  // Set loader to false when face detections are received
+            setIsLoaded(true); // Set loader to false when face detections are received
           }
         }
       }
@@ -150,15 +153,17 @@ const HandTrackingComponent = () => {
         }}
       />
       {!isLoaded && (
-        <div style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 3000,
-          color: "white",
-          fontSize: "24px",
-        }}>
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 3000,
+            color: "white",
+            fontSize: "24px",
+          }}
+        >
           Loading...
         </div>
       )}
@@ -191,7 +196,7 @@ const HandTrackingComponent = () => {
           justifyContent: "center",
           alignItems: "center",
           zIndex: 0,
-          transform: isMobile ? "none" : "rotateY(180deg)"
+          transform: isMobile ? "none" : "rotateY(180deg)",
         }}
       >
         <Canvas
