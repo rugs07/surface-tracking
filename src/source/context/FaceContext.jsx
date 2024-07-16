@@ -94,12 +94,12 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
   function rotateY(angle) {
 
 
-    // window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
+    window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
     // YRAngle = -angle;
     // gsplatCanvas2.style.display = "none";
     // gsplatCanvas2.style.display = "block";
     YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle-10);
-    YRDelta2 = THREE.MathUtils.degToRad(-90 - YRAngle-100);
+    YRDelta2 = THREE.MathUtils.degToRad(-90 - YRAngle-30);
     console.log(YRAngle,"YRAngle");
 
     // if(YRAngle<-130 && YRAngle>-150){
@@ -162,7 +162,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angle +
+      -angle +
       "deg)";
     // transform, "can's";
     gsplatCanvas.style.transform = transform;
@@ -644,7 +644,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
         z:points[4].z ,
       };
 
-      stayPoint1 = earringPosdef;
+      stayPoint1 = earringPos1
     }
     console.log(stayPoint1,"staypoint");
     console.log(points[177],'point177')
