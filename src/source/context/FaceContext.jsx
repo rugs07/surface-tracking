@@ -94,7 +94,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
   function rotateY(angle) {
 
 
-    window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
+    // window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
     // YRAngle = -angle;
     // gsplatCanvas2.style.display = "none";
     // gsplatCanvas2.style.display = "block";
@@ -150,9 +150,9 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     let adjustmentFactor = window.innerWidth * 0.5;
     angle = angle;
     let transform = null;
-    if (!translation) transform = "rotateZ(" + angle + "deg)";
-    else canP = canX - adjustmentFactor;
-    const angless = window.innerWidth < 768 ? -angle : angle
+    // if (!translation) transform = "rotateZ(" + angle + "deg)";
+    // else canP = canX - adjustmentFactor;
+    // const angless = window.innerWidth < 768 ? -angle : angle
     console.log(canX,canY,"CanX and canY");
     transform =
       "translate3d(" +
@@ -162,7 +162,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angless +
+      angle +
       "deg)";
     // transform, "can's";
     gsplatCanvas.style.transform = transform;
