@@ -156,13 +156,13 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     console.log(canX,canY,"CanX and canY");
     transform =
       "translate3d(" +
-      -canX +
+      canX +
       "px, " +
       canY +
       "px, " +
       0 +
       "px) rotateZ(" +
-      angle +
+      angless +
       "deg)";
     // transform, "can's";
     gsplatCanvas.style.transform = transform;
@@ -186,7 +186,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     // console.log(canX,canY,"CanX and canY");
     transform =
       "translate3d(" +
-      canX +
+      -canX +
       "px, " +
       canY +
       "px, " +
@@ -600,6 +600,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       return;
     }
     setHandLabels(handLabel);
+    let earringPosdef;
     let earringPos1 = {
       x: points[177].x,
       y: points[177].y,
@@ -638,7 +639,13 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
         z: point177.z,
       };
     
-      stayPoint1 = earringPos1;
+      earringPosdef = {
+        x: points[4].x,
+        y: points[4].y,
+        z:points[4].z ,
+      };
+
+      stayPoint1 = earringPosdef;
     }
     console.log(stayPoint1,"staypoint");
     console.log(points[177],'point177')

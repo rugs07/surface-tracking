@@ -138,7 +138,7 @@ const HandTrackingComponent = () => {
         playsInline
         style={{
           position: "absolute",
-          // transform: "rotateY(180deg)",
+          transform: "rotateY(180deg)",
           top: 0,
           left: 0,
           right: 0,
@@ -191,7 +191,7 @@ const HandTrackingComponent = () => {
           justifyContent: "center",
           alignItems: "center",
           zIndex: 0,
-          // transform: isMobile ? "none" : "rotateY(180deg)"
+          transform: isMobile ? "none" : "rotateY(180deg)"
         }}
       >
         <Canvas
