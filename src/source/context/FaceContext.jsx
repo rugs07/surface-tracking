@@ -220,6 +220,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     );
 
     yAngle = THREE.MathUtils.radToDeg(yAngle) - 90;
+    console.log(yAngle,"Yangle")
 
     if (facingMode === "environment") {
       yAngle += 180;
@@ -247,12 +248,14 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       }
     }
 
-    if (horizontalRotation) {
-      rotateY(-normYAngle);
-    } else if (verticalRotation) {
-      normYAngle = Math.max(-90, Math.min(90, normYAngle));
-      rotateY(-normYAngle);
-    }
+    // if (horizontalRotation) {
+    //   rotateY(-normYAngle);
+    // } else if (verticalRotation) {
+    //   normYAngle = Math.max(-90, Math.min(90, normYAngle));
+    //   rotateY(-normYAngle);
+    // }
+
+    rotateY(-normYAngle);
 
     newPinkyRef = lastPinkyRef;
     newIndexRef = lastIndexRef;
