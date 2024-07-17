@@ -26,7 +26,7 @@ export const VariableProvider = ({ children }) => {
   const [XRAngle, setXRAngle] = useState(0.0);
   const [YRAngle, setYRAngle] = useState(0.0);
   const [ZRAngle, setZRAngle] = useState(0.0);
-  const [wristZoom, setWristZoom] = useState();
+  const [wristZoom, setWristZoom] = useState(0.1);
   const [XTrans, setXTrans] = useState(0);
   const [YTrans, setYTrans] = useState(0);
   const [XRDelta, setXRDelta] = useState(0.015);

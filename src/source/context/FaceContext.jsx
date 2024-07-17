@@ -209,14 +209,6 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
   }
 
-  function convertRingTransRange(value) {
-    const oldMin = -25;
-    const oldMax = 25;
-    const newMin = 25;
-    const newMax = 65;
-    return ((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin;
-  }
-
   function getYAngleAndRotate(newIndexRef, newPinkyRef, zAngle) {
     let rotatedNewIndexRef = rotateVectorZ(newIndexRef, -zAngle);
     let rotatedNewPinkyRef = rotateVectorZ(newPinkyRef, -zAngle);
@@ -430,7 +422,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
     //Inner edge of eyes
     let facesize = null;
-    let eyegap = euclideanDistance(points[155], points[362]);
+    let eyegap = euclideanDistance(points[401], points[177]);
     facesize = eyegap;
     console.log(eyegap);
 
@@ -439,7 +431,6 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
   }
 
   let lastSize = null;
-  mapRange;
 
   function smoothResizing(facesize) {
     // console.log(GlobalHandLabel, "smooth resizing");
@@ -570,10 +561,11 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     // Resizing
     const dist = calculateFaceSize(points, YRAngle, ZRAngle);
 
-    let resizeMul1 = 0.25;
+    let resizeMul1 = 0.5;
 
-    let smoothenSize = smoothResizing(dist * resizeMul1);
-    setWristZoom(smoothenSize);
+    // let smoothenSize = smoothResizing(dist * resizeMul1);
+    setWristZoom(dist*resizeMul1);
+    console.log(dist*resizeMul1,"wristzoom");
     // setWristZoom(smoothenSize);
     // scaleMul = smoothenSize * 0.5;
 
@@ -701,10 +693,10 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     // Resizing
     const dist = calculateFaceSize(points, YRAngle, ZRAngle);
 
-    let resizeMul = 2;
+    // let resizeMul = 2;
 
-    let smoothenSize = smoothResizing(dist * resizeMul);
-    setWristZoom(smoothenSize);
+    // let smoothenSize = smoothResizing(dist * resizeMul);
+    // setWristZoom(smoothenSize);
     // setWristZoom(smoothenSize);
     // scaleMul = smoothenSize * 0.5;
 
@@ -782,7 +774,6 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     rotateZ1,
     rotateZ2,
     mapRange,
-    convertRingTransRange,
     getYAngleAndRotate,
     getXAngleAndRotate,
     rotateVectorZ,
