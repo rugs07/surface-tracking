@@ -564,7 +564,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     // Resizing
     const dist = calculateFaceSize(points, YRAngle, ZRAngle);
 
-    let resizeMul1 = 2;
+    let resizeMul1 = 1;
 
     let smoothenSize = smoothResizing(dist * resizeMul1);
     setWristZoom(smoothenSize);
