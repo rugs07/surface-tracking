@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useJewels } from "../../context/JewelsContext";
 import { useNavigate } from "react-router-dom";
+import "../../css/style.css"; // Create a new CSS file for modal styles
 
-const Hands = () => {
+const HandsModal = ({ isOpen, onClose, isLoaded }) => {
   const { jewelsList } = useJewels();
   const [imagePaths, setImagePaths] = useState({
     step1: "",
@@ -46,30 +47,37 @@ const Hands = () => {
     navigate("/AR");
   };
 
+  if (!isOpen) return null;
+  console.log(isLoaded, "is loaded ");
+
   return (
-    <div id="usermanual">
-      <h3 className="trytitle">Try on with 3 simple steps!</h3>
-      <div className="allsteps">
-        <div className="step">
-          <img src={imagePaths.step1} className="stepimg" alt="Step 1" />
-          <p className="steptext">
-            Place your hand vertically in front of the camera
-          </p>
+    <div className="modals-overlay" onClick={onClose}>
+      <div className="modals-content" onClick={(e) => e.stopPropagation()}>
+        <h2>Try on with 3 simple steps!</h2>
+        <div className="steps-Container">
+          <div className="steps">
+            <img src={imagePaths.step1} alt="Step 1" />
+            <p>Place your hand vertically in front of the camera</p>
+          </div>
+          <div className="steps">
+            <img src={imagePaths.step2} alt="Step 2" />
+            <p>Set the jewellery on your hand correctly</p>
+          </div>
+          <div className="steps">
+            <img src={imagePaths.step3} alt="Step 3" />
+            <p>Try it on freely to view all its details</p>
+          </div>
         </div>
-        <div className="step">
-          <img src={imagePaths.step2} className="stepimg" alt="Step 2" />
-          <p className="steptext">Set the jewellery on your hand correctly</p>
-        </div>
-        <div className="step">
-          <img src={imagePaths.step3} className="stepimg" alt="Step 3" />
-          <p className="steptext">Try it on freely to view all its details</p>
-        </div>
+        {!isLoaded ? (
+          <button className="modal-Button" onClick={onClose}>
+            Getting started...
+          </button>
+        ) : (<button className="modal-Button" onClick={onClose}>
+          get Started
+        </button>)}
       </div>
-      <button className="centerbtn" onClick={handleClick}>
-        Get Started
-      </button>
     </div>
   );
 };
 
-export default Hands;
+export default HandsModal;

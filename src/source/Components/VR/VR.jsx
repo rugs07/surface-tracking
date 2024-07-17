@@ -45,7 +45,7 @@ const VR = () => {
   );
 
   const queryParams = new URLSearchParams(window.location.search);
-  const isDevMode = queryParams.get("mode") === "dev";
+  // const isDevMode = queryParams.get("mode") === "dev";
 
   url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
@@ -58,10 +58,10 @@ const VR = () => {
   };
 
   // Function to detect if the mode is 'dev' in the URL
-  // const isDevMode = () => {
-  //   const queryParams = new URLSearchParams(window.location.search);
-  //   return queryParams.get("mode") === "dev";
-  // };
+  const isDevMode = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    return queryParams.get("mode") === "dev";
+  };
 
   useEffect(() => {
     timeRef.current = 0;
@@ -123,8 +123,11 @@ const VR = () => {
   };
 
   const handleClick = () => {
-    // if (isMobileDevice() || isDevMode()) {
-    navigate("/Loading");
+    if (isMobileDevice() || isDevMode()) {
+
+      navigate("/AR");
+    }
+    setShowModal(true)
   };
 
   // const scale = selectedJewel
@@ -212,7 +215,7 @@ const VR = () => {
             </Canvas>
           </ErrorBoundary>
         </Suspense>
-        {/* {showModal && (
+        {showModal && (
           <div className="modal-wrapper" onClick={handleModalClose}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
               <div className="modal-content">
@@ -224,7 +227,7 @@ const VR = () => {
               </div>
             </div>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );

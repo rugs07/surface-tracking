@@ -9,6 +9,84 @@ import Showhandscreen from "./Showhandscreen";
 import { useVariables } from "../../context/variableContext";
 import ErrorBoundary from "../Errorboundary/ErrorBoundary";
 import { useJewels } from "../../context/JewelsContext";
+import "../../css/style.css"; // Ensure this line is included for modal styles
+
+const HandsModal = ({ isOpen, onClose, isLoaded }) => {
+  const { jewelsList } = useJewels();
+  const [imagePaths, setImagePaths] = useState({
+    step1: "",
+    step2: "",
+    step3: "",
+  });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchImages() {
+      const selectedJewelKey =
+        sessionStorage.getItem("selectedJewel") || "b4_gen3";
+
+      const jewelDetails =
+        jewelsList[JSON.parse(selectedJewelKey).name] || jewelsList["b4_gen3"];
+
+      const type = jewelDetails.type || "bangle"; // Default to bangle if undefined
+
+      try {
+        const images = await Promise.all([
+          import(`../../assets/${type}step1.jpg`),
+          import(`../../assets/${type}step2.jpg`),
+          import(`../../assets/${type}step3.gif`),
+        ]);
+
+        setImagePaths({
+          step1: images[0].default,
+          step2: images[1].default,
+          step3: images[2].default,
+        });
+      } catch (error) {
+        console.error("Failed to load images", error);
+      }
+    }
+
+    fetchImages();
+  }, [jewelsList]); // Dependency on jewelsList to update on its change
+
+  const handleClick = () => {
+    navigate("/AR");
+  };
+
+  if (!isOpen) return null;
+  console.log(isLoaded, "is loaded ");
+
+  return (
+    <div className="modals-overlay" onClick={onClose}>
+      <div className="modals-content" onClick={(e) => e.stopPropagation()}>
+        <h2>Try on with 3 simple steps!</h2>
+        <div className="steps-Container">
+          <div className="steps">
+            <img src={imagePaths.step1} alt="Step 1" />
+            <p>Place your hand vertically in front of the camera</p>
+          </div>
+          <div className="steps">
+            <img src={imagePaths.step2} alt="Step 2" />
+            <p>Set the jewellery on your hand correctly</p>
+          </div>
+          <div className="steps">
+            <img src={imagePaths.step3} alt="Step 3" />
+            <p>Try it on freely to view all its details</p>
+          </div>
+        </div>
+        {!isLoaded ? (
+          <button className="modal-Button" onClick={onClose}>
+            Getting started...
+          </button>
+        ) : (<button className="modal-Button" onClick={onClose}>
+          get Started
+        </button>)}
+      </div>
+    </div>
+  );
+};
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
@@ -16,6 +94,9 @@ const HandTrackingComponent = () => {
   const isMobile = window.innerWidth <= 768;
   const { jewelsList } = useJewels();
   const { translateRotateMesh } = ARFunctions();
+  const [handAngle, setHandAngle] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false)
   const {
     jewelType,
     YRDelta,
@@ -41,10 +122,27 @@ const HandTrackingComponent = () => {
     navigate("/VR");
   };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
   useEffect(() => {
     let handLandmarker;
     let animationFrameId;
     let lastProcessTime = 0;
+
+    const calculateHandAngle = (landmarks) => {
+      const wrist = landmarks[0];
+      const middleFinger = landmarks[9];
+
+      const dx = middleFinger.x - wrist.x;
+      const dy = middleFinger.y - wrist.y;
+
+      let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      angle = (angle + 360) % 360; // Normalize angle to 0-360 range
+      console.log(angle, 'handangle');
+
+      return angle;
+    };
 
     const initializeHandDetection = async () => {
       try {
@@ -59,6 +157,7 @@ const HandTrackingComponent = () => {
           numHands: 1,
           runningMode: "VIDEO",
         });
+        setIsLoaded(true);
         detectHands();
       } catch (error) {
         console.error("Error initializing hand detection:", error);
@@ -109,21 +208,27 @@ const HandTrackingComponent = () => {
     const detectHands = async () => {
       if (videoRef.current?.readyState >= 2) {
         const currentTime = performance.now();
-        if (currentTime - lastProcessTime >= 30) { // Aim for ~30 FPS
+        if (currentTime - lastProcessTime >= 30) {
           lastProcessTime = currentTime;
           const detections = handLandmarker.detectForVideo(videoRef.current, currentTime);
           setHandPresence(detections.handednesses.length > 0);
 
           if (detections.landmarks?.[0]) {
             const smoothedLandmarks = smoothLandmarks(detections.landmarks[0]);
+            const angle = calculateHandAngle(smoothedLandmarks);
+            setHandAngle(angle);
             console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
             translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, canvasRef.current);
             setHandLabels(detections.handednesses[0][0].displayName);
+
+          } else {
+            setHandAngle(null);
           }
         }
       }
       animationFrameId = requestAnimationFrame(detectHands);
     };
+
 
     const startWebcam = async () => {
       try {
@@ -141,15 +246,17 @@ const HandTrackingComponent = () => {
     startWebcam();
 
     return () => {
-      videoRef.current?.srcObject?.getTracks().forEach(track => track.stop());
-      handLandmarker?.close();
       cancelAnimationFrame(animationFrameId);
+      if (videoRef.current?.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+      }
     };
   }, []);
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       {!handPresence && <Showhandscreen />}
+      {handAngle > 300 || handAngle < 240 ? <Showhandscreen /> : null}
       {!handPresence && (
         <button className="stopArBtn" onClick={handleStopAR}>
           STOP AR
@@ -200,16 +307,17 @@ const HandTrackingComponent = () => {
             }}
             style={{ width: "100vw", height: "100vh" }}
           >
-            <Splat
-              src={url}
-              rotation={[XRDelta, YRDelta, ZRDelta]}
-              scale={[wristZoom, wristZoom, wristZoom]}
-            // scale={0.5}
-            // position={[0, 0, 0]}
-            />
+            {handAngle <= 300 && handAngle >= 240 && (
+              <Splat
+                src={url}
+                rotation={[XRDelta, YRDelta, ZRDelta]}
+                scale={[wristZoom, wristZoom, wristZoom]}
+              />
+            )}
           </Canvas>
         </ErrorBoundary>
       </div>
+      <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} isLoaded={isLoaded} />
     </div>
   );
 };
