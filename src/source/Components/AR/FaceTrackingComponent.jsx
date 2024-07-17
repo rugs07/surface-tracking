@@ -208,7 +208,7 @@ const HandTrackingComponent = () => {
             fov: 46,
             position: [0, 1.5, 4.5],
             near: 0.093,
-            far: 10,
+            far: 4.75,
           }}
           style={{ width: "100vw", height: "100vh", position: "absolute" }}
         >
@@ -217,7 +217,7 @@ const HandTrackingComponent = () => {
               <Splat
                 src={ringUrl1}
                 scale= {[0.1,0.1,0.1]}
-                rotation={[XRDelta, YRDelta, 0]}
+                rotation={[XRDelta, -YRDelta2, 0]}
               />
             </>
           )}
@@ -231,7 +231,7 @@ const HandTrackingComponent = () => {
             fov: 46,
             position: [0, 1.5, 4.5],
             near: 0.093,
-            far: 10,
+            far: 4.75,
           }}
           style={{ width: "100vw", height: "100vh", position: "absolute" }}
         >
@@ -240,7 +240,7 @@ const HandTrackingComponent = () => {
               <Splat
                 src={ringUrl2}
                 scale= {[0.1,0.1,0.1]}
-                rotation={[XRDelta, YRDelta2, 0]}
+                rotation={[XRDelta, YRDelta, 0]}
               />
             </>
           )}

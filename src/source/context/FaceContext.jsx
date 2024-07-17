@@ -98,8 +98,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     YRAngle = angle;
     // gsplatCanvas2.style.display = "none";
     // gsplatCanvas2.style.display = "block";
-    YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle-10);
-    YRDelta2 = THREE.MathUtils.degToRad(-90 - YRAngle-30);
+    YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle- 90);
+    YRDelta2 = THREE.MathUtils.degToRad(-90 - YRAngle- 140);
     console.log(YRAngle,"YRAngle");
 
     // if(YRAngle<-130 && YRAngle>-150){
