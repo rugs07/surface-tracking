@@ -91,10 +91,16 @@ export const VariableProvider = ({ children }) => {
   const [lastIndexRef, setLastIndexRef] = useState(null);
   const [totalTransX, setTotalTransX] = useState(0);
   const [totalTransY, setTotalTransY] = useState(0);
+  const [isvisible1,setIsvisible1] = useState(true);
+  const [isvisible2,setIsvisible2] = useState(true);
 
   const contextValue = {
     autorotate,
     setAutorotate,
+    isvisible1,
+    setIsvisible1,
+    isvisible2,
+    setIsvisible2,
     autorotateSpeed,
     setAutorotateSpeed,
     defaultLightBg,

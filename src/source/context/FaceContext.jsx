@@ -61,6 +61,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     setCameraFarVar,
     setJewelType,
     setCameraNearVar,
+    setIsvisible1,
+    setIsvisible2
   } = useVariables();
 //   console.log(enableSmoothing, "arcontext enable smoothing ");
   // const { calculateAngleAtMiddle } = ARFunctions()
@@ -103,18 +105,18 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     // console.log(YRDelta2,"YRDELta2")
     console.log(YRAngle,"YRAngle");
 
-    // if(YRAngle>=130 && YRAngle<=150){
-    //   gsplatCanvas.style.display = "block";
-    //   gsplatCanvas2.style.display = "block";
-    // }
-    // else if(Math.abs(YRAngle)<130){
-    //   gsplatCanvas2.style.display = "none";
-    //   gsplatCanvas.style.display = "block";
-    // }
-    // else if(Math.abs(YRAngle) >150){
-    //   gsplatCanvas.style.display = "none";
-    //   gsplatCanvas2.style.display = "block";
-    // }
+    if(YRAngle>=130 && YRAngle<=150){
+      setIsvisible1(true);
+      setIsvisible2(true);
+    }
+    else if(Math.abs(YRAngle)<130){
+      setIsvisible1(true);
+      setIsvisible2(false);
+    }
+    else if(Math.abs(YRAngle) >150){
+      setIsvisible1(false);
+      setIsvisible2(true);
+    }
 
     setYRDelta(YRDelta);
     setYRDelta2(YRDelta2);

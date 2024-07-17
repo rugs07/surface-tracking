@@ -24,6 +24,8 @@ const HandTrackingComponent = () => {
     wristZoom,
     setHandLabels,
     YRDelta2,
+    isvisible1,
+    isvisible2
   } = useVariables();
 
   const [faceDetections, setFaceDetections] = useState(null);
@@ -231,6 +233,7 @@ const HandTrackingComponent = () => {
                 src={ringUrl1}
                 scale={[0.1, 0.1, 0.1]}
                 rotation={[XRDelta, YRDelta2, 0]}
+                visible={isvisible1}
               />
             </>
           )}
@@ -254,6 +257,7 @@ const HandTrackingComponent = () => {
                 src={ringUrl2}
                 scale={[0.1, 0.1, 0.1]}
                 rotation={[XRDelta, YRDelta, 0]}
+                visible={isvisible2}
               />
             </>
           )}
