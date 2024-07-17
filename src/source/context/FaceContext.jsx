@@ -99,19 +99,20 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     // gsplatCanvas2.style.display = "none";
     // gsplatCanvas2.style.display = "block";
     YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle- 90);
-    YRDelta2 = THREE.MathUtils.degToRad(-90 - YRAngle- 140);
+    YRDelta2 = THREE.MathUtils.degToRad(-90 - YRAngle- 160);
+    // console.log(YRDelta2,"YRDELta2")
     console.log(YRAngle,"YRAngle");
 
-    // if(YRAngle<-130 && YRAngle>-150){
-    //   gsplatCanvas.style.display = "block"
-    //   gsplatCanvas2.style.display = "block"
-    // }
-    // else if(YRAngle>-130){
-    //   gsplatCanvas2.style.display = "none"
-    // }
-    // else if(YRAngle<-150){
-    //   gsplatCanvas.style.display = "none"
-    // }
+    if(YRAngle>130 && YRAngle<150){
+      gsplatCanvas.style.display = "block"
+      gsplatCanvas2.style.display = "block"
+    }
+    else if(Math.abs(YRAngle)<130){
+      gsplatCanvas2.style.display = "none"
+    }
+    else if(Math.abs(YRAngle) >150){
+      gsplatCanvas.style.display = "none"
+    }
 
     setYRDelta(YRDelta);
     setYRDelta2(YRDelta2);

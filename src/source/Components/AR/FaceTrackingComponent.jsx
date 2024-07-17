@@ -7,6 +7,7 @@ import { FaceFunctions } from "../../context/FaceContext";
 import { ARFunctions } from "../../context/ARContext";
 import FPSStats from "react-fps-stats";
 import { useVariables } from "../../context/variableContext";
+import Showhandscreen from "./Showhandscreen";
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
@@ -135,6 +136,7 @@ const HandTrackingComponent = () => {
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
+    {!faceDetections?.faceLandmarks?.[0] && <Showhandscreen />}
       <video
         ref={videoRef}
         autoPlay
@@ -217,7 +219,7 @@ const HandTrackingComponent = () => {
               <Splat
                 src={ringUrl1}
                 scale= {[0.1,0.1,0.1]}
-                rotation={[XRDelta, -YRDelta2, 0]}
+                rotation={[XRDelta, YRDelta2, 0]}
               />
             </>
           )}
