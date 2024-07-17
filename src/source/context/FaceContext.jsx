@@ -576,7 +576,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     getYAngleAndRotate(nosepoint1,earpoint21,ZRAngle)
     
     // Resizing
-    const dist1 = calculateFaceSize1(points, YRAngle, ZRAngle) * windowWidth/windowHeight;
+    const dist1 = calculateFaceSize1(points, YRAngle, ZRAngle) * window_scale;
     let resizeMul1 = 0.4;
 
     // let smoothenSize = smoothResizing(dist * resizeMul1);
@@ -707,7 +707,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     
     // Resizing
     let resizeMul = 0.4;
-    const dist2 = calculateFaceSize2(points, YRAngle, ZRAngle) * windowWidth/windowHeight;
+    const dist2 = calculateFaceSize2(points, YRAngle, ZRAngle) * window_scale;
+    console.log(window_scale,"windowscale")
 
     setEarZoom2(dist2*resizeMul);
 
