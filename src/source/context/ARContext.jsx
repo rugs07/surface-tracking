@@ -142,11 +142,11 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let canP = 0;
     // cameraControls.setFocalOffset(canX, canY, 0.0, false);
     let adjustmentFactor = window.innerWidth * 0.5;
-    angle = angle;
+    angle = -angle;
     let transform = null;
     if (!translation) transform = "rotateZ(" + angle + "deg)";
     else canP = canX;
-    const angless = window.innerWidth < 768 ? -angle : angle
+    // const angless = window.innerWidth < 768 ? -angle : angle
     transform =
       "translate3d(" +
       canX +
@@ -155,7 +155,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angless +
+      angle +
       "deg)";
     transform, "can's";
     gsplatCanvas.style.transform = transform;
