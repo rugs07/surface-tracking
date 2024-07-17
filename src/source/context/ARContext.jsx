@@ -96,8 +96,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
   function rotateY(angle) {
 
 
-    window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
-    // YRAngle = -angle;
+    // window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
+    YRAngle = angle;
 
     if (
       (GlobalHandLabel == "Right" && facingMode !== "environment") ||
@@ -108,7 +108,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle);
     }
 
-    setYRDelta(-YRDelta);
+    setYRDelta(YRDelta);
     console.log(handType, 'hand type');
     return YRDelta;
   }
