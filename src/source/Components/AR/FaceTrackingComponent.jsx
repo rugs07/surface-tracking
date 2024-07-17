@@ -65,6 +65,9 @@ const HandTrackingComponent = () => {
       }
     };
 
+    let sourcevideowidth = null;
+    let sourcevideoheight = null;
+
     const detectFaces = async () => {
       if (videoRef.current?.readyState >= 2) {
         const currentTime = performance.now();
@@ -75,15 +78,23 @@ const HandTrackingComponent = () => {
             currentTime
           );
           setFaceDetections(faceDetections);
+          if (sourcevideowidth == null)
+            sourcevideowidth = videoRef.current?.videoWidth;
+          if (sourcevideoheight == null)
+            sourcevideoheight = videoRef.current?.videoHeight;
           if (faceDetections?.faceLandmarks[0]) {
             translateRotateMesh(
               faceDetections?.faceLandmarks[0],
-              canvasRef.current
+              canvasRef.current,
+              sourcevideowidth,
+              sourcevideoheight
             );
 
             translateRotateMesh2(
               faceDetections?.faceLandmarks[0],
-              canvasRef2.current
+              canvasRef2.current,
+              sourcevideowidth,
+              sourcevideoheight
             );
 
             setIsLoaded(true); // Set loader to false when face detections are received
@@ -136,7 +147,7 @@ const HandTrackingComponent = () => {
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
-    {!faceDetections?.faceLandmarks?.[0] && <Facehandscreen />}
+      {!faceDetections?.faceLandmarks?.[0] && <Facehandscreen />}
       <video
         ref={videoRef}
         autoPlay
@@ -218,7 +229,7 @@ const HandTrackingComponent = () => {
             <>
               <Splat
                 src={ringUrl1}
-                scale= {[0.1,0.1,0.1]}
+                scale={[0.1, 0.1, 0.1]}
                 rotation={[XRDelta, YRDelta2, 0]}
               />
             </>
@@ -241,7 +252,7 @@ const HandTrackingComponent = () => {
             <>
               <Splat
                 src={ringUrl2}
-                scale= {[0.1,0.1,0.1]}
+                scale={[0.1, 0.1, 0.1]}
                 rotation={[XRDelta, YRDelta, 0]}
               />
             </>
