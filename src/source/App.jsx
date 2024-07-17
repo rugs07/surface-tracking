@@ -25,7 +25,7 @@ const App = () => {
                 <Route path="/AR" element={<HandTrackingComponent />} />
                 <Route path="/Loading" element={<Hands />} />
                 <Route path="/Loading1" element={<Face />} />
-                <Route path="/test" element={<FaceTrackingComponent />} />
+                <Route path="/face-ar" element={<FaceTrackingComponent />} />
               </Routes>
             </BrowserRouter>
           </GlobalFaceFunctionsProvider>

@@ -7,7 +7,7 @@ import { FaceFunctions } from "../../context/FaceContext";
 import { ARFunctions } from "../../context/ARContext";
 import FPSStats from "react-fps-stats";
 import { useVariables } from "../../context/variableContext";
-import Showhandscreen from "./Showhandscreen";
+import Facehandscreen from "./Facehandscreen";
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
@@ -131,12 +131,12 @@ const HandTrackingComponent = () => {
 
   const stopAR = () => {
     videoRef.current?.srcObject?.getTracks().forEach((track) => track.stop());
-    window.location.href = "http://localhost:5173";
+    window.location.href = "/";
   };
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
-    {!faceDetections?.faceLandmarks?.[0] && <Showhandscreen />}
+    {!faceDetections?.faceLandmarks?.[0] && <Facehandscreen />}
       <video
         ref={videoRef}
         autoPlay
@@ -158,7 +158,7 @@ const HandTrackingComponent = () => {
         <div
           style={{
             position: "absolute",
-            top: "50%",
+            top: "60%",
             left: "50%",
             transform: "translate(-50%, -50%)",
             zIndex: 3000,
