@@ -21,7 +21,8 @@ const HandTrackingComponent = () => {
     YRDelta,
     XRDelta,
     ZRDelta,
-    wristZoom,
+    earZoom2,
+    earZoom1,
     setHandLabels,
     YRDelta2,
     isvisible1,
@@ -231,7 +232,7 @@ const HandTrackingComponent = () => {
             <>
               <Splat
                 src={ringUrl1}
-                scale={[0.1, 0.1, 0.1]}
+                scale={[earZoom1,earZoom1,earZoom1]}
                 rotation={[XRDelta, YRDelta2, 0]}
                 visible={isvisible1}
               />
@@ -255,7 +256,7 @@ const HandTrackingComponent = () => {
             <>
               <Splat
                 src={ringUrl2}
-                scale={[wristZoom,wristZoom,wristZoom]}
+                scale={[earZoom2,earZoom2,earZoom2]}
                 rotation={[XRDelta, YRDelta, 0]}
                 visible={isvisible2}
               />

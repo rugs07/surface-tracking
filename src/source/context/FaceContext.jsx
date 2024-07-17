@@ -25,7 +25,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     setHandPointsX,
     setHandPointsY,
     setHandPointsZ,
-    setWristZoom,
+    setEarZoom1,
+    setEarZoom2,
     XRAngle,
     XRDelta,
     setXRDelta,
@@ -414,7 +415,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
   }
 
-  function calculateFaceSize(points, YRAngle, ZRAngle) {
+  function calculateFaceSize1(points, YRAngle, ZRAngle) {
     // calculate wrist size as distance between wrist and first knuckle and distance between thumb knuckle and pinky knuckle on first frame and then adjust for scale using wrist.z value
     // let wristSize = manhattanDistance(points[0], points[5]);
     // wristSize += manhattanDistance(points[9], points[17]);
@@ -422,7 +423,23 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
     //Inner edge of eyes
     let facesize = null;
-    let eyegap = euclideanDistance(points[401], points[177]);
+    let eyegap = euclideanDistance(points[4], points[401]);
+    facesize = eyegap;
+    console.log(eyegap);
+
+    lastSize = facesize;
+    return facesize;
+  }
+
+  function calculateFaceSize2(points, YRAngle, ZRAngle) {
+    // calculate wrist size as distance between wrist and first knuckle and distance between thumb knuckle and pinky knuckle on first frame and then adjust for scale using wrist.z value
+    // let wristSize = manhattanDistance(points[0], points[5]);
+    // wristSize += manhattanDistance(points[9], points[17]);
+    // wristSize /= 2;
+
+    //Inner edge of eyes
+    let facesize = null;
+    let eyegap = euclideanDistance(points[4], points[177]);
     facesize = eyegap;
     console.log(eyegap);
 
@@ -559,16 +576,14 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     getYAngleAndRotate(nosepoint1,earpoint21,ZRAngle)
     
     // Resizing
-    const dist = calculateFaceSize(points, YRAngle, ZRAngle);
-
-    let resizeMul1 = 0.1;
+    const dist1 = calculateFaceSize1(points, YRAngle, ZRAngle) * windowWidth/windowHeight;
+    let resizeMul1 = 0.4;
 
     // let smoothenSize = smoothResizing(dist * resizeMul1);
-    setWristZoom(dist*resizeMul1);
-    console.log(dist*resizeMul1,"wristzoom");
-    // setWristZoom(smoothenSize);
-    // scaleMul = smoothenSize * 0.5;
 
+    setEarZoom1(dist1*resizeMul1);
+    
+    
     // Use if required
     // const baseNear = jewelType === "bangle" ? 0.093 : 0.0975;
     // cameraNear = baseNear + scaleMul * 0.01;
@@ -691,9 +706,11 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     getYAngleAndRotate(nosepoint2,earpoint22,ZRAngle)
     
     // Resizing
-    const dist = calculateFaceSize(points, YRAngle, ZRAngle);
+    let resizeMul = 0.4;
+    const dist2 = calculateFaceSize2(points, YRAngle, ZRAngle) * windowWidth/windowHeight;
 
-    // let resizeMul = 2;
+    setEarZoom2(dist2*resizeMul);
+
 
     // let smoothenSize = smoothResizing(dist * resizeMul);
     // setWristZoom(smoothenSize);
@@ -781,7 +798,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     getZAngleAndRotate2,
     euclideanDistance,
     manhattanDistance,
-    calculateFaceSize,
+    calculateFaceSize1,
+    calculateFaceSize2,
     smoothResizing,
     calculateAngleAtMiddle,
     translateRotateMesh,
