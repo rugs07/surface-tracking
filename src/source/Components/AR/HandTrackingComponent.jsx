@@ -61,7 +61,7 @@ const HandsModal = ({ isOpen, onClose, isLoaded }) => {
   return (
     <div className="modals-overlay" onClick={onClose}>
       <div className="modals-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Try on with 3 simple steps!</h2>
+        {/* <h2>Try on with 3 simple steps!</h2> */}
         <div className="steps-Container">
           {/* <div className="steps">
             <img src={imagePaths.step1} alt="Step 1" />
@@ -73,9 +73,8 @@ const HandsModal = ({ isOpen, onClose, isLoaded }) => {
           </div> */}
           <div className="steps">
             <img src={imagePaths.step3} alt="Step 3" />
-            <p>Place your hand vertically in front of the camera</p>
-            <p>Set the jewellery on your hand correctly</p>
-            <p>Try it on freely to view all its details</p>
+            <p style={{textWrap:'wrap'}}>Place your hand vertically in front of the camera and try it on freely</p>
+           
           </div>
         </div>
         {!isLoaded ? (
