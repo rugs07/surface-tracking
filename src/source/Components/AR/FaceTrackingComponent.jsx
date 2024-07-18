@@ -15,6 +15,10 @@ const HandTrackingComponent = () => {
   const canvasRef2 = useRef(null);
   const isMobile = window.innerWidth <= 768;
 
+  const queryParams = new URLSearchParams(window.location.search);
+  let id = queryParams.get("id") || "jewel26_lr";
+
+
   const { translateRotateMesh, translateRotateMesh2 } = FaceFunctions();
   const {
     jewelType,
@@ -35,12 +39,12 @@ const HandTrackingComponent = () => {
 
   const ringUrl1 = useMemo(
     () =>
-      `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`
+      `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${id}/${id}.splat`
   );
 
   const ringUrl2 = useMemo(
     () =>
-      `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel25_lr/jewel25_lr.splat`
+      `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${id}/${id}.splat`
   );
 
   useEffect(() => {
