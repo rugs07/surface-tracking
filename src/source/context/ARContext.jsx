@@ -142,7 +142,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let canP = 0;
     // cameraControls.setFocalOffset(canX, canY, 0.0, false);
     let adjustmentFactor = window.innerWidth * 0.5;
-    angle = -angle;
+    angle = angle;
     let transform = null;
     if (!translation) transform = "rotateZ(" + angle + "deg)";
     else canP = canX;
