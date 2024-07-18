@@ -146,7 +146,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let transform = null;
     if (!translation) transform = "rotateZ(" + angle + "deg)";
     else canP = canX;
-    // const angless = window.innerWidth < 768 ? -angle : angle
+    const angless = window.innerWidth < 768 ? -angle : angle
     transform =
       "translate3d(" +
       canX +
@@ -155,7 +155,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angle +
+      angless +
       "deg)";
     transform, "can's";
     gsplatCanvas.style.transform = transform;
