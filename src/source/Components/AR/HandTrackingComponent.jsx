@@ -61,27 +61,31 @@ const HandsModal = ({ isOpen, onClose, isLoaded }) => {
   return (
     <div className="modals-overlay" onClick={onClose}>
       <div className="modals-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Try on with 3 simple steps!</h2>
+        {/* <h2>Try on with 3 simple steps!</h2> */}
         <div className="steps-Container">
-          <div className="steps">
+          {/* <div className="steps">
             <img src={imagePaths.step1} alt="Step 1" />
             <p>Place your hand vertically in front of the camera</p>
-          </div>
-          <div className="steps">
+          </div> */}
+          {/* <div className="steps">
             <img src={imagePaths.step2} alt="Step 2" />
             <p>Set the jewellery on your hand correctly</p>
-          </div>
+          </div> */}
           <div className="steps">
             <img src={imagePaths.step3} alt="Step 3" />
-            <p>Try it on freely to view all its details</p>
+            <center>
+
+              <p >Place your hand vertically in front of the camera and try it on freely</p>
+            </center>
+
           </div>
         </div>
         {!isLoaded ? (
-          <button className="modal-Button" onClick={onClose}>
-            Getting started...
+          <button disabled className="modal-Button" onClick={onClose}>
+            Loading...
           </button>
         ) : (<button className="modal-Button" onClick={onClose}>
-          get Started
+          Start
         </button>)}
       </div>
     </div>
@@ -112,6 +116,7 @@ const HandTrackingComponent = () => {
   const selectedJewel = useMemo(() => JSON.parse(
     sessionStorage.getItem("selectedJewel") || "{}"
   ), []);
+  console.log(selectedJewel.type, "selectedJewel");
 
   const url = useMemo(() => `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`, [selectedJewel]);
 
@@ -256,7 +261,8 @@ const HandTrackingComponent = () => {
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       {!handPresence && <Showhandscreen />}
-      {handAngle > 300 || handAngle < 240 ? <Showhandscreen /> : null}
+
+      {(selectedJewel.type === "bangle" && (handAngle > 300 || handAngle < 240)) ? <Showhandscreen /> : null}
       {!handPresence && (
         <button className="stopArBtn" onClick={handleStopAR}>
           STOP AR
@@ -279,7 +285,7 @@ const HandTrackingComponent = () => {
           objectFit: "cover",
         }}
       />
-      <FPSStats />
+      {/* <FPSStats /> */}
       <div
         style={{
           position: "absolute",
@@ -307,7 +313,7 @@ const HandTrackingComponent = () => {
             }}
             style={{ width: "100vw", height: "100vh" }}
           >
-            {handAngle <= 300 && handAngle >= 240 && (
+            {(selectedJewel.type !== "bangle" || (handAngle <= 300 && handAngle >= 240)) && (
               <Splat
                 src={url}
                 rotation={[XRDelta, YRDelta, ZRDelta]}

@@ -1,6 +1,6 @@
 // GlobalFunctionsContext.js
 import * as THREE from "three";
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useVariables } from "./variableContext";
 
 const GlobalFunctionsContext = createContext();
@@ -19,6 +19,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
   const lastStableSizeRef = useRef(null);
   const [isHandStable, setIsHandStable] = useState(true);
   const foldHistoryRef = useRef([]);
+  const selectedJewel = useMemo(() => JSON.parse(
+    sessionStorage.getItem("selectedJewel") || "{}"
+  ), []);
 
   // const gsplatCanvas = document.getElementById("gsplatCanvas");
   // Define your globally accessible functions
@@ -54,7 +57,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     lastPinkyRef,
     lastIndexRef,
     isMobile,
-    selectedJewel,
+    // selectedJewel,
     scaleMul,
     cameraNear,
     cameraFar,
@@ -95,9 +98,16 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
   function rotateY(angle) {
 
+    console.log(selectedJewel.type, "fhjksdhfjksd");
 
     // window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
-    YRAngle = angle;
+    if (selectedJewel.type === "ring") {
+
+      YRAngle = angle
+    } else {
+      YRAngle = -angle
+    }
+
 
     if (
       (GlobalHandLabel == "Right" && facingMode !== "environment") ||
@@ -108,7 +118,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle);
     }
 
-    setYRDelta(-YRDelta);
+    setYRDelta(YRDelta);
     // console.log(handType, 'hand type');
     return YRDelta;
   }
@@ -142,11 +152,11 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let canP = 0;
     // cameraControls.setFocalOffset(canX, canY, 0.0, false);
     let adjustmentFactor = window.innerWidth * 0.5;
-    angle = -angle;
+    angle = angle;
     let transform = null;
     if (!translation) transform = "rotateZ(" + angle + "deg)";
     else canP = canX;
-    // const angless = window.innerWidth < 768 ? -angle : angle
+    const angless = window.innerWidth < 768 ? -angle : angle
     transform =
       "translate3d(" +
       canX +
@@ -155,7 +165,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angle +
+      angless +
       "deg)";
     transform, "can's";
     gsplatCanvas.style.transform = transform;
