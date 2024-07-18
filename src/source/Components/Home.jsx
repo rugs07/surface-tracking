@@ -45,7 +45,7 @@ const Home = () => {
             <img src={logo} className="logoimg" />
             <span className="logo-text">Jar4u</span>
           </div>
-          <h2 className="sitename">3D Experiences that Uplift Sales</h2>
+          {/* <h2 className="sitename">3D Experiences that Uplift Sales</h2> */}
         </div>
         <div className="side-errors" id="side-errors"></div>
         <Suspense fallback={<div>Loading...</div>}>

@@ -558,6 +558,7 @@ button:hover {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  color: rgb(181, 178, 178);
 }
 
 .category-label::before,

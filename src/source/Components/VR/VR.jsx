@@ -123,7 +123,7 @@ const VR = () => {
   };
 
   const handleClick = () => {
-    if (isMobileDevice() || isDevMode()) {
+    if (isMobileDevice() || isDevMode() || selectedJewel.type === "earring" || selectedJewel.type === "ring") {
       // console.log(selectedJewel.type,"jeweltype",jewelType)
       if(selectedJewel.type === "earring"){
         navigate(`/face-ar?id=${selectedJewel.name}`)
