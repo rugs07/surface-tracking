@@ -45,7 +45,6 @@
 
 h1,
 h2,
-h3,
 h4 {
   margin: 0;
   font-size: var(--fontSize);
@@ -109,7 +108,7 @@ button {
 
 span {
   color: white;
-  margin-top: 55px;
+  margin-top: 68px;
 }
 
 button:hover {
@@ -549,6 +548,27 @@ button:hover {
 .modebutton {
   display: none;
 }
+
+.jewel-category {
+  margin-top: 10px;
+}
+.category-label {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.category-label::before,
+.category-label::after {
+  content: "";
+  flex-grow: 1;
+  height: 2px;
+  background-color: #ccc;
+  margin: 0 1rem;
+}
+
 
 #controlType {
   font-weight: 500;
@@ -1130,6 +1150,10 @@ button:hover {
   .jewelname,
   .pricelabel {
     font-size: 16px;
+  }
+
+  .jewel-category {
+    margin-top: 5px;
   }
 
   .selectbtn {

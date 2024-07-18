@@ -124,8 +124,13 @@ const VR = () => {
 
   const handleClick = () => {
     if (isMobileDevice() || isDevMode()) {
-
+      // console.log(selectedJewel.type,"jeweltype",jewelType)
+      if(selectedJewel.type === "earring"){
+        navigate(`/face-ar?id=${selectedJewel.name}`)
+      }
+      else{
       navigate("/AR");
+      }
     }
     setShowModal(true)
   };
@@ -182,7 +187,7 @@ const VR = () => {
               shadows
               gl={{ localClippingEnabled: true }}
               camera={{
-                fov: 86,
+                fov: 106,
                 position: [0, 0, 3.5],
                 frustumCulled: true,
                 near: 0.25,
