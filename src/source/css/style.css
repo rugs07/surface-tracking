@@ -668,6 +668,8 @@ button:hover {
 .steps img{
   height: 10rem;
   width: 10rem;
+  margin-top: 5rem;
+  margin-bottom: 3rem;
 
 }
 .modal-Button{
