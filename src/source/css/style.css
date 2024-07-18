@@ -672,15 +672,24 @@ button:hover {
   
 }
 .steps img{
-  height: 15rem;
-  width: 15rem;
+  height: auto;
+  width: 75%;
   margin-top: 5rem;
   margin-bottom: 3rem;
   border-radius: 1rem;
 
 }
+.steps p {
+  height: auto;
+  width: 75%;
+  text-wrap:pretty;
+  
+  /* align-content: center; */
+}
 .modal-Button{
   margin-top: 7rem;
+  /* height: 15rem; */
+  width: 75%;
   
 }
 
@@ -1033,8 +1042,9 @@ button:hover {
 }
 
 .handimg {
-  height: 70dvh;
-  justify-content: flex-end;
+  /* height: 70dvh; */
+  /* justify-content: flex-end; */
+  align-content: center;
 }
 
 /* The main RIV view */

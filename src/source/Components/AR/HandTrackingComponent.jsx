@@ -73,8 +73,11 @@ const HandsModal = ({ isOpen, onClose, isLoaded }) => {
           </div> */}
           <div className="steps">
             <img src={imagePaths.step3} alt="Step 3" />
-            <p style={{textWrap:'wrap'}}>Place your hand vertically in front of the camera and try it on freely</p>
-           
+            <center>
+
+              <p >Place your hand vertically in front of the camera and try it on freely</p>
+            </center>
+
           </div>
         </div>
         {!isLoaded ? (
