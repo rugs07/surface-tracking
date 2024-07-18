@@ -283,7 +283,7 @@ const HandTrackingComponent = () => {
           objectFit: "cover",
         }}
       />
-      <FPSStats />
+      {/* <FPSStats /> */}
       <div
         style={{
           position: "absolute",
