@@ -1,6 +1,6 @@
 // GlobalFunctionsContext.js
 import * as THREE from "three";
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useVariables } from "./variableContext";
 
 const GlobalFunctionsContext = createContext();
@@ -19,6 +19,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
   const lastStableSizeRef = useRef(null);
   const [isHandStable, setIsHandStable] = useState(true);
   const foldHistoryRef = useRef([]);
+  const selectedJewel = useMemo(() => JSON.parse(
+    sessionStorage.getItem("selectedJewel") || "{}"
+  ), []);
 
   // const gsplatCanvas = document.getElementById("gsplatCanvas");
   // Define your globally accessible functions
@@ -54,7 +57,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     lastPinkyRef,
     lastIndexRef,
     isMobile,
-    selectedJewel,
+    // selectedJewel,
     scaleMul,
     cameraNear,
     cameraFar,
@@ -95,15 +98,16 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
   function rotateY(angle) {
 
+    console.log(selectedJewel.type, "fhjksdhfjksd");
 
     // window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
-    if (jewelType === "ring") {
+    if (selectedJewel.type === "ring") {
 
-      YRAngle = -angle;
-    }
-    else {
+      YRAngle = angle
+    } else {
       YRAngle = -angle
     }
+
 
     if (
       (GlobalHandLabel == "Right" && facingMode !== "environment") ||
@@ -114,7 +118,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle);
     }
 
-    setYRDelta(-YRDelta);
+    setYRDelta(YRDelta);
     // console.log(handType, 'hand type');
     return YRDelta;
   }
