@@ -67,10 +67,10 @@ const HandsModal = ({ isOpen, onClose, isLoaded }) => {
             <img src={imagePaths.step1} alt="Step 1" />
             <p>Place your hand vertically in front of the camera</p>
           </div>
-          <div className="steps">
+          {/* <div className="steps">
             <img src={imagePaths.step2} alt="Step 2" />
             <p>Set the jewellery on your hand correctly</p>
-          </div>
+          </div> */}
           <div className="steps">
             <img src={imagePaths.step3} alt="Step 3" />
             <p>Try it on freely to view all its details</p>

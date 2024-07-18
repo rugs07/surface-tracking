@@ -97,7 +97,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
 
     // window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
-    YRAngle = angle;
+    YRAngle = -angle;
 
     if (
       (GlobalHandLabel == "Right" && facingMode !== "environment") ||
