@@ -38,6 +38,7 @@ export const VariableProvider = ({ children }) => {
   const [isIOS, setIsIOS] = useState(false);
   const [browserName, setBrowserName] = useState('');
   const [jewelType, setJewelType] = useState("");
+  const [wristZoom,setWristZoom] = useState();
   const [rawBaseTheta, setRawBaseTheta] = useState(0);
   const [baseTheta, setBaseTheta] = useState(0);
   const [baseThetaVR, setBaseThetaVR] = useState(0);
@@ -250,6 +251,8 @@ export const VariableProvider = ({ children }) => {
     setShowingJewel,
     lastMidRef,
     setLastMidRef,
+    wristZoom,
+    setWristZoom,
     lastRefOfMid,
     setLastRefOfMid,
     lastPinkyRef,
