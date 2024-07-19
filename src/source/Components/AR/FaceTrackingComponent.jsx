@@ -8,6 +8,44 @@ import { ARFunctions } from "../../context/ARContext";
 import FPSStats from "react-fps-stats";
 import { useVariables } from "../../context/variableContext";
 import Facehandscreen from "./Facehandscreen";
+import { useNavigate } from "react-router-dom";
+import gifearring from "../../assets/earring.gif"
+import ErrorBoundary from "../Errorboundary/ErrorBoundary";
+
+const HandsModal = ({ isOpen, onClose, isLoaded }) => {
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/face-ar");
+  };
+
+  if (!isOpen) return null;
+  // console.log(isLoaded, "is loaded ");
+
+  return (
+    <div className="modals-overlay" onClick={onClose}>
+      <div className="modals-content" onClick={(e) => e.stopPropagation()}>
+        {/* <h2>Try on with 3 simple steps!</h2> */}
+        <div className="steps-Container">
+          <div className="steps">
+            <img src={gifearring} alt="Step 3" />
+            <center>
+              <p >Keep your Face vertically in front of the camera and try it on freely</p>
+            </center>
+          </div>
+        </div>
+        {!isLoaded ? (
+          <button disabled className="modal-Button" onClick={onClose}>
+            Loading...
+          </button>
+        ) : (<button className="modal-Button" onClick={onClose}>
+          Start
+        </button>)}
+      </div>
+    </div>
+  );
+};
 
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
@@ -35,6 +73,7 @@ const HandTrackingComponent = () => {
 
   const [faceDetections, setFaceDetections] = useState(null);
   const [earringPosition, setEarringPosition] = useState([0, 0, 0]);
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const ringUrl1 = useMemo(
@@ -46,6 +85,10 @@ const HandTrackingComponent = () => {
     () =>
       `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${id}/${id}.splat`
   );
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     let faceLandmarker;
@@ -147,7 +190,7 @@ const HandTrackingComponent = () => {
     };
   }, []);
 
-  const stopAR = () => {
+  const handlestopAR = () => {
     videoRef.current?.srcObject?.getTracks().forEach((track) => track.stop());
     window.location.href = "/";
   };
@@ -155,6 +198,11 @@ const HandTrackingComponent = () => {
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       {!faceDetections?.faceLandmarks?.[0] && <Facehandscreen />}
+      {!faceDetections?.faceLandmarks?.[0] && (
+        <button className="stopArBtn" onClick={handlestopAR}>
+          STOP AR
+        </button>
+      )}
       <video
         ref={videoRef}
         autoPlay
@@ -172,23 +220,8 @@ const HandTrackingComponent = () => {
           objectFit: "cover",
         }}
       />
-      {!isLoaded && (
-        <div
-          style={{
-            position: "absolute",
-            top: "60%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 3000,
-            color: "white",
-            fontSize: "24px",
-          }}
-        >
-          Loading...
-        </div>
-      )}
-      <FPSStats />
-      <button
+      {/* <FPSStats /> */}
+      {/* <button
         onClick={stopAR}
         style={{
           position: "absolute",
@@ -204,7 +237,7 @@ const HandTrackingComponent = () => {
         }}
       >
         Stop AR
-      </button>
+      </button> */}
       <div
         style={{
           position: "absolute",
@@ -219,6 +252,7 @@ const HandTrackingComponent = () => {
           // transform: isMobile ? "none" : "rotateY(180deg)",
         }}
       >
+      <ErrorBoundary>
         <Canvas
           id="gsplatCanvas"
           ref={canvasRef}
@@ -267,7 +301,9 @@ const HandTrackingComponent = () => {
             </>
           )}
         </Canvas>
+        </ErrorBoundary>
       </div>
+      <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} isLoaded={isLoaded} />
     </div>
   );
 };

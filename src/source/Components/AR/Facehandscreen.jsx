@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../css/style.css';
 import '../../css/loader.css';
 import '../../css/gsplat.css';
-import face from '../../assets/face1.png';
+import face from '../../assets/faceimage1.png';
 import { useJewels } from '../../context/JewelsContext';
 import { useVariables } from '../../context/variableContext';
 import { ARFunctions } from '../../context/ARContext';
@@ -72,7 +72,7 @@ const Facehandscreen = () => {
     >
       <div className="camerasection" style={{ textAlign: 'center' }}>
         <p className="showhandscreen">Show your face as shown below</p>
-        <img src={face} className="handimg" alt="Hand" style={{ height: '35dvh' }} />
+        <img src={face} className="handimg1" alt="Hand" style={{ height: '35dvh' }} />
       </div>
     </div>
   );  

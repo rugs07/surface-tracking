@@ -99,8 +99,8 @@ button {
 
 .stopArBtn {
   position: absolute;
-  top: 80%;
-  left: 44%;
+  top: 60%;
+  left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1001;
   margin-top: 4rem;
@@ -1331,8 +1331,13 @@ button:hover {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1001;
-    margin-top: 6rem;
+    margin-top: 8rem;
   }
+
+.handimg1{
+  width: 35dvh;
+  height: 30dvh;
+}
 
   .jewel-container {
     /* flex: 0 0 calc(33.33% - 10px);  */
