@@ -98,18 +98,18 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
   function rotateY(angle) {
 
-    console.log(selectedJewel.type, "fhjksdhfjksd");
+    // console.log(selectedJewel.type, "fhjksdhfjksd");
 
-    if (selectedJewel.type === "ring") {
+    // if (selectedJewel.type === "ring") {
 
-      // YRAngle = angle
-      window.innerWidth < 768 ? YRAngle = angle : YRAngle = angle
-    } else {
-      // YRAngle = -angle
-      window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
+    //   // YRAngle = angle
+    //   window.innerWidth < 768 ? YRAngle = angle : YRAngle = angle
+    // } else {
+    //   // YRAngle = -angle
+    //   window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
 
-    }
-
+    // }
+    YRAngle = angle;
 
     if (
       (GlobalHandLabel == "Right" && facingMode !== "environment") ||
@@ -422,7 +422,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
   }
   let lastStableSize = null;
 
-  function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
+  function translateRotateMesh(points, handLabel, isPalmFacing, sourcevideowidth, sourcevideoheight) {
     GlobalHandLabel = handLabel;
     setHandType(handLabel)
     let obj1 = { value: handLabel }
@@ -532,33 +532,33 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let windowWidth = document.documentElement.clientWidth;
     let windowHeight = document.documentElement.clientHeight;
     windowWidth = window.screen.width;
-    "SourceImage height : ", sourceImage.height;
-    "SourceImage width : ", sourceImage.width;
+    "SourceImage height : ", sourcevideoheight;
+    "SourceImage width : ", sourcevideowidth;
     //old code
 
     windowWidth, stayPoint.x, "win height";
-    if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
+    if (windowWidth / windowHeight > sourcevideowidth / sourcevideoheight) {
       // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
       canX = (1 - stayPoint.x) * windowWidth - windowWidth / 2;
       // if(window.navigator.userAgent.includes("Firefox")){
-      //   window_scale = (windowWidth/sourceImage.width) * 1.75;
+      //   window_scale = (windowWidth/sourcevideowidth) * 1.75;
       // }
-      window_scale = windowWidth / sourceImage.width;
+      window_scale = windowWidth / sourcevideowidth;
       canY =
-        stayPoint.y * (sourceImage.height * window_scale) -
-        (sourceImage.height * window_scale) / 2;
+        stayPoint.y * (sourcevideoheight * window_scale) -
+        (sourcevideoheight * window_scale) / 2;
     } else {
       // Image is wider than the canvas, so we crop left & right & scale as per best fit of height
       canY = stayPoint.y * windowHeight - windowHeight / 2;
-      window_scale = windowHeight / sourceImage.height;
+      window_scale = windowHeight / sourcevideoheight;
       canX =
-        stayPoint.x * (sourceImage.width * window_scale) -
-        (sourceImage.width * window_scale) / 2;
+        stayPoint.x * (sourcevideowidth * window_scale) -
+        (sourcevideowidth * window_scale) / 2;
     }
 
     // (window_scale);
 
-    // (sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
+    // (sourcevideoheight, windowHeight, sourcevideowidth, windowWidth ) // Sample: 720 731 1280 1536
     // rotation & translation (getZAngleAndRotate also translates)
     // totalTransX = canX;
 

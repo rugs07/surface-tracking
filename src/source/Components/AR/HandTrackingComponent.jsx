@@ -210,6 +210,10 @@ const HandTrackingComponent = () => {
       return smoothedLandmarks;
     };
 
+    let sourcevideowidth = null;
+    let sourcevideoheight = null;
+
+
     const detectHands = async () => {
       if (videoRef.current?.readyState >= 2) {
         const currentTime = performance.now();
@@ -223,7 +227,11 @@ const HandTrackingComponent = () => {
             const angle = calculateHandAngle(smoothedLandmarks);
             setHandAngle(angle);
             console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
-            translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, canvasRef.current);
+            if (sourcevideowidth == null)
+              sourcevideowidth = videoRef.current?.videoWidth;
+            if (sourcevideoheight == null)
+              sourcevideoheight = videoRef.current?.videoHeight;
+            translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, sourcevideowidth,sourcevideoheight);
             setHandLabels(detections.handednesses[0][0].displayName);
 
           } else {
