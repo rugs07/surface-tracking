@@ -102,7 +102,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     if (selectedJewel.type === "ring") {
 
-      YRAngle = angle
+      YRAngle = -angle
       // window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
     } else {
       YRAngle = -angle
