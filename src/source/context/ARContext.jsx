@@ -102,7 +102,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     if (selectedJewel.type === "ring") {
 
-      YRAngle = -angle
+      YRAngle = angle
       // window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
     } else {
       YRAngle = -angle
@@ -714,7 +714,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       } else
         resizeMul = window_scale * 0.70 * visibilityFactor;
 
-      if (selectedJewel === "floralring") {
+      if (selectedJewel.label === "floralring") {
         resizeMul *= 0.9;
       }
     }
