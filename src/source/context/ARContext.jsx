@@ -98,15 +98,19 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
   function rotateY(angle) {
 
-    console.log(selectedJewel.type, "fhjksdhfjksd");
+    // console.log(selectedJewel.type, "fhjksdhfjksd");
 
-    // window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
-    if (selectedJewel.type === "ring") {
+    // if (selectedJewel.type === "ring") {
 
-      YRAngle = angle
-    } else {
-      YRAngle = -angle
-    }
+    //   // YRAngle = angle
+    //   window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
+    // } else {
+    //   // YRAngle = -angle
+    //   window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
+
+    // }
+
+    YRAngle = angle
 
 
     if (
@@ -120,6 +124,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     setYRDelta(YRDelta);
     // console.log(handType, 'hand type');
+    console.log(YRAngle, "yeangle");
     return YRDelta;
   }
 
@@ -152,11 +157,11 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let canP = 0;
     // cameraControls.setFocalOffset(canX, canY, 0.0, false);
     let adjustmentFactor = window.innerWidth * 0.5;
-    angle = angle;
+    // angle = -angle;
     let transform = null;
-    if (!translation) transform = "rotateZ(" + angle + "deg)";
-    else canP = canX;
     const angless = window.innerWidth < 768 ? -angle : angle
+    if (!translation) transform = "rotateZ(" + angless + "deg)";
+    else canP = canX;
     transform =
       "translate3d(" +
       canX +
@@ -170,7 +175,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     transform, "can's";
     gsplatCanvas.style.transform = transform;
 
-    ZRAngle = -angle;
+    ZRAngle = angle;
     XTrans = -canX;
     YTrans = canY;
     // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
@@ -713,7 +718,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       } else
         resizeMul = window_scale * 0.70 * visibilityFactor;
 
-      if (selectedJewel === "floralring") {
+      if (selectedJewel.label === "floralring") {
         resizeMul *= 0.9;
       }
     }

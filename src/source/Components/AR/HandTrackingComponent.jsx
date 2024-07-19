@@ -210,6 +210,7 @@ const HandTrackingComponent = () => {
       return smoothedLandmarks;
     };
 
+
     const detectHands = async () => {
       if (videoRef.current?.readyState >= 2) {
         const currentTime = performance.now();

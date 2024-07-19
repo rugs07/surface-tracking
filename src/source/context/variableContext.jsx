@@ -24,7 +24,7 @@ export const VariableProvider = ({ children }) => {
   const [XYRotation, setXYRotation] = useState(true);
   const [resize, setResize] = useState(true);
   const [XRAngle, setXRAngle] = useState(0.0);
-  const [YRAngle, setYRAngle] = useState(0.0);
+  const [YRAngle, setYRAngle] = useState();
   const [ZRAngle, setZRAngle] = useState(0.0);
   const [earZoom1, setEarZoom1] = useState(0.1);
   const [earZoom2, setEarZoom2] = useState(0.1);
