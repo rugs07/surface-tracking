@@ -106,6 +106,15 @@ button {
   margin-top: 4rem;
 }
 
+.stopArBtn1 {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  margin-top: 4rem;
+}
+
 span {
   color: white;
   margin-top: 68px;
@@ -1332,6 +1341,15 @@ button:hover {
   }
 
   .stopArBtn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    margin-top: 6rem;
+  }
+
+  .stopArBtn1 {
     position: absolute;
     top: 50%;
     left: 50%;

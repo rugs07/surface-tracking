@@ -199,7 +199,7 @@ const HandTrackingComponent = () => {
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       {!faceDetections?.faceLandmarks?.[0] && <Facehandscreen />}
       {!faceDetections?.faceLandmarks?.[0] && (
-        <button className="stopArBtn" onClick={handlestopAR}>
+        <button className="stopArBtn1" onClick={handlestopAR}>
           STOP AR
         </button>
       )}
