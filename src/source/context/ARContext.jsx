@@ -105,7 +105,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
       // YRAngle = angle
       window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
     } else {
-      YRAngle = -angle
+      // YRAngle = -angle
+      window.innerWidth < 768 ? YRAngle = -angle : YRAngle = angle
+
     }
 
 
