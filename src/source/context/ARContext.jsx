@@ -120,6 +120,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     setYRDelta(YRDelta);
     // console.log(handType, 'hand type');
+    console.log(YRAngle, "yeangle");
     return YRDelta;
   }
 
@@ -154,9 +155,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let adjustmentFactor = window.innerWidth * 0.5;
     // angle = -angle;
     let transform = null;
-    if (!translation) transform = "rotateZ(" + angle + "deg)";
-    else canP = canX;
     const angless = window.innerWidth < 768 ? -angle : angle
+    if (!translation) transform = "rotateZ(" + angless + "deg)";
+    else canP = canX;
     transform =
       "translate3d(" +
       canX +
@@ -165,7 +166,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       "px, " +
       0 +
       "px) rotateZ(" +
-      angle +
+      angless +
       "deg)";
     transform, "can's";
     gsplatCanvas.style.transform = transform;
