@@ -120,7 +120,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle);
     }
 
-    setYRDelta(YRDelta);
+    setYRDelta(-YRDelta);
     // console.log(handType, 'hand type');
     console.log(YRAngle, "yeangle");
     return YRDelta;
