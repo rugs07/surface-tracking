@@ -144,6 +144,12 @@ const VR = () => {
   //   : 1;
 
   const scale = window.innerWidth < 768 ? 0.8 : 1.3;
+  window.onpopstate = () => {
+    navigate("/");
+    // if (videoRef.current?.srcObject) {
+    //   videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+    // }
+  }
 
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">

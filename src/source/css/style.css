@@ -99,8 +99,8 @@ button {
 
 .stopArBtn {
   position: absolute;
-  top: 60%;
-  left: 50%;
+  top: 80%;
+  left: 41%;
   transform: translate(-50%, -50%);
   z-index: 1001;
   margin-top: 4rem;
