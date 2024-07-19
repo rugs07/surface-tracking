@@ -314,7 +314,7 @@ button:hover {
   width: 250px;
   height: 250px;
   position: relative;
-  padding: 10px;
+  padding: 12rem;
   margin: 0;
   margin-top: 15px;
   margin-right: 20px;
@@ -323,6 +323,7 @@ button:hover {
   /* background-color: transparent; */
   transition: transform 0.5s, box-shadow 0.5s;
   cursor: pointer;
+  
 }
 
 .glassmorph {
@@ -375,6 +376,7 @@ button:hover {
   left: 0;
   width: 100%;
   height: 100%;
+  margin-bottom: 1rem;
 }
 
 .selectarea {
@@ -991,6 +993,7 @@ button:hover {
 
 .rowar {
   display: flex;
+  margin:1rem;
   flex-direction: column;
   width: 15%;
   min-width: 275px;
@@ -999,10 +1002,13 @@ button:hover {
   max-height: calc(4 * 250px);
   overflow-y: auto;
   z-index: 10000;
+  border-radius: 2rem;
 }
 .jewel-container {
   flex: 0 0 250px; /* Prevents the jewel container from stretching */
-  margin-bottom: 10px; /* Space between items */
+  margin-bottom: 10px; 
+  /* Space between items */
+  border-radius: 2rem;
 }
 
 .rowar::-webkit-scrollbar {

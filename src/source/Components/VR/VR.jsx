@@ -143,11 +143,11 @@ const VR = () => {
   return (
     <div ref={viewSpaceContainerRef} id="viewspacecontainer">
       <div className="ar-toggle-container" id="ar-toggle-container">
-        {isDevMode && isMobileDevice ? (
+        {/* {isDevMode && isMobileDevice ? (
           <div className="FPSStats">
             <FPSStats />
           </div>
-        ) : null}
+        ) : null} */}
 
         <button
           className="tryon-button"
