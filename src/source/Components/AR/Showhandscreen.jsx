@@ -63,7 +63,7 @@ const Showhandscreen = () => {
     const selectedJewel = jewelsList[jewelId];
     changeJewel(jewelsList[jewelId].type);
     sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
-    // window.location.reload();
+    window.location.reload();
   }
 
 
@@ -90,12 +90,12 @@ const Showhandscreen = () => {
             <button type="button" onClick={() => changeJewellery("laxmi_exp")}>Laxmi Bangle</button>
           </div>
         </div>
-        <div className="jewel-container ar-jewel" id="jewel3_lr" alt="" onClick={() => changeToRing("jewel3_lr")}>
+        {/* <div className="jewel-container ar-jewel" id="jewel3_lr" alt="" onClick={() => changeToRing("jewel3_lr")}>
           <img src={queen} className="jewelimg" alt="Queen's Ring" />
           <div className="selectarea">
             <button type="button" onClick={() => changeToRing("jewel3_lr")}>Queen's Ring</button>
           </div>
-        </div>
+        </div> */}
         <div className="jewel-container ar-jewel" id="jewel26_lr" alt="" onClick={() => changeToRing("jewel26_lr")}>
           <img src={flowerring} className="jewelimg" alt="Flower Ring" />
           <div className="selectarea">
