@@ -1183,7 +1183,7 @@ button:hover {
   }
 
   .jewelimg {
-    /* height: 250; */
+    height: 250;
     top: 15px;
     /* margin-bottom: 2rem; */
     object-fit: contain;
