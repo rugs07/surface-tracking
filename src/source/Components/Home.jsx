@@ -127,7 +127,7 @@ const Home = () => {
           <div className="jrow home-row" id="jewels_row">
             <div className="glassmorph">
               <div
-                className="jewel-container home-jewel"
+              className="jewel-container home-jewel"
                 onClick={() => handleClick("pots")}
               >
                 <img src={ancientpots} className="jewelimg" />
