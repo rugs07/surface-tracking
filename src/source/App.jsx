@@ -11,6 +11,7 @@ import { GlobalFunctionsProvider } from "./context/ARContext";
 import { GlobalFaceFunctionsProvider } from "./context/FaceContext";
 import Showhandscreen from "./Components/AR/Showhandscreen";
 import FaceTrackingComponent from "./Components/AR/FaceTrackingComponent";
+import Foottracking from "./Components/AR/Foottrackingcomponent";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
                 <Route path="/Loading" element={<Hands />} />
                 <Route path="/Loading1" element={<Face />} />
                 <Route path="/face-ar" element={<FaceTrackingComponent />} />
+                <Route path="/shoe" element={<Foottracking />} />
               </Routes>
             </BrowserRouter>
           </GlobalFaceFunctionsProvider>
