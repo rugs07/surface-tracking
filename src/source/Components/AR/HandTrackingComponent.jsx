@@ -312,7 +312,7 @@ const HandTrackingComponent = () => {
               near: 0.093,
               far: 4.75,
             }}
-            style={{ width: "100vw", height: "100vh" }}
+            style={{ width: "200vw", height: "100vh" }}
           >
             {(selectedJewel.type !== "bangle" || (handAngle <= 300 && handAngle >= 240)) && (
               <Splat
