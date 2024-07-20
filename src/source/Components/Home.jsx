@@ -12,6 +12,8 @@ import redeye from "../assets/redeye.png";
 import sunny from "../assets/sunny.png";
 import logo from "../assets/logo1.png";
 import { useVariables } from "../context/variableContext";
+import modelimage from "../assets/finalimg.png";
+import modelimage2 from "../assets/finalimg2.png";
 
 let typeOfJewel;
 const Home = () => {
@@ -26,7 +28,12 @@ const Home = () => {
 
     typeOfJewel == jewelsList[jewelId].type;
     sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
+    if(selectedJewel.type === "earring"){
+      navigate(`/face-ar?id=${selectedJewel.name}`)
+    }
+    else{
     navigate("/VR");
+    }
   };
 
   const handleNavigate = (url) => {
@@ -125,10 +132,10 @@ const Home = () => {
                     handleClick("jewel26_lr_earring");
                   }}
                 >
-                  <img src={flowerring} className="jewelimg" />
+                  <img src={modelimage2} className="jewelimg1" />
                   <div className="selectarea">
                     {/* <!-- <button type="button">Heart Ring</button> --> */}
-                    <span>Flower Earring</span>
+                    <span>Lotus Earring</span>
                   </div>
                 </div>
               </div>
@@ -139,10 +146,10 @@ const Home = () => {
                     handleClick("jewel25_lr_earring");
                   }}
                 >
-                  <img src={redeye} className="jewelimg" />
+                  <img src={modelimage} className="jewelimg1" />
                   <div className="selectarea">
                     {/* <!-- <button type="button">Red Eye Ring</button> --> */}
-                    <span>Red Eye Earring</span>
+                    <span>Ruby Earring</span>
                   </div>
                 </div>
               </div>

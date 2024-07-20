@@ -387,6 +387,16 @@ button:hover {
   margin-bottom: 1rem;
 }
 
+.jewelimg1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 90%;
+  margin-bottom: 1rem;
+  margin-left: 10px;
+}
+
 .selectarea {
   display: flex;
   flex-direction: column;
@@ -1201,6 +1211,11 @@ button:hover {
     height: auto;
     top: 15px;
   }
+  .jewelimg1 {
+    height: auto;
+    top: 15px;
+    scale: 1.25;
+  }
 
   .selectarea {
     height: 50%;
@@ -1361,6 +1376,7 @@ button:hover {
 .handimg1{
   width: 35dvh;
   height: 30dvh;
+  scale: 0.65;
 }
 
   .jewel-container {
