@@ -1200,6 +1200,10 @@ button:hover {
     gap: 0px; */
   }
 
+  .selectarea span{
+  margin-top: 1rem;
+  }
+
   .jewelinfo {
     gap: 3px;
   }
