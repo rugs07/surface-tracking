@@ -95,7 +95,7 @@ const HandsModal = ({ isOpen, onClose, isLoaded }) => {
 const HandTrackingComponent = () => {
   const videoRef = useRef(null);
   const prevFrameRef = useRef(null);
-  const isMobile = window.innerWidth <= 768;
+  // const isMobile = window.innerWidth <= 768;
   const { jewelsList } = useJewels();
   const { translateRotateMesh } = ARFunctions();
   const [handAngle, setHandAngle] = useState(null);
@@ -170,7 +170,7 @@ const HandTrackingComponent = () => {
     };
 
     const smoothLandmarks = (landmarks) => {
-      const baseSmoothingFactor = isMobile ? 0.8 : 0.9;
+      const baseSmoothingFactor = 0.8;
       const jitterThreshold = 0.001; // Adjust this value to control jitter sensitivity
 
       if (!prevFrameRef.current) {
@@ -210,6 +210,8 @@ const HandTrackingComponent = () => {
       return smoothedLandmarks;
     };
 
+    let sourcevideowidth = null;
+    let sourcevideoheight = null;
 
     const detectHands = async () => {
       if (videoRef.current?.readyState >= 2) {
@@ -224,7 +226,11 @@ const HandTrackingComponent = () => {
             const angle = calculateHandAngle(smoothedLandmarks);
             setHandAngle(angle);
             console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
-            translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, canvasRef.current);
+            if (sourcevideowidth == null)
+              sourcevideowidth = videoRef.current?.videoWidth;
+            if (sourcevideoheight == null)
+              sourcevideoheight = videoRef.current?.videoHeight;
+            translateRotateMesh(smoothedLandmarks, detections.handednesses[0][0].displayName, false, sourcevideowidth, sourcevideoheight);
             setHandLabels(detections.handednesses[0][0].displayName);
 
           } else {
@@ -259,11 +265,12 @@ const HandTrackingComponent = () => {
     };
   }, []);
 
+
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       {!handPresence && <Showhandscreen />}
 
-      {(selectedJewel.type === "bangle" && (handAngle > 300 || handAngle < 240)) ? <Showhandscreen /> : null}
+      {/* {(selectedJewel.type === "bangle" && (handAngle > 300 || handAngle < 240)) ? <Showhandscreen /> : null} */}
       {!handPresence && (
         <button className="stopArBtn" onClick={handleStopAR}>
           STOP AR
@@ -297,7 +304,8 @@ const HandTrackingComponent = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          transform: isMobile ? "none" : "rotateY(180deg)"
+          // transform: isMobile ? "none" : "rotateY(180deg)",
+          width: '100vw'
         }}
       >
         <ErrorBoundary>
@@ -312,7 +320,7 @@ const HandTrackingComponent = () => {
               near: 0.093,
               far: 4.75,
             }}
-            style={{ width: "200vw", height: "100vh" }}
+            style={{ width: "100vw", height: "100vh" }}
           >
             {(selectedJewel.type !== "bangle" || (handAngle <= 300 && handAngle >= 240)) && (
               <Splat

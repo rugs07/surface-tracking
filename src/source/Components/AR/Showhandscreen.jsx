@@ -50,7 +50,7 @@ const Showhandscreen = () => {
     const selectedJewel = jewelsList[jewelId];
     changeJewel(jewelsList[jewelId].type)
     sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
-    // window.location.reload();
+    window.location.reload();
   };
 
   const changeToRing = (jewelId) => {
@@ -78,8 +78,8 @@ const Showhandscreen = () => {
         <img src={hand} className="handimg" alt="Hand" />
       </div>
       <div className="rowar">
-        <div  className="jewel-container ar-jewel" id="b4_gen3" alt="" onClick={() => changeJewellery("b4_gen3")}>
-          <img  src={flowerban} className="rowar-img" alt="Flower Bangle" />
+        <div className="jewel-container ar-jewel" id="b4_gen3" alt="" onClick={() => changeJewellery("b4_gen3")}>
+          <img src={flowerban} className="rowar-img" alt="Flower Bangle" />
           <div className="selectarea">
             <h3 type="h3" onClick={() => changeJewellery("b4_gen3")}>Flower Bangle</h3>
           </div>
