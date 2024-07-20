@@ -1005,7 +1005,7 @@ button:hover {
   border-radius: 1rem;
 }
 .jewel-container {
-  flex: 0 0 200px; /* Prevents the jewel container from stretching */
+  flex: 0 0 250px; /* Prevents the jewel container from stretching */
   margin-bottom: 10px; 
   /* Space between items */
   border-radius: 2rem;
@@ -1101,6 +1101,13 @@ button:hover {
     word-spacing: 3px; 
     text-align: center;
   }
+
+  .jewel-container {
+  flex: 0 0 200px; /* Prevents the jewel container from stretching */
+  margin-bottom: 10px; 
+  /* Space between items */
+  border-radius: 2rem;
+}
 
   .ar-toggle-container {
     margin-top: 58px;
