@@ -1171,7 +1171,7 @@ button:hover {
   }
 
   .jewelimg {
-    height: 50;
+    height: 2550;
     top: 15px;
     /* margin-bottom: 2rem; */
     object-fit: contain;
@@ -1323,8 +1323,6 @@ button:hover {
   .jewel-container {
     /* flex: 0 0 calc(33.33% - 10px);  */
     margin-bottom: 0; /* Remove bottom margin */
-    width: 50%;
-    height: auto;
     /* width: 9rem; */
 
     /* height: 9rem; */
