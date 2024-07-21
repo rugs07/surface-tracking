@@ -328,7 +328,7 @@ const HandTrackingComponent = () => {
           >
             {(selectedJewel.type !== "bangle" || (handAngle <= 300 && handAngle >= 240)) && (
               <Splat
-                visible={wristZoom > 1 ? false : true}
+                visible={wristZoom > 1 ? false : null}
                 src={url}
                 rotation={[XRDelta, YRDelta, ZRDelta]}
                 scale={[wristZoom, wristZoom, wristZoom]}
