@@ -153,26 +153,26 @@ export const GlobalFunctionsProvider = ({ children }) => {
   }
 
   function rotateZ(angle, canX, canY) {
-    canX, canY, "canxandy";
-    let canP;
+    // canX, canY, "canxandy";
+    let canP = canX;
 
     // cameraControls.setFocalOffset(canX, canY, 0.0, false);
     let adjustmentFactor = window.innerWidth * 0.5;
     // canP = canX - adjustmentFactor;
-    angle = -angle;
+    // angle = -angle;
     let transform = null;
     // const angless = window.innerWidth < 768 ? -angle : angle
     if (!translation) transform = "rotateZ(" + angle + "deg)";
-    else canP = canX - adjustmentFactor;
+    else canP += adjustmentFactor;
     transform =
       "translate3d(" +
-      -canX +
+      -canP +
       "px, " +
       canY +
       "px, " +
       0 +
       "px) rotateZ(" +
-      angle +
+      -angle +
       "deg)";
 
     // transform, "can's";

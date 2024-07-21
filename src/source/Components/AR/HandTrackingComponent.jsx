@@ -305,7 +305,8 @@ const HandTrackingComponent = () => {
           justifyContent: "center",
           alignItems: "center",
           // transform: isMobile ? "none" : "rotateY(180deg)",
-          width: '100vw'
+          width: '200vw',
+          height: '100vh'
         }}
       >
         <ErrorBoundary>
@@ -320,7 +321,7 @@ const HandTrackingComponent = () => {
               near: 0.093,
               far: 4.75,
             }}
-            style={{ width: "100vw", height: "100vh" }}
+            style={{ width: "200vw", height: "100vh" }}
           >
             {(selectedJewel.type !== "bangle" || (handAngle <= 300 && handAngle >= 240)) && (
               <Splat
