@@ -10,7 +10,7 @@ import FPSStats from "react-fps-stats";
 import { hideLoading, updateLoadingProgress } from "../../../js/utils";
 import { useNavigate } from "react-router-dom";
 import { useVariables } from "../../context/variableContext";
-import qrcode from "../../assets/qr-code.jpeg";
+import qrcode from "../../assets/qr-code-grt.png";
 import { Splat as SplatComponent } from "@react-three/drei";
 
 import "../../css/gsplat.css";
@@ -191,18 +191,19 @@ const VR = () => {
               shadows
               gl={{ localClippingEnabled: true }}
               camera={{
-                fov: 106,
-                position: [0, 0, 3.5],
+                fov: 75,
+                position: [0, 0, 7],
                 frustumCulled: true,
                 near: 0.25,
-                far: 16,
+                far: 100,
               }}
             >
               <group position={[0, -0.5, 0]}>
                 <OrbitControls
                   minDistance={2} //for mobile it is needed
                   maxDistance={5}
-                  autoRotate={isHovered ? false : true}
+                  autoRotate={true}
+                  // autoRotate={isHovered ? false : true}
                   autoRotateSpeed={2}
                   enableDamping={false}
                   enablePan={false}
@@ -229,10 +230,11 @@ const VR = () => {
             <div className="modal" onClick={(e) => e.stopPropagation()}>
               <div className="modal-content">
                 <span className="close" onClick={handleModalClose}>&times;</span>
-                <h1>Try On Now!</h1>
-                <p>Scan this QR code with your phone to virtually try on this item</p>
+                <h1>Best experienced on phone</h1>
+                <p>Scan this QR code or visit <span style={{ fontWeight: "bold", color: "black" }}>grt.jar4u.com</span> on your phone to try on the items</p>
+                {/* <p>Scan this QR code with your phone to virtually try on this item</p> */}
                 <img id="qrCodeImage" src={qrcode} alt="QR Code" />
-                <p>Or visit <span style={{ fontWeight: "bold", color: "black" }}>v2.jar4u.com</span> on your phone</p>
+                {/* <p>or visit <span style={{ fontWeight: "bold", color: "black" }}>grt.jar4u.com</span> on your phone</p> */}
               </div>
             </div>
           </div>
