@@ -166,7 +166,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     else canP = canX - adjustmentFactor;
     transform =
       "translate3d(" +
-      canX +
+      -canX +
       "px, " +
       canY +
       "px, " +
@@ -542,12 +542,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let windowWidth = document.documentElement.clientWidth;
     let windowHeight = document.documentElement.clientHeight;
     // windowWidth = window.screen.width;
-    //old code
-
-    // windowWidth, stayPoint.x, "win height";
     if (windowWidth / windowHeight > sourcevideowidth / sourcevideoheight) {
       // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
-      canX = (1 - stayPoint.x) * windowWidth - windowWidth / 2;
+      canX = stayPoint.x * windowWidth - windowWidth / 2;
       // if(window.navigator.userAgent.includes("Firefox")){
       //   window_scale = (windowWidth/sourcevideowidth) * 1.75;
       // }
