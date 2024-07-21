@@ -9,7 +9,7 @@ import FPSStats from "react-fps-stats";
 import { useVariables } from "../../context/variableContext";
 import Facehandscreen from "./Facehandscreen";
 import { useNavigate } from "react-router-dom";
-import gifearring from "../../assets/earring.gif"
+import gifearring from "../../assets/earring1_big.gif"
 import ErrorBoundary from "../Errorboundary/ErrorBoundary";
 
 const HandsModal = ({ isOpen, onClose, isLoaded }) => {
@@ -31,7 +31,7 @@ const HandsModal = ({ isOpen, onClose, isLoaded }) => {
           <div className="steps">
             <img src={gifearring} alt="Step 3" />
             <center>
-              <p >Keep your Face vertically in front of the camera and try it on freely</p>
+              <p >Keep your face in front of the camera to try on the earrings</p>
             </center>
           </div>
         </div>
