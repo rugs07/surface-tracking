@@ -171,7 +171,7 @@ const HandTrackingComponent = () => {
 
     const smoothLandmarks = (landmarks) => {
       const baseSmoothingFactor = 0.8;
-      const jitterThreshold = 0.001; // Adjust this value to control jitter sensitivity
+      const jitterThreshold = 0.01; // Adjust this value to control jitter sensitivity
 
       if (!prevFrameRef.current) {
         prevFrameRef.current = landmarks;
@@ -265,10 +265,11 @@ const HandTrackingComponent = () => {
     };
   }, []);
 
-
+  console.log(wristZoom, "wrist zoom");
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
       {!handPresence && <Showhandscreen />}
+      {/* {wristZoom > 1.0 ?  : null} */}
 
       {/* {(selectedJewel.type === "bangle" && (handAngle > 300 || handAngle < 240)) ? <Showhandscreen /> : null} */}
       {!handPresence && (
@@ -306,7 +307,9 @@ const HandTrackingComponent = () => {
           alignItems: "center",
           // transform: isMobile ? "none" : "rotateY(180deg)",
           width: '200vw',
-          height: '100vh'
+          height: '100vh',
+
+
         }}
       >
         <ErrorBoundary>
@@ -325,6 +328,7 @@ const HandTrackingComponent = () => {
           >
             {(selectedJewel.type !== "bangle" || (handAngle <= 300 && handAngle >= 240)) && (
               <Splat
+                visible={wristZoom > 1 ? false : true}
                 src={url}
                 rotation={[XRDelta, YRDelta, ZRDelta]}
                 scale={[wristZoom, wristZoom, wristZoom]}
