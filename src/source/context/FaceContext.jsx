@@ -150,15 +150,11 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
   }
 
   function rotateZ1(angle, canX, canY) {
-    // canX, canY, "canxandy";
     let canP = 0;
-    // cameraControls.setFocalOffset(canX, canY, 0.0, false);
     let adjustmentFactor = window.innerWidth * 0.5;
-    angle = angle;
     let transform = null;
     // if (!translation) transform = "rotateZ(" + angle + "deg)";
     // else canP = canX - adjustmentFactor;
-    // const angless = window.innerWidth < 768 ? -angle : angle
     console.log(canX,canY,"CanX and canY");
     transform =
       "translate3d(" +
@@ -170,26 +166,21 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       "px) rotateZ(" +
       -angle +
       "deg)";
-    // transform, "can's";
+
     gsplatCanvas.style.transform = transform;
 
-    ZRAngle = -angle;
+    ZRAngle = angle;
     XTrans = -canX;
     YTrans = canY;
     // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
   }
 
   function rotateZ2(angle, canX, canY) {
-    // canX, canY, "canxandy";
     let canP = 0;
-    // cameraControls.setFocalOffset(canX, canY, 0.0, false);
     let adjustmentFactor = window.innerWidth * 0.5;
-    angle = angle;
     let transform = null;
     // if (!translation) transform = "rotateZ(" + angle + "deg)";
     // else canP = canX - adjustmentFactor;
-    // const angless = window.innerWidth < 768 ? -angle : angle
-    // console.log(canX,canY,"CanX and canY");
     transform =
       "translate3d(" +
       -canX +
@@ -200,11 +191,10 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       "px) rotateZ(" +
       -angle +
       "deg)";
-    // transform, "can's";
 
     gsplatCanvas2.style.transform = transform;
 
-    ZRAngle = -angle;
+    ZRAngle = angle;
     XTrans = -canX;
     YTrans = canY;
     // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
