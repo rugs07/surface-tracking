@@ -504,6 +504,16 @@ button:hover {
   position: relative;
 }
 
+.jewelimg1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90%;
+  height: 90%;
+  margin-bottom: 1rem;
+  margin-left: 10px;
+}
+
 #updatenote {
   font-size: 30px;
   padding: 16px;
@@ -1169,6 +1179,12 @@ button:hover {
   .j4container {
     margin: 0 2%;
     margin-top: 10px;
+  }
+
+  .jewelimg1 {
+    height: auto;
+    top: 15px;
+    scale: 1.25;
   }
 
   .type-label {
