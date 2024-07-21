@@ -141,6 +141,12 @@ const HandTrackingComponent = () => {
               sourcevideowidth,
               sourcevideoheight
             );
+            translateRotateMesh2(
+              poseDetections?.landmarks[0],
+              canvasRef2.current,
+              sourcevideowidth,
+              sourcevideoheight
+            );
             setIsLoaded(true); // Set loader to false when face detections are received
           }
         }
@@ -191,7 +197,7 @@ const HandTrackingComponent = () => {
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
-      {!poseDetections?.landmarks[0] && <Facehandscreen />}
+      {!poseDetections?.landmarks[0][31] && <Facehandscreen />}
       {!poseDetections?.landmarks[0] && (
         <button className="stopArBtn1" onClick={handlestopAR}>
           STOP AR
@@ -203,7 +209,7 @@ const HandTrackingComponent = () => {
         playsInline
         style={{
           position: "absolute",
-          transform: "rotateY(180deg)",
+          // transform: "rotateY(180deg)",
           top: 0,
           left: 0,
           right: 0,
@@ -250,6 +256,30 @@ const HandTrackingComponent = () => {
         <Canvas
           id="gsplatCanvas"
           ref={canvasRef}
+          shadows
+          gl={{ localClippingEnabled: true }}
+          camera={{
+            fov: 46,
+            position: [0, 1.5, 4.5],
+            near: 0.093,
+            far: 4.75,
+          }}
+          style={{ width: "100vw", height: "100vh", position: "absolute" }}
+        >
+          {poseDetections?.landmarks?.[0] && (
+            <>
+              <Splat
+                src={ringUrl1}
+                scale={[earZoom1,earZoom1,earZoom1]}
+                rotation={[XRDelta, YRDelta2, 0]}
+                visible={isvisible1}
+              />
+            </>
+          )}
+        </Canvas>
+        <Canvas
+          id="gsplatCanvas2"
+          ref={canvasRef2}
           shadows
           gl={{ localClippingEnabled: true }}
           camera={{

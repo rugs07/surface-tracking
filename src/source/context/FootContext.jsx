@@ -537,7 +537,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     let nosepoint1 = points[4];
     let centerfacepoint1 = points[9];
     let earpoint11 = points[177];
-    let earpoint21 = points[401];
+    let earpoint21 = points[28];
   
     let window_scale, canX, canY;
     let windowWidth = document.documentElement.clientWidth;
@@ -656,9 +656,9 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       };
     
       earringPosdef = {
-        x: points[4].x,
-        y: points[4].y,
-        z:points[4].z ,
+        x: points[31].x,
+        y: points[31].y,
+        z:points[31].z ,
       };
 
       stayPoint1 = earringPos1;
@@ -669,7 +669,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     let nosepoint2 = points[4];
     let centerfacepoint2 = points[9];
     let earpoint12 = points[177];
-    let earpoint22 = points[401];
+    let earpoint22 = points[29];
   
     let window_scale, canX, canY;
     let windowWidth = document.documentElement.clientWidth;
