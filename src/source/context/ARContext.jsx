@@ -181,7 +181,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     console.log(canX, "canX");
     gsplatCanvas.style.transform = transform;
 
-    ZRAngle = -angle;
+    ZRAngle = angle;
     XTrans = -canP;
     YTrans = canY;
     // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
