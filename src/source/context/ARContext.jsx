@@ -153,30 +153,36 @@ export const GlobalFunctionsProvider = ({ children }) => {
   }
 
   function rotateZ(angle, canX, canY) {
-    canX, canY, "canxandy";
-    let canP = 0;
+    // canX, canY, "canxandy";
+    let canP = canX;
+
     // cameraControls.setFocalOffset(canX, canY, 0.0, false);
     let adjustmentFactor = window.innerWidth * 0.5;
+    // canP = canX - adjustmentFactor;
     // angle = -angle;
     let transform = null;
-    const angless = window.innerWidth < 768 ? -angle : angle
-    if (!translation) transform = "rotateZ(" + angless + "deg)";
-    else canP = canX;
+    // const angless = window.innerWidth < 768 ? -angle : angle
+    if (!translation) transform = "rotateZ(" + angle + "deg)";
+    else canP += adjustmentFactor;
     transform =
       "translate3d(" +
-      canX +
+      -canP +
       "px, " +
       canY +
       "px, " +
       0 +
       "px) rotateZ(" +
-      angless +
+      -angle +
       "deg)";
-    transform, "can's";
+
+    // transform, "can's";
+    console.log(canP, "canP");
+    console.log(adjustmentFactor, "adjustment factor");
+    console.log(canX, "canX");
     gsplatCanvas.style.transform = transform;
 
     ZRAngle = angle;
-    XTrans = -canX;
+    XTrans = -canP;
     YTrans = canY;
     // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
   }
@@ -424,7 +430,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
   }
   let lastStableSize = null;
 
-  function translateRotateMesh(points, handLabel, isPalmFacing, sourceImage) {
+
+
+  function translateRotateMesh(points, handLabel, isPalmFacing, sourcevideowidth, sourcevideoheight) {
     GlobalHandLabel = handLabel;
     setHandType(handLabel)
     let obj1 = { value: handLabel }
@@ -533,34 +541,29 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let window_scale, canX, canY;
     let windowWidth = document.documentElement.clientWidth;
     let windowHeight = document.documentElement.clientHeight;
-    windowWidth = window.screen.width;
-    "SourceImage height : ", sourceImage.height;
-    "SourceImage width : ", sourceImage.width;
-    //old code
-
-    windowWidth, stayPoint.x, "win height";
-    if (windowWidth / windowHeight > sourceImage.width / sourceImage.height) {
+    // windowWidth = window.screen.width;
+    if (windowWidth / windowHeight > sourcevideowidth / sourcevideoheight) {
       // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
-      canX = (1 - stayPoint.x) * windowWidth - windowWidth / 2;
+      canX = stayPoint.x * windowWidth - windowWidth / 2;
       // if(window.navigator.userAgent.includes("Firefox")){
-      //   window_scale = (windowWidth/sourceImage.width) * 1.75;
+      //   window_scale = (windowWidth/sourcevideowidth) * 1.75;
       // }
-      window_scale = windowWidth / sourceImage.width;
+      window_scale = windowWidth / sourcevideowidth;
       canY =
-        stayPoint.y * (sourceImage.height * window_scale) -
-        (sourceImage.height * window_scale) / 2;
+        stayPoint.y * (sourcevideoheight * window_scale) -
+        (sourcevideoheight * window_scale) / 2;
     } else {
       // Image is wider than the canvas, so we crop left & right & scale as per best fit of height
       canY = stayPoint.y * windowHeight - windowHeight / 2;
-      window_scale = windowHeight / sourceImage.height;
+      window_scale = windowHeight / sourcevideoheight;
       canX =
-        stayPoint.x * (sourceImage.width * window_scale) -
-        (sourceImage.width * window_scale) / 2;
+        stayPoint.x * (sourcevideowidth * window_scale) -
+        (sourcevideowidth * window_scale) / 2;
     }
 
     // (window_scale);
 
-    // (sourceImage.height, windowHeight, sourceImage.width, windowWidth ) // Sample: 720 731 1280 1536
+    // (sourcevideoheight, windowHeight, sourcevideowidth, windowWidth ) // Sample: 720 731 1280 1536
     // rotation & translation (getZAngleAndRotate also translates)
     // totalTransX = canX;
 

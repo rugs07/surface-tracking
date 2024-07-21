@@ -79,45 +79,45 @@ const Showhandscreen = () => {
       </div>
       <div className="rowar">
         <div className="jewel-container ar-jewel" id="b4_gen3" alt="" onClick={() => changeJewellery("b4_gen3")}>
-          <img src={flowerban} className="jewelimg" alt="Flower Bangle" />
+          <img src={flowerban} className="rowar-img" alt="Flower Bangle" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeJewellery("b4_gen3")}>Flower Bangle</button>
+            <h3 type="h3" onClick={() => changeJewellery("b4_gen3")}>Flower Bangle</h3>
           </div>
         </div>
         <div className="jewel-container ar-jewel" id="laxmi_exp" alt="" onClick={() => changeJewellery("laxmi_exp")}>
-          <img src={laxmiban} className="jewelimg" alt="Laxmi Bangle" />
+          <img src={laxmiban} className="rowar-img" alt="Laxmi Bangle" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeJewellery("laxmi_exp")}>Laxmi Bangle</button>
+            <h3 type="h3" onClick={() => changeJewellery("laxmi_exp")}>Laxmi Bangle</h3>
           </div>
         </div>
         {/* <div className="jewel-container ar-jewel" id="jewel3_lr" alt="" onClick={() => changeToRing("jewel3_lr")}>
-          <img src={queen} className="jewelimg" alt="Queen's Ring" />
+          <img src={queen} className="rowar-img" alt="Queen's Ring" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeToRing("jewel3_lr")}>Queen's Ring</button>
+            <h3 type="h3" onClick={() => changeToRing("jewel3_lr")}>Queen's Ring</h3>
           </div>
         </div> */}
         <div className="jewel-container ar-jewel" id="jewel26_lr" alt="" onClick={() => changeToRing("jewel26_lr")}>
-          <img src={flowerring} className="jewelimg" alt="Flower Ring" />
+          <img src={flowerring} className="rowar-img" alt="Flower Ring" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeToRing("jewel26_lr")}>Flower Ring</button>
+            <h3 type="h3" onClick={() => changeToRing("jewel26_lr")}>Flower Ring</h3>
           </div>
         </div>
         <div className="jewel-container ar-jewel" id="jewel21_lr" alt="" onClick={() => changeToRing("jewel21_lr")}>
-          <img src={heartring} className="jewelimg" alt="Heart Ring" />
+          <img src={heartring} className="rowar-img" alt="Heart Ring" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeToRing("jewel21_lr")}>Heart Ring</button>
+            <h3 type="h3" onClick={() => changeToRing("jewel21_lr")}>Heart Ring</h3>
           </div>
         </div>
         <div className="jewel-container ar-jewel" id="jewel1_lr" alt="" onClick={() => changeToRing("jewel1_lr")}>
-          <img src={sunnyring} className="jewelimg" alt="Sunny Ring" />
+          <img src={sunnyring} className="rowar-img" alt="Sunny Ring" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeToRing("jewel1_lr")}>Sunny Ring</button>
+            <h3 type="h3" onClick={() => changeToRing("jewel1_lr")}>Sunny Ring</h3>
           </div>
         </div>
         <div className="jewel-container ar-jewel" id="jewel25_lr" alt="" onClick={() => changeToRing("jewel25_lr") && setJewelType("ring")}>
-          <img src={redeye} className="jewelimg" alt="Red Eye Ring" />
+          <img src={redeye} className="rowar-img" alt="Red Eye Ring" />
           <div className="selectarea">
-            <button type="button" onClick={() => changeToRing("jewel25_lr") && setJewelType("ring")}>Red Eye Ring</button>
+            <h3 type="h3" onClick={() => changeToRing("jewel25_lr") && setJewelType("ring")}>Red Eye Ring</h3>
           </div>
         </div>
       </div>
