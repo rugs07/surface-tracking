@@ -154,36 +154,38 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
   function rotateZ(angle, canX, canY) {
     // canX, canY, "canxandy";
-    let canP = canX;
+    let canPX = canX;
+    let canPY = canY;
 
     // cameraControls.setFocalOffset(canX, canY, 0.0, false);
-    let adjustmentFactor = window.innerWidth * 0.5;
-    // canP = canX - adjustmentFactor;
+    let adjustmentFactorX = window.innerWidth * 0.5;
+    let adjustmentFactorY = window.innerHeight * 0.5;
+    // canPX = canX - adjustmentFactor;
     // angle = -angle;
     let transform = null;
     // const angless = window.innerWidth < 768 ? -angle : angle
     if (!translation) transform = "rotateZ(" + angle + "deg)";
-    else canP += adjustmentFactor;
-    transform =
-      "translate3d(" +
-      -canP +
-      "px, " +
-      canY +
-      "px, " +
-      0 +
-      "px) rotateZ(" +
-      -angle +
-      "deg)";
-
+    else {
+      canPX += adjustmentFactorX;
+      canPY -= adjustmentFactorY;
+      transform =
+        "translate3d(" +
+        -canPX +
+        "px, " +
+        canPY +
+        "px, " +
+        0 +
+        "px) rotateZ(" +
+        -angle +
+        "deg)";
+    }
     // transform, "can's";
-    console.log(canP, "canP");
-    console.log(adjustmentFactor, "adjustment factor");
-    console.log(canX, "canX");
+    console.log(canPX, "canPX", canX, "canX");
     gsplatCanvas.style.transform = transform;
 
     ZRAngle = angle;
-    XTrans = -canP;
-    YTrans = canY;
+    XTrans = -canPX;
+    YTrans = canPY;
     // ZRDelta = THREE.MathUtils.degToRad(180 - ZRAngle);
   }
 
@@ -563,6 +565,14 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     // (window_scale);
 
+    //Make width, height of canvas double
+    if (!(gsplatCanvas.width && gsplatCanvas.height)){
+      console.log("Cvs Def", gsplatCanvas.width, gsplatCanvas.height);
+      gsplatCanvas.width = 2*windowWidth;
+      gsplatCanvas.height = 2*windowHeight;
+      console.log("Cvs Double", gsplatCanvas.width, gsplatCanvas.height);
+    }
+    
     // (sourcevideoheight, windowHeight, sourcevideowidth, windowWidth ) // Sample: 720 731 1280 1536
     // rotation & translation (getZAngleAndRotate also translates)
     // totalTransX = canX;
@@ -739,7 +749,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       }
     }
 
-    let smoothenSize = smoothResizing(dist * resizeMul);
+    let smoothenSize = smoothResizing(dist * resizeMul) * 0.5;
     setWristZoom(smoothenSize);
     // scaleMul = smoothenSize * 0.5;
 
