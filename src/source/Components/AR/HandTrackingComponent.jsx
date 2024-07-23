@@ -280,7 +280,7 @@ const HandTrackingComponent = () => {
         });
         setIsLoaded(true);
         detectHands();
-        main();
+        // main();
       } catch (error) {
         console.error("Error initializing hand detection:", error);
       }
@@ -429,8 +429,8 @@ const HandTrackingComponent = () => {
           justifyContent: "center",
           alignItems: "center",
           // transform: isMobile ? "none" : "rotateY(180deg)",
-          width: '200vw',
-          height: '100vh',
+          width: '200%',
+          height: '200%',
         }}
       >
         <ErrorBoundary>
@@ -440,12 +440,12 @@ const HandTrackingComponent = () => {
             shadows
             gl={{ localClippingEnabled: true }}
             camera={{
-              fov: 46,
+              fov: 70,
               position: [0, 1.5, 4.5],
               near: 0.093,
               far: 4.75,
             }}
-            style={{ width: "200vw", height: "100vh" }}
+            style={{ width: "100%", height: "100%" }}
           >
             {(selectedJewel.type !== "bangle" || (handAngle <= 300 && handAngle >= 240)) && (
               <Splat
