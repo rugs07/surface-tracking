@@ -197,7 +197,7 @@ const HandTrackingComponent = () => {
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}>
-      {!poseDetections?.landmarks[0][31] && <Facehandscreen />}
+      {!poseDetections?.landmarks[0] && <Facehandscreen />}
       {!poseDetections?.landmarks[0] && (
         <button className="stopArBtn1" onClick={handlestopAR}>
           STOP AR
