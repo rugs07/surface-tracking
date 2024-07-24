@@ -96,32 +96,26 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
   function rotateY(angle) {
 
-
-    // window.innerWidth < 768 ? YRAngle = angle : YRAngle = -angle
     YRAngle = angle;
-    // gsplatCanvas2.style.display = "none";
-    // gsplatCanvas2.style.display = "block";
-    YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle- 90);
-    YRDelta2 = THREE.MathUtils.degToRad(-90 - YRAngle- 160);
-    // console.log(YRDelta2,"YRDELta2")
+    YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle - 200);
+    YRDelta2 = THREE.MathUtils.degToRad(-90 - YRAngle - 150);
     console.log(YRAngle,"YRAngle");
 
-    if(YRAngle>=130 && YRAngle<=150){
+    if(YRAngle>=77 && YRAngle<=103){
       setIsvisible1(true);
       setIsvisible2(true);
     }
-    else if(Math.abs(YRAngle)<130){
-      setIsvisible1(true);
-      setIsvisible2(false);
-    }
-    else if(Math.abs(YRAngle) >150){
+    else if(Math.abs(YRAngle)<77){
       setIsvisible1(false);
       setIsvisible2(true);
+    }
+    else if(Math.abs(YRAngle) >103){
+      setIsvisible1(true);
+      setIsvisible2(false);
     }
 
     setYRDelta(YRDelta);
     setYRDelta2(YRDelta2);
-    // console.log(handType, 'hand type');
     return {YRDelta,YRDelta2};
   }
 
@@ -290,7 +284,6 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
   function getZAngleAndRotate1(wrist, newMidRef, canX, canY) {
     if (lastMidRef) {
-      console.log("hello aaraha h kya")
       const dy = newMidRef.y - wrist.y;
       const dx = newMidRef.x - wrist.x;
 
@@ -345,7 +338,6 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
   function getZAngleAndRotate2(wrist, newMidRef, canX, canY) {
     if (lastMidRef) {
-      console.log("hello aaraha h kya")
       const dy = newMidRef.y - wrist.y;
       const dx = newMidRef.x - wrist.x;
 
@@ -480,261 +472,95 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     return facesize;
   }
 
-  function translateRotateMesh(points, sourceImage,sourcevideowidth,sourcevideoheight) {
+  function translateRotateMesh(points, sourcevideowidth,sourcevideoheight) {
     if (!points || points.length === 0) {
       return;
     }
-    let earringPos = {
-      x: points[401].x,
-      y: points[401].y,
-      z: points[401].z,
-    };
-    
-    let stayPoint = null;
+
+    // Calculate earring positions staypoint1 is left & staypoint2 is right
+    let stayPoint1 = null;
+    let stayPoint2 = null;
+    const desiredDistance = 1.25; // dist on the vector for staypoint
     
     if (points[401] && points[433]) {
-      const point401 = {
-        x: (0.25* points[323].x + 0.75* points[401].x),
-        y: (0.25* points[323].y + 0.75* points[401].y),
-        z: (0.25* points[323].z + 0.75* points[401].z),
+      // Calculate the vector between point 401 and 433
+      const vector2 = {
+        y: points[376].y - points[401].y,
+        z: points[376].z - points[401].z,
+        x: points[376].x - points[401].x,
       };
-      const point433_376 = {
-        x: points[376].x,
-        y: points[376].y,
-        z: points[376].z,
-      };
+
+      // Calculate the earring position
+      stayPoint2 = {
+        x: points[401].x - vector2.x * desiredDistance,
+        y: points[401].y - vector2.y * desiredDistance,
+        z: points[401].z - vector2.z * desiredDistance,
+      };    
+    }
+
+    if (points[177] && points[147]) {
     
       // Calculate the vector between point 401 and 433
-      const vector = {
-        y: point433_376.y - points[401].y,
-        z: point433_376.z - points[401].z,
-        x: point433_376.x - points[401].x,
+      const vector1 = {
+        x: points[147].x - points[177].x,
+        y: points[147].y - points[177].y,
+        z: points[147].z - points[177].z,
       };
-    
-      // Determine the desired distance to the right of point 401
-      const desiredDistance = 1.5; // Adjust this value as needed
-    
+         
       // Calculate the earring position
-      earringPos = {
-        x: points[401].x - vector.x * desiredDistance,
-        y: points[401].y - vector.y * desiredDistance,
-        z: points[401].z - vector.z * desiredDistance,
+      stayPoint1 = {
+        x: points[177].x - vector1.x * desiredDistance,
+        y: points[177].y - vector1.y * desiredDistance,
+        z: points[177].z - vector1.z * desiredDistance,
       };
-    
-      stayPoint = earringPos;
     }
-    
-    let nosepoint1 = points[4];
-    let centerfacepoint1 = points[9];
-    let earpoint11 = points[177];
-    let earpoint21 = points[401];
-  
-    let window_scale, canX, canY;
+
+    let nosepoint = points[4];
+    let centerfacepoint = points[9];
+    let earpoint_y = points[401];
+    // let earpoint_y1 = points[177];
+
+    let window_scale, canX1, canY1, canX2, canY2;
     let windowWidth = document.documentElement.clientWidth;
     let windowHeight = document.documentElement.clientHeight;
-    console.log("window",windowWidth,windowHeight,sourceImage.width, sourceImage.height,sourcevideowidth,sourcevideoheight)
-    // console.log(window.screen.width,"windowwidth")
+
     if (windowWidth / windowHeight > sourcevideowidth / sourcevideoheight) {
       // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
-      canX =  stayPoint.x * windowWidth - windowWidth / 2;
-
-      // if(window.navigator.userAgent.includes("Firefox")){
-      //   window_scale = (windowWidth/sourcevideowidth) * 1.75;
-      // }
       window_scale = windowWidth / sourcevideowidth;
-      canY =
-        stayPoint.y * (sourcevideoheight * window_scale) -
-        (sourcevideoheight * window_scale) / 2;
+      canX1 = stayPoint1.x * windowWidth - windowWidth / 2;
+      canX2 = stayPoint2.x * windowWidth - windowWidth / 2;
+
+      canY1 = stayPoint1.y * (sourcevideoheight * window_scale) - (sourcevideoheight * window_scale) / 2;
+      canY2 = stayPoint2.y * (sourcevideoheight * window_scale) - (sourcevideoheight * window_scale) / 2;
     } else {
         // Image is wider than the canvas, so we crop left & right & scale as per best fit of height
-        canY = stayPoint.y * windowHeight - windowHeight / 2;
         window_scale = windowHeight / sourcevideoheight;
-        canX =
-        stayPoint.x * (sourcevideowidth * window_scale) -
-        (sourcevideowidth * window_scale) / 2;
-        console.log(window_scale,"window scale",sourcevideowidth,"sourceimage width")
-        console.log(canX,"CanX",canY,"canY");
+        canY1 = stayPoint1.y * windowHeight - windowHeight / 2;
+        canY2 = stayPoint2.y * windowHeight - windowHeight / 2;
+
+        canX1 = stayPoint1.x * (sourcevideowidth * window_scale) - (sourcevideowidth * window_scale) / 2;
+        canX2 = stayPoint2.x * (sourcevideowidth * window_scale) - (sourcevideowidth * window_scale) / 2;
     }
 
-    // (window_scale);
-
-    // (sourcevideoheight, windowHeight, sourcevideowidth, windowWidth ) // Sample: 720 731 1280 1536
-    // rotation & translation (getZAngleAndRotate also translates)
-    // totalTransX = canX;
-
-    totalTransX = canX;
-    totalTransY = canY;
-    // totalTransY = canY;
-    getZAngleAndRotate1(nosepoint1, centerfacepoint1, canX, canY);
-    getYAngleAndRotate(nosepoint1,earpoint21,ZRAngle)
+    getZAngleAndRotate1(nosepoint, centerfacepoint, canX1, canY1);
+    getZAngleAndRotate2(nosepoint, centerfacepoint, canX2, canY2);
+    // getZAngleAndRotate1(points[234], points[127], canX1, canY1);
+    // getZAngleAndRotate2(points[454], points[356], canX2, canY2);
+    getYAngleAndRotate(points[234], points[454], ZRAngle)
     
-    // Resizing // logic 1 and 2 equally good need more testing across phones and laptop on portrait and landscape
+    // Resizing 
+    // logic 1 and 2 equally good need more testing across phones and laptop on portrait and landscape
     const dist1 = calculateFaceSize1(points, YRAngle, ZRAngle) * window_scale; // logic 1 
     // const dist1 = calculateFaceSize1(points, YRAngle, ZRAngle) * windowWidth/windowHeight; // logic 2
     let resizeMul1 = window.innerWidth < 768 ? 0.6 : 0.8;
-
     // let smoothenSize = smoothResizing(dist * resizeMul1);
-
     setEarZoom1(dist1*resizeMul1);
-    
-    
-    // Use if required
-    // const baseNear = jewelType === "bangle" ? 0.093 : 0.0975;
-    // cameraNear = baseNear + scaleMul * 0.01;
 
-    // if (jewelType === "bangle" || type === "bangle") {
-    //   const baseNear = 0.093;
-    //   cameraNear = baseNear + scaleMul * 0.01;
-    //   setCameraNearVar(cameraNear);
-    // }
-
-    // const baseFar = jewelType === "bangle" || type === "bangle" ? 4.5 : 5.018;
-    // cameraFar = baseFar + scaleMul * 0.01;
-    // setCameraFarVar(cameraFar);
-    //(cameraFar);
-
-
-    // cameraControls.zoomTo(smoothenSize, false);
-    // let transform = 'translate3d(10px, 20px, 0) rotateZ(45deg)';
-    // gsplatCanvas.style.transform = transform;
-
-    // if (resize && isArcball)
-      // gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
-  }
-  function translateRotateMesh2(points, sourceImage,sourcevideowidth,sourcevideoheight) {
-    if (!points || points.length === 0) {
-      return;
-    }
-
-    let earringPosdef;
-    let earringPos1 = {
-      x: points[177].x,
-      y: points[177].y,
-      z: points[177].z,
-    };
-    
-    let stayPoint1 = null;
-    
-    if (points[177] && points[215]) {
-      const point177 = {
-        x: points[177].x,
-        y: points[177].y,
-        z: points[177].z,
-      };
-      const point215 = {
-        x: points[147].x,
-        y: points[147].y,
-        z: points[147].z,
-      };
-    
-      // Calculate the vector between point 401 and 433
-      const vector = {
-        x: point215.x - point177.x,
-        y: point215.y - point177.y,
-        z: point215.z - point177.z,
-      };
-    
-      // Determine the desired distance to the right of point 401
-      const desiredDistance = 1; // Adjust this value as needed
-     
-    
-      // Calculate the earring position
-      earringPos1 = {
-        x: point177.x - vector.x * desiredDistance,
-        y: point177.y - vector.y * desiredDistance,
-        z: point177.z,
-      };
-    
-      earringPosdef = {
-        x: points[4].x,
-        y: points[4].y,
-        z:points[4].z ,
-      };
-
-      stayPoint1 = earringPos1;
-    }
-    console.log(stayPoint1,"staypoint");
-    console.log(points[177],'point177')
-    
-    let nosepoint2 = points[4];
-    let centerfacepoint2 = points[9];
-    let earpoint12 = points[177];
-    let earpoint22 = points[401];
-  
-    let window_scale, canX, canY;
-    let windowWidth = document.documentElement.clientWidth;
-    let windowHeight = document.documentElement.clientHeight;
-    // windowWidth = window.screen.width;
-    if (windowWidth / windowHeight > sourcevideowidth / sourcevideoheight) {
-      // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
-      canX = stayPoint1.x * windowWidth - windowWidth / 2;
-
-      // if(window.navigator.userAgent.includes("Firefox")){
-      //   window_scale = (windowWidth/sourcevideowidth) * 1.75;
-      // }
-      window_scale = windowWidth / sourcevideowidth;
-      canY =
-        stayPoint1.y * (sourcevideoheight * window_scale) -
-        (sourcevideoheight * window_scale) / 2;
-    } else {
-        // Image is wider than the canvas, so we crop left & right & scale as per best fit of height
-        canY = stayPoint1.y * windowHeight - windowHeight / 2;
-        window_scale = windowHeight / sourcevideoheight;
-        canX =
-        stayPoint1.x * (sourcevideowidth * window_scale) -
-        (sourcevideowidth * window_scale) / 2;
-        // console.log(window_scale,"window scale",sourcevideowidth,"sourceimage width")
-        // console.log(canX,"CanX",canY,"canY",stayPoint.x,stayPoint.y,"Staypointsx and y");
-    }
-
-    // (window_scale);
-
-    // (sourcevideoheight, windowHeight, sourcevideowidth, windowWidth ) // Sample: 720 731 1280 1536
-    // rotation & translation (getZAngleAndRotate also translates)
-    // totalTransX = canX;
-
-    totalTransX = canX;
-    totalTransY = canY;
-    // totalTransY = canY;
-    getZAngleAndRotate2(nosepoint2, centerfacepoint2, canX, canY);
-    getYAngleAndRotate(nosepoint2,earpoint22,ZRAngle)
-    
-    // Resizing
-    let resizeMul = window.innerWidth < 768 ? 0.6 : 0.8;
+    let resizeMul2 = window.innerWidth < 768 ? 0.6 : 0.8;
     const dist2 = calculateFaceSize2(points, YRAngle, ZRAngle) * window_scale;
-    // console.log(window_scale,"windowscale")
-
-    setEarZoom2(dist2*resizeMul);
-
-
-    // let smoothenSize = smoothResizing(dist * resizeMul);
-    // setWristZoom(smoothenSize);
-    // setWristZoom(smoothenSize);
-    // scaleMul = smoothenSize * 0.5;
-
-    // Use if required
-    // const baseNear = jewelType === "bangle" ? 0.093 : 0.0975;
-    // cameraNear = baseNear + scaleMul * 0.01;
-
-    // if (jewelType === "bangle" || type === "bangle") {
-    //   const baseNear = 0.093;
-    //   cameraNear = baseNear + scaleMul * 0.01;
-    //   setCameraNearVar(cameraNear);
-    // }
-
-    // const baseFar = jewelType === "bangle" || type === "bangle" ? 4.5 : 5.018;
-    // cameraFar = baseFar + scaleMul * 0.01;
-    // setCameraFarVar(cameraFar);
-    //(cameraFar);
-
-
-    // cameraControls.zoomTo(smoothenSize, false);
-    // let transform = 'translate3d(10px, 20px, 0) rotateZ(45deg)';
-    // gsplatCanvas.style.transform = transform;
-
-    // if (resize && isArcball)
-      // gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
+    setEarZoom2(dist2*resizeMul2);
   }
+  
 
   const calculateAngleAtMiddle = (landmark1, landmark2, landmark3) => {
     // Calculate vectors between landmarks
@@ -798,7 +624,6 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     smoothResizing,
     calculateAngleAtMiddle,
     translateRotateMesh,
-    translateRotateMesh2,
   };
 
   return (

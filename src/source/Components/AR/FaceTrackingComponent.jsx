@@ -57,7 +57,7 @@ const HandTrackingComponent = () => {
   let id = queryParams.get("id") || "jewel26_lr";
 
 
-  const { translateRotateMesh, translateRotateMesh2 } = FaceFunctions();
+  const { translateRotateMesh } = FaceFunctions();
   const {
     jewelType,
     YRDelta,
@@ -135,17 +135,16 @@ const HandTrackingComponent = () => {
           if (faceDetections?.faceLandmarks[0]) {
             translateRotateMesh(
               faceDetections?.faceLandmarks[0],
-              canvasRef.current,
               sourcevideowidth,
               sourcevideoheight
             );
 
-            translateRotateMesh2(
-              faceDetections?.faceLandmarks[0],
-              canvasRef2.current,
-              sourcevideowidth,
-              sourcevideoheight
-            );
+            // translateRotateMesh2(
+            //   faceDetections?.faceLandmarks[0],
+            //   canvasRef2.current,
+            //   sourcevideowidth,
+            //   sourcevideoheight
+            // );
 
             setIsLoaded(true); // Set loader to false when face detections are received
           }
