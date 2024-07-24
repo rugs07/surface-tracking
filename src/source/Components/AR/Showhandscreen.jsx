@@ -107,6 +107,7 @@ const Showhandscreen = () => {
           <div className="selectarea">
             <h3 type="h3" onClick={() => changeJewellery("laxmi_exp")}>Laxmi Bangle</h3>
           </div>
+        </div>
         <div className="jewel-container ar-jewel" id="jewel21_lr" alt="" onClick={() => changeToRing("jewel21_lr")}>
           <img src={heartring} className="rowar-img" alt="Heart Ring" />
           <div className="selectarea">
@@ -118,7 +119,6 @@ const Showhandscreen = () => {
           <div className="selectarea">
             <h3 type="h3" onClick={() => changeToRing("jewel1_lr")}>Sunny Ring</h3>
           </div>
-        </div>
         </div>
       </div>
     </div>
