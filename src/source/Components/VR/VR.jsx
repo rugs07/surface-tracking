@@ -50,11 +50,22 @@ const VR = () => {
   url = `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/${selectedJewel.name}/${selectedJewel.name}.splat`;
 
   // Function to detect if the device is a mobile
+  // const isMobileDevice = () => {
+  //   return (
+  //     typeof window.orientation !== "undefined" ||
+  //     navigator.userAgent.indexOf("IEMobile") !== -1
+  //   );
+  // };
+
   const isMobileDevice = () => {
-    return (
-      typeof window.orientation !== "undefined" ||
-      navigator.userAgent.indexOf("IEMobile") !== -1
-    );
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    
+    const isMobileUserAgent = /android|avantgo|blackberry|bb|meego|midp|mmp|mobile|tablet|palm|phone|p(ixi|re)\/|opera m(ob|in)i|plucker|pocket|psp|symbian|smartphone|s(ymbian|eries60|amsung|anyo|ony-ericsson)|windows ce|windows phone|webos|wireless|xda|xiino/i.test(userAgent) ||
+                             /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+    
+    const isSmallScreen = window.innerWidth <= 768; //800 && window.innerHeight <= 600;
+    
+    return isMobileUserAgent || isSmallScreen;
   };
 
   // Function to detect if the mode is 'dev' in the URL
