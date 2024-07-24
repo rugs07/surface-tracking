@@ -119,7 +119,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     ) {
       YRDelta = THREE.MathUtils.degToRad(90 - YRAngle);
     } else {
-      YRDelta = THREE.MathUtils.degToRad(-90 - YRAngle);
+      YRDelta = THREE.MathUtils.degToRad(-70 - YRAngle);
     }
 
     setYRDelta(YRDelta);
@@ -282,7 +282,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
     return rotatedVector;
   }
 
-  function getZAngleAndRotate(wrist, newMidRef, canX, canY) {
+  function getZAngleAndRotate(wrist, newMidRef, canX, canY, sourceVideoRatioWH) {
+    wrist = normalizePoints(wrist, sourceVideoRatioWH)
+    newMidRef = normalizePoints(newMidRef, sourceVideoRatioWH)
     if (lastMidRef) {
       const dy = newMidRef.y - wrist.y;
       const dx = newMidRef.x - wrist.x;
@@ -326,6 +328,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
       }
 
       rotateZ(normZAngle, canX, canY);
+      console.log(normZAngle, "ZZZZ");
     }
 
     lastMidRef = newMidRef;
@@ -384,24 +387,29 @@ export const GlobalFunctionsProvider = ({ children }) => {
     return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
   }
 
-  function normalizePoints(points, sourceVideoRatioWH) {
-    // sourceVideoRatioWH = sourceVideoWidth/sourceVideoHeight
-    let normalizedPoints;
-    if (sourceVideoRatioWH>=1) {
-      normalizedPoints = points.map(point => ({
+  function normalizePoint(point, sourceVideoRatioWH) {
+    if (sourceVideoRatioWH >= 1) {
+      return {
         x: point.x * sourceVideoRatioWH,
         y: point.y,
         z: point.z
-      }));
+      };
     } else {
-      normalizedPoints = points.map(point => ({
+      return {
         x: point.x,
         y: point.y / sourceVideoRatioWH,
         z: point.z
-      }));
+      };
     }
-    return normalizedPoints;
   }
+  
+  function normalizePoints(points, sourceVideoRatioWH) {
+    if (Array.isArray(points)) {
+      return points.map(point => normalizePoint(point, sourceVideoRatioWH));
+    } else {
+      return normalizePoint(points, sourceVideoRatioWH);
+    }
+  }  
 
   function calculateSize(points, YRAngle, ZRAngle, sourceVideoRatioWH=1) {
     let normalizedPoints = normalizePoints(points, sourceVideoRatioWH);
@@ -478,19 +486,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
     console.log(type, "tsm check");
 
     if (type === "bangle") {
-      // if (handLabel === "Left") {
-      //   stayPoint = {
-      //     x: wrist.x - 0.015,
-      //     y: wrist.y,
-      //     z: wrist.z,
-      //   };
-      // } else if (handLabel === "Right") {
-      //   stayPoint = {
-      //     x: wrist.x + 0.015,
-      //     y: wrist.y,
-      //     z: wrist.z,
-      //   };
-      // }
       stayPoint = wrist;
     }
     else {
@@ -550,41 +545,41 @@ export const GlobalFunctionsProvider = ({ children }) => {
     // totalTransY = canY;
     if (jewelType === "bangle" || type === "bangle") {
       // console.log(type, 'file checks');
-      getZAngleAndRotate(wrist, midPip, canX, canY);
+      getZAngleAndRotate(wrist, midPip, canX, canY, sourceVideoRatioWH);
       getXAngleAndRotate(wrist, midPip, ZRAngle);
       getYAngleAndRotate(firstKnuckle, pinkyKnuckle, ZRAngle);
       // console.log(handLabel, "tsm function");
     }
     else if (jewelType === "bangle" && type === "ring") {
       if (isDirectionalRing) {
-        getZAngleAndRotate(points[13], points[14], canX, canY);
+        getZAngleAndRotate(points[13], points[14], canX, canY, sourceVideoRatioWH);
         getXAngleAndRotate(points[13], points[14], ZRAngle);
       } else {
         if (
           (handLabel === "Right" && facingMode !== "environment") ||
           (handLabel === "Left" && facingMode === "environment")
         ) {
-          getZAngleAndRotate(points[14], points[13], canX, canY);
+          getZAngleAndRotate(points[14], points[13], canX, canY, sourceVideoRatioWH);
           getXAngleAndRotate(points[14], points[13], ZRAngle);
         } else {
-          getZAngleAndRotate(points[13], points[14], canX, canY);
+          getZAngleAndRotate(points[13], points[14], canX, canY, sourceVideoRatioWH);
           getXAngleAndRotate(points[13], points[14], ZRAngle);
         }
       }
     }
     else if (jewelType === "ring" || type === "ring") {
       if (isDirectionalRing) {
-        getZAngleAndRotate(points[13], points[14], canX, canY);
+        getZAngleAndRotate(points[13], points[14], canX, canY, sourceVideoRatioWH);
         getXAngleAndRotate(points[13], points[14], ZRAngle);
       } else {
         if (
           (handLabel === "Right" && facingMode !== "environment") ||
           (handLabel === "Left" && facingMode === "environment")
         ) {
-          getZAngleAndRotate(points[14], points[13], canX, canY);
+          getZAngleAndRotate(points[14], points[13], canX, canY, sourceVideoRatioWH);
           getXAngleAndRotate(points[14], points[13], ZRAngle);
         } else {
-          getZAngleAndRotate(points[13], points[14], canX, canY);
+          getZAngleAndRotate(points[13], points[14], canX, canY, sourceVideoRatioWH);
           getXAngleAndRotate(points[13], points[14], ZRAngle);
         }
       }
