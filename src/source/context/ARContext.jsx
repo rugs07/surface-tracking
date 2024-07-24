@@ -386,11 +386,20 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
   function normalizePoints(points, sourceVideoRatioWH) {
     // sourceVideoRatioWH = sourceVideoWidth/sourceVideoHeight
-    let normalizedPoints = points.map(point => ({
-      x: point.x * sourceVideoRatioWH,
-      y: point.y,
-      z: point.z
-    }));
+    let normalizedPoints;
+    if (sourceVideoRatioWH>=1) {
+      normalizedPoints = points.map(point => ({
+        x: point.x * sourceVideoRatioWH,
+        y: point.y,
+        z: point.z
+      }));
+    } else {
+      normalizedPoints = points.map(point => ({
+        x: point.x,
+        y: point.y / sourceVideoRatioWH,
+        z: point.z
+      }));
+    }
     return normalizedPoints;
   }
 
