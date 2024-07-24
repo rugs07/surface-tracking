@@ -136,6 +136,7 @@ const HandTrackingComponent = () => {
       videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
     }
     navigate("/VR");
+    window.location.reload();
   };
 
   const handleCloseModal = () => {
@@ -276,9 +277,12 @@ const HandTrackingComponent = () => {
     };
   }, []);
 
-  // window.onpopstate = () => {
-  //   navigate("/VR");
-  // }
+  window.onpopstate = () => {
+    if (videoRef.current?.srcObject) {
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+    }
+    navigate("/VR");
+  }
 
 
   return (
