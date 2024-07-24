@@ -463,9 +463,9 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let midTop = points[12];
     let midPip = points[10];
     let ringPos = {
-      x: (points[13].x + points[14].x) / 2.0,
-      y: (points[13].y + points[14].y) / 2.0,
-      z: (points[13].z + points[14].z) / 2.0,
+      x: points[13].x * 0.32 + points[14].x * 0.68,
+      y: points[13].y * 0.32 + points[14].y * 0.68,
+      z: points[13].z * 0.32 + points[14].z * 0.68,
     };
 
     let stayPoint = null;
@@ -492,13 +492,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
       else {
         stayPoint = ringPos;
       }
-      // else if (jewelType === "bangle" && type === 'ring') {
-      //   stayPoint = ringPos;
-      // }
-      // else if (jewelType === "ring" || type === "ring") {
-      //   stayPoint = ringPos;
-      // }
-
     }
 
     if (horizontalRotation) {
@@ -520,15 +513,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
       else {
         stayPoint = ringPos;
       }
-
-      // else if (jewelType === "bangle" && type === "ring") {
-      //   stayPoint = ringPos;
-      // }
-      // else if (jewelType === "bangle" ? type === "ring" : "bangle" || type === "ring") {
-      //   stayPoint = ringPos;
-      // }
-
-
 
       setHandPointsX(stayPoint.x);
       setHandPointsY(stayPoint.y);
