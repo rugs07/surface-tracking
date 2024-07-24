@@ -222,7 +222,7 @@ const HandTrackingComponent = () => {
       />
       {/* <FPSStats /> */}
       {/* <button
-        onClick={stopAR}
+        onClick={handlestopAR}
         style={{
           position: "absolute",
           top: "10px",
@@ -238,6 +238,12 @@ const HandTrackingComponent = () => {
       >
         Stop AR
       </button> */}
+      <span
+      className="close1"
+      onClick={handlestopAR}
+    >
+      &times;
+    </span>
       <div
         style={{
           position: "absolute",

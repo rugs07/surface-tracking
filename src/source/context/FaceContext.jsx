@@ -571,7 +571,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     // Resizing // logic 1 and 2 equally good need more testing across phones and laptop on portrait and landscape
     const dist1 = calculateFaceSize1(points, YRAngle, ZRAngle) * window_scale; // logic 1 
     // const dist1 = calculateFaceSize1(points, YRAngle, ZRAngle) * windowWidth/windowHeight; // logic 2
-    let resizeMul1 = 0.6;
+    let resizeMul1 = window.innerWidth < 768 ? 0.6 : 0.8;
 
     // let smoothenSize = smoothResizing(dist * resizeMul1);
 
@@ -700,7 +700,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     getYAngleAndRotate(nosepoint2,earpoint22,ZRAngle)
     
     // Resizing
-    let resizeMul = 0.6;
+    let resizeMul = window.innerWidth < 768 ? 0.6 : 0.8;
     const dist2 = calculateFaceSize2(points, YRAngle, ZRAngle) * window_scale;
     // console.log(window_scale,"windowscale")
 
