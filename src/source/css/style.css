@@ -1307,9 +1307,9 @@ button:hover {
 
   .logo-text {
     font-size: 25px;
-    margin-left: -10px; /* Creates space between the logo and text */
+    margin-left: -1px; /* Creates space between the logo and text */
     color: #fff; /* Adjust color as needed */
-    margin-bottom: 2px;
+    margin-bottom: 40px;
   }
 
   .sitename {
