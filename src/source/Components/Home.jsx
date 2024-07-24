@@ -57,7 +57,7 @@ const Home = () => {
         <div className="side-errors" id="side-errors"></div>
         <Suspense fallback={<div>Loading...</div>}>
           <div className="jewel-category">
-            <h3 className="category-label">Rings</h3>
+            {/* <h3 className="category-label">Rings</h3> */}
             <div className="jrow home-row" id="jewels_row">
               <div className="glassmorph">
                 <div
@@ -122,7 +122,7 @@ const Home = () => {
           {/* {Bangles and earrings} */}
           <div className="jewel-category">
             {/* <hr className="category-line" /> */}
-            <h3 className="category-label">EarRings and Bangles</h3>
+            {/* <h3 className="category-label">EarRings and Bangles</h3> */}
             {/* <hr className="category-line" /> */}
             <div className="jrow home-row" id="jewels_row">
               <div className="glassmorph">
