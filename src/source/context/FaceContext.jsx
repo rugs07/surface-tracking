@@ -400,6 +400,30 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
   }
 
+  function normalizePoint(point, sourceVideoRatioWH=1) {
+    if (sourceVideoRatioWH >= 1) {
+      return {
+        x: point.x * sourceVideoRatioWH,
+        y: point.y,
+        z: point.z
+      };
+    } else {
+      return {
+        x: point.x,
+        y: point.y / sourceVideoRatioWH,
+        z: point.z
+      };
+    }
+  }
+  
+  function normalizePoints(points, sourceVideoRatioWH) {
+    if (Array.isArray(points)) {
+      return points.map(point => normalizePoint(point, sourceVideoRatioWH));
+    } else {
+      return normalizePoint(points, sourceVideoRatioWH);
+    }
+  }
+
   function calculateFaceSize1(points, YRAngle, ZRAngle) {
     // calculate wrist size as distance between wrist and first knuckle and distance between thumb knuckle and pinky knuckle on first frame and then adjust for scale using wrist.z value
     // let wristSize = manhattanDistance(points[0], points[5]);
@@ -408,7 +432,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
     //Inner edge of eyes
     let facesize = null;
-    let eyegap = euclideanDistance(points[4], points[401]);
+    let eyegap = euclideanDistance(points[4], points[177]);
     facesize = eyegap;
     console.log(eyegap);
 
@@ -424,7 +448,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
     //Inner edge of eyes
     let facesize = null;
-    let eyegap = euclideanDistance(points[4], points[177]);
+    let eyegap = euclideanDistance(points[4], points[401]);
     facesize = eyegap;
     console.log(eyegap);
 
@@ -477,7 +501,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       return;
     }
 
-    // Calculate earring positions staypoint1 is left & staypoint2 is right
+    // Calculate earring positions staypoint1 is right & staypoint2 is left
     let stayPoint1 = null;
     let stayPoint2 = null;
     const desiredDistance = 1.25; // dist on the vector for staypoint
@@ -515,16 +539,12 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
       };
     }
 
-    let nosepoint = points[4];
-    let centerfacepoint = points[9];
-    let earpoint_y = points[401];
-    // let earpoint_y1 = points[177];
-
     let window_scale, canX1, canY1, canX2, canY2;
     let windowWidth = document.documentElement.clientWidth;
     let windowHeight = document.documentElement.clientHeight;
+    let sourceVideoRatioWH = sourcevideowidth / sourcevideoheight;
 
-    if (windowWidth / windowHeight > sourcevideowidth / sourcevideoheight) {
+    if (windowWidth / windowHeight > sourceVideoRatioWH) {
       // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
       window_scale = windowWidth / sourcevideowidth;
       canX1 = stayPoint1.x * windowWidth - windowWidth / 2;
@@ -541,6 +561,11 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
         canX1 = stayPoint1.x * (sourcevideowidth * window_scale) - (sourcevideowidth * window_scale) / 2;
         canX2 = stayPoint2.x * (sourcevideowidth * window_scale) - (sourcevideowidth * window_scale) / 2;
     }
+
+    let nosepoint = normalizePoint(points[4], sourceVideoRatioWH);
+    let centerfacepoint = normalizePoint(points[9], sourceVideoRatioWH);
+    let norm_points = normalizePoints(points, sourceVideoRatioWH);
+    // let earpoint_y1 = points[177];
 
     getZAngleAndRotate1(nosepoint, centerfacepoint, canX1, canY1);
     getZAngleAndRotate2(nosepoint, centerfacepoint, canX2, canY2);
