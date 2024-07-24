@@ -447,12 +447,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
   function translateRotateMesh(points, handLabel, isPalmFacing, sourcevideowidth, sourcevideoheight) {
     GlobalHandLabel = handLabel;
     setHandType(handLabel)
-    let obj1 = { value: handLabel }
-    var typehand = handLabel;
-    // console.log(typehand,);
     let jewel = sessionStorage.getItem("selectedJewel")
     type = JSON.parse(jewel).type
-    // console.log(JSON.parse(jewel).type);
     jewelType === type;
     if (!points || points.length === 0) {
       return;
@@ -480,54 +476,30 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
     let stayPoint = null;
     console.log(type, "tsm check");
-    if (verticalRotation) {
-      // setJewelType(type);
 
-      // console.log(jewelType == type, "check");
-      if (type === "bangle") {
-        if (handLabel === "Left") {
-          stayPoint = {
-            x: wrist.x - 0.01,
-            y: wrist.y + 1.035,
-            z: wrist.z,
-          };
-        } else if (handLabel === "Right") {
-          stayPoint = {
-            x: wrist.x,
-            y: wrist.y + 100.035,
-            z: wrist.z,
-          };
-        }
-      }
-      else {
-        stayPoint = ringPos;
-      }
+    if (type === "bangle") {
+      // if (handLabel === "Left") {
+      //   stayPoint = {
+      //     x: wrist.x - 0.015,
+      //     y: wrist.y,
+      //     z: wrist.z,
+      //   };
+      // } else if (handLabel === "Right") {
+      //   stayPoint = {
+      //     x: wrist.x + 0.015,
+      //     y: wrist.y,
+      //     z: wrist.z,
+      //   };
+      // }
+      stayPoint = wrist;
+    }
+    else {
+      stayPoint = ringPos;
     }
 
-    if (horizontalRotation) {
-      if (type === "bangle") {
-        if (handLabel === "Left") {
-          stayPoint = {
-            x: wrist.x - 0.015,
-            y: wrist.y,
-            z: wrist.z,
-          };
-        } else if (handLabel === "Right") {
-          stayPoint = {
-            x: wrist.x + 0.015,
-            y: wrist.y,
-            z: wrist.z,
-          };
-        }
-      }
-      else {
-        stayPoint = ringPos;
-      }
-
-      setHandPointsX(stayPoint.x);
-      setHandPointsY(stayPoint.y);
-      setHandPointsZ(stayPoint.z);
-    }
+    setHandPointsX(stayPoint.x);
+    setHandPointsY(stayPoint.y);
+    setHandPointsZ(stayPoint.z);
     // (stayPoint);
 
     // let foldedHand = calculateAngleAtMiddle(wrist, midKnuckle, midTop);
