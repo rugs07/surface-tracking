@@ -286,7 +286,7 @@ const HandTrackingComponent = () => {
       {!handPresence && <Showhandscreen />}
       {/* {wristZoom > 1.0 ?  : null} */}
 
-      {( (selectedJewel.type === "bangle") && (handAngle > 330 || handAngle < 210)) && <Showhandscreen />}
+      {/* {( (selectedJewel.type === "bangle") && (handAngle > 330 || handAngle < 210)) && <Showhandscreen />} */}
       {!handPresence && (
         <button className="stopArBtn" onClick={handleStopAR}>
           STOP AR
@@ -339,13 +339,13 @@ const HandTrackingComponent = () => {
             }}
             style={{ width: "100%", height: "100%" }}
           >
-            {(selectedJewel.type !== "bangle" || (handAngle <= 330 && handAngle >= 210)) && (
+            {/* {(selectedJewel.type !== "bangle" || (handAngle <= 330 && handAngle >= 210)) && ( */}
               <Splat
                 src={url}
                 rotation={[XRDelta, YRDelta, ZRDelta]}
                 scale={[wristZoom, wristZoom, wristZoom]}
               />
-            )}
+            {/* )} */}
           </Canvas>
         </ErrorBoundary>
       </div>

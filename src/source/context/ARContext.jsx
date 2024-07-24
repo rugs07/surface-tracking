@@ -325,10 +325,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
         canY = smoothedY;
       }
 
-      if (isMobile || isIOS) {
-        if (jewelType === "bangle" || type === "bangle") normZAngle *= 1;
-      }
-
       rotateZ(normZAngle, canX, canY);
     }
 
@@ -388,37 +384,43 @@ export const GlobalFunctionsProvider = ({ children }) => {
     return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
   }
 
-  function calculateWristSize(points, YRAngle, ZRAngle) {
-    let wristSize = euclideanDistance(points[0], points[9]);
-
-    // Keep only necessary adjustments, remove fold-related ones
-    if (isMobile || isIOS) {
-      const mulVal = mapRange(Math.abs(Math.sin(THREE.MathUtils.degToRad(ZRAngle))), 0, 1, 1, 1.05);
-      wristSize *= mulVal;
-    } else {
-      const mulVal = mapRange(Math.abs(Math.sin(THREE.MathUtils.degToRad(ZRAngle))), 0, 1, 1, 1.1);
-      wristSize *= mulVal * 1.3;
-    }
-
-    return wristSize;
+  function normalizePoints(points, sourceVideoRatioWH) {
+    // sourceVideoRatioWH = sourceVideoWidth/sourceVideoHeight
+    let normalizedPoints = points.map(point => ({
+      x: point.x * sourceVideoRatioWH,
+      y: point.y,
+      z: point.z
+    }));
+    return normalizedPoints;
   }
 
-  function isHandFoldingStable(foldedHand) {
-    foldHistoryRef.current.push(foldedHand);
-    if (foldHistoryRef.current.length > 10) {
-      foldHistoryRef.current.shift();
-    }
-
-    const avgFold = foldHistoryRef.current.reduce((a, b) => a + b, 0) / foldHistoryRef.current.length;
-    const stableThreshold = 2; // Adjust this value as needed
-
-    return Math.abs(foldedHand - avgFold) < stableThreshold;
+  function calculateSize(points, YRAngle, ZRAngle, sourceVideoRatioWH=1) {
+    let normalizedPoints = normalizePoints(points, sourceVideoRatioWH);
+    let objSize;
+    if (jewelType === "bangle" || type === "bangle")
+      objSize = euclideanDistance(normalizedPoints[0], normalizedPoints[9]);
+    else
+    objSize = euclideanDistance(normalizedPoints[13], normalizedPoints[14]) * 0.53;
+    // console.log("OSize ", objSize, euclideanDistance(points[0], points[9]), 
+    //                       euclideanDistance(normalizedPoints[0], normalizedPoints[9]));
+    return objSize;
   }
 
+  // function isHandFoldingStable(foldedHand) {
+  //   foldHistoryRef.current.push(foldedHand);
+  //   if (foldHistoryRef.current.length > 10) {
+  //     foldHistoryRef.current.shift();
+  //   }
+
+  //   const avgFold = foldHistoryRef.current.reduce((a, b) => a + b, 0) / foldHistoryRef.current.length;
+  //   const stableThreshold = 2; // Adjust this value as needed
+
+  //   return Math.abs(foldedHand - avgFold) < stableThreshold;
+  // }
+
+  // let lastStableSize = null;
   let lastSize = null;
-  mapRange;
   function smoothResizing(wristSize) {
-    // console.log(GlobalHandLabel, "smooth resizing");
     if (enableSmoothing) {
       if (lastSize !== null) {
         const smoothingFactor = 0.1; // Reduce this value for more stability
@@ -430,7 +432,6 @@ export const GlobalFunctionsProvider = ({ children }) => {
     }
     return wristSize;
   }
-  let lastStableSize = null;
 
 
 
@@ -527,8 +528,10 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let window_scale, canX, canY;
     let windowWidth = document.documentElement.clientWidth;
     let windowHeight = document.documentElement.clientHeight;
+    let sourceVideoRatioWH = sourcevideowidth / sourcevideoheight;
+
     // windowWidth = window.screen.width;
-    if (windowWidth / windowHeight > sourcevideowidth / sourcevideoheight) {
+    if (windowWidth / windowHeight > sourceVideoRatioWH) {
       // Image is taller than the canvas, so we crop top & bottom & scale as per best fit of width
       canX = stayPoint.x * windowWidth - windowWidth / 2;
       // if(window.navigator.userAgent.includes("Firefox")){
@@ -610,7 +613,30 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
 
     // Resizing
-    let dist = calculateWristSize(points, YRAngle, ZRAngle);
+    let dist = calculateSize(points, YRAngle, ZRAngle, sourceVideoRatioWH);
+
+    // Size stabilization
+    const stabilityFactor = 0.95;
+    if (lastStableSizeRef.current === null) {
+      lastStableSizeRef.current = dist;
+    } else {
+      dist = lastStableSizeRef.current * stabilityFactor + dist * (1 - stabilityFactor);
+      lastStableSizeRef.current = dist;
+    }
+
+    // let baseSize = (jewelType === "bangle" || type === "bangle") ? 1.0 : 0.25;
+    let baseSize = 1.75
+
+    let resizeMul = window_scale * baseSize;
+    if (selectedJewel.label === "floralring") {
+      resizeMul *= 0.9;
+    }
+
+    // Smoothening size transition
+    let smoothenSize = smoothResizing(dist * resizeMul);
+    // let smoothenSize = dist * resizeMul;
+    setWristZoom(smoothenSize);
+    // scaleMul = smoothenSize * 0.5;
 
     // const handStable = isHandFoldingStable(foldedHand);
     // if (handStable !== isHandStable) {
@@ -620,122 +646,58 @@ export const GlobalFunctionsProvider = ({ children }) => {
     //   }
     // }
 
-    // Size stabilization
-    if (lastStableSizeRef.current === null) {
-      lastStableSizeRef.current = dist;
-    } else {
-      const stabilityFactor = 0.95;
-      dist = lastStableSizeRef.current * stabilityFactor + dist * (1 - stabilityFactor);
-      lastStableSizeRef.current = dist;
-    }
-
     // Apply additional stability for mobile devices
-    if (isMobile || isIOS) {
-      const stabilityFactor = isHandStable ? 0.95 : 0.7;
-      dist = lastStableSizeRef.current * stabilityFactor + dist * (1 - stabilityFactor);
-    }
+    // if (isMobile || isIOS) {
+    //   const stabilityFactor = isHandStable ? 0.95 : 0.7;
+    //   dist = lastStableSizeRef.current * stabilityFactor + dist * (1 - stabilityFactor);
+    // }
 
-    let resizeMul;
-    // (isPalmFacing);
-    function calculateScaleAdjustment(foldedHand, isPalmFacing) {
-      // let scaleAdjustment = 1.0;
-      // let scaleAdjustment = 1.0;
-      // const openHandThreshold = 16;
-      // const closedHandThreshold = 7;
+    // function calculateScaleAdjustment(foldedHand, isPalmFacing) {
+    //   let scaleAdjustment = 1.0;
+    //   let scaleAdjustment = 1.0;
+    //   const openHandThreshold = 16;
+    //   const closedHandThreshold = 7;
 
-      // if (foldedHand < closedHandThreshold) {
-      //   // Hand is very closed
-      //   scaleAdjustment = isPalmFacing ? 0.8 : 0.9;
-      // } else if (foldedHand < openHandThreshold) {
-      //   // Hand is partially closed
-      //   scaleAdjustment = isPalmFacing ? 0.9 : 1.0;
-      // }
-      // For open hand, scaleAdjustment remains 1.0
+    //   if (foldedHand < closedHandThreshold) {
+    //     // Hand is very closed
+    //     scaleAdjustment = isPalmFacing ? 0.8 : 0.9;
+    //   } else if (foldedHand < openHandThreshold) {
+    //     // Hand is partially closed
+    //     scaleAdjustment = isPalmFacing ? 0.9 : 1.0;
+    //   }
+    //   // For open hand, scaleAdjustment remains 1.0
 
-      return 1.0;
+    //   return 1.0;
 
 
-      // // Define thresholds based on the observed folded hand angles
-      // const openHandThreshold = 16; // Average between backhand and fronthand open
-      // const closedHandThreshold = { backhand: 1, fronthand: 1 }; // Average for closed hand states
+    //   // Define thresholds based on the observed folded hand angles
+    //   const openHandThreshold = 16; // Average between backhand and fronthand open
+    //   const closedHandThreshold = { backhand: 1, fronthand: 1 }; // Average for closed hand states
 
-      // // Adjust scale based on the folded hand angle and device type
-      // if (
+    //   // Adjust scale based on the folded hand angle and device type
+    //   if (
 
-      //   foldedHand
-      // ) {
-      //   // Hand is partially closed or in a natural state
-      //   if (isMobile || isIOS) {
-      //     scaleAdjustment = isPalmFacing ? 1.0 : 1.0; // Slightly larger adjustment for mobile devices
-      //   } else {
-      //     scaleAdjustment = isPalmFacing ? 1.0 : 1.0; // Smaller adjustment for laptops/desktops
-      //   }
-      // } else {
-      //   // Hand is very closed
-      //   scaleAdjustment = isPalmFacing ? 1.0 : 1.0; // Minor adjustment unless palm is facing, then no change
-      // }
+    //     foldedHand
+    //   ) {
+    //     // Hand is partially closed or in a natural state
+    //     if (isMobile || isIOS) {
+    //       scaleAdjustment = isPalmFacing ? 1.0 : 1.0; // Slightly larger adjustment for mobile devices
+    //     } else {
+    //       scaleAdjustment = isPalmFacing ? 1.0 : 1.0; // Smaller adjustment for laptops/desktops
+    //     }
+    //   } else {
+    //     // Hand is very closed
+    //     scaleAdjustment = isPalmFacing ? 1.0 : 1.0; // Minor adjustment unless palm is facing, then no change
+    //   }
 
-      // No adjustment needed for fully open hand beyond openHandThreshold
-      // as scaleAdjustment remains 1.0
+    //   // No adjustment needed for fully open hand beyond openHandThreshold
+    //   // as scaleAdjustment remains 1.0
 
-      return 1.0;
-    }
+    //   return 1.0;
+    // }
 
     // let scaleAdjustment = calculateScaleAdjustment(foldedHand, isPalmFacing);
-    let baseSize = 1.0;
-    if (isMobile || isIOS) {
-      baseSize *= 1.2; // Slight increase for mobile devices if needed
-    }
-    if (jewelType === "bangle" || type === "bangle") {
-      //previous code
-      // console.log(type, "sscale adjustment low");
-      if (isMobile || isIOS) {
-        resizeMul = window_scale * 2.5 * baseSize;
-        if (
-          (handLabel === "Right") ||
-          (handLabel === "Left")
-        ) {
-          resizeMul *= 1.55;
-        }
-      } else {
-        resizeMul = window_scale;
-      }
-
-      // if (selectedJewel !== "flowerbangle") resizeMul *= 1.25;
-    }
-    else if (jewelType === "bangle" && type === "ring") {
-      let visibilityFactor =
-        (handLabel === "Right") ||
-          (handLabel === "Left")
-          ? 1.0
-          : 0.9;
-      if (isMobile || isIOS) {
-        resizeMul = window_scale * 3.0 * visibilityFactor;
-        // if (isPalmFacing) resizeMul *= 0.9;
-      } else
-        resizeMul = window_scale * 0.70 * visibilityFactor;
-
-      if (selectedJewel.label === "floralring") {
-        resizeMul *= 0.9;
-      }
-    }
-    else if (jewelType === "ring" || type === "ring") {
-      let visibilityFactor = 1.0
-
-      if (isMobile || isIOS) {
-        resizeMul = window_scale * 1.1 * visibilityFactor;
-        // if (isPalmFacing) resizeMul *= 0.9;
-      } else
-        resizeMul = window_scale * 0.70 * visibilityFactor;
-
-      if (selectedJewel === "floralring") {
-        resizeMul *= 0.9;
-      }
-    }
-
-    let smoothenSize = smoothResizing(dist * resizeMul) * 0.5;
-    setWristZoom(smoothenSize);
-    // scaleMul = smoothenSize * 0.5;
+  
 
     // Use if required
     // const baseNear = jewelType === "bangle" ? 0.093 : 0.0975;
@@ -760,8 +722,8 @@ export const GlobalFunctionsProvider = ({ children }) => {
     // let transform = 'translate3d(10px, 20px, 0) rotateZ(45deg)';
     // gsplatCanvas.style.transform = transform;
 
-    if (resize && isArcball)
-      gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
+    // if (resize && isArcball)
+    //   gCamera.position.set(gCamera.position.x, gCamera.position.y, 1 / dist);
   }
 
   const calculateAngleAtMiddle = (landmark1, landmark2, landmark3) => {
@@ -822,7 +784,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     getNormalizedYTSub,
     euclideanDistance,
     manhattanDistance,
-    calculateWristSize,
+    calculateSize,
     smoothResizing,
     calculateAngleAtMiddle,
     translateRotateMesh,
