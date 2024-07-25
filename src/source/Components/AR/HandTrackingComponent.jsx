@@ -112,6 +112,7 @@ const HandTrackingComponent = () => {
   const [handAngle, setHandAngle] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false)
+  const ismobile = window.innerWidth < 768;
   const {
     jewelType,
     YRDelta,
@@ -181,46 +182,84 @@ const HandTrackingComponent = () => {
       }
     };
 
-    const smoothLandmarks = (landmarks) => {
-      const baseSmoothingFactor = 0.8;
-      const jitterThreshold = 0.01; // Adjust this value to control jitter sensitivity
+    // New smoothing logic based on provided code
+let prevFrame = null; // Store the previous frame for velocity calculation
+let frameSets = []; // Stores multiple frames for smoothing
 
-      if (!prevFrameRef.current) {
-        prevFrameRef.current = landmarks;
-        return landmarks;
+// Function to calculate velocity based on the movement of hand landmarks
+const calculateVelocity = (currentFrame, previousFrame) => {
+  if (!previousFrame) return 0;
+  let totalVelocity = 0;
+  for (let i = 0; i < currentFrame.length; i++) {
+    const dx = currentFrame[i].x - previousFrame[i].x;
+    const dy = currentFrame[i].y - previousFrame[i].y;
+    const dz = currentFrame[i].z - previousFrame[i].z;
+    totalVelocity += Math.sqrt(dx * dx + dy * dy + dz * dz);
+  }
+  return totalVelocity / currentFrame.length; // Average velocity across all points
+};
+
+// Function to smooth hand landmarks
+const smoothLandmarks = (results, jewelType, isMobile) => {
+  console.log(results,"results")
+  if (results[0]) {
+    frameSets.push(results[0]);
+  }
+
+  let velocity = 0;
+  if (frameSets.length > 1 && prevFrame) {
+    velocity = calculateVelocity(frameSets[frameSets.length - 1], prevFrame);
+  }
+
+  let effectiveLength = frameSets.length;
+  if (isMobile) {
+    if (jewelType === "bangle") {
+      if (velocity > 0.04) {
+        effectiveLength = Math.min(effectiveLength, 4);
+      } else if (velocity > 0.015) {
+        effectiveLength = Math.min(effectiveLength, 6);
+      } else {
+        effectiveLength = Math.min(effectiveLength, 8);
       }
+    } else {
+      if (velocity > 0.015) {
+        effectiveLength = Math.min(effectiveLength, 4);
+      } else {
+        effectiveLength = 6;
+      }
+    }
+  } else {
+    if (velocity > 0.04) {
+      effectiveLength = Math.min(effectiveLength, 4);
+    } else if (velocity > 0.015) {
+      effectiveLength = Math.min(effectiveLength, 6);
+    } else {
+      effectiveLength = 8;
+    }
+  }
 
-      const smoothedLandmarks = landmarks.map((point, index) => {
-        const prev = prevFrameRef.current[index];
-        const delta = {
-          x: point.x - prev.x,
-          y: point.y - prev.y,
-          z: point.z - prev.z
-        };
-
-        const distanceSquared = delta.x ** 2 + delta.y ** 2 + delta.z ** 2;
-
-        let smoothingFactor;
-        if (distanceSquared < jitterThreshold) {
-          // If movement is very small, apply strong smoothing
-          smoothingFactor = 0.85;
-        } else {
-          // For larger movements, use the base smoothing factor
-          smoothingFactor = baseSmoothingFactor;
-        }
-
-        const smoothed = {
-          x: smoothingFactor * prev.x + (1 - smoothingFactor) * point.x,
-          y: smoothingFactor * prev.y + (1 - smoothingFactor) * point.y,
-          z: smoothingFactor * prev.z + (1 - smoothingFactor) * point.z
-        };
-
-        return smoothed;
+  if (effectiveLength >= 4) {
+    const smoothedLandmarks = frameSets.slice(-effectiveLength).reduce((acc, frame, _, src) => {
+      return frame.map((point, index) => {
+        acc[index] = acc[index] || { x: 0, y: 0, z: 0, visibility: 0 };
+        acc[index].x += point.x / src.length;
+        acc[index].y += point.y / src.length;
+        acc[index].z += point.z / src.length;
+        acc[index].visibility += point.visibility / src.length;
+        return acc[index];
       });
+    }, []);  
 
-      prevFrameRef.current = smoothedLandmarks;
-      return smoothedLandmarks;
-    };
+    results[0] = smoothedLandmarks;
+    prevFrame = frameSets[frameSets.length - 1];
+  }
+
+  if (frameSets.length >= 8) {
+    frameSets.shift();
+  }
+
+  return results;
+};
 
     let sourcevideowidth = null;
     let sourcevideoheight = null;
@@ -234,7 +273,8 @@ const HandTrackingComponent = () => {
           setHandPresence(detections.handednesses.length > 0);
           
           if (detections.landmarks?.[0]) {
-            const smoothedLandmarks = smoothLandmarks(detections.landmarks[0]);
+            const smoothedLandmarks = smoothLandmarks(detections.landmarks[0],jewelType,ismobile);
+            console.log(detections.landmarks[0],"results")
             const angle = calculateHandAngle(smoothedLandmarks);
             setHandAngle(angle);
             console.log(smoothedLandmarks, detections.landmarks[0], "warrr");
