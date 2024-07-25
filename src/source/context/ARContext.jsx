@@ -402,22 +402,22 @@ export const GlobalFunctionsProvider = ({ children }) => {
       };
     }
   }
-  
+
   function normalizePoints(points, sourceVideoRatioWH) {
     if (Array.isArray(points)) {
       return points.map(point => normalizePoint(point, sourceVideoRatioWH));
     } else {
       return normalizePoint(points, sourceVideoRatioWH);
     }
-  }  
+  }
 
-  function calculateSize(points, YRAngle, ZRAngle, sourceVideoRatioWH=1) {
+  function calculateSize(points, YRAngle, ZRAngle, sourceVideoRatioWH = 1) {
     let normalizedPoints = normalizePoints(points, sourceVideoRatioWH);
     let objSize;
     if (jewelType === "bangle" || type === "bangle")
       objSize = euclideanDistance(normalizedPoints[0], normalizedPoints[9]);
     else
-    objSize = euclideanDistance(normalizedPoints[13], normalizedPoints[14]) * 0.53;
+      objSize = euclideanDistance(normalizedPoints[13], normalizedPoints[14]) * 0.53;
     // console.log("OSize ", objSize, euclideanDistance(points[0], points[9]), 
     //                       euclideanDistance(normalizedPoints[0], normalizedPoints[9]));
     return objSize;
@@ -437,18 +437,77 @@ export const GlobalFunctionsProvider = ({ children }) => {
 
   // let lastStableSize = null;
   let lastSize = null;
-  function smoothResizing(wristSize) {
-    if (enableSmoothing) {
-      if (lastSize !== null) {
-        const smoothingFactor = 0.1; // Reduce this value for more stability
-        wristSize = lastSize * (1 - smoothingFactor) + wristSize * smoothingFactor;
-      }
-      lastSize = wristSize;
-    } else {
-      lastSize = wristSize;
+  let prevSize = null; // Store the previous frame for velocity calculation
+  let sizeArray = []; // Stores multiple frames for smoothing
+  // Function to smooth hand landmarks
+
+  const smoothResizing = (size, jewelType = "bangle", isMobile = false) => {
+    sizeArray.push(size);
+    let velocity = 0;
+    if (sizeArray.length > 1 && prevSize) {
+      velocity = Math.abs(sizeArray[sizeArray.length - 1] - prevSize);
     }
-    return wristSize;
-  }
+
+    console.log(velocity, "velocity ");
+
+
+    let effectiveLength = sizeArray.length;
+    // if (isMobile) {
+    //   if (jewelType === "bangle") {
+    //     if (velocity > 0.04) {
+    //       effectiveLength = Math.min(effectiveLength, 4);
+    //     } else if (velocity > 0.015) {
+    //       effectiveLength = Math.min(effectiveLength, 6);
+    //     } else {
+    //       effectiveLength = Math.min(effectiveLength, 8);
+    //     }
+    //   } else {
+    //     if (velocity > 0.015) {
+    //       effectiveLength = Math.min(effectiveLength, 4);
+    //     } else {
+    //       effectiveLength = 6;
+    //     }
+    //   }
+    // } else {
+      if (velocity > 0.04) {
+        effectiveLength = Math.min(effectiveLength, 4);
+      } else if (velocity > 0.015) {
+        effectiveLength = Math.min(effectiveLength, 6);
+      } else {
+        effectiveLength = 8;
+      }
+    // }
+    console.log(effectiveLength, "length");
+
+
+
+    if (effectiveLength >= 4) {
+      const smoothedSize = sizeArray.slice(-effectiveLength).reduce((acc, value) => acc + value, 0) / effectiveLength;
+      size = smoothedSize;
+    };
+
+    prevSize = sizeArray[sizeArray.length - 1];
+
+    if (sizeArray.length >= 8) {
+      sizeArray.shift();
+    }
+
+    return size;
+
+
+  };
+  //   function smoothResizing(wristSize) {
+  //     // if (enableSmoothing) {
+  //     //   if (lastSize !== null) {
+  //     //     const smoothingFactor = 0.1; // Reduce this value for more stability
+  //     //     wristSize = lastSize * (1 - smoothingFactor) + wristSize * smoothingFactor;
+  //     //   }
+  //     //   lastSize = wristSize;
+  //     // } else {
+  //     //   lastSize = wristSize;
+  //     // }
+  //     return wristSize;
+  //   }
 
 
 
@@ -529,13 +588,13 @@ export const GlobalFunctionsProvider = ({ children }) => {
     // (window_scale);
 
     //Make width, height of canvas double
-    if (!(gsplatCanvas.width && gsplatCanvas.height)){
+    if (!(gsplatCanvas.width && gsplatCanvas.height)) {
       console.log("Cvs Def", gsplatCanvas.width, gsplatCanvas.height);
-      gsplatCanvas.width = 2*windowWidth;
-      gsplatCanvas.height = 2*windowHeight;
+      gsplatCanvas.width = 2 * windowWidth;
+      gsplatCanvas.height = 2 * windowHeight;
       console.log("Cvs Double", gsplatCanvas.width, gsplatCanvas.height);
     }
-    
+
     // (sourcevideoheight, windowHeight, sourcevideowidth, windowWidth ) // Sample: 720 731 1280 1536
     // rotation & translation (getZAngleAndRotate also translates)
     // totalTransX = canX;
@@ -592,13 +651,13 @@ export const GlobalFunctionsProvider = ({ children }) => {
     let dist = calculateSize(points, YRAngle, ZRAngle, sourceVideoRatioWH);
 
     // Size stabilization
-    const stabilityFactor = 0.95;
-    if (lastStableSizeRef.current === null) {
-      lastStableSizeRef.current = dist;
-    } else {
-      dist = lastStableSizeRef.current * stabilityFactor + dist * (1 - stabilityFactor);
-      lastStableSizeRef.current = dist;
-    }
+    // const stabilityFactor = 0.95;
+    // if (lastStableSizeRef.current === null) {
+    //   lastStableSizeRef.current = dist;
+    // } else {
+    //   dist = lastStableSizeRef.current * stabilityFactor + dist * (1 - stabilityFactor);
+    //   lastStableSizeRef.current = dist;
+    // }
 
     // let baseSize = (jewelType === "bangle" || type === "bangle") ? 1.0 : 0.25;
     let baseSize = 1.75
@@ -673,7 +732,7 @@ export const GlobalFunctionsProvider = ({ children }) => {
     // }
 
     // let scaleAdjustment = calculateScaleAdjustment(foldedHand, isPalmFacing);
-  
+
 
     // Use if required
     // const baseNear = jewelType === "bangle" ? 0.093 : 0.0975;
