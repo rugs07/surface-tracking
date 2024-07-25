@@ -202,8 +202,8 @@ const HandTrackingComponent = () => {
     // Function to smooth hand landmarks
     const smoothLandmarks = (results, jewelType, isMobile) => {
       console.log(results, "results")
-      if (results[0] && Array.isArray(results[0])) {
-        frameSets.push(results[0]);
+      if (results && Array.isArray(results)) {
+        frameSets.push(results);
       }
 
       let velocity = 0;
@@ -251,7 +251,7 @@ const HandTrackingComponent = () => {
           });
         }, []);
 
-        results[0] = smoothedLandmarks;
+        results = smoothedLandmarks;
         prevFrame = frameSets[frameSets.length - 1];
       }
 
