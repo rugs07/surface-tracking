@@ -424,7 +424,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     }
   }
 
-  function calculateFaceSize1(points, YRAngle, ZRAngle) {
+  function calculateFaceSize1(points, YRAngle, ZRAngle, sourceVideoRatioWH = 1) {
     // calculate wrist size as distance between wrist and first knuckle and distance between thumb knuckle and pinky knuckle on first frame and then adjust for scale using wrist.z value
     // let wristSize = manhattanDistance(points[0], points[5]);
     // wristSize += manhattanDistance(points[9], points[17]);
@@ -432,7 +432,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
     //Inner edge of eyes
     let facesize = null;
-    let eyegap = euclideanDistance(points[4], points[177]);
+    let normalizedPoints1 = normalizePoints(points, sourceVideoRatioWH);
+    let eyegap = euclideanDistance(normalizedPoints1[4], normalizedPoints1[177]);
     facesize = eyegap;
     console.log(eyegap);
 
@@ -440,7 +441,7 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     return facesize;
   }
 
-  function calculateFaceSize2(points, YRAngle, ZRAngle) {
+  function calculateFaceSize2(points, YRAngle, ZRAngle, sourceVideoRatioWH = 1) {
     // calculate wrist size as distance between wrist and first knuckle and distance between thumb knuckle and pinky knuckle on first frame and then adjust for scale using wrist.z value
     // let wristSize = manhattanDistance(points[0], points[5]);
     // wristSize += manhattanDistance(points[9], points[17]);
@@ -448,7 +449,8 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
 
     //Inner edge of eyes
     let facesize = null;
-    let eyegap = euclideanDistance(points[4], points[401]);
+    let normalizedPoints2 = normalizePoints(points, sourceVideoRatioWH);
+    let eyegap = euclideanDistance(normalizedPoints2[4], normalizedPoints2[401]);
     facesize = eyegap;
     console.log(eyegap);
 
@@ -457,44 +459,47 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
   }
 
   let lastSize = null;
+  let prevSize = null; // Store the previous frame for velocity calculation
+  let sizeArray = [];
 
-  function smoothResizing(facesize) {
-    // console.log(GlobalHandLabel, "smooth resizing");
-    if (enableSmoothing) {
-      let diff = 0;
-      if (lastSize !== null) {
-        diff = facesize - lastSize;
-
-        rsArr.push(diff); // Insert new value at the end
-
-        if (rsArr.length > 3) {
-          rsArr.shift(); // Remove the first index value
-
-          // Check if all values are either positive or negative
-          var allSameSign = rsArr.every(function (value) {
-            return (value >= 0 && diff >= 0) || (value < 0 && diff < 0);
-          });
-
-          if (!allSameSign) return lastSize;
-
-          // Apply weighted moving average for smoother transition
-          let sumWeights = 0;
-          let weightedSum = 0;
-          for (let i = 0; i < rsArr.length; i++) {
-            const weight = i + 1; // Assign higher weight to more recent changes
-            sumWeights += weight;
-            weightedSum += rsArr[i] * weight;
-          }
-          const smoothDiff = weightedSum / sumWeights;
-          facesize = lastSize + smoothDiff;
-        }
-      }
-      lastSize = facesize;
-    } else {
-      lastSize = facesize;
+  const smoothResizing = (facesize, jewelType = "earring", isMobile = false) => {
+    sizeArray.push(facesize);
+    let velocity = 0;
+    if (sizeArray.length > 1 && prevSize) {
+      velocity = Math.abs(sizeArray[sizeArray.length - 1] - prevSize);
     }
+
+    console.log(velocity, "velocity ");
+
+
+    let effectiveLength = sizeArray.length;
+      if (velocity > 0.04) {
+        effectiveLength = Math.min(effectiveLength, 4);
+      } else if (velocity > 0.015) {
+        effectiveLength = Math.min(effectiveLength, 6);
+      } else {
+        effectiveLength = 8;
+      }
+    // }
+    console.log(effectiveLength, "length");
+
+
+
+    if (effectiveLength >= 4) {
+      const smoothedSize = sizeArray.slice(-effectiveLength).reduce((acc, value) => acc + value, 0) / effectiveLength;
+      facesize = smoothedSize;
+    };
+
+    prevSize = sizeArray[sizeArray.length - 1];
+
+    if (sizeArray.length >= 8) {
+      sizeArray.shift();
+    }
+
     return facesize;
-  }
+
+
+  };
 
   function translateRotateMesh(points, sourcevideowidth,sourcevideoheight) {
     if (!points || points.length === 0) {
@@ -578,12 +583,13 @@ export const GlobalFaceFunctionsProvider = ({ children }) => {
     const dist1 = calculateFaceSize1(points, YRAngle, ZRAngle) * window_scale; // logic 1 
     // const dist1 = calculateFaceSize1(points, YRAngle, ZRAngle) * windowWidth/windowHeight; // logic 2
     let resizeMul1 = window.innerWidth < 768 ? 0.6 : 0.8;
-    // let smoothenSize = smoothResizing(dist * resizeMul1);
-    setEarZoom1(dist1*resizeMul1);
+    let smoothenSize = smoothResizing(dist1 * resizeMul1);
+    setEarZoom1(smoothenSize);
 
     let resizeMul2 = window.innerWidth < 768 ? 0.6 : 0.8;
     const dist2 = calculateFaceSize2(points, YRAngle, ZRAngle) * window_scale;
-    setEarZoom2(dist2*resizeMul2);
+    let smoothenSize2 = smoothResizing(dist2* resizeMul2);
+    setEarZoom2(smoothenSize2);
   }
   
 
