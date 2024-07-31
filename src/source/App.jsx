@@ -26,7 +26,7 @@ const App = () => {
                 <Route path="/AR" element={<HandTrackingComponent />} />
                 <Route path="/Loading" element={<Hands />} />
                 <Route path="/Loading1" element={<Face />} />
-                <Route path="/face-ar" element={<FaceTrackingComponent />} />
+                <Route path="/surface" element={<FaceTrackingComponent />} />
                 <Route path="/shoe" element={<Foottracking />} />
               </Routes>
             </BrowserRouter>

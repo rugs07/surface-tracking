@@ -14,6 +14,10 @@ import logo from "../assets/logo1.png";
 import { useVariables } from "../context/variableContext";
 import modelimage from "../assets/finalimg.png";
 import modelimage2 from "../assets/finalimg2.png";
+// import ancientpots from "../assets/"
+import natraj from "../assets/natraj.jpeg"
+import livelyswans from "../assets/swans.jpeg"
+import table from "../assets/table.jpeg"
 
 let typeOfJewel;
 const Home = () => {
@@ -28,11 +32,10 @@ const Home = () => {
 
     typeOfJewel == jewelsList[jewelId].type;
     sessionStorage.setItem("selectedJewel", JSON.stringify(selectedJewel));
-    if(selectedJewel.type === "earring"){
-      navigate(`/face-ar?id=${selectedJewel.name}`)
-    }
-    else{
-    navigate("/VR");
+    if (selectedJewel.type === "earring") {
+      navigate(`/face-ar?id=${selectedJewel.name}`);
+    } else {
+      navigate("/VR");
     }
   };
 
@@ -178,6 +181,67 @@ const Home = () => {
                   <div className="selectarea">
                     {/* <!-- <button type="button">Laxmi Bangle</button> --> */}
                     <span>Laxmi Bangle</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="jewel-category">
+            <div className="jrow home-row" id="jewels_row">
+              <div className="glassmorph">
+                <div
+                  className="jewel-container home-jewel"
+                  onClick={() =>
+                    handleNavigate("https://prod.jar4u.com/?id=pots")
+                  }
+                >
+                  <img className="jewelimg" />
+                  <div className="selectarea">
+                    {/* <!-- <button type="Gbutton">Ancient Pots</button> --> */}
+                    <span>Ancient Pots</span>
+                  </div>
+                </div>
+              </div>
+              <div className="glassmorph">
+                <div
+                  className="jewel-container home-jewel"
+                  onClick={() => {
+                    handleNavigate("https://prod.jar4u.com/?id=swan");
+                  }}
+                >
+                  <img src={livelyswans} className="jewelimg" />
+                  <div className="selectarea">
+                    {/* <!-- <button type="button">Lively Swans</button> --> */}
+                    <span>Lively Swans</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="glassmorph">
+                <div
+                  className="jewel-container home-jewel"
+                  onClick={() => {
+                    handleNavigate("https://prod.jar4u.com/?id=natraj");
+                  }}
+                >
+                  <img src={natraj} className="jewelimg" />
+                  <div className="selectarea">
+                    {/* <!-- <button type="button">Natraj</button> --> */}
+                    <span>Natraj</span>
+                  </div>
+                </div>
+              </div>
+              <div className="glassmorph">
+                <div
+                  className="jewel-container home-jewel"
+                  onClick={() => {
+                    handleNavigate("https://prod.jar4u.com/?id=table_1");
+                  }}
+                >
+                  <img src={table} className="jewelimg" />
+                  <div className="selectarea">
+                    {/* <!-- <button type="button">Luxe Table</button> --> */}
+                    <span>Luxe Table</span>
                   </div>
                 </div>
               </div>
