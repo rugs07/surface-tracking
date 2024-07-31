@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
-import { FilesetResolver, FaceLandmarker } from "@mediapipe/tasks-vision";
-import { Canvas } from "@react-three/fiber";
-import face_landmarker_task from "../../../models/face_landmarker.task";
-import { Splat } from "@react-three/drei";
-import { FaceFunctions } from "../../context/FaceContext";
-import { ARFunctions } from "../../context/ARContext";
 import FPSStats from "react-fps-stats";
-import { useVariables } from "../../context/variableContext";
+import { Splat } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
 import Facehandscreen from "./Facehandscreen";
 import { useNavigate } from "react-router-dom";
+import { ARFunctions } from "../../context/ARContext";
 import gifearring from "../../assets/earring1_big.gif"
+import { FaceFunctions } from "../../context/FaceContext";
 import ErrorBoundary from "../Errorboundary/ErrorBoundary";
+import { useVariables } from "../../context/variableContext";
+import React, { useEffect, useRef, useState, useMemo } from "react";
+import face_landmarker_task from "../../../models/face_landmarker.task";
+import { FilesetResolver, FaceLandmarker } from "@mediapipe/tasks-vision";
 
 const HandsModal = ({ isOpen, onClose, isLoaded }) => {
 
@@ -31,7 +31,7 @@ const HandsModal = ({ isOpen, onClose, isLoaded }) => {
           <div className="steps">
             <img src={gifearring} alt="Step 3" />
             <center>
-              <p >Keep your face in front of the camera to try on the earrings</p>
+              <p>Keep your face in front of the camera to try on the earrings</p>
             </center>
           </div>
         </div>
@@ -107,6 +107,8 @@ const HandTrackingComponent = () => {
             delegate: "GPU",
           },
           runningMode: "VIDEO",
+          minFaceDetectionConfidence:0.7,
+          minTrackingConfidence:0.7,
         });
 
         detectFaces();
@@ -138,14 +140,6 @@ const HandTrackingComponent = () => {
               sourcevideowidth,
               sourcevideoheight
             );
-
-            // translateRotateMesh2(
-            //   faceDetections?.faceLandmarks[0],
-            //   canvasRef2.current,
-            //   sourcevideowidth,
-            //   sourcevideoheight
-            // );
-
             setIsLoaded(true); // Set loader to false when face detections are received
           }
         }
@@ -243,6 +237,7 @@ const HandTrackingComponent = () => {
     >
       &times;
     </span>
+
       <div
         style={{
           position: "absolute",
@@ -257,6 +252,7 @@ const HandTrackingComponent = () => {
           // transform: isMobile ? "none" : "rotateY(180deg)",
         }}
       >
+
       <ErrorBoundary>
         <Canvas
           id="gsplatCanvas"
@@ -305,6 +301,7 @@ const HandTrackingComponent = () => {
               />
             </>
           )}
+
         </Canvas>
         </ErrorBoundary>
       </div>
