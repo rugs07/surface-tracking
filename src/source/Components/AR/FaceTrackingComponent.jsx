@@ -60,27 +60,28 @@ const ARComponent = () => {
         STOP AR
       </button>
       
-      <a-scene
-      webar-scene="key: xxxxxxxx-1111-2222-3333-yyyyyyyyyyyy"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-      loading-screen="enabled: false">
-
-      <a-camera webar-camera></a-camera>
-
-      <a-assets>
-        <a-asset-item
-          id="astronaut"
-          src="https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/natraj/natraj.splat">
-        </a-asset-item>
-      </a-assets>
-
-      {/* <a-entity webar-stage>
-        <a-entity gltf-model="#astronaut" id="astronaut_1" 
-                  rotation="0 0 0" position="0 0 0" scale="0.25 0.25 0.25"
-                  webar-loadmonitor="elType: splat"></a-entity>
-      </a-entity> */}
-    </a-scene>
+      <model-viewer
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+        src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" // Replace with your model path
+        alt="A 3D model of a chair"
+        ar
+        ar-modes="scene-viewer webxr quick-look"
+        camera-controls
+        auto-rotate
+        ar-scale="auto"
+        ar-placement="floor" // Optional: to place the model on a wall instead of the floor
+      >
+        <button slot="ar-button" className="start-ar-button">
+          View in your space
+        </button>
+      </model-viewer>
 
       <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} isLoaded={isLoaded} />
     </div>
