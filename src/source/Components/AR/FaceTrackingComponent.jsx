@@ -61,7 +61,7 @@ const ARComponent = () => {
       </button>
       
       <a-scene
-      webar-scene="key: f59faf1a-5ffb-40de-9678-cf2957c4c1f0"
+      webar-scene="key: xxxxxxxx-1111-2222-3333-yyyyyyyyyyyy"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
       loading-screen="enabled: false">
