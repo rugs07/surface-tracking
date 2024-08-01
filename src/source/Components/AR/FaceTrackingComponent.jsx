@@ -1,11 +1,40 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { Splat } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
 import gifearring from "../../assets/earring1_big.gif";
 import { FaceFunctions } from "../../context/FaceContext";
 import { useVariables } from "../../context/variableContext";
 import * as THREE from "three";
+
+// ... HandsModal component remains the same ...
+
+const ARScene = ({ session, referenceSpace }) => {
+  const { gl, scene, camera } = useThree();
+  const { XRDelta, YRDelta, YRDelta2, earZoom1, earZoom2, isvisible1, isvisible2 } = useVariables();
+  const { translateRotateMesh } = FaceFunctions();
+
+  const ringUrl1 = useMemo(() => `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/natraj/natraj.splat`);
+
+  useFrame((state, delta) => {
+    if (session && referenceSpace) {
+      const xrViewerPose = gl.xr.getFrame().getViewerPose(referenceSpace);
+      if (xrViewerPose) {
+        // Update your 3D object position/rotation based on the viewer pose
+        // This is where you'd call translateRotateMesh if needed
+      }
+    }
+  });
+
+  return (
+    <Splat
+      src={ringUrl1}
+      scale={[earZoom1, earZoom1, earZoom1]}
+      rotation={[XRDelta, YRDelta2, 0]}
+      visible={isvisible1}
+    />
+  );
+};
 
 const HandsModal = ({ isOpen, onClose, isLoaded }) => {
   const navigate = useNavigate();
@@ -40,61 +69,54 @@ const HandsModal = ({ isOpen, onClose, isLoaded }) => {
 const ARComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { XRDelta, YRDelta, YRDelta2, earZoom1, earZoom2, isvisible1, isvisible2 } = useVariables();
-  const { translateRotateMesh } = FaceFunctions();
-  const canvasRef = useRef();
   const [session, setSession] = useState(null);
   const [referenceSpace, setReferenceSpace] = useState(null);
-  const [gl, setGl] = useState(null);
-
-  const ringUrl1 = useMemo(() => `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`);
-  // const ringUrl2 = useMemo(() => `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`);
+  const canvasRef = useRef();
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
   const startARSession = async () => {
+    if (!navigator.xr) {
+      console.error("WebXR not supported");
+      return;
+    }
+
     try {
-      if (!navigator.xr) {
-        console.error("WebXR not supported by this browser or device.");
+      const supported = await navigator.xr.isSessionSupported('immersive-ar');
+      if (!supported) {
+        console.error("AR not supported");
         return;
       }
-  
-      const isSupported = await navigator.xr.isSessionSupported("immersive-ar");
-      if (!isSupported) {
-        console.error("Immersive AR session is not supported on this device.");
-        return;
-      }
-  
-      const session = await navigator.xr.requestSession("immersive-ar", {
-        optionalFeatures: ["local-floor"],
+
+      const session = await navigator.xr.requestSession('immersive-ar', {
+        requiredFeatures: ['local-floor', 'hit-test'],
+        optionalFeatures: ['dom-overlay'],
+        domOverlay: { root: document.body }
       });
-  
-      const gl = new THREE.WebGLRenderer({ alpha: true });
-      session.updateRenderState({ baseLayer: new XRWebGLLayer(session, gl.getContext()) });
-      const refSpace = await session.requestReferenceSpace("local");
-      setGl(gl);
+
+      const canvas = canvasRef.current;
+      const gl = canvas.getContext('webgl', { xrCompatible: true });
+      const xrGLLayer = new XRWebGLLayer(session, gl);
+      
+      session.updateRenderState({ baseLayer: xrGLLayer });
+
+      const referenceSpace = await session.requestReferenceSpace('local-floor');
+
       setSession(session);
-      setReferenceSpace(refSpace);
+      setReferenceSpace(referenceSpace);
+
+      session.addEventListener('end', () => {
+        setSession(null);
+        setReferenceSpace(null);
+      });
+
+      setIsLoaded(true);
     } catch (error) {
-      console.error("Error initializing WebXR:", error);
+      console.error("Error starting AR session:", error);
     }
   };
-  
-
-  useEffect(() => {
-    if (session && referenceSpace) {
-      const onXRFrame = (time, frame) => {
-        const viewerPose = frame.getViewerPose(referenceSpace);
-        if (viewerPose) {
-          translateRotateMesh();
-        }
-        session.requestAnimationFrame(onXRFrame);
-      };
-      session.requestAnimationFrame(onXRFrame);
-    }
-  }, [session, referenceSpace]);
 
   const handlestopAR = () => {
     if (session) {
@@ -112,29 +134,11 @@ const ARComponent = () => {
         &times;
       </span>
       <Canvas
-        id="gsplatCanvas"
         ref={canvasRef}
-        shadows
-        gl={{ localClippingEnabled: true }}
-        camera={{ fov: 46, position: [0, 1.5, 4.5], near: 0.093, far: 4.75 }}
+        gl={{ alpha: false }}
         style={{ width: "100vw", height: "100vh", position: "absolute" }}
       >
-        {referenceSpace && (
-          <>
-            <Splat
-              src={ringUrl1}
-              scale={[earZoom1, earZoom1, earZoom1]}
-              rotation={[XRDelta, YRDelta2, 0]}
-              visible={isvisible1}
-            />
-            {/* <Splat
-              src={ringUrl2}
-              scale={[earZoom2, earZoom2, earZoom2]}
-              rotation={[XRDelta, YRDelta, 0]}
-              visible={isvisible2}
-            /> */}
-          </>
-        )}
+        <ARScene session={session} referenceSpace={referenceSpace} />
       </Canvas>
       <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} isLoaded={isLoaded} />
     </div>
