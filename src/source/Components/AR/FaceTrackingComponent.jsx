@@ -69,9 +69,14 @@ const HandsModal = ({ isOpen, onClose, isLoaded }) => {
 const ARComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { XRDelta, YRDelta, YRDelta2, earZoom1, earZoom2, isvisible1, isvisible2 } = useVariables();
+  const { translateRotateMesh } = FaceFunctions();
+  const canvasRef = useRef();
   const [session, setSession] = useState(null);
   const [referenceSpace, setReferenceSpace] = useState(null);
-  const canvasRef = useRef();
+  const [gl, setGl] = useState(null);
+
+  const ringUrl1 = useMemo(() => `https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/jewel26_lr/jewel26_lr.splat`);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -97,13 +102,16 @@ const ARComponent = () => {
       });
 
       const canvas = canvasRef.current;
-      const gl = canvas.getContext('webgl', { xrCompatible: true });
-      const xrGLLayer = new XRWebGLLayer(session, gl);
+      const context = canvas.getContext('webgl', { xrCompatible: true });
+      const gl = new THREE.WebGLRenderer({ canvas, context, alpha: true });
       
+      await gl.xr.setSession(session);
+      setGl(gl);
+
+      const xrGLLayer = new XRWebGLLayer(session, context);
       session.updateRenderState({ baseLayer: xrGLLayer });
 
       const referenceSpace = await session.requestReferenceSpace('local-floor');
-
       setSession(session);
       setReferenceSpace(referenceSpace);
 
@@ -111,6 +119,28 @@ const ARComponent = () => {
         setSession(null);
         setReferenceSpace(null);
       });
+
+      // Set up the render loop
+      const onXRFrame = (time, frame) => {
+        session.requestAnimationFrame(onXRFrame);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        const pose = frame.getViewerPose(referenceSpace);
+        if (pose) {
+          const view = pose.views[0];
+          const viewport = session.renderState.baseLayer.getViewport(view);
+          gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
+
+          // Perform face tracking here
+          translateRotateMesh();
+
+          // Render your AR content here
+          // You'll need to set up your Three.js scene and camera
+          // gl.render(scene, camera);
+        }
+      };
+
+      session.requestAnimationFrame(onXRFrame);
 
       setIsLoaded(true);
     } catch (error) {
@@ -133,16 +163,29 @@ const ARComponent = () => {
       <span className="close1" onClick={handlestopAR}>
         &times;
       </span>
-      <Canvas
+      <canvas
         ref={canvasRef}
-        gl={{ alpha: false }}
         style={{ width: "100vw", height: "100vh", position: "absolute" }}
-      >
-        <ARScene session={session} referenceSpace={referenceSpace} />
-      </Canvas>
+      />
+      {session && referenceSpace && (
+        <ErrorBoundary>
+          <Canvas
+            gl={gl}
+            camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 0, 5] }}
+          >
+            <Splat
+              src={ringUrl1}
+              scale={[earZoom1, earZoom1, earZoom1]}
+              rotation={[XRDelta, YRDelta2, 0]}
+              visible={isvisible1}
+            />
+          </Canvas>
+        </ErrorBoundary>
+      )}
       <HandsModal isOpen={isModalOpen} onClose={handleCloseModal} isLoaded={isLoaded} />
     </div>
   );
 };
+
 
 export default ARComponent;
