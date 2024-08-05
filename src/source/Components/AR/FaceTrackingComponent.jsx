@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { Splat } from "@react-three/drei";
 
 const SplatElement = () => {
@@ -31,7 +31,7 @@ const ARComponent = () => {
     try {
       console.log("Requesting AR session...");
       const session = await navigator.xr.requestSession("immersive-ar", {
-        requiredFeatures: ["local-floor"],
+        requiredFeatures: ["local-floor", "hit-test"], // Ensure we have hit-test for placing objects
       });
       console.log("AR session started successfully.");
 
