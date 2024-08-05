@@ -17,6 +17,7 @@ const SplatElement = () => {
 const ARComponent = () => {
   const [session, setSession] = useState(null);
   const canvasRef = useRef();
+  const videoRef = useRef();
   const [isDebugMode, setIsDebugMode] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -31,40 +32,35 @@ const ARComponent = () => {
     try {
       console.log("Requesting AR session...");
       const session = await navigator.xr.requestSession("immersive-ar", {
-        requiredFeatures: ["local-floor", "hit-test"], // Ensure we have hit-test for placing objects
+        requiredFeatures: ["local-floor", "hit-test"],
       });
       console.log("AR session started successfully.");
 
       const canvas = canvasRef.current;
-      console.log("Canvas element:", canvas);
-
       const gl = canvas.getContext("webgl", { xrCompatible: true });
-      console.log("WebGL context:", gl);
-
       const renderer = new THREE.WebGLRenderer({ canvas, context: gl });
-      console.log("Three.js renderer:", renderer);
       renderer.xr.enabled = true;
 
       const xrGLLayer = new XRWebGLLayer(session, gl);
-      console.log("XRWebGLLayer:", xrGLLayer);
       session.updateRenderState({ baseLayer: xrGLLayer });
 
       const referenceSpace = await session.requestReferenceSpace("local-floor");
-      console.log("Reference space:", referenceSpace);
       setSession(session);
 
       session.requestAnimationFrame(() => {
-        console.log("Requesting animation frame...");
         renderer.setAnimationLoop(() => {
-          console.log("Rendering frame...");
           renderer.render(renderer.xr.getSession().renderState.baseLayer, referenceSpace);
         });
       });
 
       session.addEventListener("end", () => {
-        console.log("AR session ended.");
         setSession(null);
       });
+
+      // Access the camera feed
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      videoRef.current.srcObject = stream;
+      videoRef.current.play();
 
     } catch (error) {
       setIsDebugMode(true);
@@ -74,9 +70,22 @@ const ARComponent = () => {
   };
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
       <button onClick={startARSession}>Start AR Session</button>
-      <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }} />
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1000, // Ensure it is behind other elements
+          objectFit: "cover",
+        }}
+      />
       {isDebugMode && (
         <div style={{ position: "absolute", top: 0, left: 0, color: "white" }}>
           <p>{errorMessage}</p>
