@@ -22,6 +22,7 @@ const ARComponent = () => {
   const [isDebugMode, setIsDebugMode] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [hitPosition, setHitPosition] = useState(null); // State to hold the hit position
+  const [hitTestSource, setHitTestSource] = useState(null); // State to hold the hit test source
 
   const startARSession = async () => {
     if (!navigator.xr) {
@@ -57,16 +58,6 @@ const ARComponent = () => {
       const referenceSpace = await session.requestReferenceSpace("local-floor");
       setSession(session);
 
-      session.requestAnimationFrame(() => {
-        renderer.setAnimationLoop(() => {
-          renderer.render(renderer.xr.getSession().renderState.baseLayer, referenceSpace);
-        });
-      });
-
-      session.addEventListener("end", () => {
-        setSession(null);
-      });
-
       // Access the camera feed
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
@@ -78,24 +69,29 @@ const ARComponent = () => {
 
       // Start hit testing
       const hitTestSource = await session.requestHitTestSource({ space: referenceSpace });
-      const hitTestSourceSet = new Set();
-      hitTestSourceSet.add(hitTestSource);
+      setHitTestSource(hitTestSource);
 
-      const hitTest = () => {
-        if (session) {
-          session.requestHitTestSourceForTransientInput(hitTestSource).then((results) => {
-            if (results.length > 0) {
-              const hit = results[0];
-              const position = new THREE.Vector3().fromArray(hit.getPose(referenceSpace).transform.position);
-              setHitPosition(position);
-            }
-          });
-        }
-      };
-
-      // Update hit testing in the animation loop
       session.requestAnimationFrame(() => {
-        hitTest();
+        renderer.setAnimationLoop(() => {
+          if (hitTestSource) {
+            session.requestHitTestSourceForTransientInput(hitTestSource).then((results) => {
+              if (results.length > 0) {
+                const hit = results[0];
+                const position = new THREE.Vector3().fromArray(hit.getPose(referenceSpace).transform.position);
+                setHitPosition(position);
+              } else {
+                setHitPosition(null); // No hit detected
+              }
+            });
+          }
+          // Render the scene
+          renderer.render(renderer.xr.getSession().renderState.baseLayer, referenceSpace);
+        });
+      });
+
+      session.addEventListener("end", () => {
+        setSession(null);
+        setHitTestSource(null); // Reset hit test source
       });
 
     } catch (error) {
