@@ -36,8 +36,17 @@ const ARComponent = () => {
       });
       console.log("AR session started successfully.");
 
+      // Ensure the canvasRef is defined and the canvas is rendered
       const canvas = canvasRef.current;
+      if (!canvas) {
+        throw new Error("Canvas reference is not defined.");
+      }
+
       const gl = canvas.getContext("webgl", { xrCompatible: true });
+      if (!gl) {
+        throw new Error("WebGL context is not available.");
+      }
+
       const renderer = new THREE.WebGLRenderer({ canvas, context: gl });
       renderer.xr.enabled = true;
 
@@ -91,6 +100,7 @@ const ARComponent = () => {
           <p>{errorMessage}</p>
         </div>
       )}
+      <canvas ref={canvasRef} style={{ display: 'none' }} /> {/* Hidden canvas for WebGL context */}
       {session && (
         <Canvas>
           <ambientLight intensity={0.5} />
