@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Splat } from "@react-three/drei";
 
-const SplatElement = () => {
+const SplatElement = ({ position }) => {
   return (
     <Splat
       url="https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/natraj/natraj.splat"
       scale={[0.5, 0.5, 0.5]}
       rotation={[0, 0, 0]}
+      position={position}
       visible={true}
     />
   );
@@ -20,6 +21,7 @@ const ARComponent = () => {
   const videoRef = useRef();
   const [isDebugMode, setIsDebugMode] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [hitPosition, setHitPosition] = useState(null); // State to hold the hit position
 
   const startARSession = async () => {
     if (!navigator.xr) {
@@ -36,7 +38,6 @@ const ARComponent = () => {
       });
       console.log("AR session started successfully.");
 
-      // Ensure the canvasRef is defined and the canvas is rendered
       const canvas = canvasRef.current;
       if (!canvas) {
         throw new Error("Canvas reference is not defined.");
@@ -67,9 +68,35 @@ const ARComponent = () => {
       });
 
       // Access the camera feed
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: "environment",
+        },
+      });
       videoRef.current.srcObject = stream;
       videoRef.current.play();
+
+      // Start hit testing
+      const hitTestSource = await session.requestHitTestSource({ space: referenceSpace });
+      const hitTestSourceSet = new Set();
+      hitTestSourceSet.add(hitTestSource);
+
+      const hitTest = () => {
+        if (session) {
+          session.requestHitTestSourceForTransientInput(hitTestSource).then((results) => {
+            if (results.length > 0) {
+              const hit = results[0];
+              const position = new THREE.Vector3().fromArray(hit.getPose(referenceSpace).transform.position);
+              setHitPosition(position);
+            }
+          });
+        }
+      };
+
+      // Update hit testing in the animation loop
+      session.requestAnimationFrame(() => {
+        hitTest();
+      });
 
     } catch (error) {
       setIsDebugMode(true);
@@ -101,11 +128,11 @@ const ARComponent = () => {
         </div>
       )}
       <canvas ref={canvasRef} style={{ display: 'none' }} /> {/* Hidden canvas for WebGL context */}
-      {session && (
+      {session && hitPosition && (
         <Canvas>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
-          <SplatElement />
+          <SplatElement position={hitPosition} /> {/* Render the model at the hit position */}
         </Canvas>
       )}
     </div>
