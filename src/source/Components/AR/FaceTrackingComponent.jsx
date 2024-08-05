@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { Splat } from "@react-three/drei";
 
 const SplatElement = ({ position }) => {
@@ -125,7 +125,9 @@ const ARComponent = () => {
       )}
       <canvas ref={canvasRef} style={{ display: 'none' }} /> {/* Hidden canvas for WebGL context */}
       {session && hitPosition && (
-        <Canvas>
+        <Canvas
+          style={{ width: "100vw", height: "100vh", position: "absolute" }}
+        >
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
           <SplatElement position={hitPosition} /> {/* Render the model at the hit position */}
