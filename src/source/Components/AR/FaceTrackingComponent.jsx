@@ -1,80 +1,81 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, extend, useFrame } from "@react-three/fiber";
 import { Splat } from "@react-three/drei";
-import { FaceFunctions } from "../../context/FaceContext";
-import { useVariables } from "../../context/variableContext";
 
 const ARComponent = () => {
   const [session, setSession] = useState(null);
-  const [referenceSpace, setReferenceSpace] = useState(null);
-  const canvasRef = useRef(null);
-
-  const { XRDelta, YRDelta2, earZoom1, isvisible1 } = useVariables();
-  const { translateRotateMesh } = FaceFunctions();
+  const canvasRef = useRef();
+  const sceneRef = useRef(new THREE.Scene());
+  const cameraRef = useRef(new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000));
 
   useEffect(() => {
-    if (session && referenceSpace) {
-      const gl = new THREE.WebGLRenderer({ canvas: canvasRef.current });
-      const clock = new THREE.Clock();
+    const startARSession = async () => {
+      if (!navigator.xr) {
+        alert("WebXR not supported on this device/browser.");
+        return;
+      }
 
-      const onXRFrame = (time, frame) => {
-        session.requestAnimationFrame(onXRFrame);
-        const dt = clock.getDelta();
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      try {
+        const session = await navigator.xr.requestSession("immersive-ar", {
+          requiredFeatures: ["local-floor"],
+        });
 
-        const xrViewerPose = frame.getViewerPose(referenceSpace);
-        if (xrViewerPose) {
-          const view = xrViewerPose.views[0];
-          const viewport = session.renderState.baseLayer.getViewport(view);
-          gl.setSize(viewport.width, viewport.height);
-          gl.setPixelRatio(window.devicePixelRatio);
-          gl.xr.updateCamera(view, referenceSpace);
+        const canvas = canvasRef.current;
+        const gl = canvas.getContext("webgl", { xrCompatible: true });
+        const renderer = new THREE.WebGLRenderer({ canvas, context: gl });
+        renderer.xr.enabled = true;
 
-          translateRotateMesh();
-          gl.render(gl.xr.getScene(), gl.xr.getCamera());
-        }
-      };
+        const xrGLLayer = new XRWebGLLayer(session, gl);
+        session.updateRenderState({ baseLayer: xrGLLayer });
 
-      session.requestAnimationFrame(onXRFrame);
+        const referenceSpace = await session.requestReferenceSpace("local-floor");
+        setSession(session);
 
-      return () => {
-        session.end();
-      };
-    }
-  }, [session, referenceSpace]);
+        // Initialize the AR scene and camera
+        const scene = sceneRef.current;
+        const camera = cameraRef.current;
 
-  const startARSession = async () => {
-    if (navigator.xr) {
-      const session = await navigator.xr.requestSession("immersive-ar", {
-        requiredFeatures: ["local-floor", "hit-test"],
-        optionalFeatures: ["dom-overlay"],
-        domOverlay: { root: document.body },
-      });
+        // Add Splat to the scene
+        const splat = new THREE.Object3D();
+        scene.add(splat);
 
-      const referenceSpace = await session.requestReferenceSpace("local-floor");
-      setSession(session);
-      setReferenceSpace(referenceSpace);
-
-      session.addEventListener("end", () => {
-        setSession(null);
-        setReferenceSpace(null);
-      });
-    }
-  };
-
-  return (
-    <div>
-      <button onClick={startARSession}>Start AR Session</button>
-      <canvas ref={canvasRef} style={{ width: "100vw", height: "100vh" }} />
-      {session && referenceSpace && (
-        <Canvas camera={{ fov: 75, near: 0.1, far: 1000 }}>
+        const SplatElement = () => (
           <Splat
             src="https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/natraj/natraj.splat"
-            scale={[earZoom1, earZoom1, earZoom1]}
-            rotation={[XRDelta, YRDelta2, 0]}
-            visible={isvisible1}
+            scale={[0.5, 0.5, 0.5]}
+            rotation={[0, 0, 0]}
+            visible={true}
           />
+        );
+
+        session.requestAnimationFrame(() => {
+          renderer.setAnimationLoop(() => {
+            renderer.render(scene, camera);
+          });
+        });
+
+        session.addEventListener("end", () => {
+          setSession(null);
+        });
+
+      } catch (error) {
+        alert(`Error starting AR session: ${error.message}`);
+      }
+    };
+
+    if (!session) {
+      startARSession();
+    }
+
+  }, [session]);
+
+  return (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }} />
+      {session && (
+        <Canvas>
+          <SplatElement />
         </Canvas>
       )}
     </div>
