@@ -3,13 +3,12 @@ import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { Splat } from "@react-three/drei";
 
-const SplatElement = ({ position }) => {
+const SplatElement = () => {
   return (
     <Splat
       url="https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/natraj/natraj.splat"
       scale={[0.5, 0.5, 0.5]}
       rotation={[0, 0, 0]}
-      position={position}
       visible={true}
     />
   );
@@ -21,8 +20,6 @@ const ARComponent = () => {
   const videoRef = useRef();
   const [isDebugMode, setIsDebugMode] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [hitPosition, setHitPosition] = useState(null); // State to hold the hit position
-  const [hitTestSource, setHitTestSource] = useState(null); // State to hold the hit test source
 
   const startARSession = async () => {
     if (!navigator.xr) {
@@ -39,6 +36,7 @@ const ARComponent = () => {
       });
       console.log("AR session started successfully.");
 
+      // Ensure the canvasRef is defined and the canvas is rendered
       const canvas = canvasRef.current;
       if (!canvas) {
         throw new Error("Canvas reference is not defined.");
@@ -58,6 +56,19 @@ const ARComponent = () => {
       const referenceSpace = await session.requestReferenceSpace("local-floor");
       setSession(session);
 
+      session.requestAnimationFrame(() => {
+        renderer.setAnimationLoop(() => {
+          renderer.render(
+            renderer.xr.getSession().renderState.baseLayer,
+            referenceSpace
+          );
+        });
+      });
+
+      session.addEventListener("end", () => {
+        setSession(null);
+      });
+
       // Access the camera feed
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
@@ -66,34 +77,6 @@ const ARComponent = () => {
       });
       videoRef.current.srcObject = stream;
       videoRef.current.play();
-
-      // Start hit testing
-      const hitTestSource = await session.requestHitTestSource({ space: referenceSpace });
-      setHitTestSource(hitTestSource);
-
-      session.requestAnimationFrame(() => {
-        renderer.setAnimationLoop(() => {
-          if (hitTestSource) {
-            session.requestHitTestSourceForTransientInput(hitTestSource).then((results) => {
-              if (results.length > 0) {
-                const hit = results[0];
-                const position = new THREE.Vector3().fromArray(hit.getPose(referenceSpace).transform.position);
-                setHitPosition(position);
-              } else {
-                setHitPosition(null); // No hit detected
-              }
-            });
-          }
-          // Render the scene
-          renderer.render(renderer.xr.getSession().renderState.baseLayer, referenceSpace);
-        });
-      });
-
-      session.addEventListener("end", () => {
-        setSession(null);
-        setHitTestSource(null); // Reset hit test source
-      });
-
     } catch (error) {
       setIsDebugMode(true);
       setErrorMessage(`Error starting AR session: ${error.message}`);
@@ -123,16 +106,15 @@ const ARComponent = () => {
           <p>{errorMessage}</p>
         </div>
       )}
-      <canvas ref={canvasRef} style={{ display: 'none' }} /> {/* Hidden canvas for WebGL context */}
-      {session && hitPosition && (
-        <Canvas
-          style={{ width: "100vw", height: "100vh", position: "absolute" }}
-        >
+      <canvas ref={canvasRef} style={{ display: "none" }} />{" "}
+      {/* Hidden canvas for WebGL context */}
+      {/* {session && ( */}
+        <Canvas>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
-          <SplatElement position={hitPosition} /> {/* Render the model at the hit position */}
+          <SplatElement />
         </Canvas>
-      )}
+      {/* )} */}
     </div>
   );
 };
