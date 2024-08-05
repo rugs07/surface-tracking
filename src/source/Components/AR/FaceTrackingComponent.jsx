@@ -101,6 +101,8 @@ const ARComponent = () => {
         domOverlay: { root: document.body }
       });
 
+      console.log(session,"session")
+
       const canvas = canvasRef.current;
       const context = canvas.getContext('webgl', { xrCompatible: true });
       const gl = new THREE.WebGLRenderer({ canvas, context, alpha: true });
