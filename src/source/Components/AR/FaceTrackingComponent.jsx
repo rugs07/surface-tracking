@@ -132,13 +132,13 @@ const ARComponent = () => {
         </div>
       )}
       <canvas ref={canvasRef} style={{ display: "none" }} /> {/* Hidden canvas for WebGL context */}
-      {session && hitPosition && (
+      {/* {session && hitPosition && ( */}
         <Canvas style={{ width: "100vw", height: "100vh", position: "absolute" }}>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
           <SplatElement position={hitPosition} /> {/* Render the model at the hit position */}
         </Canvas>
-      )}
+      {/* )} */}
     </div>
   );
 };
