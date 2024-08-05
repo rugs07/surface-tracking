@@ -63,12 +63,15 @@ const ARComponent = () => {
       videoRef.current.srcObject = stream;
       videoRef.current.play();
 
-      // Hit test source
+      // Create hit test source
       let hitTestSource = await session.requestHitTestSource({ space: referenceSpace });
 
       const hitTest = () => {
-        if (session) {
-          session.requestHitTestSourceForTransientInput(hitTestSource).then((results) => {
+        if (session && hitTestSource) {
+          session.requestHitTestSourceForTransientInput({ 
+            profile: "generic-trigger", // Specify the profile correctly
+            space: referenceSpace 
+          }).then((results) => {
             if (results.length > 0) {
               const hit = results[0];
               const position = new THREE.Vector3().fromArray(hit.getPose(referenceSpace).transform.position);
