@@ -1,12 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Splat } from "@react-three/drei";
+
+const SplatElement = () => {
+  return (
+    <Splat
+      url="https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/natraj/natraj.splat"
+      scale={[0.5, 0.5, 0.5]}
+      rotation={[0, 0, 0]}
+      visible={true}
+    />
+  );
+};
 
 const ARComponent = () => {
   const [session, setSession] = useState(null);
   const canvasRef = useRef();
-  const sceneRef = useRef(new THREE.Scene());
-  const cameraRef = useRef(new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000));
 
   const startARSession = async () => {
     if (!navigator.xr) {
@@ -30,27 +40,9 @@ const ARComponent = () => {
       const referenceSpace = await session.requestReferenceSpace("local-floor");
       setSession(session);
 
-      // Initialize the AR scene and camera
-      const scene = sceneRef.current;
-      const camera = cameraRef.current;
-      camera.position.set(0, 1.6, 3); // Position the camera
-
-      // Add Splat to the scene
-      const splat = new THREE.Object3D();
-      scene.add(splat);
-
-      const SplatElement = () => (
-        <Splat
-          src="https://gaussian-splatting-production.s3.ap-south-1.amazonaws.com/natraj/natraj.splat"
-          scale={[0.5, 0.5, 0.5]}
-          rotation={[0, 0, 0]}
-          visible={true}
-        />
-      );
-
       session.requestAnimationFrame(() => {
         renderer.setAnimationLoop(() => {
-          renderer.render(scene, camera);
+          renderer.render(renderer.xr.getSession().renderState.baseLayer, referenceSpace);
         });
       });
 
@@ -69,6 +61,8 @@ const ARComponent = () => {
       <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }} />
       {session && (
         <Canvas>
+          <ambientLight intensity={0.5} /> {/* Add ambient light */}
+          <pointLight position={[10, 10, 10]} /> {/* Add a point light */}
           <SplatElement />
         </Canvas>
       )}
