@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { Splat } from "@react-three/drei";
+import { XRManager } from '../XRManager'; // Import your XRManager
+import { HitTestManager } from '../HitTestmanager'; // Import your HitTestManager
 
 const SplatElement = ({ position }) => {
   return (
@@ -21,6 +23,9 @@ const ARComponent = () => {
   const canvasRef = useRef();
   const videoRef = useRef();
   const [errorMessage, setErrorMessage] = useState(""); // State for error messages
+  const clock = new THREE.Clock();
+  let hitTestManager;
+  let hitTestActive = true;
 
   const startARSession = async () => {
     if (!navigator.xr) {
@@ -34,25 +39,18 @@ const ARComponent = () => {
         requiredFeatures: ["local-floor", "hit-test"],
       });
       console.log("AR session started successfully.");
+      setSession(session);
 
       const canvas = canvasRef.current;
-      if (!canvas) {
-        throw new Error("Canvas reference is not defined.");
-      }
-
       const gl = canvas.getContext("webgl", { xrCompatible: true });
-      if (!gl) {
-        throw new Error("WebGL context is not available.");
-      }
-
       const renderer = new THREE.WebGLRenderer({ canvas, context: gl });
       renderer.xr.enabled = true;
 
       const xrGLLayer = new XRWebGLLayer(session, gl);
       session.updateRenderState({ baseLayer: xrGLLayer });
 
+      // Set up the reference space
       const referenceSpace = await session.requestReferenceSpace("local-floor");
-      setSession(session);
 
       // Access the camera feed
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -63,32 +61,28 @@ const ARComponent = () => {
       videoRef.current.srcObject = stream;
       videoRef.current.play();
 
-      // Create hit test source
-      let hitTestSource = await session.requestHitTestSource({ space: referenceSpace });
+      // Initialize HitTestManager
+      hitTestManager = HitTestManager({ xrSession: session });
 
-      const hitTest = () => {
-        if (session && hitTestSource) {
-          session.requestHitTestSourceForTransientInput({ 
-            profile: "generic-trigger", // Specify the profile correctly
-            space: referenceSpace 
-          }).then((results) => {
-            if (results.length > 0) {
-              const hit = results[0];
+      // Start the animation loop
+      session.requestAnimationFrame(() => {
+        renderer.setAnimationLoop((timestamp, frame) => {
+          // Handle hit testing
+          if (frame && hitTestActive) {
+            if (!hitTestManager.hitTestSourceRequested) {
+              hitTestManager.requestHitTestSource();
+            }
+            const hitPoseTransformMatrix = hitTestManager.hitTestSource ? hitTestManager.getHitTestResults(frame) : [];
+            if (hitPoseTransformMatrix.length > 0) {
+              const hit = hitPoseTransformMatrix[0];
               const position = new THREE.Vector3().fromArray(hit.getPose(referenceSpace).transform.position);
               setHitPosition(position);
             } else {
               setHitPosition(null); // No hit detected
             }
-          }).catch(err => {
-            setErrorMessage(`Hit test error: ${err.message}`);
-          });
-        }
-      };
+          }
 
-      // Start the animation loop
-      session.requestAnimationFrame(() => {
-        renderer.setAnimationLoop(() => {
-          hitTest(); // Continuously check for hit testing
+          // Render the scene
           renderer.render(renderer.xr.getSession().renderState.baseLayer, referenceSpace);
         });
       });
