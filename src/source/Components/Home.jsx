@@ -14,7 +14,7 @@ import logo from "../assets/logo1.png";
 import { useVariables } from "../context/variableContext";
 import modelimage from "../assets/finalimg.png";
 import modelimage2 from "../assets/finalimg2.png";
-// import ancientpots from "../assets/"
+import ancientpots from "../assets/pots-bg.png"
 import natraj from "../assets/natraj.jpeg"
 import livelyswans from "../assets/swans.jpeg"
 import table from "../assets/table.jpeg"
@@ -195,7 +195,7 @@ const Home = () => {
                     handleNavigate("https://prod.jar4u.com/?id=pots")
                   }
                 >
-                  <img className="jewelimg" />
+                  <img src={ancientpots} className="jewelimg" />
                   <div className="selectarea">
                     {/* <!-- <button type="Gbutton">Ancient Pots</button> --> */}
                     <span>Ancient Pots</span>
